@@ -1,0 +1,98 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+public class Slot : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
+{
+    int slotIndex; 
+
+    // Item
+    [SerializeField] int _count = 0;
+    [SerializeField] Item _item = null;
+    bool hasItem = false;
+    // UI
+    [SerializeField] Image _imgItem = null;
+    [SerializeField] Text _txtItemCount = null;
+
+
+
+    // 슬롯 클리어
+    public void ClearSlot()
+    {
+        _count = 0;
+        _item = null;
+
+        ShowUI(false);
+    }
+
+    // 아이템 푸시
+    public void PushSlot(Item item, int count = 1)
+    {
+        _item = item;
+        _count = count;
+        
+        ShowUI(true);
+    }
+
+    // 슬롯 아이템 개수 증가
+    public void IncreaseSlotCount(int count = 1)
+    {
+        _count += count;
+
+        ShowUI(true);
+    }
+   
+
+    // 슬롯 아이템 개수 감소
+    public void DecreaseCount(int count = 1)
+    {
+        _count -= count;
+
+        if(_count <= 0)
+            ClearSlot();
+        else
+            ShowUI(true);
+    }
+
+    // UI 세팅
+    void ShowUI(bool flag)
+    {
+        hasItem = flag;
+
+        if (flag)
+        {
+            _imgItem.sprite = _item.sprite;
+            _imgItem.gameObject.SetActive(true);
+            _txtItemCount.gameObject.SetActive(true);
+            _txtItemCount.text = _count.ToString();
+        }
+        else
+        {
+            _imgItem.sprite = null;
+            _imgItem.gameObject.SetActive(false);
+            _txtItemCount.gameObject.SetActive(false);
+        }
+    }
+
+    public void SetSlotIndex(int num) { slotIndex = num; }
+    public bool IsSameItem(Item Item) { return ReferenceEquals(_item, Item);}   // 같은 아이템인지 체크
+    public bool IsEmptySlot() { return !hasItem; }          // 빈 슬롯인지 체크
+    public bool HasEnoughCount(int num) { return (_count >= num); }             // num 이상 가지고 있는지 체크
+    public int GetSlotCount() { return _count; }                                // 슬롯 아이템 개수 확인
+    public Item GetSlotItem() { return _item; }                                 // 슬롯 아이템 리턴
+
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if(hasItem)
+            SlotToolTip.instance.OnTouchDown(slotIndex);
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (hasItem)
+            SlotToolTip.instance.OnTouchUp();
+    }
+}

@@ -12,10 +12,10 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
     [SerializeField] int _count = 0;
     [SerializeField] Item _item = null;
     bool hasItem = false;
+
     // UI
     [SerializeField] Image _imgItem = null;
     [SerializeField] Text _txtItemCount = null;
-
 
 
     // 슬롯 클리어
@@ -65,8 +65,12 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
         {
             _imgItem.sprite = _item.sprite;
             _imgItem.gameObject.SetActive(true);
-            _txtItemCount.gameObject.SetActive(true);
-            _txtItemCount.text = _count.ToString();
+            if(_item.type == ItemType.ETC)
+            {
+                _txtItemCount.gameObject.SetActive(true);
+                _txtItemCount.text = _count.ToString();
+            }
+
         }
         else
         {
@@ -78,7 +82,7 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 
     public void SetSlotIndex(int num) { slotIndex = num; }
     public bool IsSameItem(Item Item) { return ReferenceEquals(_item, Item);}   // 같은 아이템인지 체크
-    public bool IsEmptySlot() { return !hasItem; }          // 빈 슬롯인지 체크
+    public bool IsEmptySlot() { return !hasItem; }                              // 빈 슬롯인지 체크
     public bool HasEnoughCount(int num) { return (_count >= num); }             // num 이상 가지고 있는지 체크
     public int GetSlotCount() { return _count; }                                // 슬롯 아이템 개수 확인
     public Item GetSlotItem() { return _item; }                                 // 슬롯 아이템 리턴

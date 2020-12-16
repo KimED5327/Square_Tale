@@ -24,6 +24,7 @@ public class Inventory : MonoBehaviour
     bool _isOpen = false;
     int _currentTab = 0;
 
+    #region Test
     // 테스트용 인벤 채우기
     void Start()
     {
@@ -40,6 +41,7 @@ public class Inventory : MonoBehaviour
         // 기본값 - 무기 우선 정렬 
         OnTouchTab(WEAPON);
     }
+    #endregion
 
     // 골드
     public int Gold { 
@@ -67,18 +69,19 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
+        // 프리팹 슬롯 생성.
         _slots = new Slot[_slotCount];
         for (int i = 0; i < _slotCount; i++)
         {
             Slot slot = Instantiate(_slotPrefab, _slotParent).GetComponent<Slot>();
-            slot.SetSlotIndex(i);
+            slot.SetSlotIndex(i); // 슬롯 ID 부여
             _slots[i] = slot;
         }
     }
 
 
-    // 인벤토리 버튼
-    void OnTouchInventory()
+    // 인벤토리 버튼 터치
+    public void OnTouchInventory()
     {
         _isOpen = !_isOpen;
         if (_isOpen) 
@@ -118,42 +121,42 @@ public class Inventory : MonoBehaviour
     // 탭 우선 정렬
     void SortItem(ItemType type)
     {
-        // 우선 정렬로 인해 빠져나온 아이템 정보 저장용
+        // 탭 우선 정렬로 인해 빠져나온 아이템 정보 저장용
         List<Item> popItemList = new List<Item>();
         List<int> popItemCountList = new List<int>();
 
-
-        int headCount = 0;
+        int headIndex = 0;
         int currentIndex = 0;
         for (; currentIndex < _slots.Length; currentIndex++)
         {
             // 빈 슬롯을 만나면 정렬 종료
             if (_slots[currentIndex].IsEmptySlot()) break;
 
-            // 해당 인덱스 아이템 정보 Get
+            // 해당 인덱스 슬롯에 담긴 아이템 정보를 얻어옴.
             Item item = _slots[currentIndex].GetSlotItem();
             int count = _slots[currentIndex].GetSlotCount();
 
             // 해당 아이템의 타입이 우선 정렬 대상이라면-
             if (item.type == type)
             {
-                // 인덱스가 같은 경우 헤드카운트만 증가하고 무시.
-                if (currentIndex == headCount)
+                // 현재 인덱스와 헤드 인덱스가 같은 경우 헤드 인덱스만 이동. 
+                if (currentIndex == headIndex)
                 {
-                    headCount++;
+                    headIndex++;
                     continue; 
                 }
 
-                // 헤드 슬롯에 아이템이 있다면
-                if (!_slots[headCount].IsEmptySlot())
+                // 헤드 인덱스 슬롯에 아이템이 있다면
+                if (!_slots[headIndex].IsEmptySlot())
                 {
-                    // 헤드 슬롯의 아이템을 빼내어 저장하고 그 자리로 덮어씌움.
-                    popItemList.Add(_slots[headCount].GetSlotItem());
-                    popItemCountList.Add(_slots[headCount].GetSlotCount());
+                    // 헤드 슬롯의 아이템을 빼내어 저장.
+                    popItemList.Add(_slots[headIndex].GetSlotItem());
+                    popItemCountList.Add(_slots[headIndex].GetSlotCount());
                 }
 
+                // 자기 자신은 클리어하고 헤드 슬롯에 덮어씌움.
                 _slots[currentIndex].ClearSlot();
-                _slots[headCount++].PushSlot(item, count);
+                _slots[headIndex++].PushSlot(item, count);
             }
         }
 
@@ -197,8 +200,9 @@ public class Inventory : MonoBehaviour
             // 중첩 불가능한-
             else
             {
+                count = 1;
                 // 빈 인벤토리 슬롯에 푸시.
-                if (TryToPushAnySlot(item, 1))
+                if (TryToPushAnySlot(item, count))
                     return true;
             }
         }

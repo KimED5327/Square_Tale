@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ItemDatabase : MonoBehaviour
 {
+    // 테스트 목적. 이후 JSON -> 테이블 로더를 통해 재구축.
+    // Dictionary로 변경 예정.
     [SerializeField] Item[] items = null;
 
     public static ItemDatabase instance;

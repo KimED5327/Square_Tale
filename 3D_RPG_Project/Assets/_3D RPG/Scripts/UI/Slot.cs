@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
+public class Slot : MonoBehaviour, IPointerDownHandler
 {
-    int slotIndex; 
+
+    [SerializeField] bool isEquipSlot = false;
 
     // Item
     [SerializeField] int _count = 0;
@@ -61,7 +62,7 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
     {
         hasItem = flag;
 
-        if (flag)
+        if (hasItem)
         {
             _imgItem.sprite = _item.sprite;
             _imgItem.gameObject.SetActive(true);
@@ -70,17 +71,16 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
                 _txtItemCount.gameObject.SetActive(true);
                 _txtItemCount.text = _count.ToString();
             }
-
+            else
+                _txtItemCount.gameObject.SetActive(false);
         }
         else
         {
             _imgItem.sprite = null;
-            _imgItem.gameObject.SetActive(false);
             _txtItemCount.gameObject.SetActive(false);
         }
     }
 
-    public void SetSlotIndex(int num) { slotIndex = num; }
     public bool IsSameItem(Item Item) { return ReferenceEquals(_item, Item);}   // 같은 아이템인지 체크
     public bool IsEmptySlot() { return !hasItem; }                              // 빈 슬롯인지 체크
     public bool HasEnoughCount(int num) { return (_count >= num); }             // num 이상 가지고 있는지 체크
@@ -90,13 +90,9 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if(hasItem)
-            SlotToolTip.instance.OnTouchDown(slotIndex);
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
         if (hasItem)
-            SlotToolTip.instance.OnTouchUp();
+            SlotToolTip.instance.ShowToolTip(_item, transform.localPosition, isEquipSlot);
+        else
+            SlotToolTip.instance.HideToolTip();
     }
 }

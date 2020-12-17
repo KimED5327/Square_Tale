@@ -9,18 +9,17 @@ public class SlotToolTip : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] GameObject goToolTip = null;
+    [SerializeField] GameObject goEquipButton = null;
     [SerializeField] Text txtName = null;
     [SerializeField] Text txtType = null;
     [SerializeField] Text txtLimitLevel = null;
     [SerializeField] Text txtOption = null;
     [SerializeField] Text txtDesc = null;
 
-    // 터치 반응 시간
-    [Header("TouchReact")]
-    [SerializeField] float touchReactTime = 1.0f;
-    float curReactTime = 0f;
-    bool isTouchSlot = false;
-    int slotIndex;
+    [Header("Button")]
+    [SerializeField] Image[] imgBtn = null;
+    private readonly int EQUIP = 0, UNEQUIP = 1;
+
 
     [Header("Offset")]
     [SerializeField] float offsetRightX = 210f;
@@ -29,52 +28,22 @@ public class SlotToolTip : MonoBehaviour
     [SerializeField] float offsetY = -150f;
     [SerializeField] float mirrorLinePosX = 0f;
 
+    Item _touchItem;
+
     Inventory theInven;
+    Equipment theEquip; 
+
     void Awake()
     {
         theInven = GetComponent<Inventory>();
+        theEquip = GetComponent<Equipment>();
         instance = this;
-    }
-    // 터치 시작
-    public void OnTouchDown(int index)
-    {
-        curReactTime = 0f;
-        slotIndex = index;
-        isTouchSlot = true;
-        StartCoroutine(Touching());
-    }
-
-    // 터치 끝
-    public void OnTouchUp()
-    {
-        isTouchSlot = false;
-        StopAllCoroutines();
-        HideToolTip();
-    }
-
-    // 터치중
-    IEnumerator Touching()
-    {
-        while (isTouchSlot)
-        {
-            curReactTime += Time.deltaTime;
-            if (curReactTime >= touchReactTime)
-            {
-                ShowToolTip();
-                isTouchSlot = false;
-            }
-
-            yield return null;
-        }
-
     }
 
     // 툴팁 출력
-    void ShowToolTip()
+    public void ShowToolTip(Item item, Vector3 pos, bool isEquipSlot)
     {
-        
-        Item item = theInven.GetSlotItem(slotIndex); // 터치한 슬롯 아이템 정보 얻어오기
-        Vector3 pos = theInven.GetSlotLocalPos(slotIndex); // 터치한 슬롯 위치 정보 얻어오기
+        _touchItem = item;
 
         // 툴팁 내용 세팅
         txtName.text = item.name;
@@ -92,13 +61,57 @@ public class SlotToolTip : MonoBehaviour
         pos.x += (pos.x >= mirrorLinePosX) ? offsetLeftX : offsetRightX;
         pos.y += offsetY;
         goToolTip.transform.localPosition = pos;
-
-
         goToolTip.SetActive(true);
+
+        // 장비템이면 장착 해제 버튼 출력
+        if (item.type != ItemType.ETC)
+        {
+            goEquipButton.SetActive(true);
+
+            if (isEquipSlot)
+            {
+                imgBtn[EQUIP].color = Color.gray;
+                imgBtn[UNEQUIP].color = Color.white;
+            }
+            else
+            {
+                imgBtn[EQUIP].color = Color.white;
+                imgBtn[UNEQUIP].color = Color.gray;
+            }
+        }
+        else
+            goEquipButton.SetActive(false);
     }
 
-    void HideToolTip()
+    // 툴팁 종료
+    public void HideToolTip()
     {
         goToolTip.SetActive(false);
+    }
+
+
+    // 장착
+    public void EquipItem()
+    {
+        theInven.RemoveItem(_touchItem);
+
+        Item returnEquipItem = theEquip.TryToEquipSlot(_touchItem);
+        // 기존 장착된 것이 있다면 교체
+        if (returnEquipItem != null)
+            theInven.TryToPushInventory(returnEquipItem);
+
+        theInven.SerializeItem();
+        HideToolTip();
+    }
+
+    // 장착 해제
+    public void UnEquipItem()
+    {
+        Item returnEquipItem = theEquip.TakeOffEquipSlot(_touchItem);
+        if (returnEquipItem != null)
+            theInven.TryToPushInventory(returnEquipItem);
+
+        theInven.ResortItem();
+        HideToolTip();
     }
 }

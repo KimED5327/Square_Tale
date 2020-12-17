@@ -24,6 +24,9 @@ public class SlotToolTip : MonoBehaviour
     [Header("Offset")]
     [SerializeField] float offsetRightX = 210f;
     [SerializeField] float offsetLeftX = 455f;
+    [SerializeField] Vector3 weaponOffset = Vector3.zero;
+    [SerializeField] Vector3 armorOffset = Vector3.zero;
+
 
     [SerializeField] float offsetY = -150f;
     [SerializeField] float mirrorLinePosX = 0f;
@@ -58,8 +61,14 @@ public class SlotToolTip : MonoBehaviour
         }
 
         // 툴팁 위치 세팅
-        pos.x += (pos.x >= mirrorLinePosX) ? offsetLeftX : offsetRightX;
-        pos.y += offsetY;
+        if (!isEquipSlot)
+        { 
+            pos.x += (pos.x >= mirrorLinePosX) ? offsetLeftX : offsetRightX;
+            pos.y += offsetY;
+        }
+        else
+            pos = (item.type == ItemType.WEAPON) ? weaponOffset : armorOffset;
+        
         goToolTip.transform.localPosition = pos;
         goToolTip.SetActive(true);
 

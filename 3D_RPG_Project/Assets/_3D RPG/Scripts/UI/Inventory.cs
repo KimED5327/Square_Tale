@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    private readonly int WEAPON = 0, ARMOR = 1, ETC = 2;
-
     [Header("OpenWindown")]
     [SerializeField] GameObject _goInventory = null;
     [SerializeField] GameObject _goEquip = null;
@@ -39,7 +37,7 @@ public class Inventory : MonoBehaviour
         TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 잡화"));
 
         // 기본값 - 무기 우선 정렬 
-        OnTouchTab(WEAPON);
+        OnTouchTab(0);
     }
     #endregion
 

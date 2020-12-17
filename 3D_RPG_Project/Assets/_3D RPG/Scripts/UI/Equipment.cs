@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
-    private readonly int WEAPON = 0, ARMOR = 1; 
+    //private readonly int WEAPON = 0, ARMOR = 1; 
 
+    // 이후 스왑관련 나오면 변경
     [SerializeField] Slot[] slots = null;
     
     // 장착 시도

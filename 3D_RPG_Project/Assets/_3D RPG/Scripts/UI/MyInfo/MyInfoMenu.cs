@@ -9,7 +9,7 @@ public class MyInfoMenu : MonoBehaviour
     [SerializeField] Text txtMyName = null;
     [SerializeField] Text txtLevel = null;
     [SerializeField] Text txtStr = null;
-    [SerializeField] Text txtDex = null;
+    [SerializeField] Text txtInt = null;
     [SerializeField] Text txtDef = null;
     [SerializeField] Text txtHp = null;
     [SerializeField] Text txtMp = null;
@@ -17,11 +17,11 @@ public class MyInfoMenu : MonoBehaviour
 
     bool isOpen = false;
 
-    // PlayerStatus thePlayerStatus;
+    PlayerStatus thePlayerStatus;
 
     void Awake()
     {
-        //thePlayerStatus = FindObjectOfType<PlayerStatus>();
+        thePlayerStatus = FindObjectOfType<PlayerStatus>();
     }
 
     public void OnTouchMenu()
@@ -33,6 +33,16 @@ public class MyInfoMenu : MonoBehaviour
     }
     
     void ShowMenu() {
+
+        txtMyName.text = "Temp";
+        txtLevel.text = thePlayerStatus.GetLevel().ToString();
+        txtStr.text = thePlayerStatus.GetStr().ToString();
+        txtInt.text = thePlayerStatus.GetInt().ToString();
+        txtDef.text = thePlayerStatus.GetDef().ToString();
+        txtHp.text = thePlayerStatus.GetMaxHp().ToString();
+        txtMp.text = thePlayerStatus.GetMaxMp().ToString();
+        imgUser.sprite = null;
+
         goMyInfoMenu.SetActive(true);
     }
 

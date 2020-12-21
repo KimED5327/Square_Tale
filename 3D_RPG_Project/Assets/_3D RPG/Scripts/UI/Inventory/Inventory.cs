@@ -259,6 +259,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    // d
     bool TryToPushSameSlot(Item item, int count)
     {
         for (int i = 0; i < _slots.Length; i++)

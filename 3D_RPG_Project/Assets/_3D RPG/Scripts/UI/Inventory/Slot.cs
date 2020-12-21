@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour, IPointerDownHandler
+public class Slot : MonoBehaviour, IPointerClickHandler
 {
 
     [SerializeField] bool isEquipSlot = false;
@@ -88,7 +88,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler
     public Item GetSlotItem() { return _item; }                                 // 슬롯 아이템 리턴
 
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
         if (hasItem)
             SlotToolTip.instance.ShowToolTip(_item, transform.localPosition, isEquipSlot);

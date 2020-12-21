@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
+    int gold = 0; 
+    int ruby = 0;
+
     [Header("OpenWindown")]
     [SerializeField] GameObject _goInventory = null;
     [SerializeField] GameObject _goEquip = null;
@@ -26,41 +29,20 @@ public class Inventory : MonoBehaviour
     // 테스트용 인벤 채우기
     void Start()
     {
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 무기"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 갑옷"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 잡화"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 무기"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 갑옷"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 잡화"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 무기"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 갑옷"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 잡화"));
+        TryToPushInventory(ItemDatabase.instance.GetItem(0));
+        TryToPushInventory(ItemDatabase.instance.GetItem(1));
+        TryToPushInventory(ItemDatabase.instance.GetItem(2));
+        TryToPushInventory(ItemDatabase.instance.GetItem(0));
+        TryToPushInventory(ItemDatabase.instance.GetItem(1));
+        TryToPushInventory(ItemDatabase.instance.GetItem(2));
+        TryToPushInventory(ItemDatabase.instance.GetItem(0));
+        TryToPushInventory(ItemDatabase.instance.GetItem(1));
+        TryToPushInventory(ItemDatabase.instance.GetItem(2));
 
         // 기본값 - 무기 우선 정렬 
         OnTouchTab(0);
     }
     #endregion
-
-    public int Gold { 
-        get { 
-            return Gold; 
-        } 
-        set { 
-            Gold += value; 
-            if (Gold < 0) Gold = 0; 
-        } 
-    }
-    public int Ruby {
-        get
-        {
-            return Ruby;
-        }
-        set
-        {
-            Ruby += value;
-            if (Ruby < 0) Ruby = 0;
-        }
-    }
 
     private void Awake()
     {
@@ -87,6 +69,7 @@ public class Inventory : MonoBehaviour
     // 열기
     void ShowInven()
     {
+        GameHudMenu.instance.HideMenu();
         _goInventory.SetActive(true);
         _goEquip.SetActive(true);
     }
@@ -94,6 +77,7 @@ public class Inventory : MonoBehaviour
     // 닫기
     void HideInven()
     {
+        GameHudMenu.instance.ShowMenu();
         _goInventory.SetActive(false);
         _goEquip.SetActive(false);
     }
@@ -243,7 +227,10 @@ public class Inventory : MonoBehaviour
         if (_slots[index].IsEmptySlot())
             Debug.Log("빈 슬롯입니다.");
         else
+        {
             _slots[index].ClearSlot();
+            ResortItem();
+        }
     }
 
     // 해당 아이템 슬롯 제거
@@ -254,6 +241,7 @@ public class Inventory : MonoBehaviour
             if (_slots[i].IsSameItem(item))
             {
                 _slots[i].ClearSlot();
+                ResortItem();
                 return;
             }
         }
@@ -298,4 +286,12 @@ public class Inventory : MonoBehaviour
 
     public Item GetSlotItem(int index) { return _slots[index].GetSlotItem(); }
     public Vector3 GetSlotLocalPos(int index) { return _slots[index].transform.localPosition; }
+
+
+    public int GetGold() { return gold; }
+    public int GetRuby() { return ruby; }
+    public void SetGold(int num) { gold = num; if (gold < 0) gold = 0; }
+    public void SetRuby(int num) { ruby = num; if (ruby < 0) ruby = 0; }
+
+
 }

@@ -38,8 +38,8 @@ public class SlotToolTip : MonoBehaviour
 
     void Awake()
     {
-        theInven = GetComponent<Inventory>();
-        theEquip = GetComponent<Equipment>();
+        theInven = GetComponentInParent<Inventory>();
+        theEquip = GetComponentInParent<Equipment>();
         instance = this;
     }
 

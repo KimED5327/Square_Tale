@@ -101,6 +101,8 @@ public class Inventory : MonoBehaviour
     // 정렬 탭 터치
     public void OnTouchTab(int index)
     {
+        SlotToolTip.instance.HideToolTip();
+
         _currentTab = index;
       
         for(int i = 0; i < imgTabs.Length; i++)
@@ -111,6 +113,7 @@ public class Inventory : MonoBehaviour
 
     public void ResortItem() => SortItem((ItemType)_currentTab);
 
+    // 재정렬
     public void SerializeItem()
     {
         // 슬롯 순회
@@ -211,7 +214,7 @@ public class Inventory : MonoBehaviour
                     return true;
                 else
                 {
-                    if (TryToPushAnySlot(item, count))
+                    if (TryToPushEmptySlot(item, count))
                         return true;
                 }
 
@@ -221,7 +224,7 @@ public class Inventory : MonoBehaviour
             {
                 count = 1;
                 // 빈 인벤토리 슬롯에 푸시.
-                if (TryToPushAnySlot(item, count))
+                if (TryToPushEmptySlot(item, count))
                     return true;
             }
         }
@@ -256,6 +259,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    // d
     bool TryToPushSameSlot(Item item, int count)
     {
         for (int i = 0; i < _slots.Length; i++)
@@ -269,7 +273,7 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    bool TryToPushAnySlot(Item item, int count)
+    bool TryToPushEmptySlot(Item item, int count)
     {
         for (int i = 0; i < _slots.Length; i++)
         {
@@ -287,9 +291,7 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < _slots.Length; i++)
         {
             if (_slots[i].IsEmptySlot())
-            {
                 return true;
-            }
         }
         return false;
     }

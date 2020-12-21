@@ -2724,15 +2724,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3069c6168fed53c4cacf3c4bffeeb5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 
+  enemyName: 
   hp: 0
   attDamage: 0
   speed: 10
   attTime: 0
   timer: 1
-  findRange: 10
-  moveRange: 20
-  attackRange: 2
+  maxFindRange: 0
+  maxMoveRange: 0
+  maxAttackRange: 0
+  isLongMonster: 0
+  maxLongAttackRange: 0
 --- !u!136 &604822353
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -13992,7 +13994,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7876027639282934381}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -7}
+  m_LocalPosition: {x: -1.6, y: 1, z: -9.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3882974269636329817}

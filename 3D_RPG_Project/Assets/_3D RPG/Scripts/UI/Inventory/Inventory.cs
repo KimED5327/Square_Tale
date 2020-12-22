@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
+    int gold = 0; 
+    int ruby = 0;
+
     [Header("OpenWindown")]
     [SerializeField] GameObject _goInventory = null;
     [SerializeField] GameObject _goEquip = null;
@@ -17,53 +20,42 @@ public class Inventory : MonoBehaviour
     Slot[] _slots = null;
 
     [Header("Tab")]
+    [SerializeField] GameObject _goInvenButtons = null;
     [SerializeField] Image[] imgTabs = null;
     [SerializeField] Color colorHighlight = new Color();
     [SerializeField] Color colorDark = new Color();
     int _currentTab = 0;
 
+    [Header("ShopOffset")]
+    [SerializeField] float offsetX = 50;
+    Vector3 originPos;
+    Vector3 shopPos;
+
+
     #region Test
     // 테스트용 인벤 채우기
     void Start()
     {
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 무기"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 갑옷"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 잡화"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 무기"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 갑옷"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 잡화"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 무기"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 갑옷"));
-        TryToPushInventory(ItemDatabase.instance.GetItem("테스트용 잡화"));
+        TryToPushInventory(ItemDatabase.instance.GetItem(0));
+        TryToPushInventory(ItemDatabase.instance.GetItem(1));
+        TryToPushInventory(ItemDatabase.instance.GetItem(2));
+        TryToPushInventory(ItemDatabase.instance.GetItem(0));
+        TryToPushInventory(ItemDatabase.instance.GetItem(1));
+        TryToPushInventory(ItemDatabase.instance.GetItem(2));
+        TryToPushInventory(ItemDatabase.instance.GetItem(0));
+        TryToPushInventory(ItemDatabase.instance.GetItem(1));
+        TryToPushInventory(ItemDatabase.instance.GetItem(2));
 
         // 기본값 - 무기 우선 정렬 
         OnTouchTab(0);
     }
     #endregion
 
-    public int Gold { 
-        get { 
-            return Gold; 
-        } 
-        set { 
-            Gold += value; 
-            if (Gold < 0) Gold = 0; 
-        } 
-    }
-    public int Ruby {
-        get
-        {
-            return Ruby;
-        }
-        set
-        {
-            Ruby += value;
-            if (Ruby < 0) Ruby = 0;
-        }
-    }
-
     private void Awake()
     {
+        originPos = transform.localPosition;
+        shopPos = new Vector3(offsetX, originPos.y, 0f);
+
         // 프리팹 슬롯 생성.
         _slots = new Slot[_slotCount];
         for (int i = 0; i < _slotCount; i++)
@@ -85,15 +77,22 @@ public class Inventory : MonoBehaviour
     }
 
     // 열기
-    void ShowInven()
+    public void ShowInven(bool isShopOpen = false)
     {
+        GameHudMenu.instance.HideMenu(); // 기본 HUD 가림
+
+        // 상점에서 연 경우, 위치 이동 + 탭 숨김.
+        transform.localPosition = isShopOpen ? shopPos : originPos;
+        _goInvenButtons.SetActive(!isShopOpen);
+        _goEquip.SetActive(!isShopOpen);
+
         _goInventory.SetActive(true);
-        _goEquip.SetActive(true);
     }
 
     // 닫기
     void HideInven()
     {
+        GameHudMenu.instance.ShowMenu();
         _goInventory.SetActive(false);
         _goEquip.SetActive(false);
     }
@@ -243,7 +242,10 @@ public class Inventory : MonoBehaviour
         if (_slots[index].IsEmptySlot())
             Debug.Log("빈 슬롯입니다.");
         else
+        {
             _slots[index].ClearSlot();
+            ResortItem();
+        }
     }
 
     // 해당 아이템 슬롯 제거
@@ -254,6 +256,7 @@ public class Inventory : MonoBehaviour
             if (_slots[i].IsSameItem(item))
             {
                 _slots[i].ClearSlot();
+                ResortItem();
                 return;
             }
         }
@@ -298,4 +301,12 @@ public class Inventory : MonoBehaviour
 
     public Item GetSlotItem(int index) { return _slots[index].GetSlotItem(); }
     public Vector3 GetSlotLocalPos(int index) { return _slots[index].transform.localPosition; }
+
+
+    public int GetGold() { return gold; }
+    public int GetRuby() { return ruby; }
+    public void SetGold(int num) { gold = num; if (gold < 0) gold = 0; }
+    public void SetRuby(int num) { ruby = num; if (ruby < 0) ruby = 0; }
+
+
 }

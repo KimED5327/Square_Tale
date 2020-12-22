@@ -32,33 +32,35 @@ public class JsonLoader : MonoBehaviour
         {
             Item item = new Item();
 
-            string name = jData[i][0].ToString();
-            string type = jData[i][1].ToString(); // 아이템 분류 기획이 나오면 수정
-            string desc = jData[i][2].ToString();
-            int price = int.Parse(jData[i][3].ToString());
+            int id = int.Parse(jData[i][0].ToString());
+            string name = jData[i][1].ToString();
+            string type = jData[i][2].ToString(); // 아이템 분류 기획이 나오면 수정
+            string desc = jData[i][3].ToString();
+            int price = int.Parse(jData[i][4].ToString());
 
             // 옵션 필드가 하나라도 있다면
             List<Option> optionList = new List<Option>();
             if (jData[i][4].Count > 0)
             {
                 // 옵션 추가
-                for (int k = 0; k < jData[i][4].Count; k++)
+                for (int k = 0; k < jData[i][5].Count; k++)
                 {
                     Option option = new Option
                     {
-                        name = jData[i][4][k].ToString(),
-                        num = float.Parse(jData[i][5][k].ToString())
+                        name = jData[i][6][k].ToString(),
+                        num = float.Parse(jData[i][7][k].ToString())
                     };
                     optionList.Add(option);
                 }
             }
 
+            item.id = id;
             item.name = name;
             item.desc = desc;
             item.price = price;
             item.options = optionList;
             item.type = ItemType.WEAPON;
-            ItemDatabase.instance.AddItem(item, name);
+            ItemDatabase.instance.AddItem(item, id);
         }
     }
 

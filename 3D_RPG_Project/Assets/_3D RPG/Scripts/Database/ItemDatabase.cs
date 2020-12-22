@@ -7,7 +7,7 @@ public class ItemDatabase : MonoBehaviour
     // 테스트 목적. 이후 JSON -> 테이블 로더를 통해 재구축.
     // Dictionary로 변경 예정.
     [SerializeField] Item[] items = null; // 임시 테이블
-    Dictionary<string, Item> itemDB = new Dictionary<string, Item>(); // 실 활용 테이블
+    Dictionary<int, Item> itemDB = new Dictionary<int, Item>(); // 실 활용 테이블
 
 
     public static ItemDatabase instance;
@@ -18,17 +18,17 @@ public class ItemDatabase : MonoBehaviour
         instance = this;
     }
 
-    public void AddItem(Item item, string itemName)
+    public void AddItem(Item item, int itemId)
     {
-        itemDB.Add(itemName, item);
+        itemDB.Add(itemId, item);
     }
 
     // 임시
-    public Item GetItem(string itemName)
+    public Item GetItem(int itemId)
     {
         for(int i = 0; i < items.Length; i++)
         {
-            if(items[i].name == itemName)
+            if(items[i].id == itemId)
             {
                 return items[i];
             }

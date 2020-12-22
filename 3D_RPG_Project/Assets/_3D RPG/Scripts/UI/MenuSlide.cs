@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MenuSlide : MonoBehaviour
 {
+
     const string SHOW = "Show";
     const string HIDE = "Hide";
-
 
     [SerializeField] GameObject goMenuPanel = null;
     Animator myAnim;
@@ -15,7 +15,6 @@ public class MenuSlide : MonoBehaviour
     bool canTouch = true;
 
     void Awake() => myAnim = GetComponent<Animator>();
-
 
     public void OnTouchMenu()
     {

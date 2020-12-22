@@ -13,8 +13,9 @@ public class Shop : MonoBehaviour
 {
     [Header("Window")]
     [SerializeField] GameObject _goShopPanel = null;
+    [SerializeField] GameObject _goInvenPanel = null;
 
-    [Header("Slot")]
+    [Header("ShopSlot")]
     [SerializeField] GameObject _goSlotPrefab = null;
     [SerializeField] Transform _tfSlotParent = null;
     [SerializeField] int _slotMaxCount = 12;
@@ -31,10 +32,12 @@ public class Shop : MonoBehaviour
     bool _isShow = false;
 
     ZoomNPC _npc = null;
-
+    Inventory theInven;
 
     void Awake()
     {
+        theInven = FindObjectOfType<Inventory>();
+
         _slots = new ShopSlot[_slotMaxCount];
         for(int i = 0; i < _slotMaxCount; i++)
         {
@@ -98,4 +101,18 @@ public class Shop : MonoBehaviour
             _slots[i].SetSlot(ItemDatabase.instance.GetItem(_shopItemId[_tabNum].item[i]));
         }
     }
+
+    public void BtnSellWindow()
+    {
+        _goShopPanel.SetActive(false);
+        _goInvenPanel.SetActive(true);
+    }
+
+    public void BtnBuyWindow()
+    {
+        _goShopPanel.SetActive(true);
+        _goInvenPanel.SetActive(false);
+    }
+
+
 }

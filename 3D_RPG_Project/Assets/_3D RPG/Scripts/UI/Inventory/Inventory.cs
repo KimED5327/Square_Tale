@@ -25,6 +25,12 @@ public class Inventory : MonoBehaviour
     [SerializeField] Color colorDark = new Color();
     int _currentTab = 0;
 
+    [Header("Offset")]
+    [SerializeField] Transform _tfShopPos = null;
+    [SerializeField] Transform _tfInvenPos = null;
+    [SerializeField] GameObject _goInvenButton = null;
+
+
     #region Test
     // 테스트용 인벤 채우기
     void Start()
@@ -67,8 +73,12 @@ public class Inventory : MonoBehaviour
     }
 
     // 열기
-    void ShowInven()
+    public void ShowInven(bool isShopOpen = false)
     {
+        if (isShopOpen)
+        {
+            //
+        }
         GameHudMenu.instance.HideMenu();
         _goInventory.SetActive(true);
         _goEquip.SetActive(true);

@@ -9,6 +9,7 @@ public class ShopToolTip : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] GameObject _goToolTip = null;
+    [SerializeField] Text _txtTitle = null;
     [SerializeField] Text _txtName = null;
     [SerializeField] Image _imgIcon = null;
     [SerializeField] Text _txtOption = null;
@@ -30,10 +31,12 @@ public class ShopToolTip : MonoBehaviour
     bool _isBuy = false;
 
     //Component
-    Inventory theInven;
+    Inventory _inven;
+    Shop _shop;
 
     void Awake() {
-        theInven = FindObjectOfType<Inventory>();
+        _inven = FindObjectOfType<Inventory>();
+        _shop = FindObjectOfType<Shop>();
         instance = this; 
     }
 
@@ -47,7 +50,10 @@ public class ShopToolTip : MonoBehaviour
         _txtName.text = item.name;
         _txtDesc.text = item.desc;
         _price = item.price;
+
         _txtPrice.text = string.Format("{0:#,##0}", _price);
+        _txtPrice.color = (_price > _inven.GetGold()) ? Color.red : Color.yellow;
+        
         _txtOption.text = "";
         if (item.options.Count > 0)
         {
@@ -55,6 +61,7 @@ public class ShopToolTip : MonoBehaviour
                 _txtOption.text += item.options[i].name + " " + item.options[i].num + " ";
         }
 
+        _txtTitle.text = (_isBuy) ? "상품 구매" : "상품 판매";
         _txtButton.text = (_isBuy) ? "구매" : "판매";
         _txtRequestion.text = (_isBuy) ? _buyMessage
                                       : _sellMessage;
@@ -74,7 +81,7 @@ public class ShopToolTip : MonoBehaviour
     {
         if (_isBuy)
         {
-            if (theInven.GetGold() >= _price)
+            if (_inven.GetGold() >= _price)
                 _goRequestionUI.SetActive(true);
             else
                 Debug.Log("골드가 부족합니다.");
@@ -100,16 +107,18 @@ public class ShopToolTip : MonoBehaviour
     // 판매 실행
     void Sell()
     {
-        theInven.SetGold(theInven.GetGold() + _price);
-        theInven.RemoveItem(_touchItem);
+        _inven.SetGold(_inven.GetGold() + _price);
+        _inven.RemoveItem(_touchItem);
         HideToolTip();
+        _shop.ReSetUI();
     }
     
     // 구매 실행
     void Buy()
     {
-        theInven.SetGold(theInven.GetGold() - _price);
-        theInven.TryToPushInventory(_touchItem);
+        _inven.SetGold(_inven.GetGold() - _price);
+        _inven.TryToPushInventory(_touchItem);
         HideToolTip();
+        _shop.ReSetUI();
     }
 }

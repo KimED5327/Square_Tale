@@ -1269,6 +1269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _goToolTip: {fileID: 1912524714}
+  _txtTitle: {fileID: 173357505}
   _txtName: {fileID: 1018186041}
   _imgIcon: {fileID: 2073784768}
   _txtOption: {fileID: 668503544}
@@ -6500,8 +6501,8 @@ MonoBehaviour:
   - {fileID: 1881336979}
   offsetRightX: 360
   offsetLeftX: -360
-  weaponOffset: {x: 630, y: 610, z: 0}
-  armorOffset: {x: 630, y: 527, z: 0}
+  weaponOffset: {x: 660, y: 645, z: 0}
+  armorOffset: {x: 660, y: 537, z: 0}
   offsetY: -137
   mirrorLinePosX: 1300
 --- !u!1 &838066656
@@ -11399,6 +11400,7 @@ MonoBehaviour:
   - {fileID: 1532634960}
   - {fileID: 1314264962}
   - {fileID: 1763177788}
+  _txtGold: {fileID: 896573651}
 --- !u!1 &1326289994
 GameObject:
   m_ObjectHideFlags: 0
@@ -12309,6 +12311,7 @@ MonoBehaviour:
   - {fileID: 1945117530}
   - {fileID: 1044467332}
   - {fileID: 426811214}
+  _txtGold: {fileID: 2085997491}
 --- !u!1 &1430408363
 GameObject:
   m_ObjectHideFlags: 0
@@ -16281,7 +16284,7 @@ GameObject:
   - component: {fileID: 2085997492}
   - component: {fileID: 2085997491}
   m_Layer: 5
-  m_Name: Text
+  m_Name: TxT_Gold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

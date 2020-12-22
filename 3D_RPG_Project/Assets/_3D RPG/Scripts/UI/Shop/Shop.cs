@@ -27,6 +27,9 @@ public class Shop : MonoBehaviour
     [SerializeField] ShopItem[] _shopItemId = null;
     [SerializeField] Image[] _tabButton = null;
 
+    [Header("UI")]
+    [SerializeField] Text _txtGold = null;
+
     int _tabNum = 0;
     public static bool _isShow = false;
     bool _isBuy = true;
@@ -65,6 +68,8 @@ public class Shop : MonoBehaviour
         GameHudMenu.instance.HideMenu();
         _goShopPanel.SetActive(true);
         TabItemPush();
+
+        ReSetUI();
     }
 
     public void HideMenu()
@@ -134,5 +139,11 @@ public class Shop : MonoBehaviour
         _isBuy = true;
         _inven.HideInven(false);
         _goShopBuyUI.SetActive(_isBuy);
+    }
+
+
+    public void ReSetUI()
+    {
+        _txtGold.text = string.Format("{0:#,##0}", _inven.GetGold());
     }
 }

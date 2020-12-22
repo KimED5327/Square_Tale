@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    int gold = 0; 
+    int gold = 1000;
     int ruby = 0;
 
     [Header("OpenWindown")]

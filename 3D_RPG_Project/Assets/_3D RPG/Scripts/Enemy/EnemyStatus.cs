@@ -21,6 +21,7 @@ public class EnemyStatus : Status
                 Debug.Log("몬스터 사망했으니, 시체를 터치하여 아이템 획득을 시도하세요.");
                 _isDead = true;
                 DesideDropItem();
+                Debug.Log("이번에 드롭된 아이템 수는 = " + _dropItemList.Count);
             }
         }
 

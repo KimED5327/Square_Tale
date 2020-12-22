@@ -72,15 +72,21 @@ public class ShopToolTip : MonoBehaviour
     // 구매 or 판매 의사 재질의
     public void BtnOK()
     {
-        if (theInven.GetGold() >= _price)
-            _goRequestionUI.SetActive(true);
+        if (_isBuy)
+        {
+            if (theInven.GetGold() >= _price)
+                _goRequestionUI.SetActive(true);
+            else
+                Debug.Log("골드가 부족합니다.");
+        }
         else
-            Debug.Log("골드가 부족합니다.");
+            _goRequestionUI.SetActive(true);
     }
 
     // 승인
     public void BtnConfirm()
     {
+        _goRequestionUI.SetActive(false);
         if (_isBuy) Buy();
         else Sell();
     }
@@ -96,6 +102,7 @@ public class ShopToolTip : MonoBehaviour
     {
         theInven.SetGold(theInven.GetGold() + _price);
         theInven.RemoveItem(_touchItem);
+        HideToolTip();
     }
     
     // 구매 실행
@@ -103,5 +110,6 @@ public class ShopToolTip : MonoBehaviour
     {
         theInven.SetGold(theInven.GetGold() - _price);
         theInven.TryToPushInventory(_touchItem);
+        HideToolTip();
     }
 }

@@ -19,7 +19,8 @@ public class SlotToolTip : MonoBehaviour
     [Header("Button")]
     [SerializeField] Image[] imgBtn = null;
     private readonly int EQUIP = 0, UNEQUIP = 1;
-
+    bool _canEquip = false;
+    bool _canUnEquip = false;
 
     [Header("Offset")]
     [SerializeField] float offsetRightX = 210f;
@@ -69,7 +70,7 @@ public class SlotToolTip : MonoBehaviour
         else
             pos = (item.type == ItemType.WEAPON) ? weaponOffset : armorOffset;
         
-        goToolTip.transform.localPosition = pos;
+        goToolTip.transform.position = pos;
         goToolTip.SetActive(true);
 
         // 장비템이면 장착 해제 버튼 출력
@@ -77,19 +78,30 @@ public class SlotToolTip : MonoBehaviour
         {
             goEquipButton.SetActive(true);
 
+            // 장착 가능
             if (isEquipSlot)
             {
                 imgBtn[EQUIP].color = Color.gray;
                 imgBtn[UNEQUIP].color = Color.white;
+                _canUnEquip = true;
+                _canEquip = false;
             }
+            // 탈착 가능
             else
             {
                 imgBtn[EQUIP].color = Color.white;
                 imgBtn[UNEQUIP].color = Color.gray;
+                _canUnEquip = false;
+                _canEquip = true;
             }
         }
         else
+        {
+            _canUnEquip = false;
+            _canEquip = false;
+
             goEquipButton.SetActive(false);
+        }
     }
 
     // 툴팁 종료
@@ -102,25 +114,33 @@ public class SlotToolTip : MonoBehaviour
     // 장착
     public void EquipItem()
     {
-        theInven.RemoveItem(_touchItem);
+        if (_canEquip)
+        {
+            theInven.RemoveItem(_touchItem);
 
-        Item returnEquipItem = theEquip.TryToEquipSlot(_touchItem);
-        // 기존 장착된 것이 있다면 교체
-        if (returnEquipItem != null)
-            theInven.TryToPushInventory(returnEquipItem);
+            Item returnEquipItem = theEquip.TryToEquipSlot(_touchItem);
+            // 기존 장착된 것이 있다면 교체
+            if (returnEquipItem != null)
+                theInven.TryToPushInventory(returnEquipItem);
 
-        theInven.SerializeItem();
-        HideToolTip();
+            theInven.ResortItem();
+            HideToolTip();
+        }
+
     }
 
     // 장착 해제
     public void UnEquipItem()
     {
-        Item returnEquipItem = theEquip.TakeOffEquipSlot(_touchItem);
-        if (returnEquipItem != null)
-            theInven.TryToPushInventory(returnEquipItem);
+        if (_canUnEquip)
+        {
+            Item returnEquipItem = theEquip.TakeOffEquipSlot(_touchItem);
+            if (returnEquipItem != null)
+                theInven.TryToPushInventory(returnEquipItem);
 
-        theInven.ResortItem();
-        HideToolTip();
+            theInven.ResortItem();
+            HideToolTip();
+        }
+
     }
 }

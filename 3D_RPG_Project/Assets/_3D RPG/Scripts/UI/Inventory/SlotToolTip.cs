@@ -12,7 +12,7 @@ public class SlotToolTip : MonoBehaviour
     [SerializeField] GameObject goEquipButton = null;
     [SerializeField] Text txtName = null;
     [SerializeField] Text txtType = null;
-    [SerializeField] Text txtLimitLevel = null;
+    [SerializeField] Image imgIcon = null;
     [SerializeField] Text txtOption = null;
     [SerializeField] Text txtDesc = null;
 
@@ -52,8 +52,11 @@ public class SlotToolTip : MonoBehaviour
         // 툴팁 내용 세팅
         txtName.text = item.name;
         txtDesc.text = item.desc;
-        txtType.text = "장비류 / 검 류"; // 임시 테스트용
-        txtLimitLevel.text = item.levelLimit + "Lv";
+        txtType.text = (item.type == ItemType.WEAPON) ? "무기 류"
+                     : (item.type == ItemType.ARMOR) ? "방어구 류"
+                     : (item.type == ItemType.ETC) ? "재화 류"
+                     : "기타 류";
+        imgIcon.sprite = item.sprite;
         txtOption.text = "";
         if (item.options.Count > 0)
         {

@@ -26,8 +26,6 @@ public class Shop : MonoBehaviour
     [Header("Tab")]
     [SerializeField] ShopItem[] _shopItemId = null;
     [SerializeField] Image[] _tabButton = null;
-    Color whiteColor = Color.white;
-    Color grayColor = Color.gray;
 
     int _tabNum = 0;
     public static bool _isShow = false;
@@ -90,10 +88,9 @@ public class Shop : MonoBehaviour
         _tabNum = num;
 
         for (int i = 0; i < _tabButton.Length; i++)
-        {
-            _tabButton[i].color = grayColor;
-        }
-        _tabButton[_tabNum].color = whiteColor;
+            _tabButton[i].color = Color.gray;
+        
+        _tabButton[_tabNum].color = Color.white;
 
         // 구매 상태면 상품 아이템 재정렬
         if (_isBuy)

@@ -12,6 +12,8 @@ public class Inventory : MonoBehaviour
     [SerializeField] GameObject _goInventory = null;
     [SerializeField] GameObject _goEquip = null;
     [SerializeField] GameObject _goBackButton = null;
+    [SerializeField] GameObject _goBackground = null;
+
 
     bool _isOpen = false;
 
@@ -90,7 +92,7 @@ public class Inventory : MonoBehaviour
         _goInvenButtons.SetActive(!isShopOpen);
         _goEquip.SetActive(!isShopOpen);
         _goBackButton.SetActive(!isShopOpen);
-        
+        _goBackground.SetActive(!isShopOpen);
 
         _goInventory.SetActive(true);
     }

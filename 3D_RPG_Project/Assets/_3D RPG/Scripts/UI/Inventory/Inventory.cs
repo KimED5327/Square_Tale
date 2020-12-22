@@ -20,10 +20,17 @@ public class Inventory : MonoBehaviour
     Slot[] _slots = null;
 
     [Header("Tab")]
+    [SerializeField] GameObject _goInvenButtons = null;
     [SerializeField] Image[] imgTabs = null;
     [SerializeField] Color colorHighlight = new Color();
     [SerializeField] Color colorDark = new Color();
     int _currentTab = 0;
+
+    [Header("ShopOffset")]
+    [SerializeField] float offsetX = 50;
+    Vector3 originPos;
+    Vector3 shopPos;
+
 
     #region Test
     // 테스트용 인벤 채우기
@@ -46,6 +53,9 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
+        originPos = transform.localPosition;
+        shopPos = new Vector3(offsetX, originPos.y, 0f);
+
         // 프리팹 슬롯 생성.
         _slots = new Slot[_slotCount];
         for (int i = 0; i < _slotCount; i++)
@@ -67,11 +77,16 @@ public class Inventory : MonoBehaviour
     }
 
     // 열기
-    void ShowInven()
+    public void ShowInven(bool isShopOpen = false)
     {
-        GameHudMenu.instance.HideMenu();
+        GameHudMenu.instance.HideMenu(); // 기본 HUD 가림
+
+        // 상점에서 연 경우, 위치 이동 + 탭 숨김.
+        transform.localPosition = isShopOpen ? shopPos : originPos;
+        _goInvenButtons.SetActive(!isShopOpen);
+        _goEquip.SetActive(!isShopOpen);
+
         _goInventory.SetActive(true);
-        _goEquip.SetActive(true);
     }
 
     // 닫기

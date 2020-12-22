@@ -1,25 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    public string name;                         //몬스터 이름
+    public string enemyName;                    //몬스터 이름
     public int hp;                              //몬스터 hp
     public int attDamage;                       //몬스터 대미지
     public int speed;                           //몬스터 속도
 
+    GameObject rangedWeapon;                    //몬스터 원거리 구체
     public float attTime;                       //몬스터 공격속도
     public float timer;                         //공격속도 조절값
 
     Vector3 startPoint;                         //최초 생성 값
     Transform player;                           //공격 목표 (플레이어)
     
-    CharacterController characterController;    //몬스터 컨트롤러
+    NavMeshAgent agent;                         //AI컨트롤러
 
-    public int findRange;                       //몬스터 인식 범위
-    public int moveRange;                       //몬스터 추적 범위
-    public int attackRange;                     //몬스터 공격 범위 
+
+    public int maxFindRange;                    //몬스터 인식 범위
+    public int maxMoveRange;                    //몬스터 추적 범위
+    public int maxAttackRange;                  //몬스터 근접 공격 범위
+    public bool isLongMonster;                  //원거리 몬스터인가?
+    public int maxLongAttackRange;              //몬스터 원거리 공격 범위
+
+    Animator enemyAnimator;                     //몬스터 애니메이터
+    
 
     public enum State
     {
@@ -27,12 +35,24 @@ public class Enemy : MonoBehaviour
     }
     State enemyState;
 
-    private void Start()
+    bool IsPlaying(string stateName)
+    {
+        if (enemyAnimator.GetCurrentAnimatorStateInfo(0).IsName(stateName) &&
+                enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+            return true;
+        else
+            return false;
+    }
+
+
+private void Start()
     {
         enemyState = State.Idle;
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        characterController = GetComponent<CharacterController>();
+        enemyAnimator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
         startPoint = transform.position;
+
         
     }
 
@@ -65,7 +85,7 @@ public class Enemy : MonoBehaviour
     //기본 상태
     private void UpdateIdle()
     {
-        if(Vector3.Distance(transform.position, player.position) < findRange)
+        if(Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
         {
             enemyState = State.Move;
             Debug.Log("Move상태 전환");
@@ -74,34 +94,34 @@ public class Enemy : MonoBehaviour
     //무브 상태
     private void UpdateMove()
     {
-        if (Vector3.Distance(transform.position, startPoint) > moveRange)
+        if (Vector3.SqrMagnitude(transform.position - startPoint) > Mathf.Pow(maxMoveRange,2))
         {
             enemyState = State.Return;
             Debug.Log("Return상태 전환");
         }
 
-        else if(Vector3.Distance(transform.position, player.position) > attackRange)
+        else if(Vector3.SqrMagnitude(transform.position - player.position) > Mathf.Pow(maxAttackRange,2))
         {
-            Vector3 dir = (player.position - transform.position).normalized;
-
-            transform.rotation = Quaternion.Lerp(transform.rotation
-                , Quaternion.LookRotation(dir), 10 * Time.deltaTime);
-
-            characterController.SimpleMove(dir * speed);
+            enemyAnimator.SetBool("Move", true);
+            agent.SetDestination(player.transform.position);
         }
 
         else
         {
         
             enemyState = State.Attack;
+            enemyAnimator.SetBool("Attack", true);
+          
             Debug.Log("attack상태 전환");
         }
     }
     //공격 상태
     private void UpdateAttack()
     {
-        if (Vector3.Distance(transform.position, player.position) < attackRange)
+        if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange,2))
         {
+
+            agent.ResetPath();
             timer += Time.deltaTime;
             if (timer > attTime)
             {
@@ -113,6 +133,7 @@ public class Enemy : MonoBehaviour
 
         else
         {
+            enemyAnimator.SetBool("Attack", false);
             enemyState = State.Move;
             Debug.Log("move상태 전환");
 
@@ -129,7 +150,6 @@ public class Enemy : MonoBehaviour
 
     IEnumerator DieProc()
     {
-        characterController.enabled = false;
 
         yield return new WaitForSeconds(2.0f);
 
@@ -138,14 +158,14 @@ public class Enemy : MonoBehaviour
     //복귀 상태
     private void UpdateReturn()
     {
-        if(Vector3.Distance(transform.position, startPoint) > 0.1)
+        if(Vector3.SqrMagnitude(transform.position - startPoint) > 0.01)
         {
-            Vector3 dir = (startPoint - transform.position).normalized;
-
-            characterController.SimpleMove(dir * speed);
+            agent.SetDestination(startPoint);
         }
         else
         {
+            enemyAnimator.SetBool("Move", false);
+            agent.ResetPath();
             transform.position = startPoint;
             enemyState = State.Idle;
             Debug.Log("Idle상태 전환");
@@ -183,14 +203,25 @@ public class Enemy : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //공격가능 범위
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        //원거리 공격 가능 범위
+        if(isLongMonster)
+        {
+          Gizmos.color = Color.yellow;
+          Gizmos.DrawWireSphere(transform.position, maxLongAttackRange);
+        }
+
+        //근접 공격 가능 범위
+        if(!isLongMonster)
+        {
+          Gizmos.color = Color.red;
+          Gizmos.DrawWireSphere(transform.position, maxAttackRange);
+        }
+
         //인식 범위
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, findRange);
+        Gizmos.DrawWireSphere(transform.position, maxFindRange);
         //최대 추적 범위
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(startPoint, moveRange);
+        Gizmos.DrawWireSphere(startPoint, maxMoveRange);
     }
 }

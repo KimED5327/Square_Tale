@@ -5,12 +5,16 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    int gold = 0; 
+    int gold = 1000;
     int ruby = 0;
 
     [Header("OpenWindown")]
     [SerializeField] GameObject _goInventory = null;
     [SerializeField] GameObject _goEquip = null;
+    [SerializeField] GameObject _goBackButton = null;
+    [SerializeField] GameObject _goBackground = null;
+
+
     bool _isOpen = false;
 
     [Header("Slots")]
@@ -20,10 +24,19 @@ public class Inventory : MonoBehaviour
     Slot[] _slots = null;
 
     [Header("Tab")]
+    [SerializeField] GameObject _goInvenButtons = null;
     [SerializeField] Image[] imgTabs = null;
     [SerializeField] Color colorHighlight = new Color();
     [SerializeField] Color colorDark = new Color();
     int _currentTab = 0;
+
+
+    [Header("ShopOffset")]
+    [SerializeField] Transform _tfOffset = null;
+    [SerializeField] float _offsetX = 100;
+    Vector3 originPos;
+    Vector3 shopPos;
+
 
     #region Test
     // 테스트용 인벤 채우기
@@ -46,6 +59,9 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
+        originPos = _goInventory.transform.localPosition;
+        shopPos = _tfOffset.localPosition + new Vector3(_offsetX, 0, 0); 
+
         // 프리팹 슬롯 생성.
         _slots = new Slot[_slotCount];
         for (int i = 0; i < _slotCount; i++)
@@ -67,17 +83,26 @@ public class Inventory : MonoBehaviour
     }
 
     // 열기
-    void ShowInven()
+    public void ShowInven(bool isShopOpen = false)
     {
-        GameHudMenu.instance.HideMenu();
+        GameHudMenu.instance.HideMenu(); // 기본 HUD 가림
+
+        // 상점에서 연 경우, 위치 이동 + 탭 숨김.
+        _goInventory.transform.localPosition = isShopOpen ? shopPos : originPos;
+        _goInvenButtons.SetActive(!isShopOpen);
+        _goEquip.SetActive(!isShopOpen);
+        _goBackButton.SetActive(!isShopOpen);
+        _goBackground.SetActive(!isShopOpen);
+
         _goInventory.SetActive(true);
-        _goEquip.SetActive(true);
     }
 
     // 닫기
-    void HideInven()
+    public void HideInven(bool hideMenu = true)
     {
-        GameHudMenu.instance.ShowMenu();
+        if(hideMenu)
+            GameHudMenu.instance.ShowMenu();
+
         _goInventory.SetActive(false);
         _goEquip.SetActive(false);
     }
@@ -95,7 +120,11 @@ public class Inventory : MonoBehaviour
         SortItem((ItemType)_currentTab);
     }
 
-    public void ResortItem() => SortItem((ItemType)_currentTab);
+    public void ResortItem()
+    {
+        SerializeItem();
+        SortItem((ItemType)_currentTab);
+    }
 
     // 재정렬
     public void SerializeItem()
@@ -126,7 +155,7 @@ public class Inventory : MonoBehaviour
     }
 
     // 탭 우선 정렬
-    void SortItem(ItemType type)
+    public void SortItem(ItemType type)
     {
         // 탭 우선 정렬로 인해 빠져나온 아이템 정보 저장용
         List<Item> popItemList = new List<Item>();
@@ -229,7 +258,7 @@ public class Inventory : MonoBehaviour
         else
         {
             _slots[index].ClearSlot();
-            ResortItem();
+            SerializeItem();
         }
     }
 
@@ -241,7 +270,7 @@ public class Inventory : MonoBehaviour
             if (_slots[i].IsSameItem(item))
             {
                 _slots[i].ClearSlot();
-                ResortItem();
+                SerializeItem();
                 return;
             }
         }

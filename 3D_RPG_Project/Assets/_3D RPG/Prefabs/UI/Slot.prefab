@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7617561227568660974}
   - component: {fileID: 6129988342851422745}
   - component: {fileID: 2705524897040718433}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Slot_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,8 +86,7 @@ GameObject:
   - component: {fileID: 5740937526692699020}
   - component: {fileID: 5701883690478212085}
   - component: {fileID: 2410864477110392302}
-  - component: {fileID: -6886617245029241632}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,8 +163,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e7a22f1fac4ff47bfb84e4923ef40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isEquipSlot: 0
   _count: 0
   _item:
+    id: 0
     name: 
     desc: 
     levelLimit: 0
@@ -175,19 +176,6 @@ MonoBehaviour:
     options: []
   _imgItem: {fileID: 2705524897040718433}
   _txtItemCount: {fileID: 2569994428433851612}
---- !u!114 &-6886617245029241632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7807925445887537370}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
 --- !u!1 &8538471568213607283
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,7 +187,7 @@ GameObject:
   - component: {fileID: 8570528162238441497}
   - component: {fileID: 8375617572110237857}
   - component: {fileID: 2569994428433851612}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Slot_Count
   m_TagString: Untagged
   m_Icon: {fileID: 0}

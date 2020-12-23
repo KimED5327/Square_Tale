@@ -9,8 +9,12 @@ public class Status : MonoBehaviour
     [SerializeField] protected int _atk;
     [SerializeField] protected int _def;
 
+    protected bool _isDead = false;
+
     protected void Damage(int num)
     {
        
     }
+
+    public bool IsDead() { return _isDead; }
 }

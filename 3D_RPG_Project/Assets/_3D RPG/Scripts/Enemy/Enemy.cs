@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
 
     public enum State
     {
-        Die, Move, Idle, Attack, Return, Damaged
+        Die, Move, Idle, Attack, Return, Damaged, Search
     }
     State enemyState;
 
@@ -79,8 +79,16 @@ private void Start()
             case State.Damaged:
                 UpdateDamaged();
                 break;
+            case State.Search:
+                UpdateSearch();
+                break;
+               
         }
     } 
+    private void UpdateSearch()
+    {
+
+    }
 
     //기본 상태
     private void UpdateIdle()
@@ -97,7 +105,7 @@ private void Start()
         if (Vector3.SqrMagnitude(transform.position - startPoint) > Mathf.Pow(maxMoveRange,2))
         {
             enemyState = State.Return;
-            Debug.Log("Return상태 전환");
+          
         }
 
         else if(Vector3.SqrMagnitude(transform.position - player.position) > Mathf.Pow(maxAttackRange,2))
@@ -111,8 +119,7 @@ private void Start()
         
             enemyState = State.Attack;
             enemyAnimator.SetBool("Attack", true);
-          
-            Debug.Log("attack상태 전환");
+    
         }
     }
     //공격 상태
@@ -125,7 +132,7 @@ private void Start()
             timer += Time.deltaTime;
             if (timer > attTime)
             {
-                Debug.Log("공격");
+      
 
                 timer = 0.0f;
             }
@@ -135,7 +142,7 @@ private void Start()
         {
             enemyAnimator.SetBool("Attack", false);
             enemyState = State.Move;
-            Debug.Log("move상태 전환");
+ 
 
             timer = 0.0f;
         }
@@ -168,7 +175,7 @@ private void Start()
             agent.ResetPath();
             transform.position = startPoint;
             enemyState = State.Idle;
-            Debug.Log("Idle상태 전환");
+
         }
     }
     //피격 상태

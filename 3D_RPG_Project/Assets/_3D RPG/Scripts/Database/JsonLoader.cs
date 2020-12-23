@@ -82,5 +82,4 @@ public class JsonLoader : MonoBehaviour
 
         return JsonMapper.ToObject(jsonString);
     }
-
 }

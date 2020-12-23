@@ -8,7 +8,6 @@ public class MenuSlide : MonoBehaviour
     const string SHOW = "Show";
     const string HIDE = "Hide";
 
-    [SerializeField] GameObject goMenuPanel = null;
     Animator myAnim;
 
     bool isShow = false;

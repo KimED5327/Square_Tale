@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour, IPointerClickHandler
+public class Slot : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
 {
 
     [SerializeField] bool isEquipSlot = false;
@@ -81,7 +81,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public bool IsSameItem(Item Item) { return ReferenceEquals(_item, Item);}   // 같은 아이템인지 체크
+    public bool IsSameItem(Item Item) { return _item.id == Item.id; }           // 같은 아이템인지 체크
     public bool IsEmptySlot() { return !hasItem; }                              // 빈 슬롯인지 체크
     public bool HasEnoughCount(int num) { return (_count >= num); }             // num 이상 가지고 있는지 체크
     public int GetSlotCount() { return _count; }                                // 슬롯 아이템 개수 확인
@@ -90,9 +90,27 @@ public class Slot : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (hasItem)
-            SlotToolTip.instance.ShowToolTip(_item, transform.localPosition, isEquipSlot);
+
+        if (!Shop._isShow)
+        {
+            if (hasItem)
+                SlotToolTip.instance.ShowToolTip(_item, transform.position, isEquipSlot);
+            else
+                SlotToolTip.instance.HideToolTip();
+        }
         else
+        {
+            if (hasItem)
+                ShopToolTip.instance.ShowToolTip(_item, false);
+        }
+
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (!Shop._isShow)
             SlotToolTip.instance.HideToolTip();
+        else
+            ShopToolTip.instance.HideToolTip();
     }
 }

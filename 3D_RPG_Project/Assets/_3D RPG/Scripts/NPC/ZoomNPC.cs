@@ -24,28 +24,25 @@ public class ZoomNPC : MonoBehaviour
     public bool zoomingOut = false;
     private Vector3 prePos;
 
-    Shop theShop;
-
     private void Awake()
     {
-        theShop = FindObjectOfType<Shop>();
         cam = Camera.main;
         target = transform.parent.transform;
         zoomedInToggle = false;
     }
 
-    private void FixedUpdate()
-    {
-        if (zoomingIn)
-        {
-            ZoomedIn();
-        }
+    //private void FixedUpdate()
+    //{
+    //    if (zoomingIn)
+    //    {
+    //        ZoomedIn();
+    //    }
         
-        if(zoomingOut)
-        {
-            ZoomedOut();
-        }
-    }
+    //    if(zoomingOut)
+    //    {
+    //        ZoomedOut();
+    //    }
+    //}
 
     //NPC 네임태그 클릭 시 NPC 줌인 
     public void ZoomInNPC()
@@ -56,8 +53,6 @@ public class ZoomNPC : MonoBehaviour
 
         if (zoomedInToggle == false)
         {
-            theShop.CallMenu(this);
-
             zoomedInToggle = true;
             zoomingIn = true;
             prePos = cam.transform.position;

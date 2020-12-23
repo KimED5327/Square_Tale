@@ -13,7 +13,8 @@ public class Shop : MonoBehaviour
 {
     [Header("Window")]
     [SerializeField] GameObject _goShopPanel = null;
-    [SerializeField] GameObject _goInvenPanel = null;
+    [SerializeField] GameObject _goShopBuyUI = null;
+
 
     [Header("ShopSlot")]
     [SerializeField] GameObject _goSlotPrefab = null;
@@ -25,18 +26,19 @@ public class Shop : MonoBehaviour
     [Header("Tab")]
     [SerializeField] ShopItem[] _shopItemId = null;
     [SerializeField] Image[] _tabButton = null;
-    Color whiteColor = Color.white;
-    Color grayColor = Color.gray;
+
+    [Header("UI")]
+    [SerializeField] Text _txtGold = null;
 
     int _tabNum = 0;
-    bool _isShow = false;
+    public static bool _isShow = false;
+    bool _isBuy = true;
 
-    ZoomNPC _npc = null;
-    Inventory theInven;
+    Inventory _inven;
 
-    void Awake()
+    void Start()
     {
-        theInven = FindObjectOfType<Inventory>();
+        _inven = FindObjectOfType<Inventory>();
 
         _slots = new ShopSlot[_slotMaxCount];
         for(int i = 0; i < _slotMaxCount; i++)
@@ -48,10 +50,8 @@ public class Shop : MonoBehaviour
         TouchTabBtn(0);
     }
 
-    public void CallMenu(ZoomNPC npc = null)
+    public void CallMenu()
     {
-        if(_npc == null)
-            _npc = npc;
         _isShow = !_isShow;
 
         if (_isShow) ShowMenu();
@@ -60,16 +60,28 @@ public class Shop : MonoBehaviour
 
     void ShowMenu()
     {
+        BtnBuyWindow();
+
         GameHudMenu.instance.HideMenu();
         _goShopPanel.SetActive(true);
         TabItemPush();
+
+        ReSetUI();
     }
 
     public void HideMenu()
     {
         GameHudMenu.instance.ShowMenu();
+        
+        // 인벤이 열려있다면 같이 닫는다.
+        if (!_isBuy)
+        {
+            _isBuy = true;
+            _inven.HideInven(false);
+        }
+            
         _isShow = false;
-        _npc.ZoomOutNPC();
+        Rooting._isOpen = false; // 임시
         _goShopPanel.SetActive(false);
     }
 
@@ -77,24 +89,31 @@ public class Shop : MonoBehaviour
     {
         _tabNum = num;
 
-        for(int i = 0; i < _tabButton.Length; i++)
-        {
-            _tabButton[i].color = grayColor;
-        }
-        _tabButton[_tabNum].color = whiteColor;
+        for (int i = 0; i < _tabButton.Length; i++)
+            _tabButton[i].color = Color.gray;
+        
+        _tabButton[_tabNum].color = Color.white;
 
-        TabItemPush();
+        // 구매 상태면 상품 아이템 재정렬
+        if (_isBuy)
+            TabItemPush();
+        // 판매 상태면 인벤토리 카테고리 우선 정렬
+        else
+            _inven.SortItem((ItemType)_tabNum);
+
     }
 
     // 카테고리 별 아이템 분류
     void TabItemPush()
     {
+        // 슬롯 초기화
         for(int i = 0; i < _slots.Length; i++)
         {
             _slots[i].ClearSlot();
             _slots[i].gameObject.SetActive(false);
         }
 
+        // 해당 카테고리의 데이터 개수만큼 슬롯 입력
         for(int i = 0; i < _shopItemId[_tabNum].item.Length; i++)
         {
             _slots[i].gameObject.SetActive(true);
@@ -104,15 +123,24 @@ public class Shop : MonoBehaviour
 
     public void BtnSellWindow()
     {
-        _goShopPanel.SetActive(false);
-        _goInvenPanel.SetActive(true);
+        _isBuy = false;
+        _goShopBuyUI.SetActive(_isBuy);
+        _inven.ShowInven(true);
+
+        // 선택되어 있던 카테고리로 인벤을 재정렬 시킴.
+        _inven.SortItem((ItemType)_tabNum);
     }
 
     public void BtnBuyWindow()
     {
-        _goShopPanel.SetActive(true);
-        _goInvenPanel.SetActive(false);
+        _isBuy = true;
+        _inven.HideInven(false);
+        _goShopBuyUI.SetActive(_isBuy);
     }
 
 
+    public void ReSetUI()
+    {
+        _txtGold.text = string.Format("{0:#,##0}", _inven.GetGold());
+    }
 }

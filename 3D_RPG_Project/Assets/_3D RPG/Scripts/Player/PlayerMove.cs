@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     public float speed;
+    public float jumpForce;
+    public Transform child;
 
     float hAxis;
     float vAxis;
@@ -26,7 +28,7 @@ public class PlayerMove : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Move();
         Jump();
@@ -40,23 +42,27 @@ public class PlayerMove : MonoBehaviour
 
         moveVec = new Vector3(hAxis, 0, vAxis).normalized;
 
+        Vector3 realMoveVec = (moveVec.z * Camera.main.transform.forward + Camera.main.transform.right * moveVec.x);
+
+        realMoveVec.y = 0;
+
         if (isDodge)
         {
             moveVec = dodgeVec;
         }
 
-        transform.position += moveVec * speed * Time.deltaTime;
+        transform.position += realMoveVec * speed * Time.deltaTime;
 
-        transform.LookAt(transform.position + moveVec);
+        child.LookAt(child.position + realMoveVec);
 
-        anim.SetBool("isRun", moveVec != Vector3.zero);
+        anim.SetBool("isRun", realMoveVec != Vector3.zero);
     }
 
     void Jump()
     {
-        if (Input.GetKeyDown("c") && !isJump && !isDodge)
+        if (Input.GetKeyDown("space") && !isJump && !isDodge)
         {
-            myRigid.AddForce(Vector3.up * 15, ForceMode.Impulse);
+            myRigid.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             anim.SetBool("isJump", true);
             anim.SetTrigger("doJump");
             isJump = true;
@@ -65,7 +71,7 @@ public class PlayerMove : MonoBehaviour
 
     void Dodge()
     {
-        if (Input.GetKeyDown("space") && !isJump && moveVec != Vector3.zero && !isDodge)
+        if (Input.GetKeyDown("left shift") && !isJump && moveVec != Vector3.zero && !isDodge)
         {
             dodgeVec = moveVec;
             speed *= 2;
@@ -84,7 +90,7 @@ public class PlayerMove : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Floor")
+        if (collision.transform.CompareTag("Floor"))
         {
             anim.SetBool("isJump", false);
             isJump = false;

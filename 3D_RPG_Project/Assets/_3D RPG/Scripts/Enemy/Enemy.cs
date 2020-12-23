@@ -6,7 +6,10 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     public string enemyName;                    //몬스터 이름
-    public int hp;                              //몬스터 hp
+
+    public int currentHp;                       //몬스터 hp
+    public int maxHp;                           //몬스터 최대 hp
+    public int level;                           //몬스터 level
     public int attDamage;                       //몬스터 대미지
     public int speed;                           //몬스터 속도
 
@@ -27,11 +30,11 @@ public class Enemy : MonoBehaviour
     public int maxLongAttackRange;              //몬스터 원거리 공격 범위
 
     Animator enemyAnimator;                     //몬스터 애니메이터
-    
+    EnemyUi _enemyUi;                           //몬스터 Ui
 
     public enum State
     {
-        Die, Move, Idle, Attack, Return, Damaged, Search
+        Die, Move, Idle, Attack, Return, Damaged, Search, Jump
     }
     State enemyState;
 
@@ -52,7 +55,7 @@ private void Start()
         enemyAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         startPoint = transform.position;
-
+        _enemyUi = GetComponentInChildren<EnemyUi>();
         
     }
 
@@ -82,9 +85,18 @@ private void Start()
             case State.Search:
                 UpdateSearch();
                 break;
+            case State.Jump:
+                UpdateJump();
+                break;
+            
                
         }
     } 
+
+    private void UpdateJump()
+    {
+
+    }
     private void UpdateSearch()
     {
 
@@ -93,8 +105,10 @@ private void Start()
     //기본 상태
     private void UpdateIdle()
     {
-        if(Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
+        _enemyUi.gameObject.SetActive(false);
+        if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
         {
+            _enemyUi.gameObject.SetActive(true);
             enemyState = State.Move;
             Debug.Log("Move상태 전환");
         }
@@ -194,16 +208,16 @@ private void Start()
 
     public void hitDamage(int value)
     {
-        hp -= value;
+        currentHp -= value;
 
-        if(hp > 0)
+        if(currentHp > 0)
         {
             enemyState = State.Damaged;
         }
         else
         {
             enemyState = State.Die;
-            hp = 0;
+            currentHp = 0;
         }
     }
 

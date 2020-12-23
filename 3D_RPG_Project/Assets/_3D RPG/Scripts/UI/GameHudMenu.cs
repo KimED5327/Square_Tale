@@ -9,17 +9,40 @@ public class GameHudMenu : MonoBehaviour
     
     [SerializeField] GameObject[] goHuds = null;
     [SerializeField] Text _txtGold = null;
+    [SerializeField] Text _txtLevel = null;
+    [SerializeField] Text _txtHP = null;
+    [SerializeField] Text _txtMP = null;
 
+    WaitForSeconds waitTime = new WaitForSeconds(0.1f);
 
-    Inventory theInven;
+    Inventory _inven;
+    PlayerStatus _playerStatus;
 
     private void Awake()
     {
-        theInven = FindObjectOfType<Inventory>();
-        _txtGold.text = string.Format("{0:#,##0}", theInven.GetGold());
+        _inven = FindObjectOfType<Inventory>();
+        _playerStatus = FindObjectOfType<PlayerStatus>();
+
+        _txtGold.text = string.Format("{0:#,##0}", _inven.GetGold());
 
         instance = this;
+
+        StartCoroutine(UpdateHud());
     }
+
+    IEnumerator UpdateHud()
+    {
+        while (_playerStatus != null)
+        {
+            yield return waitTime;
+            _txtGold.text = string.Format("{0:#,##0}", _inven.GetGold());
+            _txtLevel.text = $"{_playerStatus.GetLevel()} LV";
+            _txtHP.text = $"{_playerStatus.GetCurHp()} / {_playerStatus.GetMaxHp()}";
+            _txtMP.text = $"{_playerStatus.GetCurMp()} / {_playerStatus.GetMaxMp()}";
+        }
+
+    }
+
     public void HideMenu()
     {
         for (int i = 0; i < goHuds.Length; i++)
@@ -27,6 +50,7 @@ public class GameHudMenu : MonoBehaviour
             goHuds[i].SetActive(false);
         }
     }
+
     public void ShowMenu()
     {
         for (int i = 0; i < goHuds.Length; i++)
@@ -34,7 +58,6 @@ public class GameHudMenu : MonoBehaviour
             goHuds[i].SetActive(true);
         }
 
-        _txtGold.text = string.Format("{0:#,##0}", theInven.GetGold());
     }
 
 }

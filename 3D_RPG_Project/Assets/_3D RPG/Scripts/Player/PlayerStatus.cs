@@ -14,6 +14,8 @@ public class PlayerStatus : Status
     int _curExp = 0;
     int _maxExp = 0;
 
+    public int GetCurHp() { return _curHp; }
+    public int GetCurMp() { return _curMp; }
     public int GetMaxHp() { return _maxHp; }
     public int GetMaxMp() { return _maxMp; }
     public int GetLevel() { return _curLevel; }
@@ -26,8 +28,13 @@ public class PlayerStatus : Status
         _curExp = 0;
         _curLevel = 1;
         _maxHp = 150;
+        _maxMp = 100;
+        _curMp = _maxMp;
+        _curHp = _maxHp;
         _str = 100;
+        _int = 10;
         _def = 10;
+        _atk = 10;
     }
 
     void Update()

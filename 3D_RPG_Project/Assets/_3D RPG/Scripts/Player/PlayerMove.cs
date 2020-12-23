@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     public float speed;
-
+    public float jumpForce;
     public Transform child;
 
     float hAxis;
@@ -28,7 +28,7 @@ public class PlayerMove : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Move();
         Jump();
@@ -62,7 +62,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (Input.GetKeyDown("space") && !isJump && !isDodge)
         {
-            myRigid.AddForce(Vector3.up * 15, ForceMode.Impulse);
+            myRigid.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             anim.SetBool("isJump", true);
             anim.SetTrigger("doJump");
             isJump = true;
@@ -90,7 +90,7 @@ public class PlayerMove : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Floor")
+        if (collision.transform.CompareTag("Floor"))
         {
             anim.SetBool("isJump", false);
             isJump = false;

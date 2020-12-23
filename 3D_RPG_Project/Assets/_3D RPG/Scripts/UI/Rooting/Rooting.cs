@@ -10,18 +10,20 @@ public class Rooting : MonoBehaviour
     [Header("Slot")]
     [SerializeField] RootingSlot[] _rootingSlots = null;
 
-    bool _isOpen = false;
+    public static bool _isOpen = false;
 
     // 드롭 아이템
     List<DropItem> _rootingDropItem;
 
     // Component
     Inventory _inven;
+    Shop _shop;
     EnemyStatus _rootingEnemy;
     
     void Awake()
     {
         _inven = FindObjectOfType<Inventory>();
+        _shop = FindObjectOfType<Shop>();
 
         for (int i = 0; i < _rootingSlots.Length; i++)
             _rootingSlots[i].SetLink(this);
@@ -55,6 +57,15 @@ public class Rooting : MonoBehaviour
                     }
                     else
                         _rootingEnemy = null;
+                }
+                else if (hit.transform.CompareTag("Npc"))
+                {
+
+                    if (!_isOpen)
+                    {
+                        _shop.CallMenu();
+                        _isOpen = true;
+                    }
                 }
             }
         }

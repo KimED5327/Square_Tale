@@ -34,10 +34,9 @@ public class Shop : MonoBehaviour
     public static bool _isShow = false;
     bool _isBuy = true;
 
-    ZoomNPC _npc = null;
     Inventory _inven;
 
-    void Awake()
+    void Start()
     {
         _inven = FindObjectOfType<Inventory>();
 
@@ -51,10 +50,8 @@ public class Shop : MonoBehaviour
         TouchTabBtn(0);
     }
 
-    public void CallMenu(ZoomNPC npc = null)
+    public void CallMenu()
     {
-        if(_npc == null)
-            _npc = npc;
         _isShow = !_isShow;
 
         if (_isShow) ShowMenu();
@@ -84,7 +81,7 @@ public class Shop : MonoBehaviour
         }
             
         _isShow = false;
-        _npc.ZoomOutNPC();
+        Rooting._isOpen = false; // 임시
         _goShopPanel.SetActive(false);
     }
 

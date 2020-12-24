@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Title
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: Standalone
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 4
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: f71ebfa04dc78440fa88efcb375b83d4, type: 3}
+    totalSpriteSurfaceArea: 374214
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: d5583070971864116a83a0f2577fa4da, type: 3}
+  - {fileID: 21300000, guid: edcfb9b2f8cb0489c826ad45e35b9c9c, type: 3}
+  - {fileID: 21300000, guid: 61ae0e14f76304324ad72d6be800a98b, type: 3}
+  - {fileID: 21300000, guid: 541ce6540b0784faea63b196d7fa74f6, type: 3}
+  - {fileID: 21300000, guid: fb9e70c44ab9d40fcae6e6d057e495f7, type: 3}
+  - {fileID: 21300000, guid: 51d1dd3505e3a419fa3ea14c9b831494, type: 3}
+  - {fileID: 21300000, guid: 0c036096e6c314865a988630e61ba161, type: 3}
+  - {fileID: 21300000, guid: 02319b77c8723418ea9a129158abf2bf, type: 3}
+  - {fileID: 21300000, guid: ad7aee991f4a0441e92e16f535281d32, type: 3}
+  - {fileID: 21300000, guid: 3ebe9a4d06e704cd3824a5073b43c093, type: 3}
+  - {fileID: 21300000, guid: 4575d24e096f4427a896a085c807ea1b, type: 3}
+  - {fileID: 21300000, guid: 8963c74efd8ff47d0aee977c47ef80bf, type: 3}
+  - {fileID: 21300000, guid: dee7d15f61fca48e28e899866d110e60, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - menu_btn_icon_item
+  - menu_btn_icon_mission
+  - btn_start_n
+  - menu_btn_icon_message
+  - btn_sns_facebook
+  - title_text
+  - btn_start_f
+  - menu_btn_icon_shop
+  - menu_btn_icon_setting
+  - title_text_sub
+  - menu_bg_0
+  - btn_add_friend
+  - menu_btn_icon_ranking
+  m_Tag: Title
+  m_IsVariant: 0

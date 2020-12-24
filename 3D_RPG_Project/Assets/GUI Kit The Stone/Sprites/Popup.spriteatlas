@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Popup
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: Standalone
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 4
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 93717e356d96e4c89b54ab226aa0bed5, type: 3}
+    totalSpriteSurfaceArea: 482377
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 05635dc0b2e38494a8926bc193d12085, type: 3}
+  - {fileID: 21300000, guid: f237d0f07b95c471d94f0441509e9694, type: 3}
+  - {fileID: 21300000, guid: fe5f9801809014030a5f78696df51a59, type: 3}
+  - {fileID: 21300000, guid: 70a854518a76845a0a61a99a9f8d378d, type: 3}
+  - {fileID: 21300000, guid: 977ff4128988e49b299d08ebeaf6d992, type: 3}
+  - {fileID: 21300000, guid: 6471a61214608430ab45317eb36d61b9, type: 3}
+  - {fileID: 21300000, guid: 0094e3725e375433fa8e6d3019a30d6a, type: 3}
+  - {fileID: 21300000, guid: 39c20963bd97b40aeb082816a0f50b15, type: 3}
+  - {fileID: 21300000, guid: f41535b58b3014601b2338de5c554be1, type: 3}
+  - {fileID: 21300000, guid: 02ab72d5275a04cbeb24a66542e31aec, type: 3}
+  - {fileID: 21300000, guid: b66b96c6acb4f456898d981f7bc06784, type: 3}
+  - {fileID: 21300000, guid: 08a7a4e7390b8402c8e31badcc0936b8, type: 3}
+  - {fileID: 21300000, guid: 6cd2e4f7622ab468686a5d750551e633, type: 3}
+  - {fileID: 21300000, guid: b0284df90c4cd466b90c93eaf9599941, type: 3}
+  - {fileID: 21300000, guid: b3d7ba0a55f5d4ea092d33aedde63d32, type: 3}
+  - {fileID: 21300000, guid: 67a8387a5cad44016803e17dd307633c, type: 3}
+  - {fileID: 21300000, guid: 6164358a7def74701b15fd6bcc7d93ad, type: 3}
+  - {fileID: 21300000, guid: 64bb89dab8f884a8195030c8106b84f0, type: 3}
+  - {fileID: 21300000, guid: 4a9d3e4b8da974cd19a4ace25bb5f12e, type: 3}
+  - {fileID: 21300000, guid: 9af0cd9b98fb440d6978dc1275a882ff, type: 3}
+  - {fileID: 21300000, guid: 6dfc483e33354476fa0d6f22551fd419, type: 3}
+  - {fileID: 21300000, guid: 609073ce9ae14413fa26fd9146d45e12, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - popup_bg
+  - popup_title_03
+  - defeat_deco_03
+  - complete_star_bg
+  - get_icon_crown
+  - ribbon_deco_laurel_r
+  - ribbon_deco_laurel_l
+  - popup_title_01
+  - defeat_ic_skull
+  - common_popup_title_00_0
+  - popup_btn_close
+  - popup_btn_pause
+  - complete_star
+  - stage_icon_lock
+  - get_icon_clover
+  - stage_icon_lock_area
+  - defeat_deco_02
+  - get_icon_horner
+  - defeat_deco_01
+  - popup_title_02
+  - get_bg
+  - get_icon_coin
+  m_Tag: Popup
+  m_IsVariant: 0

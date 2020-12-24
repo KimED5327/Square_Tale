@@ -20,7 +20,10 @@ public class EnemyUi : MonoBehaviour
 
     private void Update()
     {
+
         transform.LookAt(transform.position + cam.rotation * Vector3.forward, cam.rotation * Vector3.up);
         hpBar.value = _enemy.currentHp / (float)_enemy.maxHp;
+
+
     }
 }

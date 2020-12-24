@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    public string enemyName;                    //몬스터 이름
 
     public int currentHp;                       //몬스터 hp
     public int maxHp;                           //몬스터 최대 hp
@@ -16,6 +15,8 @@ public class Enemy : MonoBehaviour
     GameObject rangedWeapon;                    //몬스터 원거리 구체
     public float attTime;                       //몬스터 공격속도
     public float timer;                         //공격속도 조절값
+    public float reconTime;                     //정찰 시작 시간
+    public float reconTimer;                    //정찰 체크 시간
 
     Vector3 startPoint;                         //최초 생성 값
     Transform player;                           //공격 목표 (플레이어)
@@ -28,6 +29,7 @@ public class Enemy : MonoBehaviour
     public int maxAttackRange;                  //몬스터 근접 공격 범위
     public bool isLongMonster;                  //원거리 몬스터인가?
     public int maxLongAttackRange;              //몬스터 원거리 공격 범위
+    public int reconRange;                      //정찰 범위
 
     Animator enemyAnimator;                     //몬스터 애니메이터
     EnemyUi _enemyUi;                           //몬스터 Ui
@@ -95,7 +97,7 @@ private void Start()
 
     private void UpdateJump()
     {
-
+   
     }
     private void UpdateSearch()
     {
@@ -105,6 +107,11 @@ private void Start()
     //기본 상태
     private void UpdateIdle()
     {
+        reconTimer += Time.deltaTime;
+        if(reconTimer > reconTime)
+        {
+
+        }
         _enemyUi.gameObject.SetActive(false);
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
         {
@@ -244,5 +251,8 @@ private void Start()
         //최대 추적 범위
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(startPoint, maxMoveRange);
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(startPoint, reconRange);
     }
 }

@@ -674,17 +674,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3069c6168fed53c4cacf3c4bffeeb5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyName: 
-  hp: 0
+  currentHp: 0
+  maxHp: 0
+  level: 0
   attDamage: 0
   speed: 10
   attTime: 0
   timer: 1
+  reconTime: 0
+  reconTimer: 0
   maxFindRange: 0
   maxMoveRange: 0
   maxAttackRange: 0
   isLongMonster: 0
   maxLongAttackRange: 0
+  reconRange: 0
 --- !u!143 &743181437
 CharacterController:
   m_ObjectHideFlags: 0

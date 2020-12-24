@@ -11200,7 +11200,7 @@ GameObject:
   - component: {fileID: 1364703443}
   - component: {fileID: 1364703442}
   m_Layer: 5
-  m_Name: Temp Canvas_ED
+  m_Name: Temp Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16498,7 +16498,7 @@ GameObject:
   - component: {fileID: 1911956462}
   - component: {fileID: 1911956461}
   m_Layer: 0
-  m_Name: MapManager_ED
+  m_Name: MapManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

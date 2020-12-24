@@ -31,18 +31,18 @@ public class ZoomNPC : MonoBehaviour
         zoomedInToggle = false;
     }
 
-    //private void FixedUpdate()
-    //{
-    //    if (zoomingIn)
-    //    {
-    //        ZoomedIn();
-    //    }
-        
-    //    if(zoomingOut)
-    //    {
-    //        ZoomedOut();
-    //    }
-    //}
+    private void FixedUpdate()
+    {
+        if (zoomingIn)
+        {
+            ZoomedIn();
+        }
+
+        if (zoomingOut)
+        {
+            ZoomedOut();
+        }
+    }
 
     //NPC 네임태그 클릭 시 NPC 줌인 
     public void ZoomInNPC()

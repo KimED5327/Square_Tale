@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Floor
+  - Enemy
+  - Npc
+  - MapMovePoint
   layers:
   - Default
   - TransparentFX

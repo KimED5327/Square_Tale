@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Status : MonoBehaviour
 {
+    [SerializeField] protected string _name;
     [SerializeField] protected int _maxHp;
     [SerializeField] protected int _curHp;
     [SerializeField] protected int _atk;
@@ -17,4 +18,5 @@ public class Status : MonoBehaviour
     }
 
     public bool IsDead() { return _isDead; }
+    public string GetName() { return _name; }
 }

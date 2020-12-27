@@ -4,19 +4,15 @@ using UnityEngine;
 
 public class test : MonoBehaviour
 {
+    Hashtable hash = new Hashtable();
+    Quest quest = new Quest();
+
     // Start is called before the first frame update
     void Start()
     {
-        printQuestInfo();
-
-        //Debug.Log("Method working");
-
-        //Debug.Log(QuestDatabase.instance.GetMaxCount());
-
-        //for (int i = 0; i < QuestDatabase.instance.GetMaxCount(); i++)
-        //{
-        //    Debug.Log((i + 1) + "번째 퀘스트 제목 : " + QuestDatabase.instance.GetQuest(i + 1).title);
-        //}
+        //printQuestInfo();
+        AddData();
+        printData();
     }
 
     // Update is called once per frame
@@ -27,9 +23,26 @@ public class test : MonoBehaviour
     
     void printQuestInfo()
     {
-        for(int i=0; i<QuestDatabase.instance.GetMaxCount(); i++)
+        for (int i = 0; i < QuestDB.instance.GetMaxCount(); i++)
         {
-            Debug.Log((i + 1) + "번째 퀘스트 제목 : " + QuestDatabase.instance.GetQuest(i + 1).title);
+            Debug.Log((i + 1) + "번째 퀘스트 제목 : " + QuestDB.instance.GetQuest(i + 1).title);
+        }
+    }
+
+    void AddData()
+    {
+        quest.title = "테스트 퀘스트";
+
+        hash.Add("quest", quest);
+    }
+
+    void printData()
+    {
+        if (hash.ContainsKey("quest"))
+        {
+            Quest temp = hash["quest"] as Quest;
+
+            Debug.Log(temp.title);
         }
     }
 }

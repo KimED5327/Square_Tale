@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Npc
   - MapMovePoint
+  - QuestNPC
   layers:
   - Default
   - TransparentFX

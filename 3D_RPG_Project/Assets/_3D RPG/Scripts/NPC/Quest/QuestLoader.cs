@@ -15,7 +15,6 @@ public class QuestLoader : MonoBehaviour
     [SerializeField] string killMonsterDBPath;
     [SerializeField] string collectLootDBPath;
     [SerializeField] string dialogueDBPath;
-    //[SerializeField] string questDBPath = "/data.json";
 
     // Start is called before the first frame update
     void Start()
@@ -108,12 +107,12 @@ public class QuestLoader : MonoBehaviour
         }
     }
 
-    void ParsingQuestTypeDB()
+    private void ParsingQuestTypeDB()
     {
         ParsingDeliveryDB();
     }
 
-    void ParsingDeliveryDB()
+    private void ParsingDeliveryDB()
     {
         string path = streamingAssetsPath + deliveryDBPath;
         JsonData jData = GetJsonData(path);

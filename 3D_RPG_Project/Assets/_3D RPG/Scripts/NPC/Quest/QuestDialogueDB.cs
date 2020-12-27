@@ -14,19 +14,25 @@ public class QuestDialogueDB : MonoBehaviour
     }
 
     // 퀘스트 다이얼로그 추가 
-    public void AddQuestDialogue(int questId, QuestDialogue questDialogue)
+    public void AddDialogue(int questId, QuestDialogue questDialogue)
     {
         questDialogueDB.Add(questId, questDialogue);
     }
 
     // 퀘스트ID에 맞는 퀘스트 다이얼로그 반환 
-    public QuestDialogue GetQuestDialogue(int questId)
+    public QuestDialogue GetDialogue(int questId)
     {
         QuestDialogue questDialouge = questDialogueDB[questId];
 
         if (questDialouge == null) Debug.Log("퀘스트 ID " + questId + "번은 등록되어있지 않습니다.");
 
         return questDialouge;
+    }
+
+    // 해당 퀘스트ID를 key로 가진 데이터가 있는지 확인하여 bool 타입으로 반환  
+    public bool CheckKey(int questId)
+    {
+        return questDialogueDB.ContainsKey(questId);
     }
 
     // 퀘스트 다이얼로그 최대개수 반환 

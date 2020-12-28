@@ -26,6 +26,7 @@ public class QuestDialogue
     public void SetQuestId(int id) { _questId = id; }
     public void SetNPCId(int id) { _npcId = id; }
     public void SetDialoguePerState(DialogueUnit dialogue, QuestState state) { _dialoguePerState[(int)state - 1] = dialogue; }
+    public void AddLine(QuestState state, string line) { _dialoguePerState[(int)state].GetLineLists().Add(line); }
 }
 
 // 대화 단위 클래스 

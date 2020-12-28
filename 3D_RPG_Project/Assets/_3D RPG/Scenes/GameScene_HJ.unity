@@ -13419,7 +13419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d2c375235984f340aa0e99e805b9597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questDialogueDBPath: /QuestDialogueDB.json
+  questDialogueDBPath: /data.json
 --- !u!1 &1220004812
 GameObject:
   m_ObjectHideFlags: 0

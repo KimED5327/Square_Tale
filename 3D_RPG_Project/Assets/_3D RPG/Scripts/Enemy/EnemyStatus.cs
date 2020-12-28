@@ -13,9 +13,19 @@ public class EnemyStatus : Status
 
     bool _isDropItem = false;
 
+    float removeTime = 5f;
+    float curTime = 0f;
+
     public void Update()
     {
-        // 임시. 죽으면 DesideDropItem을 호출한 이후에 지울 것.
+        if(_isDead && _dropItemList.Count < 1)
+        {
+            curTime += Time.deltaTime;
+            if(curTime >= removeTime)
+            {
+                ObjectPooling.instance.PushObjectToPool(_name, this.gameObject);
+            }
+        }
     }
 
     protected override void Dead()

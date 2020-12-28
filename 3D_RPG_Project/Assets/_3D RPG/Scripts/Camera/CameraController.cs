@@ -8,14 +8,21 @@ public class CameraController : MonoBehaviour
     float cameraAngleX;
     public float cameraSpeed = 0.2f;
     [SerializeField] Vector3 _offset = Vector3.zero;
+    [SerializeField] float _height = 0f;
+
+    Transform _tfCam;
+
+    void Start()
+    {
+        _tfCam = Camera.main.transform;
+    }
 
     // Update is called once per frame
     void Update()
     {
         cameraAngleX += tb.touchDis.x * cameraSpeed;
 
-        Camera.main.transform.position = transform.position + Quaternion.AngleAxis(cameraAngleX, Vector3.up) * _offset;
-
-        Camera.main.transform.rotation = Quaternion.LookRotation(transform.position + Vector3.up * -0.2f - Camera.main.transform.position, Vector3.up);
+        _tfCam.position = transform.position + Quaternion.AngleAxis(cameraAngleX, Vector3.up) * _offset;
+        _tfCam.rotation = Quaternion.LookRotation(transform.position + Vector3.up * _height - _tfCam.position, Vector3.up);
     }
 }

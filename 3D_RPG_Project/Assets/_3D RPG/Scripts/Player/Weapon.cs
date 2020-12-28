@@ -22,4 +22,16 @@ public class Weapon : MonoBehaviour
         yield return new WaitForSeconds(0.6f);
         attackArea.enabled = false;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            Status targetStatus = other.GetComponent<Status>();
+            if (!targetStatus.IsDead())
+            {
+                other.GetComponent<Status>().Damage(50);
+            }
+        }
+    }
 }

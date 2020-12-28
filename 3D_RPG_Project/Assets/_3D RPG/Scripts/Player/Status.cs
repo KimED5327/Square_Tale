@@ -13,7 +13,7 @@ public class Status : MonoBehaviour
 
     protected bool _isDead = false;
 
-    protected void Damage(int num)
+    public void Damage(int num)
     {
        _curHp -= num;
 

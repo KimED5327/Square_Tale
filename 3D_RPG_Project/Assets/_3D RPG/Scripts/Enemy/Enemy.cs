@@ -32,6 +32,8 @@ public class Enemy : MonoBehaviour
 
     Animator enemyAnimator;                     //몬스터 애니메이터
 
+    EnemyStatus status;
+
     public State enemyState;
 
     bool IsPlaying(string stateName)
@@ -51,45 +53,42 @@ public class Enemy : MonoBehaviour
         enemyAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         startPoint = transform.position;
+        status = GetComponent<EnemyStatus>();
     }
 
     //에너미 업데이트
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Z))
+        if(!status.IsDead())
         {
-            enemyState = State.Die;
+            switch (enemyState)
+            {
+                case State.Idle:
+                    UpdateIdle();
+                    break;
+                case State.Move:
+                    UpdateMove();
+                    break;
+                case State.Attack:
+                    UpdateAttack();
+                    break;
+                case State.Return:
+                    UpdateReturn();
+                    break;
+                case State.Damaged:
+                    UpdateDamaged();
+                    break;
+                case State.Search:
+                    UpdateSearch();
+                    break;
+                case State.Jump:
+                    UpdateJump();
+                    break;
+            }
         }
-
-
-        switch(enemyState)
+        else
         {
-            case State.Idle :
-                UpdateIdle();
-                break;
-            case State.Move:
-                UpdateMove();
-                break;
-            case State.Attack:
-                UpdateAttack();
-                break;
-            case State.Die :
-                UpdateDie();
-                break;
-            case State.Return:
-                UpdateReturn();
-                break;
-            case State.Damaged:
-                UpdateDamaged();
-                break;
-            case State.Search:
-                UpdateSearch();
-                break;
-            case State.Jump:
-                UpdateJump();
-                break;
-            
-               
+            UpdateDie();
         }
     } 
 
@@ -128,15 +127,18 @@ public class Enemy : MonoBehaviour
 
         else if(Vector3.SqrMagnitude(transform.position - player.position) > Mathf.Pow(maxAttackRange,2))
         {
-            enemyAnimator.SetBool("Move", true);
+            //enemyAnimator.SetBool("Move", true);
+            enemyAnimator.SetInteger("animation", 2);
+
             agent.SetDestination(player.transform.position);
         }
 
         else
         {
-        
+            enemyAnimator.SetInteger("animation", 3);
+
             enemyState = State.Attack;
-            enemyAnimator.SetBool("Attack", true);
+            //enemyAnimator.SetBool("Attack", true);
     
         }
     }
@@ -156,7 +158,9 @@ public class Enemy : MonoBehaviour
 
         else
         {
-            enemyAnimator.SetBool("Attack", false);
+            enemyAnimator.SetInteger("animation", 2);
+
+            //enemyAnimator.SetBool("Attack", false);
             enemyState = State.Move;
 
             timer = 0.0f;
@@ -165,7 +169,10 @@ public class Enemy : MonoBehaviour
     //사망 상태
     private void UpdateDie()
     {
-        enemyAnimator.SetBool("Die", true);
+        agent.ResetPath();
+        enemyAnimator.SetInteger("animation", 5);
+
+        //enemyAnimator.SetBool("Die", true);
 
         dieTime += Time.deltaTime;
         if(dieTime >= 60)
@@ -187,7 +194,9 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            enemyAnimator.SetBool("Move", false);
+            enemyAnimator.SetInteger("animation", 1);
+
+            //enemyAnimator.SetBool("Move", false);
             agent.ResetPath();
             transform.position = startPoint;
             enemyState = State.Idle;

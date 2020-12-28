@@ -18,10 +18,11 @@ public class QuestDialogueLoader : MonoBehaviour
         // 퀘스트 다이얼로그 데이터 파싱 
         //ParsingQuestDialogueDB();
 
-        // 테스트용 
+        //// 테스트용 
         //printDialogue();
     }
 
+    // NPC 독백 버전으로 대사 덩어리로 파싱 
     //private void ParsingQuestDialogueDB()
     //{
     //    string path = streamingAssetsPath + questDialogueDBPath;
@@ -73,65 +74,131 @@ public class QuestDialogueLoader : MonoBehaviour
     //    }
     //}
 
+    // NPC 독백 버전으로 대사 1줄씩 파싱 
+    //private void ParsingQuestDialogueDB()
+    //{
+    //    string path = streamingAssetsPath + questDialogueDBPath;
+    //    JsonData jData = GetJsonData(path);
+
+    //    for (int i = 0; i < jData.Count; i++)
+    //    {
+    //        int questId = int.Parse(jData[i][0].ToString());
+    //        int npcId = int.Parse(jData[i][1].ToString());
+    //        int lineId = int.Parse(jData[i][2].ToString());
+    //        QuestState state = (QuestState)int.Parse(jData[i][3].ToString());
+    //        string line = jData[i][4].ToString();
+
+    //        // 퀘스트ID의 questDialogue 데이터가 있는지 확인하고 없으면 전체 생성 
+    //        if (!QuestDialogueDB.instance.CheckKey(questId))
+    //        {
+    //            QuestDialogue questDialogue = new QuestDialogue();
+    //            DialogueUnit dialoguePerState = new DialogueUnit();
+    //            List<string> lineLists = new List<string>();
+
+    //            questDialogue.SetQuestId(questId);
+    //            questDialogue.SetNPCId(npcId);
+
+    //            lineLists.Add(line);
+    //            dialoguePerState.SetQuestState(state);
+    //            dialoguePerState.SetLineLists(lineLists);
+    //            questDialogue.SetDialoguePerState(dialoguePerState, state);
+
+    //            QuestDialogueDB.instance.AddDialogue(questId, questDialogue);
+    //            Debug.Log(questId + "번 퀘스트 다이얼로그 클래스 생성");
+    //            Debug.Log(questId + "번 퀘스트 " + state + " 다이얼로그 추가");
+    //            continue;
+    //        }
+
+    //        // 해당 state의 DialogueUnit이 만들어져있는지 확인 
+    //        if (QuestDialogueDB.instance.GetDialogue(questId).GetDialoguePerState(state) != null)
+    //        {
+    //            QuestDialogueDB.instance.GetDialogue(questId).GetDialoguePerState(state).
+    //                GetLineLists().Add(line);
+
+    //            Debug.Log(questId + "번 퀘스트 대사 추가");
+    //            Debug.Log(QuestDialogueDB.instance.GetDialogue(questId).GetLine(state, i));
+    //        }
+    //        else
+    //        {
+    //            DialogueUnit dialoguePerState = new DialogueUnit();
+    //            List<string> lineLists = new List<string>();
+
+    //            lineLists.Add(line);
+    //            dialoguePerState.SetLineId(lineId);
+    //            dialoguePerState.SetQuestState(state);
+    //            dialoguePerState.SetLineLists(lineLists);
+
+    //            QuestDialogueDB.instance.GetDialogue(questId).
+    //                SetDialoguePerState(dialoguePerState, state);
+
+    //            Debug.Log(questId + "번 퀘스트 " + state + " 다이얼로그 추가");
+    //        }
+    //    }
+    //}
+
+    // 
+
     private void ParsingQuestDialogueDB()
     {
-        string path = streamingAssetsPath + questDialogueDBPath;
-        JsonData jData = GetJsonData(path);
+        //string path = streamingAssetsPath + questDialogueDBPath;
+        //JsonData jData = GetJsonData(path);
 
-        for (int i = 0; i < jData.Count; i++)
-        {
-            int questId = int.Parse(jData[i][0].ToString());
-            int npcId = int.Parse(jData[i][1].ToString());
-            int lineId = int.Parse(jData[i][2].ToString());
-            QuestState state = (QuestState)int.Parse(jData[i][3].ToString());
-            string line = jData[i][4].ToString();
- 
-            // 퀘스트ID의 questDialogue 데이터가 있는지 확인하고 없으면 전체 생성 
-            if (!QuestDialogueDB.instance.CheckKey(questId))
-            {
-                QuestDialogue questDialogue = new QuestDialogue();
-                DialogueUnit dialoguePerState = new DialogueUnit();
-                List<string> lineLists = new List<string>();
+        //for (int i = 0; i < jData.Count; i++)
+        //{
+        //    int questId = int.Parse(jData[i][0].ToString());
+        //    int lineId = int.Parse(jData[i][2].ToString());
+        //    int npcId = int.Parse(jData[i][3].ToString());
+        //    QuestState state = (QuestState)int.Parse(jData[i][1].ToString());
 
-                questDialogue.SetQuestId(questId);
-                questDialogue.SetNPCId(npcId);
+        //    LineUnit line = new LineUnit();
+        //    line.SetNPCId(npcId);
+        //    line.SetLineId(lineId);
+        //    line.SetLine(jData[i][4].ToString());
 
-                lineLists.Add(line);
-                dialoguePerState.SetQuestState(state);
-                dialoguePerState.SetLineLists(lineLists);
-                questDialogue.SetDialoguePerState(dialoguePerState, state);
+        //    // 퀘스트ID의 questDialogue 데이터가 있는지 확인하고 없으면 전체 생성 
+        //    if (!QuestDialogueDB.instance.CheckKey(questId))
+        //    {
+        //        QuestDialogue questDialogue = new QuestDialogue();
+        //        DialogueUnit dialoguePerState = new DialogueUnit();
+        //        List<LineUnit> lineLists = new List<LineUnit>();
 
-                QuestDialogueDB.instance.AddDialogue(questId, questDialogue);
-                Debug.Log(questId + "번 퀘스트 다이얼로그 클래스 생성");
-                Debug.Log(questId + "번 퀘스트 " + state + " 다이얼로그 추가");
-                continue;
-            }
+        //        questDialogue.SetQuestId(questId);
 
-            // 해당 state의 DialogueUnit이 만들어져있는지 확인 
-            if (QuestDialogueDB.instance.GetDialogue(questId).GetDialoguePerState(state) != null)
-            {
-                QuestDialogueDB.instance.GetDialogue(questId).GetDialoguePerState(state).
-                    GetLineLists().Add(line);
+        //        lineLists.Add(line);
+        //        dialoguePerState.SetQuestState(state);
+        //        dialoguePerState.SetLineLists(lineLists);
+        //        questDialogue.SetDialoguePerState(dialoguePerState, state);
 
-                Debug.Log(questId + "번 퀘스트 대사 추가");
-                Debug.Log(QuestDialogueDB.instance.GetDialogue(questId).GetLine(state, i));
-            }
-            else
-            {
-                DialogueUnit dialoguePerState = new DialogueUnit();
-                List<string> lineLists = new List<string>();
+        //        QuestDialogueDB.instance.AddDialogue(questId, questDialogue);
+        //        Debug.Log(questId + "번 퀘스트 다이얼로그 클래스 생성");
+        //        Debug.Log(questId + "번 퀘스트 " + state + " 다이얼로그 추가");
+        //        continue;
+        //    }
 
-                lineLists.Add(line);
-                dialoguePerState.SetLineId(lineId);
-                dialoguePerState.SetQuestState(state);
-                dialoguePerState.SetLineLists(lineLists);
+        //    // 해당 state의 DialogueUnit이 만들어져있는지 확인 
+        //    if (QuestDialogueDB.instance.GetDialogue(questId).GetDialoguePerState(state) != null)
+        //    {
+        //        QuestDialogueDB.instance.GetDialogue(questId).GetDialoguePerState(state).
+        //            GetLineLists().Add(line);
 
-                QuestDialogueDB.instance.GetDialogue(questId).
-                    SetDialoguePerState(dialoguePerState, state);
+        //        Debug.Log(questId + "번 퀘스트 대사 추가");
+        //        //Debug.Log(QuestDialogueDB.instance.GetDialogue(questId).GetLine(state, i));
+        //    }
+        //    else
+        //    {
+        //        DialogueUnit dialoguePerState = new DialogueUnit();
+        //        List<LineUnit> lineLists = new List<LineUnit>();
 
-                Debug.Log(questId + "번 퀘스트 " + state + " 다이얼로그 추가");
-            }
-        }
+        //        lineLists.Add(line);
+        //        dialoguePerState.SetQuestState(state);
+        //        dialoguePerState.SetLineLists(lineLists);
+
+        //        QuestDialogueDB.instance.GetDialogue(questId).
+        //            SetDialoguePerState(dialoguePerState, state);
+
+        //        Debug.Log(questId + "번 퀘스트 " + state + " 다이얼로그 추가");
+        //    }
+        //}
     }
 
     private void printDialogue()
@@ -139,7 +206,15 @@ public class QuestDialogueLoader : MonoBehaviour
         for (int i = 0; i < QuestDialogueDB.instance.GetDialogue(1).
             GetLinesCount(QuestState.QUEST_OPENED); i++)
         {
-            Debug.Log(QuestDialogueDB.instance.GetDialogue(1).GetLine(QuestState.QUEST_OPENED, i));
+            if(QuestDialogueDB.instance.GetDialogue(1).
+                GetLineUnit(QuestState.QUEST_OPENED, i).GetNPCId() == 0)
+            {
+                Debug.Log("유저 : " + QuestDialogueDB.instance.GetDialogue(1).GetLine(QuestState.QUEST_OPENED, i));
+            }
+            else
+            {
+                Debug.Log("NPC : " + QuestDialogueDB.instance.GetDialogue(1).GetLine(QuestState.QUEST_OPENED, i));
+            }
         }
 
         //for (int i = 0; i < QuestDialogueDB.instance.GetDialogue(1).

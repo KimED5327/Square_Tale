@@ -2323,7 +2323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12ffe8cb2d446ad45b632b248a2beb16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questDBPath: /QuestDB.json
+  questDBPath: /QuestDa.json
   deliveryDBPath: /DelieveryQuestDB.json
   killMonsterDBPath: 
   collectLootDBPath: 
@@ -13419,7 +13419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d2c375235984f340aa0e99e805b9597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questDialogueDBPath: /data.json
+  questDialogueDBPath: /dialogue.json
 --- !u!1 &1220004812
 GameObject:
   m_ObjectHideFlags: 0
@@ -14856,6 +14856,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1423877807}
+  - component: {fileID: 1423877808}
   m_Layer: 0
   m_Name: Database
   m_TagString: Untagged
@@ -14880,6 +14881,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1423877808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423877806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abcf53a0c0014724da47cdd63307f506, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1427815182
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,13 +25,13 @@ public class test : MonoBehaviour
     {
         for (int i = 0; i < QuestDB.instance.GetMaxCount(); i++)
         {
-            Debug.Log((i + 1) + "번째 퀘스트 제목 : " + QuestDB.instance.GetQuest(i + 1).title);
+            Debug.Log((i + 1) + "번째 퀘스트 제목 : " + QuestDB.instance.GetQuest(i + 1).GetTitle());
         }
     }
 
     void AddData()
     {
-        quest.title = "테스트 퀘스트";
+        quest.SetTitle("테스트 퀘스트");
 
         hash.Add("quest", quest);
     }
@@ -42,7 +42,7 @@ public class test : MonoBehaviour
         {
             Quest temp = hash["quest"] as Quest;
 
-            Debug.Log(temp.title);
+            Debug.Log(temp.GetTitle());
         }
     }
 }

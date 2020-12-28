@@ -5348,7 +5348,6 @@ MonoBehaviour:
   _level: 0
   _maxMp: 0
   _curMp: 0
-  _levelUpExps: 
   _curLevel: 0
   _str: 0
   _int: 0
@@ -21833,7 +21832,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 80cc67a4b0a46b149a22e71490376348, type: 2}
+      objectReference: {fileID: 9100000, guid: a3de56c0960117a409cff512ed2c335f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6cd497993814b742be4b0e13032516b, type: 3}
 --- !u!1 &2063048576 stripped
@@ -22125,6 +22124,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8609419182846827156, guid: 6c4ef0a4357d7ef409b32f28c9dd481d,
+        type: 3}
+      propertyPath: m_Name
+      value: "Spawn Pos 1 (\uCEEC\uC2A4\uB514\uC5B8)"
       objectReference: {fileID: 0}
     - target: {fileID: 8665849594334441733, guid: 6c4ef0a4357d7ef409b32f28c9dd481d,
         type: 3}

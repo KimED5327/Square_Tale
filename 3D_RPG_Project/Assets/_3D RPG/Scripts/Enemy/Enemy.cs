@@ -128,7 +128,7 @@ public class Enemy : MonoBehaviour
 
         else if(Vector3.SqrMagnitude(transform.position - player.position) > Mathf.Pow(maxAttackRange,2))
         {
-            //enemyAnimator.SetBool("Move", true);
+            enemyAnimator.SetBool("Move", true);
             agent.SetDestination(player.transform.position);
         }
 
@@ -136,7 +136,7 @@ public class Enemy : MonoBehaviour
         {
         
             enemyState = State.Attack;
-            //enemyAnimator.SetBool("Attack", true);
+            enemyAnimator.SetBool("Attack", true);
     
         }
     }
@@ -156,7 +156,7 @@ public class Enemy : MonoBehaviour
 
         else
         {
-            //enemyAnimator.SetBool("Attack", false);
+            enemyAnimator.SetBool("Attack", false);
             enemyState = State.Move;
 
             timer = 0.0f;
@@ -165,7 +165,7 @@ public class Enemy : MonoBehaviour
     //사망 상태
     private void UpdateDie()
     {
-        //enemyAnimator.SetBool("Die", true);
+        enemyAnimator.SetBool("Die", true);
 
         dieTime += Time.deltaTime;
         if(dieTime >= 60)
@@ -187,7 +187,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            //enemyAnimator.SetBool("Move", false);
+            enemyAnimator.SetBool("Move", false);
             agent.ResetPath();
             transform.position = startPoint;
             enemyState = State.Idle;

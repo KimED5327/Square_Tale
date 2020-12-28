@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyStatus : Status
 {
+    int id;
+
     [SerializeField]
     DropItemInfo[] _dropItemInfo;
 
@@ -79,4 +81,7 @@ public class EnemyStatus : Status
     //    _isDropItem = false;
     //    _dropItemList.Clear();
     //}
+
+    public int GetID() { return id; }
+
 }

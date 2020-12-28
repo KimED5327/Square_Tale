@@ -11,7 +11,6 @@ public class MapManager : MonoBehaviour
     // 이후 로딩씬 -> 게임씬으로 전환할 예정
     public void ChangeMap(Transform tfPlayer, string moveMapName)
     {
-
         for(int i = 0; i < _maps.Length; i++)
         {
             string mapName = _maps[i].GetMapName();
@@ -31,7 +30,5 @@ public class MapManager : MonoBehaviour
                 break;
             }
         }
-
     }
-    
 }

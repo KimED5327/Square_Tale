@@ -7,11 +7,7 @@ public class EnemyStatus : Status
     int id;
 
     [SerializeField]
-    DropItemInfo[] _dropItemInfo;
-
-
-
-
+    DropItemInfo[] _dropItemInfo = null;
 
     List<DropItem> _dropItemList = new List<DropItem>();
 

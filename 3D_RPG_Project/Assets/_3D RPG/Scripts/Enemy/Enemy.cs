@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum State
+{
+    Idle, Move, Die, Attack, Return, Damaged, Search, Jump
+}
+
 public class Enemy : MonoBehaviour
 {
-
-
-
-    public int level;                           //몬스터 level
-
     GameObject rangedWeapon;                    //몬스터 원거리 구체
     public float attTime;                       //몬스터 공격속도
     public float timer;                         //공격속도 조절값
@@ -31,15 +31,7 @@ public class Enemy : MonoBehaviour
 
 
     Animator enemyAnimator;                     //몬스터 애니메이터
-    EnemyUi _enemyUi;                           //몬스터 Ui
 
-    bool dropItemSetUp;                         //드랍 아이템 생성
-    
-
-    public enum State
-    {
-        Die, Move, Idle, Attack, Return, Damaged, Search, Jump
-    }
     public State enemyState;
 
     bool IsPlaying(string stateName)
@@ -56,11 +48,9 @@ public class Enemy : MonoBehaviour
     {
         enemyState = State.Idle;
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        dropItemSetUp = false;
         enemyAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         startPoint = transform.position;
-        _enemyUi = GetComponentInChildren<EnemyUi>();
     }
 
     //에너미 업데이트
@@ -138,7 +128,7 @@ public class Enemy : MonoBehaviour
 
         else if(Vector3.SqrMagnitude(transform.position - player.position) > Mathf.Pow(maxAttackRange,2))
         {
-            enemyAnimator.SetBool("Move", true);
+            //enemyAnimator.SetBool("Move", true);
             agent.SetDestination(player.transform.position);
         }
 
@@ -146,7 +136,7 @@ public class Enemy : MonoBehaviour
         {
         
             enemyState = State.Attack;
-            enemyAnimator.SetBool("Attack", true);
+            //enemyAnimator.SetBool("Attack", true);
     
         }
     }
@@ -160,17 +150,14 @@ public class Enemy : MonoBehaviour
             timer += Time.deltaTime;
             if (timer > attTime)
             {
-      
-
                 timer = 0.0f;
             }
         }
 
         else
         {
-            enemyAnimator.SetBool("Attack", false);
+            //enemyAnimator.SetBool("Attack", false);
             enemyState = State.Move;
- 
 
             timer = 0.0f;
         }
@@ -178,13 +165,10 @@ public class Enemy : MonoBehaviour
     //사망 상태
     private void UpdateDie()
     {
-       
-
-        enemyAnimator.SetBool("Die", true);
+        //enemyAnimator.SetBool("Die", true);
 
         dieTime += Time.deltaTime;
-
-        if(dieTime == 60)
+        if(dieTime >= 60)
         {
             string name = GetComponent<EnemyStatus>().GetName();
 
@@ -203,7 +187,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            enemyAnimator.SetBool("Move", false);
+            //enemyAnimator.SetBool("Move", false);
             agent.ResetPath();
             transform.position = startPoint;
             enemyState = State.Idle;

@@ -37,7 +37,7 @@ public class GameHudMenu : MonoBehaviour
             yield return waitTime;
             _txtGold.text = string.Format("{0:#,##0}", _inven.GetGold());
             _txtLevel.text = $"{_playerStatus.GetLevel()} LV";
-            _txtHP.text = $"{_playerStatus.GetCurHp()} / {_playerStatus.GetMaxHp()}";
+            _txtHP.text = $"{_playerStatus.GetCurrentHp()} / {_playerStatus.GetMaxHp()}";
             _txtMP.text = $"{_playerStatus.GetCurMp()} / {_playerStatus.GetMaxMp()}";
         }
 

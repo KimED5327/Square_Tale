@@ -6,7 +6,7 @@ public class PlayerStatus : Status
 {
     [SerializeField] int _maxMp = 0;
     [SerializeField] int _curMp = 0;
-    [SerializeField] int[] _levelUpExps = null;
+    //[SerializeField] int[] _levelUpExps = null;
     [SerializeField] int _curLevel = 0;
     [SerializeField] int _str = 0;
     [SerializeField] int _int = 0;
@@ -14,11 +14,8 @@ public class PlayerStatus : Status
     int _curExp = 0;
     int _maxExp = 0;
 
-    public int GetCurHp() { return _curHp; }
-    public int GetCurMp() { return _curMp; }
-    public int GetMaxHp() { return _maxHp; }
     public int GetMaxMp() { return _maxMp; }
-    public int GetLevel() { return _curLevel; }
+    public int GetCurMp() { return _curMp; }
     public int GetStr() { return _str; }
     public int GetInt() { return _int; }
     public int GetDef() { return _def; }

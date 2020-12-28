@@ -6,11 +6,9 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
 
-    public int currentHp;                       //몬스터 hp
-    public int maxHp;                           //몬스터 최대 hp
+
+
     public int level;                           //몬스터 level
-    public int attDamage;                       //몬스터 대미지
-    public int speed;                           //몬스터 속도
 
     GameObject rangedWeapon;                    //몬스터 원거리 구체
     public float attTime;                       //몬스터 공격속도
@@ -21,7 +19,6 @@ public class Enemy : MonoBehaviour
 
     Vector3 startPoint;                         //최초 생성 값
     Transform player;                           //공격 목표 (플레이어)
-    
     NavMeshAgent agent;                         //AI컨트롤러
 
 
@@ -35,7 +32,7 @@ public class Enemy : MonoBehaviour
 
     Animator enemyAnimator;                     //몬스터 애니메이터
     EnemyUi _enemyUi;                           //몬스터 Ui
-    EnemyStatus enemyStatus;                    //몬스터 스테이터스
+
     bool dropItemSetUp;                         //드랍 아이템 생성
     
 
@@ -64,8 +61,6 @@ public class Enemy : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         startPoint = transform.position;
         _enemyUi = GetComponentInChildren<EnemyUi>();
-        enemyStatus = GetComponent<EnemyStatus>();
-        
     }
 
     //에너미 업데이트
@@ -186,12 +181,6 @@ public class Enemy : MonoBehaviour
        
 
         enemyAnimator.SetBool("Die", true);
-        if(!dropItemSetUp)
-        {
-            enemyStatus.DesideDropItem();
-            dropItemSetUp = true;
-            Debug.Log("생성됬냐");
-        }
 
         dieTime += Time.deltaTime;
 
@@ -232,21 +221,6 @@ public class Enemy : MonoBehaviour
         enemyState = State.Move;
     }
 
-
-    public void hitDamage(int value)
-    {
-        currentHp -= value;
-
-        if(currentHp > 0)
-        {
-            enemyState = State.Damaged;
-        }
-        else
-        {
-            enemyState = State.Die;
-            currentHp = 0;
-        }
-    }
 
 
     private void OnDrawGizmos()

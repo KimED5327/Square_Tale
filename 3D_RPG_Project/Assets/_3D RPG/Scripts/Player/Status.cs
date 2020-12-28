@@ -13,8 +13,18 @@ public class Status : MonoBehaviour
 
     protected void Damage(int num)
     {
-       
+       _curHp -= num;
+
+       if(_curHp <= 0)
+        {
+            Dead();
+        }
     }
 
     public bool IsDead() { return _isDead; }
+
+    protected virtual void Dead()
+    {
+        _isDead = true;
+    }
 }

@@ -11,7 +11,6 @@ public class EnemyUi : MonoBehaviour
     public Slider hpBar;
     Transform cam;
     public Text _Ui;
-    public Text _Ui2;
     float hpPercent;
 
     private void Start()
@@ -23,20 +22,19 @@ public class EnemyUi : MonoBehaviour
         
     }
 
-    private void Update()
+    void Update()
     {
+        transform.LookAt(transform.position + cam.forward);
+
         hpPercent = (_enemyStatus.GetCurrentHp() / (float)_enemyStatus.GetMaxHp()) * 100;
-        if (_enemy.enemyState == Enemy.State.Attack || _enemy.enemyState == Enemy.State.Move)
-        {
+
+        if (_enemy.enemyState == State.Attack || _enemy.enemyState == State.Move)
             hpBar.gameObject.SetActive(true);
-        }
         else
-        {
             hpBar.gameObject.SetActive(false);
-        }
-        transform.LookAt(transform.position + cam.rotation * Vector3.forward, cam.rotation * Vector3.up);
+        
+
         hpBar.value = _enemyStatus.GetCurrentHp() / (float)_enemyStatus.GetMaxHp();
-        _Ui.text = "Lv " + _enemyStatus.GetLevel() + "몬스터";
-        _Ui2.text = _enemyStatus.GetName() + hpPercent + "%";
+        _Ui.text = "Lv " + _enemyStatus.GetLevel() + " " + _enemyStatus.GetName() + " " + hpPercent + "%";
     }
 }

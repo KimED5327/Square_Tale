@@ -58,7 +58,7 @@ public class ObjectPooling : MonoBehaviour
             GameObject clone = Instantiate(obj, Vector3.zero, Quaternion.identity);
             clone.transform.SetParent(this.transform);
             clone.SetActive(false);
-            queue.Enqueue(obj);
+            queue.Enqueue(clone);
         }
 
         return queue;

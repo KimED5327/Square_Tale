@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     public float timer;                         //공격속도 조절값
     public float reconTime;                     //정찰 시작 시간
     public float reconTimer;                    //정찰 체크 시간
+    private float dieTime;                      //죽고 난 뒤 시간
 
     Vector3 startPoint;                         //최초 생성 값
     Transform player;                           //공격 목표 (플레이어)
@@ -31,14 +32,18 @@ public class Enemy : MonoBehaviour
     public int maxLongAttackRange;              //몬스터 원거리 공격 범위
     public int reconRange;                      //정찰 범위
 
+
     Animator enemyAnimator;                     //몬스터 애니메이터
     EnemyUi _enemyUi;                           //몬스터 Ui
+    EnemyStatus enemyStatus;                    //몬스터 스테이터스
+    bool dropItemSetUp;                         //드랍 아이템 생성
+    
 
     public enum State
     {
         Die, Move, Idle, Attack, Return, Damaged, Search, Jump
     }
-    State enemyState;
+    public State enemyState;
 
     bool IsPlaying(string stateName)
     {
@@ -50,20 +55,28 @@ public class Enemy : MonoBehaviour
     }
 
 
-private void Start()
+    private void Start()
     {
         enemyState = State.Idle;
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        dropItemSetUp = false;
         enemyAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         startPoint = transform.position;
         _enemyUi = GetComponentInChildren<EnemyUi>();
+        enemyStatus = GetComponent<EnemyStatus>();
         
     }
 
     //에너미 업데이트
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            enemyState = State.Die;
+        }
+
+
         switch(enemyState)
         {
             case State.Idle :
@@ -112,10 +125,9 @@ private void Start()
         {
 
         }
-        _enemyUi.gameObject.SetActive(false);
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
         {
-            _enemyUi.gameObject.SetActive(true);
+            
             enemyState = State.Move;
             Debug.Log("Move상태 전환");
         }
@@ -171,18 +183,26 @@ private void Start()
     //사망 상태
     private void UpdateDie()
     {
-        StopAllCoroutines();
+       
 
-        StartCoroutine(DieProc());
+        enemyAnimator.SetBool("Die", true);
+        if(!dropItemSetUp)
+        {
+            enemyStatus.DesideDropItem();
+            dropItemSetUp = true;
+            Debug.Log("생성됬냐");
+        }
+
+        dieTime += Time.deltaTime;
+
+        if(dieTime == 60)
+        {
+
+        }
+        
     }
 
-    IEnumerator DieProc()
-    {
-
-        yield return new WaitForSeconds(2.0f);
-
-        gameObject.SetActive(false); // 삭제하지않고 false 처리 한다.
-    }
+   
     //복귀 상태
     private void UpdateReturn()
     {

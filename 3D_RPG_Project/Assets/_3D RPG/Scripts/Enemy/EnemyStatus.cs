@@ -7,7 +7,7 @@ public class EnemyStatus : Status
     int id;
 
     [SerializeField]
-    DropItemInfo[] _dropItemInfo;
+    DropItemInfo[] _dropItemInfo = null;
 
     List<DropItem> _dropItemList = new List<DropItem>();
 
@@ -16,19 +16,15 @@ public class EnemyStatus : Status
     public void Update()
     {
         // 임시. 죽으면 DesideDropItem을 호출한 이후에 지울 것.
-        if (!_isDead)
-        {
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                Debug.Log("몬스터 사망했으니, 시체를 터치하여 아이템 획득을 시도하세요.");
-                _isDead = true;
-                DesideDropItem();
-                Debug.Log("이번에 드롭된 아이템 수는 = " + _dropItemList.Count);
-            }
-        }
-
     }
 
+    protected override void Dead()
+    {
+        base.Dead();
+        DesideDropItem();
+    }
+
+    
 
 
     // 죽으면 실행

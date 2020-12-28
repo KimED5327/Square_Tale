@@ -8,6 +8,7 @@ public class SpawnPoint{
     public Transform tfSpawnPoint;
 }
 
+[System.Serializable]
 public class MonsterSpawnPoint
 {
     public string monsterName;
@@ -15,6 +16,7 @@ public class MonsterSpawnPoint
     public int count;
     public float spawnRange;
 }
+
 
 public class SpawnMonster
 {
@@ -64,11 +66,13 @@ public class Map : MonoBehaviour
 
         for (int i = 0; i < _spawnEnemyList.Count; i++)
         {
+            if (_spawnEnemyList[i].enemyStatus == null) break;
+
             GameObject goEnemy = _spawnEnemyList[i].enemyStatus.gameObject;
             string monsterName = _spawnEnemyList[i].enemyStatus.GetName();
             
             // 풀링 구현 필요
-            ObjectPooling.instance.PushObjectToPool(monsterName, _spawnEnemyList[i].enemyStatus.gameObject);
+            ObjectPooling.instance.PushObjectToPool(monsterName, goEnemy);
         }
         _spawnEnemyList.Clear();
 
@@ -100,11 +104,14 @@ public class Map : MonoBehaviour
         string monsterName = spawnInfo.monsterName;
         float range = spawnInfo.spawnRange;
         Vector3 pos = spawnInfo.tfSpawnLocation.position;
+        Vector3 rot = new Vector3(0f, Random.Range(0f, 180f), 0f);
 
         pos.x += Random.Range(-range, range);
         pos.z += Random.Range(-range, range);
 
         GameObject enemy = ObjectPooling.instance.GetObjectFromPool(monsterName, pos);
+        enemy.transform.eulerAngles = rot;
+
         return enemy;
     }
 

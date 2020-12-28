@@ -186,7 +186,9 @@ public class Enemy : MonoBehaviour
 
         if(dieTime == 60)
         {
+            string name = GetComponent<EnemyStatus>().GetName();
 
+            ObjectPooling.instance.PushObjectToPool(name,this.gameObject);
         }
         
     }

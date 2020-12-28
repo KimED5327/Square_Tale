@@ -20,7 +20,6 @@ public class EnemyStatus : Status
     public void Update()
     {
         // 임시. 죽으면 DesideDropItem을 호출한 이후에 지울 것.
-       
     }
 
     protected override void Dead()

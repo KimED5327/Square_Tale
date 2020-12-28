@@ -8,6 +8,7 @@ public class SpawnPoint{
     public Transform tfSpawnPoint;
 }
 
+[System.Serializable]
 public class MonsterSpawnPoint
 {
     public string monsterName;
@@ -15,6 +16,7 @@ public class MonsterSpawnPoint
     public int count;
     public float spawnRange;
 }
+
 
 public class SpawnMonster
 {

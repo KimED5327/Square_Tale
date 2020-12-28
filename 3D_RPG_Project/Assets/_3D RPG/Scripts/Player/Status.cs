@@ -9,6 +9,7 @@ public class Status : MonoBehaviour
     [SerializeField] protected int _curHp;
     [SerializeField] protected int _atk;
     [SerializeField] protected int _def;
+    [SerializeField] protected int _level;
 
     protected bool _isDead = false;
 
@@ -22,6 +23,11 @@ public class Status : MonoBehaviour
         }
     }
 
+
+    public string GetName() { return _name; }
+    public int GetCurrentHp() { return _curHp; }
+    public int GetMaxHp() { return _maxHp; }
+    public int GetLevel() { return _level; }
     public bool IsDead() { return _isDead; }
 
     protected virtual void Dead()

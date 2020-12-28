@@ -16,6 +16,6 @@ public class CameraController : MonoBehaviour
 
         Camera.main.transform.position = transform.position + Quaternion.AngleAxis(cameraAngleX, Vector3.up) * _offset;
 
-        Camera.main.transform.rotation = Quaternion.LookRotation(transform.position + Vector3.up * 1.2f - Camera.main.transform.position, Vector3.up);
+        Camera.main.transform.rotation = Quaternion.LookRotation(transform.position + Vector3.up * -0.2f - Camera.main.transform.position, Vector3.up);
     }
 }

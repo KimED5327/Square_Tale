@@ -79,11 +79,22 @@ public class Quest
     public void SetQuestInfo(Hashtable questInfo) { _questInfo = questInfo; }
 }
 
+/// <summary>
+/// AcquireItem 퀘스트를 통해 획득하는 아이템 클래스 (아이템 ID, 개수)
+/// </summary>
 [System.Serializable]
 public class ItemUnit
 {
-    public int itemId;
-    public int count; 
+    int _itemID;     // 아이템 ID
+    int _count;      // 아이템 개수 
+
+    //getter
+    public int GetItemID() { return _itemID; }
+    public int GetCount() { return _count; }
+
+    //setter
+    public void SetItemID(int itemID) { _itemID = itemID; }
+    public void SetCount(int count) { _count = count; }
 }
 
 /// <summary>
@@ -92,8 +103,8 @@ public class ItemUnit
 [System.Serializable]
 public class BlockUnit
 {
-    public int _blockID;
-    public int _count;
+    int _blockID;    // 블럭 ID
+    int _count;      // 블럭 개수 
 
     //getter
     public int GetBlockID() { return _blockID; }
@@ -104,40 +115,197 @@ public class BlockUnit
     public void SetCount(int count) { _count = count; }
 }
 
-[System.Serializable]
-public class MonsterUnit
+/// <summary>
+/// 퀘스트의 처치 대상 몬스터 클래스(에너미ID, 퀘스트아이템ID, 개수)
+/// </summary>
+public class EnemyUnit
 {
-    public int monsterId;
-    //몬스터를 처치하여 특정 아이템을 수집하는 퀘스트에 사용하는 변수 
-    public int itemId; 
-    public int count; 
+    int _enemyID;     // 몬스터 ID
+    int _itemID;      // 해당 몬스터에서 드랍되는 퀘스트 아이템 ID
+    int _count;       // 획득해야 하는 퀘스트 아이템 개수 
+
+    //getter 
+    public int GetEnemyID() { return _enemyID; }
+    public int GetItemID() { return _itemID; }
+    public int GetCount() { return _count; }
+
+    //setter
+    public void SetEnemyID(int enemyID) { _enemyID = enemyID; }
+    public void SetItemID(int itemID) { _itemID = itemID; }
+    public void SetCount(int count) { _count = count; }
 }
 
-[System.Serializable]
-public class Delivery
+/// <summary>
+/// type1. 특정한 아이템을 NPC에게 전달하여 완수하는 퀘스트 타입 
+/// </summary>
+public class DeliverItem
 {
-    public int questId; 
-    public List<ItemUnit> deliveryItems;
+    int _questID;                   // 퀘스트 ID
+    List<ItemUnit> _itemList;       // 전달하는 아이템 리스트 
+
+    //getter
+    public int GetQuestID() { return _questID; }
+    public List<ItemUnit> GetItemList() { return _itemList; }
+
+    /// <summary>
+    /// ItemUnit 리스트에서 idx 순서의 데이터 반환. itemList[idx]
+    /// </summary>
+    /// <param name="idx"></param>
+    /// <returns></returns>
+    public ItemUnit GetItem(int idx) { return _itemList[idx]; }
+
+    //setter
+    public void SetQuestID(int questID) { _questID = questID; }
+    public void SetItemList(List<ItemUnit> itemList) { _itemList = itemList; }
+
+    /// <summary>
+    /// ItemUnit 리스트에 item을 새 원소로 추가 
+    /// </summary>
+    /// <param name="item"></param>
+    public void AddItem(ItemUnit item) { _itemList.Add(item); }
 }
 
-[System.Serializable]
-public class KillMonster
-{
-    public int questId; 
-    public List<MonsterUnit> monstersToKill;
-}
-
+/// <summary>
+/// type2. 몬스터를 처치하고 획득한 퀘스트 아이템을 전달하여 완수하는 퀘스트 타입 (퀘스트 아이템은 퀘스트 진행 시에만 드랍)
+/// </summary>
 public class CollectLoot
 {
-    public int questId; 
-    public List<MonsterUnit> lootsToCollect; 
+    int _questID;                   // 퀘스트 ID
+    List<EnemyUnit> _lootList;      // 퀘스트 아이템 리스트  
+
+    //getter
+    public int GetQuestID() { return _questID; }
+    public List<EnemyUnit> GetLootList() { return _lootList; }
+
+    /// <summary>
+    /// EnemyUnit 리스트(lootList)에서 idx 순서의 데이터 반환. lootList[idx]
+    /// </summary>
+    /// <param name="idx"></param>
+    /// <returns></returns>
+    public EnemyUnit GetLoot(int idx) { return _lootList[idx]; }
+
+    //setter
+    public void SetQuestID(int questID) { _questID = questID; }
+    public void SetLootList(List<EnemyUnit> lootList) { _lootList = lootList; }
+
+    /// <summary>
+    /// EnemyUnit 리스트(lootList)에 loot을 새 원소로 추가  
+    /// </summary>
+    /// <param name="loot"></param>
+    public void AddLoot(EnemyUnit loot) { _lootList.Add(loot); }
 }
 
-[System.Serializable]
-public class Dialogue
+/// <summary>
+/// type3. 몬스터에게 아이템을 사용하여 완수하는 퀘스트 
+/// </summary>
+public class UseItem
 {
-    public int questId; 
-    public int npcId;
-    public int dialogueId; 
+    int _questID;         // 퀘스트 ID
+    ItemUnit _item;       // 사용하는 아이템  
+
+    //getter
+    public int GetQuestID() { return _questID; }
+    public ItemUnit GetItem() { return _item; }
+
+    //setter
+    public void SetQuestID(int questID) { _questID = questID; }
+    public void SetItem(ItemUnit item) { _item = item; }
+}
+
+/// <summary>
+/// type4. 퀘스트 NPC와 대화 후 특정 아이템을 획득하고 완수되는 퀘스트 타입 
+/// </summary>
+public class AcquireItem
+{
+    int _questID;                   // 퀘스트 ID
+    List<ItemUnit> _itemList;       // 획득하는 아이템 리스트 
+
+    //getter
+    public int GetQuestID() { return _questID; }
+    public List<ItemUnit> GetItemList() { return _itemList; }
+
+    /// <summary>
+    /// ItemUnit 리스트에서 idx 순서의 데이터 반환. itemList[idx]
+    /// </summary>
+    /// <param name="idx"></param>
+    /// <returns></returns>
+    public ItemUnit GetItem(int idx) { return _itemList[idx]; }
+
+    //setter
+    public void SetQuestID(int questID) { _questID = questID; }
+    public void SetItemList(List<ItemUnit> itemList) { _itemList = itemList; }
+
+    /// <summary>
+    /// ItemUnit 리스트에 item을 새 원소로 추가 
+    /// </summary>
+    /// <param name="item"></param>
+    public void AddItem(ItemUnit item) { _itemList.Add(item); }
+}
+
+/// <summary>
+/// type5. 특정 오브젝트를 조작하여 완수하는 퀘스트 타입 (레버를 폭파시켜 다리를 생성하는 퀘스트)
+/// </summary>
+public class OperateObject
+{
+    int _questID;       // 퀘스트 ID
+    int _objectID;      // 오브젝트 ID
+
+    //getter
+    public int GetQuestID() { return _questID; }
+    public int GetObjectID() { return _objectID; }
+
+    //setter
+    public void SetQuestID(int questID) { _questID = questID; }
+    public void SetObjectID(int objectID) { _objectID = objectID; }
+}
+
+/// <summary>
+/// type6. 특정 몬스터를 지정된 수만큼 처치하여 완수하는 퀘스트 타입 
+/// </summary>
+public class KillEnemy
+{
+    int _questID;                  // 퀘스트 ID
+    List<EnemyUnit> _enemyList;    // 처치해야 하는 enemy 리스트 
+
+    //getter 
+    public int GetQuestID() { return _questID; }
+    public List<EnemyUnit> GetEnemyList() { return _enemyList; }
+    
+    /// <summary>
+    /// EnemyUnit 리스트에서 idx 순서의 데이터 반환. enemyList[idx] 
+    /// </summary>
+    /// <param name="idx"></param>
+    /// <returns></returns>
+    public EnemyUnit GetEnemy(int idx) { return _enemyList[idx]; }
+
+    //setter 
+    public void SetQuestID(int questID) { _questID = questID; }
+    public void SetEnemyList(List<EnemyUnit> enemyList) { _enemyList = enemyList; }
+
+    /// <summary>
+    /// EnemyUnit 리스트에 enemy를 새 원소로 추가 
+    /// </summary>
+    /// <param name="enemy"></param>
+    public void AddEnemy(EnemyUnit enemy) { _enemyList.Add(enemy); }
+}
+
+/// <summary>
+/// type7. 특정 NPC와 대화하여 완수하는 퀘스트 타입 
+/// </summary>
+public class TalkWithNpc
+{
+    int _questID;   // 퀘스트 ID
+    int _npcID;     // NPC ID
+    int _lineID;    // 해당 NPC와의 대화에서 첫 대사 ID
+
+    //getter
+    public int GetQuestID() { return _questID; }
+    public int GetNpcID() { return _npcID; }
+    public int GetLineID() { return _lineID; }
+
+    //setter
+    public void SetQuestID(int questID) { _questID = questID; }
+    public void SetNpcID(int npcID) { _npcID = npcID; }
+    public void SetLineID(int lineID) { _lineID = lineID; }
 }
 

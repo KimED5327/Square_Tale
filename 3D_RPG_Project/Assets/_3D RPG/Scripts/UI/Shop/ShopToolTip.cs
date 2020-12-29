@@ -61,6 +61,8 @@ public class ShopToolTip : MonoBehaviour
                 _txtOption.text += item.options[i].name + " " + item.options[i].num + " ";
         }
 
+        _imgIcon.sprite = item.sprite;
+
         _txtTitle.text = (_isBuy) ? "상품 구매" : "상품 판매";
         _txtButton.text = (_isBuy) ? "구매" : "판매";
         _txtRequestion.text = (_isBuy) ? _buyMessage

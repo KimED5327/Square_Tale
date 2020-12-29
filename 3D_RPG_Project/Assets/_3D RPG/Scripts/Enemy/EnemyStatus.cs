@@ -4,29 +4,38 @@ using UnityEngine;
 
 public class EnemyStatus : Status
 {
-    [SerializeField]
-    DropItemInfo[] _dropItemInfo;
+    int id;
+
+    [Header("Enemy Info")]
+    [SerializeField] protected float _knockBackForce = 0.1f;
+    [SerializeField] DropItemInfo[] _dropItemInfo = null;
 
     List<DropItem> _dropItemList = new List<DropItem>();
 
     bool _isDropItem = false;
 
+    float removeTime = 5f;
+    float curTime = 0f;
+
     public void Update()
     {
-        // 임시. 죽으면 DesideDropItem을 호출한 이후에 지울 것.
-        if (!_isDead)
+        if(_isDead && _dropItemList.Count < 1)
         {
-            if (Input.GetKeyDown(KeyCode.K))
+            curTime += Time.deltaTime;
+            if(curTime >= removeTime)
             {
-                Debug.Log("몬스터 사망했으니, 시체를 터치하여 아이템 획득을 시도하세요.");
-                _isDead = true;
-                DesideDropItem();
-                Debug.Log("이번에 드롭된 아이템 수는 = " + _dropItemList.Count);
+                ObjectPooling.instance.PushObjectToPool(_name, this.gameObject);
             }
         }
-
     }
 
+    protected override void Dead()
+    {
+        base.Dead();
+        DesideDropItem();
+    }
+
+    
 
 
     // 죽으면 실행
@@ -78,4 +87,14 @@ public class EnemyStatus : Status
     //    _isDropItem = false;
     //    _dropItemList.Clear();
     //}
+
+    public int GetID() { return id; }
+
+    protected override void HurtReaction(Vector3 targetPos)
+    {
+        // 필요시 넉백 구현
+        Vector3 dir = targetPos - transform.position;
+        dir.Normalize();
+        transform.position -= dir * _knockBackForce;
+    }
 }

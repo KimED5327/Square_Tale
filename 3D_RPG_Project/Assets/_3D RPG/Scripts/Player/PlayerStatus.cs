@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class PlayerStatus : Status
 {
+    [Header("Player Status")]
     [SerializeField] int _maxMp = 0;
     [SerializeField] int _curMp = 0;
-    [SerializeField] int[] _levelUpExps = null;
-    [SerializeField] int _curLevel = 0;
     [SerializeField] int _str = 0;
     [SerializeField] int _int = 0;
 
-    int _curExp = 0;
-    int _maxExp = 0;
+    [Header("Level Up Info")]
+    [SerializeField] int[] _levelUpExps = null;
+    [SerializeField] int _levelUpStr = 2;
+    [SerializeField] int _levelUpHp = 10;
+    [SerializeField] int _levelUpDef = 1;
 
-    public int GetCurHp() { return _curHp; }
-    public int GetCurMp() { return _curMp; }
-    public int GetMaxHp() { return _maxHp; }
+
+    int _curExp = 0;
+
     public int GetMaxMp() { return _maxMp; }
-    public int GetLevel() { return _curLevel; }
+    public int GetCurMp() { return _curMp; }
     public int GetStr() { return _str; }
     public int GetInt() { return _int; }
     public int GetDef() { return _def; }
@@ -26,7 +28,7 @@ public class PlayerStatus : Status
     void Start()
     {
         _curExp = 0;
-        _curLevel = 1;
+        _level = 0;
         _maxHp = 150;
         _maxMp = 100;
         _curMp = _maxMp;
@@ -34,80 +36,33 @@ public class PlayerStatus : Status
         _str = 100;
         _int = 10;
         _def = 10;
-        _atk = 10;
+        _atk = 50;
     }
 
     void Update()
     {
-        LevelExp();
         LevelUp();
     }
 
     void LevelUp()
     {
-        if (Input.GetKeyDown("l") && _curLevel < 15)
+        if (Input.GetKeyDown("l") && _level < _levelUpExps.Length)
         {
             _curExp += 50;
-            if (_maxExp <= _curExp)
+            if (_levelUpExps[_level] <= _curExp)
             {
-                _curExp -= _maxExp;
-                _curLevel++;
-                _maxHp += 10;
-                _str += 2;
-                _def++;
+                _curExp -= _levelUpExps[_level];
+                _maxHp += _levelUpHp;
+                _str += _levelUpStr;
+                _def += _levelUpDef;
+                _level++;
             }
         }
     }
 
-    void LevelExp()
+    // 필요시 넉백 or 맞았을 때 반응 구현
+    protected override void HurtReaction(Vector3 targetPos)
     {
-        switch(_curLevel)
-        {
-            case 1:
-                _maxExp = 100;
-                break;
-            case 2:
-                _maxExp = 202;
-                break;
-            case 3:
-                _maxExp = 306;
-                break;
-            case 4:
-                _maxExp = 412;
-                break;
-            case 5:
-                _maxExp = 520;
-                break;
-            case 6:
-                _maxExp = 630;
-                break;
-            case 7:
-                _maxExp = 742;
-                break;
-            case 8:
-                _maxExp = 856;
-                break;
-            case 9:
-                _maxExp = 972;
-                break;
-            case 10:
-                _maxExp = 1090;
-                break;
-            case 11:
-                _maxExp = 1200;
-                break;
-            case 12:
-                _maxExp = 1332;
-                break;
-            case 13:
-                _maxExp = 1456;
-                break;
-            case 14:
-                _maxExp = 1582;
-                break;
-            case 15:
-                _maxExp = 0;
-                break;
-        }
+        ;
     }
 }

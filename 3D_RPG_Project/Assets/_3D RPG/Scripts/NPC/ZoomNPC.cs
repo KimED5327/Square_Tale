@@ -15,6 +15,7 @@ public class ZoomNPC : MonoBehaviour
 
     [SerializeField] ZoomState zoomState;
     [SerializeField] Camera cam;
+    [SerializeField] GameObject player;
     [SerializeField] GameObject canvasUI;
     [SerializeField] Transform target;
     [SerializeField] Vector3 targetOffset;
@@ -47,6 +48,7 @@ public class ZoomNPC : MonoBehaviour
     //NPC 네임태그 클릭 시 NPC 줌인 
     public void ZoomInNPC()
     {
+        Debug.Log("button working");
 
         //추후 플레이어 캐릭터 연동 시, 플레이어와 NPC와의 거리가
         //일정거리 이상 가까울 때만 버튼을 클릭할 수 있도록 할 것. 
@@ -56,6 +58,11 @@ public class ZoomNPC : MonoBehaviour
             zoomedInToggle = true;
             zoomingIn = true;
             prePos = cam.transform.position;
+
+            //카메라 컨트롤러 끄기 
+            player.GetComponent<CameraController>().enabled = false; 
+
+            Debug.Log("zoomin working");
         }
     }
 
@@ -67,6 +74,9 @@ public class ZoomNPC : MonoBehaviour
             zoomedInToggle = false;
             zoomingOut = true;
             //canvasUI.SetActive(false);
+
+            //카메라 컨트롤러 켜기 
+            player.GetComponent<CameraController>().enabled = true;
         }
     }
 
@@ -106,6 +116,9 @@ public class ZoomNPC : MonoBehaviour
         {
             zoomingOut = false;
             canvasUI.SetActive(false);
+
+            //카메라 컨트롤러 켜기 
+            //player.GetComponent<CameraController>().enabled = true;
         }
 
         Vector3 smoothPos = Vector3.Lerp(cam.transform.position, prePos, smoothSpeed);

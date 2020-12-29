@@ -584,6 +584,7 @@ MonoBehaviour:
   _atk: 0
   _def: 0
   _level: 5
+  _knockBackForce: 0.25
   _dropItemInfo:
   - itemID: 0
     itemCounts:

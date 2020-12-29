@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Status : MonoBehaviour
+public abstract class Status : MonoBehaviour
 {
+    [Header("Basic Status")]
     [SerializeField] protected string _name = "이름";
     [SerializeField] protected int _maxHp = 100;
     [SerializeField] protected int _curHp = 100;
     [SerializeField] protected int _atk = 0;
     [SerializeField] protected int _def = 0;
     [SerializeField] protected int _level = 1;
-
+    [SerializeField] protected int _giveExp = 50;
     protected bool _isDead = false;
 
-    public void Damage(int num)
+    public void Damage(int num, Vector3 targetPos)
     {
        _curHp -= num;
 
@@ -21,8 +22,13 @@ public class Status : MonoBehaviour
         {
             Dead();
         }
+        else
+        {
+            HurtReaction(targetPos);
+        }
     }
 
+    protected abstract void HurtReaction(Vector3 targetPos);
 
     protected virtual void Dead()
     {

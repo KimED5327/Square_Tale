@@ -8,18 +8,32 @@ public class Weapon : MonoBehaviour
     public float rate;
     public BoxCollider attackArea;
 
+    [SerializeField] float enableTime = 0.25f;
+    [SerializeField] float disableTime = 0.5f;
+
+    WaitForSeconds enableWait;
+    WaitForSeconds disableWait;
+
+    void Start()
+    {
+        enableWait = new WaitForSeconds(enableTime);
+        disableWait = new WaitForSeconds(disableTime);
+    }
+
     public void Use()
     {
-        StopCoroutine("Swing");
-        StartCoroutine("Swing");
+        StopAllCoroutines();
+        StartCoroutine(Swing());
     }
 
     IEnumerator Swing()
     {
-        yield return new WaitForSeconds(0.1f);
+        attackArea.enabled = false;
+
+        yield return enableWait;
         attackArea.enabled = true;
 
-        yield return new WaitForSeconds(0.6f);
+        yield return disableWait;
         attackArea.enabled = false;
     }
 
@@ -30,7 +44,7 @@ public class Weapon : MonoBehaviour
             Status targetStatus = other.GetComponent<Status>();
             if (!targetStatus.IsDead())
             {
-                other.GetComponent<Status>().Damage(50);
+                other.GetComponent<Status>().Damage(50, transform.position);
             }
         }
     }

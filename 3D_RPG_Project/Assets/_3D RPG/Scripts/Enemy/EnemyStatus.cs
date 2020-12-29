@@ -6,8 +6,9 @@ public class EnemyStatus : Status
 {
     int id;
 
-    [SerializeField]
-    DropItemInfo[] _dropItemInfo = null;
+    [Header("Enemy Info")]
+    [SerializeField] protected float _knockBackForce = 0.1f;
+    [SerializeField] DropItemInfo[] _dropItemInfo = null;
 
     List<DropItem> _dropItemList = new List<DropItem>();
 
@@ -89,4 +90,11 @@ public class EnemyStatus : Status
 
     public int GetID() { return id; }
 
+    protected override void HurtReaction(Vector3 targetPos)
+    {
+        // 필요시 넉백 구현
+        Vector3 dir = targetPos - transform.position;
+        dir.Normalize();
+        transform.position -= dir * _knockBackForce;
+    }
 }

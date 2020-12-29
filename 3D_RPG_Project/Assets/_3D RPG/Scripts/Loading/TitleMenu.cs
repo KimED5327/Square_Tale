@@ -7,6 +7,11 @@ public class TitleMenu : MonoBehaviour
 {
     [SerializeField] InputField _inNickname = null;
 
+    private void Awake()
+    {
+        Screen.SetResolution(1920, 1080, true);
+    }
+
     public void BtnTouchWorld()
     {
         if(_inNickname.text == "")

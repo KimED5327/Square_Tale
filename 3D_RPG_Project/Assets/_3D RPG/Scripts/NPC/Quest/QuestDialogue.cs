@@ -5,14 +5,19 @@ using UnityEngine;
 // 퀘스트 다이얼로그 
 // NPC의 디폴트 대사는 퀘스트 대사와 공유하는 변수가 다르고,
 // 같은 시스템 내에 있을 경우 조건 검사가 더 까다로워지므로 NPC 데이터베이스에 저장 
+
+/// <summary>
+/// 각 퀘스트 별 대화 데이터를 가지고 있는 클래스로, questID와 
+/// QuestState를 key, DialogueUnit를 value로 가지는 대화 데이터(Dictionary)가 저장되어 있다. 
+/// </summary>
 [System.Serializable]
 public class QuestDialogue 
 {
-    int _questId;         // 퀘스트 ID
+    int questID;         // 퀘스트 ID
     Dictionary<QuestState, DialogueUnit> _dialoguePerState = new Dictionary<QuestState, DialogueUnit>();
  
     //getter 
-    public int GetQuestId() { return _questId; }
+    public int GetQuestID() { return questID; }
     public DialogueUnit GetDialoguePerState(QuestState state) { return _dialoguePerState[state]; }
 
     /// <summary>
@@ -53,7 +58,7 @@ public class QuestDialogue
     public string GetLine(QuestState state, int idx) { return _dialoguePerState[state].GetLineList()[idx].GetLine(); } 
 
     //setter
-    public void SetQuestId(int questId) { _questId = questId; }
+    public void SetQuestID(int questID) { this.questID = questID; }
     public void SetDialoguePerState(QuestState state, DialogueUnit dialogue) { _dialoguePerState[state] = dialogue; }
 
     /// <summary>
@@ -71,7 +76,9 @@ public class QuestDialogue
     public void AddLine(QuestState state, LineUnit line) { _dialoguePerState[state].AddLine(line); }
 }
 
-// 대화 단위 클래스 
+/// <summary>
+/// 퀘스트의 대화 단위 클래스로서, 퀘스트 진행상태(QuestState), 대사 리스트(LineUnit 리스트) 데이터가 저장되어 있다.
+/// </summary>
 [System.Serializable]
 public class DialogueUnit
 {
@@ -88,22 +95,24 @@ public class DialogueUnit
     public void AddLine(LineUnit line) { _lineList.Add(line); }
 }
 
-// 대사 단위 클래스 
+/// <summary>
+/// 퀘스트의 대사 단위 클래스로서, int 타입의 대사ID, NpcID와 string 타입의 대사 데이터가 저장되어 있다. 
+/// </summary>
 [System.Serializable]
 public class LineUnit
 {
-    int _lineId;        // 대사 ID
-    int _npcId;         // NPC ID (현재 화자가 유저인지 NPC인지 확인)
+    int _lineID;        // 대사 ID
+    int _npcID;         // NPC ID (현재 화자가 유저인지 NPC인지 확인)
     string _line;       // 대사 
 
     //getter
-    public int GetLineId() { return _lineId; }
-    public int GetNPCId() { return _npcId; }
+    public int GetLineID() { return _lineID; }
+    public int GetNpcID() { return _npcID; }
     public string GetLine() { return _line; }
 
     //setter
-    public void SetLineId(int lineId) { _lineId = lineId; }
-    public void SetNPCId(int npcId) { _npcId = npcId; }
+    public void SetLineID(int lineID) { _lineID = lineID; }
+    public void SetNpcID(int npcID) { _npcID = npcID; }
     public void SetLine(string line) { _line = line; }
 }
 

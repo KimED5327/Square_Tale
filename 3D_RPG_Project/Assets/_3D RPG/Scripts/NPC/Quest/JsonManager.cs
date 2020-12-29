@@ -16,7 +16,11 @@ public class JsonManager : MonoBehaviour
         if (instance == null) instance = this; 
     }
 
-    // path의 위치에 있는 파일을 제이슨 데이터 형태로 리턴  
+    /// <summary>
+    /// path의 경로에 있는 파일을 JsonData 타입으로 리턴 
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
     public JsonData GetJsonData(string path)
     {
         string jsonString = "";
@@ -37,7 +41,11 @@ public class JsonManager : MonoBehaviour
         return JsonMapper.ToObject(jsonString);
     }
 
-    // str이 NULL 혹은 빈 문자열일 경우 true 리턴 
+    /// <summary>
+    /// 파라미터 str이 NULL 혹은 빈 문자열일 경우 true 리턴 
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
     public bool IsNullString(string str)
     {
         return string.IsNullOrEmpty(str);

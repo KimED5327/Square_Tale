@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 퀘스트 진행상태 분류 (미해금, 진행가능, 진행중, 완료가능, 완료)
+/// </summary>
 public enum QuestState
 {
     QUEST_VEILED,           // 미해금 상태
-    QUEST_OPENED,           // 해금되었으나 미진행 상태 
+    QUEST_OPENED,           // 해금되었으나 미진행 혹은 진행가능 상태 
     QUEST_ONGOING,          // 진행중인 상태 
     QUEST_COMPLETABLE,      // 완료 가능한 상태(퀘스트 달성조건은 충족했으나 NPC와 상호작용 전)    
     QUEST_COMPLETED         // 완료된 상태 
 };
 
+/// <summary>
+/// 퀘스트 타입 분류 (미해금, 진행가능, 진행중, 완료가능, 완료)
+/// </summary>
 public enum QuestType
 {
     TYPE_DELIVERY,
@@ -19,12 +25,15 @@ public enum QuestType
     TYPE_DIALOGUE
 };
 
+/// <summary>
+/// 퀘스트 ID, 타입, 진행상태 등 퀘스트와 관련된 모든 정보를 가지고 있는 클래스 
+/// </summary>
 [System.Serializable]
 public class Quest 
 {
-    int _questId;                     // 퀘스트 ID
-    int _npcId;                       // NPC ID
-    int _precedentId;                 // 선행 퀘스트 ID
+    int _questID;                     // 퀘스트 ID
+    int _npcID;                       // NPC ID
+    int _precedentID;                 // 선행 퀘스트 ID
     string _title;                    // 퀘스트 제목 
     string _des;                      // 퀘스트 설명
     string _goal;                     // 퀘스트 목표 
@@ -38,9 +47,9 @@ public class Quest
     Hashtable _questInfo;             // 퀘스트 타입 상세정보 
 
     //getter
-    public int GetQuestId() { return _questId; }
-    public int GetNPCId() { return _npcId; }
-    public int GetPrecedentId() { return _precedentId; }
+    public int GetQuestID() { return _questID; }
+    public int GetNpcID() { return _npcID; }
+    public int GetPrecedentID() { return _precedentID; }
     public string GetTitle() { return _title; }
     public string GetDes() { return _des; }
     public string GetGoal() { return _goal; }
@@ -54,9 +63,9 @@ public class Quest
     public Hashtable GetQuestInfo() { return _questInfo; }
 
     //setter 
-    public void SetQuestId(int questId) { _questId = questId; }
-    public void SetNPCId(int npcId) { _npcId = npcId; }
-    public void SetPrecedentId(int precedentId) { _precedentId = precedentId; }
+    public void SetQuestID(int questID) { _questID = questID; }
+    public void SetNpcID(int npcID) { _npcID = npcID; }
+    public void SetPrecedentID(int precedentID) { _precedentID = precedentID; }
     public void SetTitle(string title) { _title = title; }
     public void SetDes(string des) { _des = des; }
     public void SetGoal(string goal) { _goal = goal; }
@@ -77,18 +86,21 @@ public class ItemUnit
     public int count; 
 }
 
+/// <summary>
+/// 퀘스트 보상 블럭 아이템 클래스 (블럭ID, 개수)
+/// </summary>
 [System.Serializable]
 public class BlockUnit
 {
-    public int _blockId;
+    public int _blockID;
     public int _count;
 
     //getter
-    public int GetBlockId() { return _blockId; }
+    public int GetBlockID() { return _blockID; }
     public int GetCount() { return _count; }
 
     //setter
-    public void SetBlockId(int blockId) { _blockId = blockId; }
+    public void SetBlockID(int blockID) { _blockID = blockID; }
     public void SetCount(int count) { _count = count; }
 }
 

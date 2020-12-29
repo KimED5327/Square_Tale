@@ -28,68 +28,6 @@ public class QuestLoader : MonoBehaviour
         //PrintQuestTypeInfo();
     }
 
-    // JSON -> DB 파싱
-    //private void ParsingQuestDB()
-    //{
-    //    // jsonData get
-    //    string path = streamingAssetsPath + questDBPath;
-    //    JsonData jData = JsonManager.instance.GetJsonData(path);
-
-    //    // 모든 row 순회 
-    //    for (int i = 0; i < jData.Count; i++)
-    //    {
-    //        Quest quest = new Quest();
-
-    //        int questId = int.Parse(jData[i][0].ToString());
-    //        int npcId = int.Parse(jData[i][1].ToString());
-    //        int precedentId = int.Parse(jData[i][2].ToString());
-    //        string title = jData[i][3].ToString();
-    //        string des = jData[i][4].ToString();
-    //        string goal = jData[i][5].ToString();
-
-    //        //int형 밸류는 enum형 변수에 대입이 되지 않기 때문에 enum 타입으로 캐스팅 
-    //        QuestType type = (QuestType)int.Parse(jData[i][6].ToString());
-    //        QuestState state = (QuestState)int.Parse(jData[i][7].ToString());
-    //        int exp = int.Parse(jData[i][8].ToString());
-    //        int gold = int.Parse(jData[i][9].ToString());
-
-    //        // 블럭 필드가 하나라도 있다면
-    //        List<BlockUnit> blockList = new List<BlockUnit>();
-    //        if (!IsNullString(jData[i][10].ToString()) && jData[i][10].Count > 0)
-    //        {
-    //            // 아이템 추가
-    //            for (int j = 0; j < jData[i][10].Count; j++)
-    //            {
-    //                if (IsNullString(jData[i][10][j].ToString())) break;
-
-    //                ItemUnit rewardItem = new ItemUnit();
-
-    //                rewardItem.itemId = int.Parse(jData[i][10][j].ToString());
-    //                rewardItem.count = int.Parse(jData[i][11][j].ToString());
-
-    //                rewardList.Add(rewardItem);
-    //            }
-    //        }
-
-    //        quest.questId = questId;
-    //        quest.npcId = npcId;
-    //        quest.precedentId = precedentId;
-    //        quest.title = title;
-    //        quest.des = des;
-    //        quest.goal = goal;
-
-    //        quest.type = type;
-    //        quest.state = state;
-    //        quest.exp = exp;
-    //        quest.gold = gold;
-    //        quest.rewardItems = rewardList;
-    //        //quest.rewardKeywords = keywordList;
-
-    //        QuestDB.instance.AddQuest(quest, questId);
-    //        //Debug.Log((i + 1) + "번째 퀘스트 추가");
-    //    }
-    //}
-
     private void ParsingQuestDB()
     {
         // jsonData get
@@ -101,9 +39,9 @@ public class QuestLoader : MonoBehaviour
         {
             Quest quest = new Quest();
 
-            int questId = int.Parse(jData[i][0].ToString());
-            int npcId = int.Parse(jData[i][1].ToString());
-            int precedentId = int.Parse(jData[i][2].ToString());
+            int questID = int.Parse(jData[i][0].ToString());
+            int npcID = int.Parse(jData[i][1].ToString());
+            int precedentID = int.Parse(jData[i][2].ToString());
             string title = jData[i][3].ToString();
             string des = jData[i][4].ToString();
             string goal = jData[i][5].ToString();
@@ -119,14 +57,14 @@ public class QuestLoader : MonoBehaviour
             List<BlockUnit> blockList = new List<BlockUnit>();
             if(!JsonManager.instance.IsNullString(jData[i][10].ToString()))
             {
-                Debug.Log(questId + "번째 퀘스트 jData[i][10].IsArray : " + jData[i][10].IsArray);
+                Debug.Log(questID + "번째 퀘스트 jData[i][10].IsArray : " + jData[i][10].IsArray);
 
                 // 블럭 필드가 배열이 아닌 단일값인 경우 
                 if(!jData[i][10].IsArray)
                 {
                     BlockUnit block = new BlockUnit();
 
-                    block.SetBlockId(int.Parse(jData[i][10].ToString()));
+                    block.SetBlockID(int.Parse(jData[i][10].ToString()));
                     block.SetCount(int.Parse(jData[i][11].ToString()));
                     blockList.Add(block);
                 }
@@ -139,7 +77,7 @@ public class QuestLoader : MonoBehaviour
 
                         BlockUnit block = new BlockUnit();
 
-                        block.SetBlockId(int.Parse(jData[i][10][j].ToString()));
+                        block.SetBlockID(int.Parse(jData[i][10][j].ToString()));
                         block.SetCount(int.Parse(jData[i][11][j].ToString()));
                         blockList.Add(block);
                     }
@@ -169,9 +107,9 @@ public class QuestLoader : MonoBehaviour
             }
 
             // 값 대입 
-            quest.SetQuestId(questId);
-            quest.SetNPCId(npcId);
-            quest.SetPrecedentId(precedentId);
+            quest.SetQuestID(questID);
+            quest.SetNpcID(npcID);
+            quest.SetPrecedentID(precedentID);
             quest.SetTitle(title);
             quest.SetDes(des);
             quest.SetGoal(goal);
@@ -183,8 +121,8 @@ public class QuestLoader : MonoBehaviour
             quest.SetBlocks(blockList);
             quest.SetKeywords(keywordList);
 
-            QuestDB.instance.AddQuest(quest, questId);
-            //Debug.Log(questId + "번째 퀘스트 추가");
+            QuestDB.instance.AddQuest(quest, questID);
+            //Debug.Log(questID + "번째 퀘스트 추가");
         }
     }
 
@@ -203,7 +141,7 @@ public class QuestLoader : MonoBehaviour
     //        Hashtable questInfo = new Hashtable();
     //        Delivery delivery = new Delivery();
 
-    //        int questId = int.Parse(jData[i][0].ToString());
+    //        int questID = int.Parse(jData[i][0].ToString());
 
     //        List<ItemUnit> deliveryList = new List<ItemUnit>();
     //        for (int j = 0; j < jData[i][1].Count; j++)
@@ -219,12 +157,12 @@ public class QuestLoader : MonoBehaviour
     //            deliveryList.Add(deliveryItem);
     //        }
 
-    //        delivery.questId = questId;
+    //        delivery.questID = questID;
     //        delivery.deliveryItems = deliveryList;
     //        questInfo.Add("info", delivery);
 
-    //        QuestDB.instance.GetQuest(questId).questInfo = questInfo;
-    //        //QuestDatabase.instance.GetQuest(questId).questInfo.Add("info", delivery);
+    //        QuestDB.instance.GetQuest(questID).questInfo = questInfo;
+    //        //QuestDatabase.instance.GetQuest(questID).questInfo.Add("info", delivery);
     //    }
     //}
 
@@ -280,7 +218,7 @@ public class QuestLoader : MonoBehaviour
             for (int j = 0; j < QuestDB.instance.GetQuest(i + 1).GetBlocks().Count; j++)
             {
                 Debug.Log((j + 1) + "번째 블럭 번호와 수량 ( " +
-                    QuestDB.instance.GetQuest(i + 1).GetBlocks()[j].GetBlockId() + ", " +
+                    QuestDB.instance.GetQuest(i + 1).GetBlocks()[j].GetBlockID() + ", " +
                     QuestDB.instance.GetQuest(i + 1).GetBlocks()[j].GetCount() + " )");
             }
         }
@@ -296,7 +234,7 @@ public class QuestLoader : MonoBehaviour
 
         //        for (int j = 0; j < delivery.deliveryItems.Count; j++)
         //        {
-        //            Debug.Log(delivery.questId + "번째 퀘스트 " +
+        //            Debug.Log(delivery.questID + "번째 퀘스트 " +
         //                delivery.deliveryItems[j].itemId + "번 아이템 " +
         //                delivery.deliveryItems[j].count + "개");
 

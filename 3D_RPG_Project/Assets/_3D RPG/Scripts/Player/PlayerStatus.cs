@@ -36,7 +36,7 @@ public class PlayerStatus : Status
         _str = 100;
         _int = 10;
         _def = 10;
-        _atk = 10;
+        _atk = 50;
     }
 
     void Update()

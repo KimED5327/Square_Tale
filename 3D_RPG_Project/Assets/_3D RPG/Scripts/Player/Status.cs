@@ -40,5 +40,6 @@ public abstract class Status : MonoBehaviour
     public int GetLevel() { return _level; }
     public int GetCurrentHp() { return _curHp; }
     public int GetMaxHp() { return _maxHp; }
+    public int GetAtk() { return _atk; }
     public bool IsDead() { return _isDead; }
 }

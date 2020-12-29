@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public int damage;
-    public float rate;
-    public BoxCollider attackArea;
+    [SerializeField] float rate = 0.7f;
+    [SerializeField] BoxCollider attackArea = null;
 
     [SerializeField] float enableTime = 0.25f;
     [SerializeField] float disableTime = 0.5f;
 
-    WaitForSeconds enableWait;
-    WaitForSeconds disableWait;
+    WaitForSeconds _enableWait;
+    WaitForSeconds _disableWait;
+
+    PlayerStatus _status;
 
     void Start()
     {
-        enableWait = new WaitForSeconds(enableTime);
-        disableWait = new WaitForSeconds(disableTime);
+        _status = GetComponentInParent<PlayerStatus>();
+        _enableWait = new WaitForSeconds(enableTime);
+        _disableWait = new WaitForSeconds(disableTime);
     }
 
     public void Use()
@@ -30,12 +32,13 @@ public class Weapon : MonoBehaviour
     {
         attackArea.enabled = false;
 
-        yield return enableWait;
+        yield return _enableWait;
         attackArea.enabled = true;
 
-        yield return disableWait;
+        yield return _disableWait;
         attackArea.enabled = false;
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -44,8 +47,10 @@ public class Weapon : MonoBehaviour
             Status targetStatus = other.GetComponent<Status>();
             if (!targetStatus.IsDead())
             {
-                other.GetComponent<Status>().Damage(50, transform.position);
+                other.GetComponent<Status>().Damage(_status.GetAtk(), transform.position);
             }
         }
     }
+
+    public float GetWeaponRate() { return rate; }
 }

@@ -6,7 +6,6 @@ public class PlayerMove : MonoBehaviour
 {
     public float speed;
     public float jumpForce;
-    public Transform child;
 
     float hAxis;
     float vAxis;
@@ -43,7 +42,7 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         attackDelay += Time.deltaTime;
-        isAttackReady = equipWeapon.rate < attackDelay;
+        isAttackReady = equipWeapon.GetWeaponRate() < attackDelay;
     }
 
     void Move()
@@ -74,7 +73,7 @@ public class PlayerMove : MonoBehaviour
 
         transform.position += realMoveVec * speed * Time.deltaTime;
 
-        child.LookAt(child.position + realMoveVec);
+        transform.LookAt(transform.position + realMoveVec);
 
         anim.SetBool("isRun", realMoveVec != Vector3.zero);
     }

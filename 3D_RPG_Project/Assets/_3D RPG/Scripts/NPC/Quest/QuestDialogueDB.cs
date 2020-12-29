@@ -13,13 +13,21 @@ public class QuestDialogueDB : MonoBehaviour
         if (instance == null) instance = this; 
     }
 
-    // 퀘스트 다이얼로그 추가 
+    /// <summary>
+    /// questId key, QuestDialogue value를 가진 데이터를 데이터베이스 Dictionary에 추가 
+    /// </summary>
+    /// <param name="questId"></param>
+    /// <param name="questDialogue"></param>
     public void AddDialogue(int questId, QuestDialogue questDialogue)
     {
         questDialogueDB.Add(questId, questDialogue);
     }
 
-    // 퀘스트ID에 맞는 퀘스트 다이얼로그 반환 
+    /// <summary>
+    /// questId key값에 맞는 QuestDialogue 데이터를 반환 
+    /// </summary>
+    /// <param name="questId"></param>
+    /// <returns></returns>
     public QuestDialogue GetDialogue(int questId)
     {
         QuestDialogue questDialouge = questDialogueDB[questId];
@@ -29,13 +37,20 @@ public class QuestDialogueDB : MonoBehaviour
         return questDialouge;
     }
 
-    // 해당 퀘스트ID를 key로 가진 데이터가 있는지 확인하여 bool 타입으로 반환  
+    /// <summary>
+    /// 해당 questId를 key로 가진 데이터 유무를 bool 타입으로 반환 
+    /// </summary>
+    /// <param name="questId"></param>
+    /// <returns></returns>
     public bool CheckKey(int questId)
     {
         return questDialogueDB.ContainsKey(questId);
     }
 
-    // 퀘스트 다이얼로그 최대개수 반환 
+    /// <summary>
+    /// QuestDialogueDB 내 데이터의 개수를 반환 
+    /// </summary>
+    /// <returns></returns>
     public int GetMaxCount()
     {
         return questDialogueDB.Count;

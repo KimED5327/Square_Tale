@@ -2323,7 +2323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12ffe8cb2d446ad45b632b248a2beb16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questDBPath: /QuestDa.json
+  questDBPath: /QuestDB.json
   deliveryDBPath: /DelieveryQuestDB.json
   killMonsterDBPath: 
   collectLootDBPath: 
@@ -13419,7 +13419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d2c375235984f340aa0e99e805b9597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questDialogueDBPath: /dialogue.json
+  questDialogueDBPath: /QuestDialogueDB.json
 --- !u!1 &1220004812
 GameObject:
   m_ObjectHideFlags: 0

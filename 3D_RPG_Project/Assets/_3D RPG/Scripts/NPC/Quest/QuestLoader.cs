@@ -110,7 +110,7 @@ public class QuestLoader : MonoBehaviour
 
             //int형 밸류는 enum형 변수에 대입이 되지 않기 때문에 enum 타입으로 캐스팅 
             //QuestType type = (QuestType)int.Parse(jData[i][6].ToString());
-            //QuestState state = (QuestState)int.Parse(jData[i][7].ToString());
+            QuestState state = (QuestState)int.Parse(jData[i][7].ToString());
             int exp = int.Parse(jData[i][8].ToString());
             int gold = int.Parse(jData[i][9].ToString());
 
@@ -177,14 +177,14 @@ public class QuestLoader : MonoBehaviour
             quest.SetGoal(goal);
 
             //quest.SetQuestType(type);
-            //quest.SetState(state);
+            quest.SetState(state);
             quest.SetExp(exp);
             quest.SetGold(gold);
             quest.SetBlocks(blockList);
             quest.SetKeywords(keywordList);
 
             QuestDB.instance.AddQuest(quest, questId);
-            Debug.Log(questId + "번째 퀘스트 추가");
+            //Debug.Log(questId + "번째 퀘스트 추가");
         }
     }
 

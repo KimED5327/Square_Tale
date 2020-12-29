@@ -16,10 +16,10 @@ public class QuestDialogueLoader : MonoBehaviour
     void Start()
     {
         // 퀘스트 다이얼로그 데이터 파싱 
-        //ParsingQuestDialogueDB();
+        ParsingQuestDialogueDB();
 
-        //// 테스트용 
-        //printDialogue();
+        // 테스트용 출력 
+        //PrintDialogue();
     }
 
     // NPC 독백 버전으로 대사 덩어리로 파싱 
@@ -140,68 +140,63 @@ public class QuestDialogueLoader : MonoBehaviour
 
     private void ParsingQuestDialogueDB()
     {
-        //string path = streamingAssetsPath + questDialogueDBPath;
-        //JsonData jData = GetJsonData(path);
+        string path = streamingAssetsPath + questDialogueDBPath;
+        JsonData jData = JsonManager.instance.GetJsonData(path);
 
-        //for (int i = 0; i < jData.Count; i++)
-        //{
-        //    int questId = int.Parse(jData[i][0].ToString());
-        //    int lineId = int.Parse(jData[i][2].ToString());
-        //    int npcId = int.Parse(jData[i][3].ToString());
-        //    QuestState state = (QuestState)int.Parse(jData[i][1].ToString());
+        for (int i = 0; i < jData.Count; i++)
+        {
+            int questId = int.Parse(jData[i][0].ToString());
+            QuestState state = (QuestState)int.Parse(jData[i][1].ToString());
 
-        //    LineUnit line = new LineUnit();
-        //    line.SetNPCId(npcId);
-        //    line.SetLineId(lineId);
-        //    line.SetLine(jData[i][4].ToString());
+            LineUnit line = new LineUnit();
+            line.SetLineId(int.Parse(jData[i][2].ToString()));
+            line.SetNPCId(int.Parse(jData[i][3].ToString()));
+            line.SetLine(jData[i][4].ToString());
 
-        //    // 퀘스트ID의 questDialogue 데이터가 있는지 확인하고 없으면 전체 생성 
-        //    if (!QuestDialogueDB.instance.CheckKey(questId))
-        //    {
-        //        QuestDialogue questDialogue = new QuestDialogue();
-        //        DialogueUnit dialoguePerState = new DialogueUnit();
-        //        List<LineUnit> lineLists = new List<LineUnit>();
+            // 퀘스트 ID의 questDialogue 데이터가 있는지 확인하고 없을 경우 생성하고 for문 건너뛰기 
+            if(!QuestDialogueDB.instance.CheckKey(questId))
+            {
+                QuestDialogue questDialogue = new QuestDialogue();
+                DialogueUnit dialoguePerState = new DialogueUnit();
+                List<LineUnit> lineList = new List<LineUnit>();
 
-        //        questDialogue.SetQuestId(questId);
+                questDialogue.SetQuestId(questId);
 
-        //        lineLists.Add(line);
-        //        dialoguePerState.SetQuestState(state);
-        //        dialoguePerState.SetLineLists(lineLists);
-        //        questDialogue.SetDialoguePerState(dialoguePerState, state);
+                dialoguePerState.SetQuestState(state);
+                lineList.Add(line);
+                dialoguePerState.SetLineList(lineList);
+                questDialogue.SetDialoguePerState(state, dialoguePerState);
 
-        //        QuestDialogueDB.instance.AddDialogue(questId, questDialogue);
-        //        Debug.Log(questId + "번 퀘스트 다이얼로그 클래스 생성");
-        //        Debug.Log(questId + "번 퀘스트 " + state + " 다이얼로그 추가");
-        //        continue;
-        //    }
+                QuestDialogueDB.instance.AddDialogue(questId, questDialogue);
+                Debug.Log(questId + "번 퀘스트 다이얼로그 클래스 생성");
+                Debug.Log(questId + "번 퀘스트 " + state + " 다이얼로그 추가");
+                continue; 
+            }
 
-        //    // 해당 state의 DialogueUnit이 만들어져있는지 확인 
-        //    if (QuestDialogueDB.instance.GetDialogue(questId).GetDialoguePerState(state) != null)
-        //    {
-        //        QuestDialogueDB.instance.GetDialogue(questId).GetDialoguePerState(state).
-        //            GetLineLists().Add(line);
+            // 해당 퀘스트 ID의 questDialogue 데이터가 있는 경우 
+            // 해당 state의 DialogueUnit 데이터가 있는 경우 line만 추가 
+            if(QuestDialogueDB.instance.GetDialogue(questId).CheckDialogue(state))
+            {
+                QuestDialogueDB.instance.GetDialogue(questId).AddLine(state, line);
 
-        //        Debug.Log(questId + "번 퀘스트 대사 추가");
-        //        //Debug.Log(QuestDialogueDB.instance.GetDialogue(questId).GetLine(state, i));
-        //    }
-        //    else
-        //    {
-        //        DialogueUnit dialoguePerState = new DialogueUnit();
-        //        List<LineUnit> lineLists = new List<LineUnit>();
+                Debug.Log(questId + "번 퀘스트 " + state + "대사 추가");
+            }
+            else
+            {
+                // 해당 state의 DialogueUnit 데이터가 없는 경우 lineList와 함께 생성 
+                DialogueUnit dialoguePerState = new DialogueUnit();
+                List<LineUnit> lineList = new List<LineUnit>();
 
-        //        lineLists.Add(line);
-        //        dialoguePerState.SetQuestState(state);
-        //        dialoguePerState.SetLineLists(lineLists);
+                dialoguePerState.SetQuestState(state);
+                lineList.Add(line);
+                dialoguePerState.SetLineList(lineList);
+                QuestDialogueDB.instance.GetDialogue(questId).SetDialoguePerState(state, dialoguePerState);
 
-        //        QuestDialogueDB.instance.GetDialogue(questId).
-        //            SetDialoguePerState(dialoguePerState, state);
-
-        //        Debug.Log(questId + "번 퀘스트 " + state + " 다이얼로그 추가");
-        //    }
-        //}
+            }
+        }
     }
 
-    private void printDialogue()
+    private void PrintDialogue()
     {
         for (int i = 0; i < QuestDialogueDB.instance.GetDialogue(1).
             GetLinesCount(QuestState.QUEST_OPENED); i++)
@@ -228,30 +223,5 @@ public class QuestDialogueLoader : MonoBehaviour
         //{
 
         //}
-    }
-
-    private JsonData GetJsonData(string path)
-    {
-        string jsonString = "";
-
-        // 안드로이드 
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            UnityWebRequest reader = new UnityWebRequest(path);
-            while (!reader.isDone)
-                jsonString = reader.downloadHandler.text;
-        }
-        else // PC
-        {
-            jsonString = File.ReadAllText(path);
-        }
-
-        return JsonMapper.ToObject(jsonString);
-    }
-
-    // 넘겨받은 문자열이 NULL이나 빈 문자열인지 판별 
-    private bool IsNullString(string str)
-    {
-        return string.IsNullOrEmpty(str);
     }
 }

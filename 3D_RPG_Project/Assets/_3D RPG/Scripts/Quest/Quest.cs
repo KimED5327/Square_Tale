@@ -3,26 +3,75 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 퀘스트 진행상태 분류 (미해금, 진행가능, 진행중, 완료가능, 완료)
+/// 퀘스트 진행상태 분류 (0.미해금 1.진행가능 2.진행중 3.완료가능 4.완료)
 /// </summary>
 public enum QuestState
 {
-    QUEST_VEILED,           // 미해금 상태
-    QUEST_OPENED,           // 해금되었으나 미진행 혹은 진행가능 상태 
-    QUEST_ONGOING,          // 진행중인 상태 
-    QUEST_COMPLETABLE,      // 완료 가능한 상태(퀘스트 달성조건은 충족했으나 NPC와 상호작용 전)    
-    QUEST_COMPLETED         // 완료된 상태 
+    /// <summary>
+    /// 선행퀘스트를 완료하지 않아서 퀘스트가 미해금된 상태 
+    /// </summary>
+    QUEST_VEILED,          
+
+    /// <summary>
+    /// 퀘스트가 해금되었어나 아직 진행되지 않은 퀘스트 진행가능 상태 
+    /// </summary>
+    QUEST_OPENED,           
+
+    /// <summary>
+    /// 퀘스트를 수락했으나 아직 달성조건을 충족하지 않은 퀘스트 진행중 상태 
+    /// </summary>
+    QUEST_ONGOING,          
+
+    /// <summary>
+    /// 퀘스트의 달성조건을 충족했으나 NPC와 상호작용하기 전인 퀘스트 완료가능 상태 
+    /// </summary>
+    QUEST_COMPLETABLE,      
+    
+    /// <summary>
+    /// 퀘스트 달성조건을 충족하고 NPC와 상호작용하여 보상이 지급된 퀘스트 완료상태 
+    /// </summary>
+    QUEST_COMPLETED       
 };
 
 /// <summary>
-/// 퀘스트 타입 분류 (미해금, 진행가능, 진행중, 완료가능, 완료)
+/// 퀘스트 타입 분류 (1.아이템전달 2.전리품획득 3.아이템사용 4.아이템획득 5.오브젝트조작 6.몬스터처치 7.NPC대화)
 /// </summary>
 public enum QuestType
 {
-    TYPE_DELIVERY,
-    TYPE_KILLMONSTER,
+    /// <summary>
+    /// 특정한 아이템을 NPC에게 전달하여 완수하는 퀘스트 타입
+    /// </summary>
+    TYPE_DELIVERITEM = 1,
+
+    /// <summary>
+    /// 몬스터를 처치하고 획득한 퀘스트 아이템을 전달하여 완수하는 퀘스트 타입 (퀘스트 아이템은 퀘스트 진행 시에만 드랍)
+    /// </summary>
     TYPE_COLLECTLOOT,
-    TYPE_DIALOGUE
+
+    /// <summary>
+    /// 몬스터에게 아이템을 사용하여 완수하는 퀘스트 타입 
+    /// </summary>
+    TYPE_USEITEM,
+
+    /// <summary>
+    /// 퀘스트 NPC와 대화 후 특정 아이템을 획득하고 완수되는 퀘스트 타입
+    /// </summary>
+    TYPE_ACQUIREITEM,
+
+    /// <summary>
+    /// 특정 오브젝트를 조작하여 완수하는 퀘스트 타입 (레버를 폭파시켜 다리를 생성하는 퀘스트)
+    /// </summary>
+    TYPE_OPERATEOBJECT,
+
+    /// <summary>
+    /// 특정 몬스터를 지정된 수만큼 처치하여 완수하는 퀘스트 타입
+    /// </summary>
+    TYPE_KILLENEMY,
+
+    /// <summary>
+    /// 특정 NPC와 대화하여 완수하는 퀘스트 타입
+    /// </summary>
+    TYPE_TALKWITHNPC,
 };
 
 /// <summary>
@@ -140,8 +189,8 @@ public class EnemyUnit
 /// </summary>
 public class DeliverItem
 {
-    int _questID;                   // 퀘스트 ID
-    List<ItemUnit> _itemList;       // 전달하는 아이템 리스트 
+    int _questID;                                      // 퀘스트 ID
+    List<ItemUnit> _itemList = new List<ItemUnit>();   // 전달하는 아이템 리스트 
 
     //getter
     public int GetQuestID() { return _questID; }
@@ -170,8 +219,8 @@ public class DeliverItem
 /// </summary>
 public class CollectLoot
 {
-    int _questID;                   // 퀘스트 ID
-    List<EnemyUnit> _lootList;      // 퀘스트 아이템 리스트  
+    int _questID;                                       // 퀘스트 ID
+    List<EnemyUnit> _lootList = new List<EnemyUnit>();  // 퀘스트 아이템 리스트  
 
     //getter
     public int GetQuestID() { return _questID; }
@@ -196,12 +245,12 @@ public class CollectLoot
 }
 
 /// <summary>
-/// type3. 몬스터에게 아이템을 사용하여 완수하는 퀘스트 
+/// type3. 몬스터에게 아이템을 사용하여 완수하는 퀘스트 타입 
 /// </summary>
 public class UseItem
 {
-    int _questID;         // 퀘스트 ID
-    ItemUnit _item;       // 사용하는 아이템  
+    int _questID;                     // 퀘스트 ID
+    ItemUnit _item = new ItemUnit();  // 사용하는 아이템  
 
     //getter
     public int GetQuestID() { return _questID; }
@@ -217,29 +266,16 @@ public class UseItem
 /// </summary>
 public class AcquireItem
 {
-    int _questID;                   // 퀘스트 ID
-    List<ItemUnit> _itemList;       // 획득하는 아이템 리스트 
+    int _questID;                     // 퀘스트 ID
+    ItemUnit _item = new ItemUnit();  // 획득하는 아이템 
 
     //getter
     public int GetQuestID() { return _questID; }
-    public List<ItemUnit> GetItemList() { return _itemList; }
-
-    /// <summary>
-    /// ItemUnit 리스트에서 idx 순서의 데이터 반환. itemList[idx]
-    /// </summary>
-    /// <param name="idx"></param>
-    /// <returns></returns>
-    public ItemUnit GetItem(int idx) { return _itemList[idx]; }
+    public ItemUnit GetItem() { return _item; }
 
     //setter
     public void SetQuestID(int questID) { _questID = questID; }
-    public void SetItemList(List<ItemUnit> itemList) { _itemList = itemList; }
-
-    /// <summary>
-    /// ItemUnit 리스트에 item을 새 원소로 추가 
-    /// </summary>
-    /// <param name="item"></param>
-    public void AddItem(ItemUnit item) { _itemList.Add(item); }
+    public void SetItem(ItemUnit item) { _item = item; }
 }
 
 /// <summary>
@@ -264,8 +300,8 @@ public class OperateObject
 /// </summary>
 public class KillEnemy
 {
-    int _questID;                  // 퀘스트 ID
-    List<EnemyUnit> _enemyList;    // 처치해야 하는 enemy 리스트 
+    int _questID;                                        // 퀘스트 ID
+    List<EnemyUnit> _enemyList = new List<EnemyUnit>();  // 처치해야 하는 enemy 리스트 
 
     //getter 
     public int GetQuestID() { return _questID; }
@@ -294,18 +330,24 @@ public class KillEnemy
 /// </summary>
 public class TalkWithNpc
 {
-    int _questID;   // 퀘스트 ID
-    int _npcID;     // NPC ID
-    int _lineID;    // 해당 NPC와의 대화에서 첫 대사 ID
+    int _questID;       // 퀘스트 ID
+    int _npcID;         // NPC ID
+    int _firstLineID;   // 해당 NPC와의 대화에서 첫 대사 ID
+    int _lastLineID;    // 해당 NPC와의 대화에서 마지막 대사 ID
+    //int _lineID;    // 해당 NPC와의 대화에서 첫 대사 ID
 
     //getter
     public int GetQuestID() { return _questID; }
     public int GetNpcID() { return _npcID; }
-    public int GetLineID() { return _lineID; }
+    public int GetFirstLineID() { return _firstLineID; }
+    public int GetLastLineID() { return _lastLineID; }
+    //public int GetLineID() { return _lineID; }
 
     //setter
     public void SetQuestID(int questID) { _questID = questID; }
     public void SetNpcID(int npcID) { _npcID = npcID; }
-    public void SetLineID(int lineID) { _lineID = lineID; }
+    public void SetFirstLineID(int firstLineID) { _firstLineID = firstLineID; }
+    public void SetLastLineID(int lastLineID) { _lastLineID = lastLineID; }
+    //public void SetLineID(int lineID) { _lineID = lineID; }
 }
 

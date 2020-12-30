@@ -8,7 +8,7 @@ using UnityEngine;
 public class QuestDB : MonoBehaviour
 {
     public static QuestDB instance;
-    [SerializeField] Dictionary<int, Quest> questDB = new Dictionary<int, Quest>(); // 실 활용 테이블
+    [SerializeField] Dictionary<int, Quest> questDB = new Dictionary<int, Quest>();
 
     void Awake()
     {

@@ -197,6 +197,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7989147}
   m_CullTransparentMesh: 0
+--- !u!1 &28932278
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 28932279}
+  - component: {fileID: 28932280}
+  m_Layer: 0
+  m_Name: NPCData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &28932279
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28932278}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 888088907}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &28932280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28932278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f844300789dd59847bd8511288d31764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &29003816
 GameObject:
   m_ObjectHideFlags: 0
@@ -8698,7 +8741,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 834793279}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -9068,6 +9111,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 886673156}
   m_CullTransparentMesh: 0
+--- !u!1 &888088906
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 888088907}
+  - component: {fileID: 888088908}
+  m_Layer: 0
+  m_Name: NPCDatabase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &888088907
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888088906}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 28932279}
+  m_Father: {fileID: 1729544572}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &888088908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888088906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3675a90f9a986a4b892ea6406fc7f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcDBPath: /NpcDB.json
 --- !u!1 &897619794
 GameObject:
   m_ObjectHideFlags: 0
@@ -12110,7 +12198,7 @@ Transform:
   m_Children:
   - {fileID: 2071347252}
   m_Father: {fileID: 1729544572}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1247464491
 MonoBehaviour:
@@ -12136,11 +12224,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12ffe8cb2d446ad45b632b248a2beb16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questDBPath: /QuestDa.json
-  deliveryDBPath: /DelieveryQuestDB.json
-  killMonsterDBPath: 
-  collectLootDBPath: 
-  dialogueDBPath: 
+  questDBPath: /Quest/QuestDB.json
+  deliverItemDBPath: /Quest/DeliverItemDB.json
+  collectLootDBPath: /Quest/CollectLootDB.json
+  useItemDBPath: /Quest/UseItemDB.json
+  acquireItemDBPath: /Quest/AcquireItemDB.json
+  operateObjectDBPath: 
+  killEnemyDBPath: /Quest/KillEnemyDB.json
+  talkWithNpcDBPath: /Quest/TalkWithNpcDB.json
 --- !u!1 &1249726799
 GameObject:
   m_ObjectHideFlags: 0
@@ -16160,7 +16251,7 @@ Transform:
   m_Children:
   - {fileID: 2117804788}
   m_Father: {fileID: 1729544572}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1671031414
 MonoBehaviour:
@@ -16174,7 +16265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d2c375235984f340aa0e99e805b9597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questDialogueDBPath: /dialogue.json
+  questDialogueDBPath: /Dialogue/QuestDialogueDB.json
 --- !u!1 &1682782806
 GameObject:
   m_ObjectHideFlags: 0
@@ -16688,6 +16779,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 826544791}
+  - {fileID: 888088907}
   - {fileID: 1247464490}
   - {fileID: 1671031413}
   m_Father: {fileID: 0}

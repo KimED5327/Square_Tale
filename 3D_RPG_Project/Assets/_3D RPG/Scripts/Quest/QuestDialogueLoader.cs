@@ -168,8 +168,8 @@ public class QuestDialogueLoader : MonoBehaviour
                 questDialogue.SetDialoguePerState(state, dialoguePerState);
 
                 QuestDialogueDB.instance.AddDialogue(questID, questDialogue);
-                Debug.Log(questID + "번 퀘스트 다이얼로그 클래스 생성");
-                Debug.Log(questID + "번 퀘스트 " + state + " 다이얼로그 추가");
+                //Debug.Log(questID + "번 퀘스트 다이얼로그 클래스 생성");
+                //Debug.Log(questID + "번 퀘스트 " + state + " 다이얼로그 추가");
                 continue; 
             }
 
@@ -179,7 +179,7 @@ public class QuestDialogueLoader : MonoBehaviour
             {
                 QuestDialogueDB.instance.GetDialogue(questID).AddLine(state, line);
 
-                Debug.Log(questID + "번 퀘스트 " + state + "대사 추가");
+                //Debug.Log(questID + "번 퀘스트 " + state + "대사 추가");
             }
             else
             {

@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public enum State
 {
-    Idle, Move, Die, Attack, Return, Damaged, Search, Jump
+    Idle, Move, Die, Attack, Return, Damaged, Search
 }
 
 public class Enemy : MonoBehaviour
@@ -29,10 +29,14 @@ public class Enemy : MonoBehaviour
     public int maxLongAttackRange;              //몬스터 원거리 공격 범위
     public int reconRange;                      //정찰 범위
 
-
+    private bool jump;
+    private int jumpCount;
     Animator enemyAnimator;                     //몬스터 애니메이터
+    BoxCollider myColider;
+    Rigidbody myRigid;
 
     EnemyStatus status;
+    Vector3     _offset;
 
     public State enemyState;
 
@@ -54,12 +58,14 @@ public class Enemy : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         startPoint = transform.position;
         status = GetComponent<EnemyStatus>();
+        myColider = GetComponent<BoxCollider>();
+        myRigid = GetComponent<Rigidbody>();
     }
 
     //에너미 업데이트
     private void Update()
     {
-        if(!status.IsDead())
+        if(!status.IsDead() && !jump)
         {
             switch (enemyState)
             {
@@ -81,20 +87,36 @@ public class Enemy : MonoBehaviour
                 case State.Search:
                     UpdateSearch();
                     break;
-                case State.Jump:
-                    UpdateJump();
-                    break;
+            }
+
+        }
+        else if(jump)
+        {
+            if(jumpCount == 0)
+            {
+                agent.enabled = false;
+                myRigid.AddForce(Vector3.up * 8.5f, ForceMode.Impulse);
+                myRigid.AddForce(Vector3.forward * 1f, ForceMode.Impulse);
+                jumpCount++;
             }
         }
         else
         {
             UpdateDie();
-        }
-    } 
-
-    private void UpdateJump()
+        }    
+    }
+    private void OnCollisionEnter(Collision collision)
     {
-   
+        if (collision.transform.CompareTag("Floor"))
+        {
+            if(jump)
+            {
+                agent.enabled = true;
+                jump = false;
+                enemyState = State.Move;
+                jumpCount = 0;
+            }
+        }
     }
     private void UpdateSearch()
     {
@@ -127,18 +149,29 @@ public class Enemy : MonoBehaviour
 
         else if(Vector3.SqrMagnitude(transform.position - player.position) > Mathf.Pow(maxAttackRange,2))
         {
-            //enemyAnimator.SetBool("Move", true);
-            enemyAnimator.SetInteger("animation", 2);
+            _offset = new Vector3(0f, myColider.bounds.extents.y, 0f);
+            enemyAnimator.SetBool("Move", true);
+            Debug.DrawRay(transform.position + _offset, transform.forward * 10, Color.red);
+            if (Physics.Raycast(transform.position + _offset, transform.forward, out RaycastHit hit, 1f))
+           {
+               if(hit.transform.CompareTag("Floor") && !jump)
+               {
+
+                    jump = true;
+                    Debug.Log("부딪쳤다");
+               }
+           }
+            //enemyAnimator.SetInteger("animation", 2);
 
             agent.SetDestination(player.transform.position);
         }
 
         else
         {
-            enemyAnimator.SetInteger("animation", 3);
+           // enemyAnimator.SetInteger("animation", 3);
 
             enemyState = State.Attack;
-            //enemyAnimator.SetBool("Attack", true);
+            enemyAnimator.SetBool("Attack", true);
     
         }
     }
@@ -158,9 +191,9 @@ public class Enemy : MonoBehaviour
 
         else
         {
-            enemyAnimator.SetInteger("animation", 2);
+            //enemyAnimator.SetInteger("animation", 2);
 
-            //enemyAnimator.SetBool("Attack", false);
+            enemyAnimator.SetBool("Attack", false);
             enemyState = State.Move;
 
             timer = 0.0f;
@@ -170,9 +203,9 @@ public class Enemy : MonoBehaviour
     private void UpdateDie()
     {
         agent.ResetPath();
-        enemyAnimator.SetInteger("animation", 5);
+       // enemyAnimator.SetInteger("animation", 5);
 
-        //enemyAnimator.SetBool("Die", true);
+        enemyAnimator.SetBool("Die", true);
 
         dieTime += Time.deltaTime;
         if(dieTime >= 60)
@@ -194,9 +227,9 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            enemyAnimator.SetInteger("animation", 1);
+            //enemyAnimator.SetInteger("animation", 1);
 
-            //enemyAnimator.SetBool("Move", false);
+            enemyAnimator.SetBool("Move", false);
             agent.ResetPath();
             transform.position = startPoint;
             enemyState = State.Idle;

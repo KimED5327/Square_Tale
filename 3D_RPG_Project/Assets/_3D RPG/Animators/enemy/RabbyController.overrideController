@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: RabbyController
+  m_Controller: {fileID: 9100000, guid: b6c2c7aba18eeda4f94465478cba8f98, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: e45f556cec664e74daed8e0ebae61814, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: e3e5f1175b60ca640909417c30eff285, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 39ba79f1e8a9e3542a1a05958900e7fb, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 4fe79feba103eb444b867bfe36e70a6e, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: e687b54cf1503e448b2447d53972576c, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 6c1607d94e26a694190788a65e2e73e3, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 2dbb4a8e66c45ed4e94dad12ffe07b0e, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 00e0143f3c6c8e44395ccdeab0f44be2, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 578da6188cc0fab4eb04cf316ba8556c, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: e899528dfebb5ae46b40652351d02039, type: 3}

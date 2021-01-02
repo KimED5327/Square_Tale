@@ -51,7 +51,7 @@ public class ShopToolTip : MonoBehaviour
         _count = 1;
 
         // 돈없으면 구매창 출력 X
-        if(_price > _inven.GetGold())
+        if(isBuy && _price > _inven.GetGold())
         {
             Notification.instance.ShowFloatingMessage(StringManager.msgNotEnoughGold);
             return;
@@ -150,7 +150,10 @@ public class ShopToolTip : MonoBehaviour
     void ShowPriceAndCount()
     {
         _txtPrice.text = string.Format("{0:#,##0}", _price);
-        _txtPrice.color = (_price > _inven.GetGold()) ? Color.red : Color.white;
+        if (_isBuy)
+            _txtPrice.color = (_price > _inven.GetGold()) ? Color.red : Color.white;
+        else
+            _txtPrice.color = Color.white;
         _txtCount.text = _count.ToString();
     }
 

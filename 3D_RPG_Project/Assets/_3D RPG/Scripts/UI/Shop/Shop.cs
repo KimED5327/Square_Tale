@@ -26,9 +26,11 @@ public class Shop : MonoBehaviour
     [Header("Tab")]
     [SerializeField] ShopItem[] _shopItemId = null;
     [SerializeField] Image[] _tabButton = null;
-
+    
     [Header("UI")]
     [SerializeField] Text _txtGold = null;
+    [SerializeField] Image _imgSellBtn = null;
+    [SerializeField] Image _imgBuyBtn = null;
 
     int _tabNum = 0;
     public static bool _isShow = false;
@@ -123,6 +125,10 @@ public class Shop : MonoBehaviour
 
     public void BtnSellWindow()
     {
+        _imgBuyBtn.color = Color.gray;
+        _imgSellBtn.color = Color.white;
+
+
         _isBuy = false;
         _goShopBuyUI.SetActive(_isBuy);
         _inven.ShowInven(true);
@@ -133,6 +139,9 @@ public class Shop : MonoBehaviour
 
     public void BtnBuyWindow()
     {
+        _imgBuyBtn.color = Color.white;
+        _imgSellBtn.color = Color.gray;
+
         _isBuy = true;
         _inven.HideInven(false);
         _goShopBuyUI.SetActive(_isBuy);

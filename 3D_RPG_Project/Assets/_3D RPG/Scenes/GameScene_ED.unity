@@ -804,6 +804,8 @@ MonoBehaviour:
   - {fileID: 1931845903}
   - {fileID: 1244701839}
   _txtGold: {fileID: 1185300650}
+  _imgSellBtn: {fileID: 799945701}
+  _imgBuyBtn: {fileID: 1587970978}
 --- !u!114 &64521274
 MonoBehaviour:
   m_ObjectHideFlags: 0

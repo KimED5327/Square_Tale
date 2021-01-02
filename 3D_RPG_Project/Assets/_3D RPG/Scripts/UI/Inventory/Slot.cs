@@ -56,6 +56,12 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
 
         return overCount;
     }
+
+    public void ForceSetSlotCount(int count)
+    {
+        _count = count;
+        ShowUI(true);
+    }
    
 
     // 슬롯 아이템 개수 감소

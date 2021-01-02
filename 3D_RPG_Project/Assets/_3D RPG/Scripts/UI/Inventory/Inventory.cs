@@ -240,8 +240,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        Debug.Log("아이템 획득 실패!");
-        Debug.Log("적절한 빈 슬롯이 없습니다!");
+        Notification.instance.ShowFloatingMessage(StringManager.msgNotEnoughInventory);
 
         return false;
     }
@@ -276,7 +275,7 @@ public class Inventory : MonoBehaviour
 
     public void DecreaseItemCount(Item item, int count)
     {
-        bool isNeedSorting = false;
+
         for (int i = 0; i < _slots.Length; i++)
         {
             if (_slots[i].IsSameItem(item))
@@ -284,32 +283,42 @@ public class Inventory : MonoBehaviour
                 count = _slots[i].DecreaseCount(count);
                 if (count <= 0)
                     break;
-                else
-                    isNeedSorting = true;
+                
             }
         }
-
-
-        if (isNeedSorting)
-            SerializeItem();
-
+        SerializeItem();
     }
 
     // 같은 이름의 아이템에 푸시
     bool TryToPushSameSlot(Item item, int count)
     {
+        int originSlotIndex;
+        int originCount;
         for (int i = 0; i < _slots.Length; i++)
         {
             // 같은 아이템이 있다면 개수 증가.
             // 이미 99개 꽉차있다면 새로운 빈슬롯에 추가.
-            if (_slots[i].IsSameItem(item))
+            if (!_slots[i].IsEmptySlot() && _slots[i].IsSameItem(item))
             {
-                // 넘쳐서 남은 개수는 새로운 빈슬롯에 추가.
-                int overCount = _slots[i].IncreaseSlotCount(count);
+                // 넘쳐서 남은 개수를 추가로 넣을 빈 슬롯이 없을 경우를 대비.
+                originCount = _slots[i].GetSlotCount();
+                originSlotIndex = i;
 
-                if (overCount > 0)
-                    if (!TryToPushEmptySlot(item, overCount))
+                // 슬롯 개수 증가. 넘쳐서 남은 값 리턴.
+                count = _slots[i].IncreaseSlotCount(count);
+
+                // 넘쳐서 남았다면...
+                if (count > 0)
+                {
+                    // 빈 슬롯을 찾아서 남은 개수 푸시.
+                    if (!TryToPushEmptySlot(item, count))
+                    {
+                        _slots[originSlotIndex].ForceSetSlotCount(originCount);
                         return false;
+                    }
+
+                }
+
 
                 return true;
             }

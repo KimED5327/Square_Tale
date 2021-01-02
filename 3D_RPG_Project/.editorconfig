@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# IDE0066: switch 문을 식으로 변환
+csharp_style_prefer_switch_expression = true:suggestion

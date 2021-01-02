@@ -83,8 +83,9 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
         _imgItem.gameObject.SetActive(_hasItem);
         if (_hasItem)
         {
-            _imgItem.sprite = _item.sprite;
-            if(_item.type == ItemType.ETC)
+            //_imgItem.sprite = _item.sprite;
+            _imgItem.sprite = SpriteManager.instance.GetItemSprite(_item.id);
+            if (_item.stackable)
             {
                 _txtItemCount.gameObject.SetActive(true);
                 _txtItemCount.text = _count.ToString();
@@ -94,7 +95,6 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
         }
         else
         {
-            _imgItem.sprite = null;
             _txtItemCount.gameObject.SetActive(false);
         }
     }

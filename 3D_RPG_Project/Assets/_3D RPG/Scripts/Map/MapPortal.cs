@@ -17,7 +17,7 @@ public class MapPortal : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _mapManager.ChangeMap(other.transform, _moveMapName);
+            _mapManager.ChangeMap(_moveMapName);
 
         }
     }

@@ -71,8 +71,7 @@ public class Map : MonoBehaviour
 
             GameObject goEnemy = _spawnEnemyList[i].enemyStatus.gameObject;
             string monsterName = _spawnEnemyList[i].enemyStatus.GetName();
-            
-            // 풀링 구현 필요
+
             ObjectPooling.instance.PushObjectToPool(monsterName, goEnemy);
         }
         _spawnEnemyList.Clear();
@@ -146,6 +145,8 @@ public class Map : MonoBehaviour
             if (_spawnPoints[i].priorMapName == priorMapName)
             {
                 tfPlayer.position = _spawnPoints[i].tfSpawnPoint.position;
+                tfPlayer.rotation = _spawnPoints[i].tfSpawnPoint.rotation;
+                tfPlayer.GetComponent<CameraController>().SetCamRot(_spawnPoints[i].tfSpawnPoint.eulerAngles.y);
                 break;
             }
         }

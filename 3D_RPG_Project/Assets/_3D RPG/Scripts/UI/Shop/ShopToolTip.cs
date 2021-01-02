@@ -47,7 +47,7 @@ public class ShopToolTip : MonoBehaviour
     {
         _isBuy = isBuy;
         _touchItem = item;
-        _price = item.price;
+        _price = isBuy ? item.priceBuy : item.priceSell;
         _count = 1;
 
         // 돈없으면 구매창 출력 X
@@ -60,15 +60,20 @@ public class ShopToolTip : MonoBehaviour
         // 툴팁 내용 세팅
         _txtName.text = item.name;
         _txtDesc.text = item.desc;
-        _imgIcon.sprite = item.sprite;
+        _imgIcon.sprite = SpriteManager.instance.GetItemSprite(item.id);
+        //_imgIcon.sprite = item.sprite;
         _txtCount.text = _count.ToString();
         _txtPrice.text = string.Format("{0:#,##0}", _price);
-        _txtPrice.color = (_price > _inven.GetGold()) ? Color.red : Color.white;
+        if (isBuy)
+            _txtPrice.color = (_price > _inven.GetGold()) ? Color.red : Color.white;
+        else
+            _txtPrice.color = Color.white;
+
         _txtOption.text = "";
         if (item.options.Count > 0)
         {
             for (int i = 0; i < item.options.Count; i++)
-                _txtOption.text += item.options[i].name + " " + item.options[i].num + " ";
+                _txtOption.text += StringManager.ItemTypeToString(item.options[i].opType) + " " + item.options[i].num + " ";
         }
 
         _txtTitle.text = (_isBuy) ? "상품 구매" : "상품 판매";
@@ -92,7 +97,10 @@ public class ShopToolTip : MonoBehaviour
         if(_count < 99)
         {
             _count += 1;
-            _price += _touchItem.price;
+            if (_isBuy)
+                _price += _touchItem.priceBuy;
+            else
+                _price += _touchItem.priceSell;
 
             if (_isBuy)
             {
@@ -104,8 +112,10 @@ public class ShopToolTip : MonoBehaviour
     {
         if(_count > 1) {
             _count -= 1;
-            _price -= _touchItem.price;
-
+            if (_isBuy)
+                _price -= _touchItem.priceBuy;
+            else
+                _price -= _touchItem.priceSell;
 
             ShowPriceAndCount();
         }
@@ -114,12 +124,15 @@ public class ShopToolTip : MonoBehaviour
     {
         if (_count < 99)
         {
-            int maxCount = _inven.GetGold() / _touchItem.price;
-            if (maxCount > 99)
-                maxCount = 99;
+            if (_isBuy)
+                _count = _inven.GetGold() / _touchItem.priceBuy;
+            else
+                _count = _inven.GetItemCount(_touchItem);
+            
+            if (_count > 99)
+                _count = 99;
 
-            _count = maxCount;
-            _price = _touchItem.price * _count;
+            _price = (_isBuy) ? _touchItem.priceBuy * _count : _touchItem.priceSell * _count;
 
 
             ShowPriceAndCount();   
@@ -128,7 +141,8 @@ public class ShopToolTip : MonoBehaviour
     public void BtnMinCount()
     {
         _count = 1;
-        _price = _touchItem.price;
+
+        _price = (_isBuy) ? _touchItem.priceBuy : _touchItem.priceSell;
 
         ShowPriceAndCount();
     }

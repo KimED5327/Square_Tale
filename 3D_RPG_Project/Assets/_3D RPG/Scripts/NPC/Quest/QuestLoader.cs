@@ -119,7 +119,7 @@ public class QuestLoader : MonoBehaviour
             List<BlockUnit> blockList = new List<BlockUnit>();
             if(!JsonManager.instance.IsNullString(jData[i][10].ToString()))
             {
-                Debug.Log(questId + "번째 퀘스트 jData[i][10].IsArray : " + jData[i][10].IsArray);
+                //Debug.Log(questId + "번째 퀘스트 jData[i][10].IsArray : " + jData[i][10].IsArray);
 
                 // 블럭 필드가 배열이 아닌 단일값인 경우 
                 if(!jData[i][10].IsArray)
@@ -184,7 +184,7 @@ public class QuestLoader : MonoBehaviour
             quest.SetKeywords(keywordList);
 
             QuestDB.instance.AddQuest(quest, questId);
-            Debug.Log(questId + "번째 퀘스트 추가");
+            //Debug.Log(questId + "번째 퀘스트 추가");
         }
     }
 

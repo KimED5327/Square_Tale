@@ -16,8 +16,7 @@ public class JsonLoader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // 기획으로부터 DB를 전달받으면 실행.
-        // ParsingItemDB();
+        ParsingItemDB();
     }
 
     // JSON -> DB 파싱
@@ -34,32 +33,62 @@ public class JsonLoader : MonoBehaviour
 
             int id = int.Parse(jData[i][0].ToString());
             string name = jData[i][1].ToString();
-            string type = jData[i][2].ToString(); // 아이템 분류 기획이 나오면 수정
-            string desc = jData[i][3].ToString();
-            int price = int.Parse(jData[i][4].ToString());
+            string iconName = jData[i][2].ToString();
+            int type = int.Parse(jData[i][3].ToString());
+            var itemType = (ItemType)type;
 
-            // 옵션 필드가 하나라도 있다면
+            ItemCategory itemCategory;
+            if (itemType == ItemType.WEAPON || itemType == ItemType.STAFF)
+                itemCategory = ItemCategory.WEAPON;
+            else if (itemType == ItemType.ARMOR || itemType == ItemType.SUDAN)
+                itemCategory = ItemCategory.ARMOR;
+            else
+                itemCategory = ItemCategory.ETC;
+
+            int stack = int.Parse(jData[i][4].ToString());
+            bool stackable = (stack > 1);
+            int canSaleInt = int.Parse(jData[i][5].ToString());
+            int priceBuy = int.Parse(jData[i][6].ToString());
+            int priceSell = int.Parse(jData[i][7].ToString());
+            
             List<Option> optionList = new List<Option>();
-            if (jData[i][4].Count > 0)
+            for (int k = 8; k < 12; k++)
             {
-                // 옵션 추가
-                for (int k = 0; k < jData[i][5].Count; k++)
+                if (jData[i][k] != null)
                 {
-                    Option option = new Option
+                    var t_type = OptionType.HP;  
+                    switch (k)
                     {
-                        name = jData[i][6][k].ToString(),
-                        num = float.Parse(jData[i][7][k].ToString())
+                        case 8: t_type = OptionType.HP; break;
+                        case 9 : t_type = OptionType.STR; break;
+                        case 10: t_type = OptionType.INT; break;
+                        case 11: t_type = OptionType.DEF; break;
+                        case 12: t_type = OptionType.SPEED; break;
                     };
+
+                    Option option = new Option();
+                    option.opType = t_type;
+                    option.num = float.Parse(jData[i][k].ToString());
+                    
                     optionList.Add(option);
                 }
             }
 
+            string desc = jData[i][13].ToString();
+
             item.id = id;
             item.name = name;
+            item.stack = stack;
+            item.iconName = iconName;
+            item.stackable = stackable;
             item.desc = desc;
-            item.price = price;
+            item.priceBuy = priceBuy;
+            item.priceSell = priceSell;
+            item.canSell = canSaleInt == 2;
             item.options = optionList;
-            item.type = ItemType.WEAPON;
+            item.type = itemType;
+            item.category = itemCategory;
+
             ItemDatabase.instance.AddItem(item, id);
         }
     }

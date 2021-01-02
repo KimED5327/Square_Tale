@@ -9,6 +9,8 @@ public class InteractionManager : MonoBehaviour
     [SerializeField] string _keywordEffectName = "키워드 획득";
     [SerializeField] float _interactionRange = 1.5f;
 
+    [SerializeField] LayerMask _layerMask = 0;
+
     Shop _shop;
     Rooting _rootingSystem;
     Transform _playerPos;
@@ -27,7 +29,6 @@ public class InteractionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (_isOpen) return;
 
         if (Input.GetMouseButtonDown(0))
@@ -35,11 +36,11 @@ public class InteractionManager : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             // 터치 상호작용 시도
-            if (Physics.Raycast(ray, out RaycastHit hit, 1000))
+            if (Physics.Raycast(ray, out RaycastHit hit, 1000, _layerMask))
             {
 
                 // 1.5블록 이내일 경우
-                if (Vector3.SqrMagnitude(_playerPos.position - hit.transform.position) < Mathf.Pow(_interactionRange, 2)){
+                if (Vector3.SqrMagnitude(_playerPos.position - hit.transform.position) < Mathf.Pow(_interactionRange, 2)) {
 
                     // Enemy - 루팅
                     if (hit.transform.CompareTag(StringManager.enemyTag))
@@ -58,7 +59,7 @@ public class InteractionManager : MonoBehaviour
                     else if (hit.transform.CompareTag(StringManager.keywordTag))
                     {
                         ObjectPooling.instance.GetObjectFromPool(_keywordEffectName, _playerPos.position);
-                        
+
                         KeywordData.instance.AcquireKeyword(1);
                         hit.transform.gameObject.SetActive(false);
                     }

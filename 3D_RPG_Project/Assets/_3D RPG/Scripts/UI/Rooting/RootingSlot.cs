@@ -39,6 +39,8 @@ public class RootingSlot : MonoBehaviour, IPointerClickHandler
         else
             _txtCount.text = $"{0} Gold" + _count;
 
-        _ImgIcon.sprite = _item.sprite;
+        //_ImgIcon.sprite = _item.sprite;
+        _ImgIcon.sprite = SpriteManager.instance.GetItemSprite(_item.id);
+
     }
 }

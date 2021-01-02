@@ -6,9 +6,8 @@ public class ItemDatabase : MonoBehaviour
 {
     // 테스트 목적. 이후 JSON -> 테이블 로더를 통해 재구축.
     // Dictionary로 변경 예정.
-    [SerializeField] Item[] items = null; // 임시 테이블
+    //[SerializeField] Item[] items = null; // 임시 테이블
     Dictionary<int, Item> itemDB = new Dictionary<int, Item>(); // 실 활용 테이블
-
 
     public static ItemDatabase instance;
 
@@ -20,30 +19,17 @@ public class ItemDatabase : MonoBehaviour
 
     public void AddItem(Item item, int itemId)
     {
+        Debug.Log("아이템 ID = " + itemId + " 등록");
         itemDB.Add(itemId, item);
     }
 
-    // 임시
-    public Item GetItem(int itemId)
+
+    public Item GetItem(int itemID)
     {
-        for(int i = 0; i < items.Length; i++)
-        {
-            if(items[i].id == itemId)
-            {
-                return items[i];
-            }
-        }
-        return null;
+        if (!itemDB.ContainsKey(itemID))
+            Debug.LogError(itemID + " 은 등록된 아이템이 아닙니다.");
+
+        return itemDB[itemID];
     }
-
-    // 실제 사용
-    //public Item GetItem(string itemName)
-    //{
-    //    Item item = itemDB[itemName];
-    //    if (item == null)
-    //        Debug.Log(itemName + " 은/는 등록된 아이템이 아닙니다.");
-
-    //    return item;
-    //}
 
 }

@@ -99,7 +99,7 @@ public class Shop : MonoBehaviour
             TabItemPush();
         // 판매 상태면 인벤토리 카테고리 우선 정렬
         else
-            _inven.SortItem((ItemType)_tabNum);
+            _inven.SortItem((ItemCategory)_tabNum);
 
     }
 
@@ -128,7 +128,7 @@ public class Shop : MonoBehaviour
         _inven.ShowInven(true);
 
         // 선택되어 있던 카테고리로 인벤을 재정렬 시킴.
-        _inven.SortItem((ItemType)_tabNum);
+        _inven.SortItem((ItemCategory)_tabNum);
     }
 
     public void BtnBuyWindow()

@@ -4,31 +4,67 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
+    public static MapManager instance;
+
     [SerializeField] Map[] _maps = null;
-    [SerializeField] Map _currentMap = null;
+    public Map _currentMap;
 
-    // 맵 전환
-    // 이후 로딩씬 -> 게임씬으로 전환할 예정
-    public void ChangeMap(Transform tfPlayer, string moveMapName)
+    string _moveMap;
+    string _priorMap;
+
+    private void Awake()
     {
-        for(int i = 0; i < _maps.Length; i++)
+        if(instance == null)
         {
-            string mapName = _maps[i].GetMapName();
-            if (mapName == moveMapName)
-            {
-                string currentMapName = _currentMap.GetMapName();
+            // 싱글턴 및 시작맵 생성
+            instance = this;
+            _currentMap = _maps[0];
+            _priorMap = _currentMap.GetMapName();
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
-                // 기존 맵 비활성화
-                _currentMap.gameObject.SetActive(false);
-                
+
+    // 맵 체인지
+    public void ChangeMap(string moveMapName)
+    {
+        _priorMap = _currentMap.GetMapName();
+
+        for (int i = 0; i < _maps.Length; i++)
+        {
+            _moveMap = _maps[i].GetMapName();
+            if (_moveMap == moveMapName)
+            {
                 // 교체
                 _currentMap = _maps[i];
-                
-                // 교체된 맵 활성화 후, 플레이어 스폰 위치 조정.
-                _currentMap.gameObject.SetActive(true);
-                _currentMap.SearchSpawnPoint(tfPlayer, currentMapName);
                 break;
             }
         }
+
+        StartCoroutine(MapLoading());
+    }
+
+    IEnumerator MapLoading()
+    {
+        ScreenEffect.instance._isFinished = false;
+        ScreenEffect.instance.ExecuteFadeOut();
+
+        yield return new WaitUntil(() => ScreenEffect.instance._isFinished);
+
+        // 로딩 후 ActiveMap 실행
+        LoadingScene.LoadScene("GameScene");
+    }
+
+    public void ActiveMap()
+    {
+        Transform tfPlayer = FindObjectOfType<PlayerStatus>().transform;
+
+        // 맵 생성 후, 플레이어 스폰 위치 조정.
+        Instantiate(_currentMap.gameObject);
+        _currentMap.SearchSpawnPoint(tfPlayer, _priorMap);
     }
 }

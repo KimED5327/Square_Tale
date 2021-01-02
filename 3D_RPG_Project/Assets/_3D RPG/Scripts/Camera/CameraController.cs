@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public TouchBoard tb;
-    float cameraAngleX;
+    static float cameraAngleX;
     public float cameraSpeed = 0.2f;
     [SerializeField] Vector3 _offset = Vector3.zero;
     [SerializeField] float _height = 0f;
@@ -15,6 +15,11 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         _tfCam = Camera.main.transform;
+    }
+
+    public void SetCamRot(float angleY)
+    {
+        cameraAngleX = angleY;
     }
 
     // Update is called once per frame

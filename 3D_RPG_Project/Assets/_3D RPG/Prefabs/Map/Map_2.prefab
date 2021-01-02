@@ -302,7 +302,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8012687122348949606
 Transform:
   m_ObjectHideFlags: 0
@@ -335,6 +335,8 @@ MonoBehaviour:
   _spawnPoints:
   - priorMapName: Map_1
     tfSpawnPoint: {fileID: 2559103039138759705}
+  _monsterSpawnPoint: []
+  _respawnCheckTime: 1
 --- !u!1 &8013147273585646287
 GameObject:
   m_ObjectHideFlags: 0

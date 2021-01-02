@@ -30,7 +30,8 @@ public class Equipment : MonoBehaviour
     // 장착 시도
     public Item TryToEquipSlot(Item item)
     {
-        int slotType = (item.type == ItemType.WEAPON) ? 0 : 1;
+
+        int slotType = (item.category == ItemCategory.WEAPON) ? 0 : 1;
 
         // 빈슬롯이면 그대로 푸시
         if (_slots[slotType].IsEmptySlot())
@@ -64,7 +65,7 @@ public class Equipment : MonoBehaviour
     // 장착 슬롯 빼기
     public Item TakeOffEquipSlot(Item item)
     {
-        int slotType = (item.type == ItemType.WEAPON) ? 0 : 1;
+        int slotType = (item.category == ItemCategory.WEAPON) ? 0 : 1;
         Item equipItem = _slots[slotType].GetSlotItem();
 
         SetEquipSlot(null, slotType, true);
@@ -76,6 +77,7 @@ public class Equipment : MonoBehaviour
         _imgButtons[num].color = Color.white;
         _imgButtons[(num + 1) % _imgButtons.Length].color = Color.gray;
 
+        // 슬롯 초기화
         if (_currentSwapNum != num)
         {
             _currentSwapNum = num;
@@ -91,4 +93,6 @@ public class Equipment : MonoBehaviour
                 _slots[ARMOR].PushSlot(_equipItems[_currentSwapNum].items[ARMOR]);
         }
     }
+
+    public int GetClassNum() { return _currentSwapNum; }
 }

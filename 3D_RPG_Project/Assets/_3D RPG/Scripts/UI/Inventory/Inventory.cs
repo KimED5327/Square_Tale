@@ -40,15 +40,15 @@ public class Inventory : MonoBehaviour
     // 테스트용 인벤 채우기
     void Start()
     {
-        TryToPushInventory(ItemDatabase.instance.GetItem(0));
-        TryToPushInventory(ItemDatabase.instance.GetItem(1));
-        TryToPushInventory(ItemDatabase.instance.GetItem(2));
-        TryToPushInventory(ItemDatabase.instance.GetItem(0));
-        TryToPushInventory(ItemDatabase.instance.GetItem(1));
-        TryToPushInventory(ItemDatabase.instance.GetItem(2));
-        TryToPushInventory(ItemDatabase.instance.GetItem(0));
-        TryToPushInventory(ItemDatabase.instance.GetItem(1));
-        TryToPushInventory(ItemDatabase.instance.GetItem(2));
+        TryToPushInventory(ItemDatabase.instance.GetItem(3));
+        TryToPushInventory(ItemDatabase.instance.GetItem(5));
+        TryToPushInventory(ItemDatabase.instance.GetItem(6));
+        TryToPushInventory(ItemDatabase.instance.GetItem(3));
+        TryToPushInventory(ItemDatabase.instance.GetItem(5));
+        TryToPushInventory(ItemDatabase.instance.GetItem(6));
+        TryToPushInventory(ItemDatabase.instance.GetItem(3));
+        TryToPushInventory(ItemDatabase.instance.GetItem(5));
+        TryToPushInventory(ItemDatabase.instance.GetItem(6));
 
         // 기본값 - 무기 우선 정렬 
         OnTouchTab(0);
@@ -115,13 +115,13 @@ public class Inventory : MonoBehaviour
         for(int i = 0; i < _imgTabs.Length; i++)
             _imgTabs[i].color = (i == _currentTab) ? Color.white : Color.gray;
 
-        SortItem((ItemType)_currentTab);
+        SortItem((ItemCategory)_currentTab);
     }
 
     public void ResortItem()
     {
         SerializeItem();
-        SortItem((ItemType)_currentTab);
+        SortItem((ItemCategory)_currentTab);
     }
 
     // 재정렬
@@ -153,7 +153,7 @@ public class Inventory : MonoBehaviour
     }
 
     // 탭 우선 정렬
-    public void SortItem(ItemType type)
+    public void SortItem(ItemCategory category)
     {
         // 탭 우선 정렬로 인해 빠져나온 아이템 정보 저장용
         List<Item> popItemList = new List<Item>();
@@ -170,7 +170,7 @@ public class Inventory : MonoBehaviour
             int count = _slots[currentIndex].GetSlotCount();
 
             // 해당 아이템의 타입이 우선 정렬 대상이라면-
-            if (item.type == type)
+            if (item.category == category)
             {
                 // 현재 인덱스와 헤드 인덱스가 같은 경우 헤드 인덱스만 이동. 
                 if (currentIndex == headIndex)
@@ -218,7 +218,7 @@ public class Inventory : MonoBehaviour
         if (CheckIsEmptySlot())
         {
             // 중첩 가능한 아이템-
-            if (item.type == ItemType.ETC)
+            if (item.stackable)
             {
                 // 소유한 아이템 -> 해당 슬롯의 개수 증가 else 빈 슬롯에 푸시
                 if (TryToPushSameSlot(item, count))
@@ -367,6 +367,19 @@ public class Inventory : MonoBehaviour
             }
         }
         return count <= total;
+    }
+
+    public int GetItemCount(Item item)
+    {
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            if (item.id == _slots[i].GetSlotItem().id)
+            {
+                return _slots[i].GetSlotCount();
+            }
+        }
+
+        return -1;
     }
 
     

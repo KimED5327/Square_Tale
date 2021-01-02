@@ -14,7 +14,8 @@ public class AutoDestory : MonoBehaviour
 
     void AutoDestroy()
     {
-        ObjectPooling.instance.PushObjectToPool(_name, this.gameObject);
+        if(!gameObject.activeSelf)
+            ObjectPooling.instance.PushObjectToPool(_name, this.gameObject);
     }
 
 }

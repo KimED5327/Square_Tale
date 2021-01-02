@@ -56,12 +56,14 @@ public class SlotToolTip : MonoBehaviour
                      : (item.type == ItemType.ARMOR) ? "방어구 류"
                      : (item.type == ItemType.ETC) ? "재화 류"
                      : "기타 류";
-        imgIcon.sprite = item.sprite;
+
+        imgIcon.sprite = SpriteManager.instance.GetItemSprite(item.id);
+        // imgIcon.sprite = item.sprite;
         txtOption.text = "";
         if (item.options.Count > 0)
         {
             for(int i = 0; i < item.options.Count; i++)
-                txtOption.text += item.options[i].name + " " + item.options[i].num + " ";
+                txtOption.text += StringManager.ItemTypeToString(item.options[i].opType) + " " + item.options[i].num + " ";
         }
 
         // 툴팁 위치 세팅
@@ -119,14 +121,26 @@ public class SlotToolTip : MonoBehaviour
     {
         if (_canEquip)
         {
-            theInven.RemoveItem(_touchItem);
+            // 다른 클래스 장비를 장착하면 그대로 경고 후 취소.
+            int classNum = theEquip.GetClassNum();
+            if (classNum == 0 && (_touchItem.type == ItemType.STAFF || _touchItem.type == ItemType.SUDAN) ||
+                classNum == 1 && (_touchItem.type == ItemType.WEAPON || _touchItem.type == ItemType.ARMOR))
+            {
+                Notification.instance.ShowFloatingMessage(StringManager.msgWrongClassEquipItem);
+                return;
+            }
 
+
+            theInven.RemoveItem(_touchItem);
             Item returnEquipItem = theEquip.TryToEquipSlot(_touchItem);
+
             // 기존 장착된 것이 있다면 교체
             if (returnEquipItem != null)
+            {
                 theInven.TryToPushInventory(returnEquipItem);
+                theInven.ResortItem();
+            }
 
-            theInven.ResortItem();
             HideToolTip();
         }
 

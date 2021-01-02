@@ -30,10 +30,11 @@ public class ShopSlot : MonoBehaviour, IPointerClickHandler
         _item = item;
 
         _txtName.text = item.name;
-        _txtPrice.text = string.Format("{0:#,##0}", item.price);
-        _txtPrice.color = (item.price > myGold) ? Color.red : Color.white;
-        
-        _imgIcon.sprite = item.sprite;
+        _txtPrice.text = string.Format("{0:#,##0}", item.priceBuy);
+        _txtPrice.color = (item.priceBuy > myGold) ? Color.red : Color.white;
+
+        _imgIcon.sprite = SpriteManager.instance.GetItemSprite(_item.id);
+        //_imgIcon.sprite = item.sprite;
         _imgIcon.gameObject.SetActive(true);
     }
 

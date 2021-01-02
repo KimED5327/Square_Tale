@@ -9,7 +9,7 @@ public class ScreenEffect : MonoBehaviour
 
     [SerializeField] Image _imgFade = null;
 
-    bool _isFinished = true;
+    public bool _isFinished = true;
 
     [SerializeField] float _fadeSpeed = 1f;
     [SerializeField] float _splashSpeed = 1f;
@@ -30,19 +30,17 @@ public class ScreenEffect : MonoBehaviour
 
     }
 
-    // 페이드 아웃 (깜깜하게)
-    public void ExecuteFadeOut()
-    {
-        StopAllCoroutines();
-        _isFinished = false;
-        StartCoroutine(FadeCoroutine(0f));
-    }
-
     // 페이드 인 (원래대로)
     public void ExecuteFadeIn()
     {
         StopAllCoroutines();
-        _isFinished = false;
+        StartCoroutine(FadeCoroutine(0f));
+    }
+
+    // 페이드 아웃 (깜깜하게)
+    public void ExecuteFadeOut()
+    {
+        StopAllCoroutines();
         StartCoroutine(FadeCoroutine(1f));
     }
 
@@ -101,6 +99,4 @@ public class ScreenEffect : MonoBehaviour
         }
         _imgFade.gameObject.SetActive(false);
     }
-
-    public bool IsFinished() { return _isFinished; }
 }

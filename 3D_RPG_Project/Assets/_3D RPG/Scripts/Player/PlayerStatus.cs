@@ -16,7 +16,6 @@ public class PlayerStatus : Status
     [SerializeField] int _levelUpHp = 10;
     [SerializeField] int _levelUpDef = 1;
 
-
     int _curExp = 0;
 
     public int GetMaxMp() { return _maxMp; }

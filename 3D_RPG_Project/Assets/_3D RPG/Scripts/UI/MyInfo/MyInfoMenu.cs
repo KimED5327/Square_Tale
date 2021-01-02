@@ -7,12 +7,10 @@ public class MyInfoMenu : MonoBehaviour
 {
     [SerializeField] GameObject goMyInfoMenu = null;
     [SerializeField] Text txtMyName = null;
-    [SerializeField] Text txtLevel = null;
     [SerializeField] Text txtStr = null;
     [SerializeField] Text txtInt = null;
     [SerializeField] Text txtDef = null;
     [SerializeField] Text txtHp = null;
-    [SerializeField] Text txtMp = null;
     [SerializeField] Image imgUser = null;
 
     bool isOpen = false;
@@ -34,13 +32,11 @@ public class MyInfoMenu : MonoBehaviour
     
     void ShowMenu() {
 
-        txtMyName.text = "Temp";
-        txtLevel.text = thePlayerStatus.GetLevel().ToString();
+        txtMyName.text = "LV " + thePlayerStatus.GetLevel() +  " - 닉네임";
         txtStr.text = thePlayerStatus.GetStr().ToString();
         txtInt.text = thePlayerStatus.GetInt().ToString();
         txtDef.text = thePlayerStatus.GetDef().ToString();
         txtHp.text = thePlayerStatus.GetMaxHp().ToString();
-        txtMp.text = thePlayerStatus.GetMaxMp().ToString();
         imgUser.sprite = null;
 
         goMyInfoMenu.SetActive(true);

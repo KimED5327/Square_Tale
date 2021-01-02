@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 [System.Serializable]
 public class SpawnPoint{
@@ -29,7 +30,7 @@ public class Map : MonoBehaviour
     // 현재 맵 정보
     [Header("Map Info")]
     [SerializeField] string _mapName = "MapName";
-    
+
     // 플레이어 맵 이동 스폰 위치
     [Header("Spawn Info")]
     [SerializeField] SpawnPoint[] _spawnPoints = null;

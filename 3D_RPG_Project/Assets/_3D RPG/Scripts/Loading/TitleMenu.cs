@@ -6,10 +6,17 @@ using UnityEngine.UI;
 public class TitleMenu : MonoBehaviour
 {
     [SerializeField] InputField _inNickname = null;
-
+    [SerializeField] GameObject _goNickname = null;
+    [SerializeField] GameObject _goTouch = null;
     private void Awake()
     {
         Screen.SetResolution(1920, 1080, true);
+    }
+
+    public void BtnTouchScreen()
+    {
+        _goTouch.SetActive(false);
+        _goNickname.SetActive(true);
     }
 
     public void BtnTouchWorld()

@@ -16,12 +16,12 @@ public class Equipment : MonoBehaviour
     static readonly int WEAPON = 0, ARMOR = 1;
 
     // 이후 스왑관련 나오면 변경
-    [SerializeField] Slot[] slots = null;
-    [SerializeField] EquipSwapItem[] equipItems = null;
+    [SerializeField] Slot[] _slots = null;
+    [SerializeField] EquipSwapItem[] _equipItems = null;
 
     int _currentSwapNum = -1;
 
-    [SerializeField] Image[] imgButtons = null;
+    [SerializeField] Image[] _imgButtons = null;
 
     void Awake()
     {
@@ -33,7 +33,7 @@ public class Equipment : MonoBehaviour
         int slotType = (item.type == ItemType.WEAPON) ? 0 : 1;
 
         // 빈슬롯이면 그대로 푸시
-        if (slots[slotType].IsEmptySlot())
+        if (_slots[slotType].IsEmptySlot())
         {
             SetEquipSlot(item, slotType, false);
             return null;
@@ -41,9 +41,9 @@ public class Equipment : MonoBehaviour
         // 아니면 교체
         else
         {
-            Item equipItem = slots[slotType].GetSlotItem();
+            Item equipItem = _slots[slotType].GetSlotItem();
 
-            slots[slotType].ClearSlot();
+            _slots[slotType].ClearSlot();
             SetEquipSlot(item, slotType, false);
 
             return equipItem;
@@ -53,19 +53,19 @@ public class Equipment : MonoBehaviour
     void SetEquipSlot(Item item, int slotType, bool isClear)
     {
         if (!isClear)
-            slots[slotType].PushSlot(item);
+            _slots[slotType].PushSlot(item);
         else
-            slots[slotType].ClearSlot();
+            _slots[slotType].ClearSlot();
 
-        equipItems[_currentSwapNum].items[slotType] = item;
-        equipItems[_currentSwapNum].isEquipItems[slotType] = !isClear;
+        _equipItems[_currentSwapNum].items[slotType] = item;
+        _equipItems[_currentSwapNum].isEquipItems[slotType] = !isClear;
     }
 
     // 장착 슬롯 빼기
     public Item TakeOffEquipSlot(Item item)
     {
         int slotType = (item.type == ItemType.WEAPON) ? 0 : 1;
-        Item equipItem = slots[slotType].GetSlotItem();
+        Item equipItem = _slots[slotType].GetSlotItem();
 
         SetEquipSlot(null, slotType, true);
         return equipItem;
@@ -73,22 +73,22 @@ public class Equipment : MonoBehaviour
 
     public void SwapWeaponNum(int num)
     {
-        imgButtons[num].color = Color.white;
-        imgButtons[(num + 1) % imgButtons.Length].color = Color.gray;
+        _imgButtons[num].color = Color.white;
+        _imgButtons[(num + 1) % _imgButtons.Length].color = Color.gray;
 
         if (_currentSwapNum != num)
         {
             _currentSwapNum = num;
 
             // 슬롯 초기화
-            slots[WEAPON].ClearSlot();
-            slots[ARMOR].ClearSlot();
+            _slots[WEAPON].ClearSlot();
+            _slots[ARMOR].ClearSlot();
 
             // 캐릭터를 스왑했을때, 스왑한 캐릭터가 장착한 아이템이 있다면 슬롯으로 노출.
-            if (equipItems[_currentSwapNum].isEquipItems[WEAPON])
-                slots[WEAPON].PushSlot(equipItems[_currentSwapNum].items[WEAPON]);
-            if (equipItems[_currentSwapNum].isEquipItems[ARMOR])
-                slots[ARMOR].PushSlot(equipItems[_currentSwapNum].items[ARMOR]);
+            if (_equipItems[_currentSwapNum].isEquipItems[WEAPON])
+                _slots[WEAPON].PushSlot(_equipItems[_currentSwapNum].items[WEAPON]);
+            if (_equipItems[_currentSwapNum].isEquipItems[ARMOR])
+                _slots[ARMOR].PushSlot(_equipItems[_currentSwapNum].items[ARMOR]);
         }
     }
 }

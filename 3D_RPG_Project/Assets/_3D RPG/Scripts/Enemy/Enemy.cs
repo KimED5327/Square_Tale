@@ -111,7 +111,6 @@ public class Enemy : MonoBehaviour
         }
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
         {
-            
             enemyState = State.Move;
             Debug.Log("Move상태 전환");
         }

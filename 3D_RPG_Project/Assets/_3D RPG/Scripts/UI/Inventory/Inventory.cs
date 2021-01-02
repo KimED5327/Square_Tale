@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    int gold = 1000;
+    int gold = 50;
     int ruby = 0;
 
     [Header("OpenWindown")]
@@ -25,17 +25,15 @@ public class Inventory : MonoBehaviour
 
     [Header("Tab")]
     [SerializeField] GameObject _goInvenButtons = null;
-    [SerializeField] Image[] imgTabs = null;
-    [SerializeField] Color colorHighlight = new Color();
-    [SerializeField] Color colorDark = new Color();
+    [SerializeField] Image[] _imgTabs = null;
     int _currentTab = 0;
 
 
     [Header("ShopOffset")]
     [SerializeField] Transform _tfOffset = null;
     [SerializeField] float _offsetX = 100;
-    Vector3 originPos;
-    Vector3 shopPos;
+    Vector3 _originPos;
+    Vector3 _shopPos;
 
 
     #region Test
@@ -59,8 +57,8 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
-        originPos = _goInventory.transform.localPosition;
-        shopPos = _tfOffset.localPosition + new Vector3(_offsetX, 0, 0); 
+        _originPos = _goInventory.transform.localPosition;
+        _shopPos = _tfOffset.localPosition + new Vector3(_offsetX, 0, 0); 
 
         // 프리팹 슬롯 생성.
         _slots = new Slot[_slotCount];
@@ -88,7 +86,7 @@ public class Inventory : MonoBehaviour
         GameHudMenu.instance.HideMenu(); // 기본 HUD 가림
 
         // 상점에서 연 경우, 위치 이동 + 탭 숨김.
-        _goInventory.transform.localPosition = isShopOpen ? shopPos : originPos;
+        _goInventory.transform.localPosition = isShopOpen ? _shopPos : _originPos;
         _goInvenButtons.SetActive(!isShopOpen);
         _goEquip.SetActive(!isShopOpen);
         _goBackButton.SetActive(!isShopOpen);
@@ -114,8 +112,8 @@ public class Inventory : MonoBehaviour
 
         _currentTab = index;
       
-        for(int i = 0; i < imgTabs.Length; i++)
-            imgTabs[i].color = (i == _currentTab) ? colorHighlight: colorDark;
+        for(int i = 0; i < _imgTabs.Length; i++)
+            _imgTabs[i].color = (i == _currentTab) ? Color.white : Color.gray;
 
         SortItem((ItemType)_currentTab);
     }
@@ -276,20 +274,50 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    // d
-    bool TryToPushSameSlot(Item item, int count)
+    public void DecreaseItemCount(Item item, int count)
     {
+        bool isNeedSorting = false;
         for (int i = 0; i < _slots.Length; i++)
         {
             if (_slots[i].IsSameItem(item))
             {
-                _slots[i].IncreaseSlotCount(count);
+                count = _slots[i].DecreaseCount(count);
+                if (count <= 0)
+                    break;
+                else
+                    isNeedSorting = true;
+            }
+        }
+
+
+        if (isNeedSorting)
+            SerializeItem();
+
+    }
+
+    // 같은 이름의 아이템에 푸시
+    bool TryToPushSameSlot(Item item, int count)
+    {
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            // 같은 아이템이 있다면 개수 증가.
+            // 이미 99개 꽉차있다면 새로운 빈슬롯에 추가.
+            if (_slots[i].IsSameItem(item))
+            {
+                // 넘쳐서 남은 개수는 새로운 빈슬롯에 추가.
+                int overCount = _slots[i].IncreaseSlotCount(count);
+
+                if (overCount > 0)
+                    if (!TryToPushEmptySlot(item, overCount))
+                        return false;
+
                 return true;
             }
         }
         return false;
     }
 
+    // 빈 슬롯에 푸시
     bool TryToPushEmptySlot(Item item, int count)
     {
         for (int i = 0; i < _slots.Length; i++)
@@ -303,6 +331,7 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
+    // 빈슬롯 체크
     bool CheckIsEmptySlot()
     {
         for (int i = 0; i < _slots.Length; i++)
@@ -313,6 +342,34 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
+    // 빈슬롯이 몇개인지 체크
+    public int GetEmptySlotCount()
+    {
+        int count = 0;
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            if (_slots[i].IsEmptySlot())
+                count++;
+        }
+        return count;
+    }
+
+    
+    /// 아이템을 특정 수량만큼 가지고 있는지 체크.
+    public bool HaveItemCount(Item item, int count)
+    {
+        int total = 0;
+        for(int i = 0; i < _slots.Length; i++)
+        {
+            if(item.id == _slots[i].GetSlotItem().id)
+            {
+                total += _slots[i].GetSlotCount();
+            }
+        }
+        return count <= total;
+    }
+
+    
     public Item GetSlotItem(int index) { return _slots[index].GetSlotItem(); }
     public Vector3 GetSlotLocalPos(int index) { return _slots[index].transform.localPosition; }
 

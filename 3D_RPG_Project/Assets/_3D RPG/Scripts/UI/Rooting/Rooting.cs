@@ -10,65 +10,43 @@ public class Rooting : MonoBehaviour
     [Header("Slot")]
     [SerializeField] RootingSlot[] _rootingSlots = null;
 
-    public static bool _isOpen = false;
-
     // 드롭 아이템
     List<DropItem> _rootingDropItem;
 
     // Component
     Inventory _inven;
-    Shop _shop;
     EnemyStatus _rootingEnemy;
     
     void Awake()
     {
         _inven = FindObjectOfType<Inventory>();
-        _shop = FindObjectOfType<Shop>();
 
         for (int i = 0; i < _rootingSlots.Length; i++)
             _rootingSlots[i].SetLink(this);
     }
 
-    void Update()
+    public bool TryRooting(EnemyStatus enemyStatus)
     {
-        if (Input.GetMouseButtonDown(0)){
+        _rootingEnemy = enemyStatus;
 
-            if (_isOpen) return;
+        // Enemy가 죽은 경우에만 시도 
+        if (!_rootingEnemy.IsDead()) return false;
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if(Physics.Raycast(ray, out RaycastHit hit, 1000))
-            {
-                if (hit.transform.CompareTag("Enemy"))
-                {
-                    // 루팅 Enemy 정보 Get
-                    _rootingEnemy = hit.transform.GetComponent<EnemyStatus>();
+        // 드롭 아이템 정보 Get
+        _rootingDropItem = _rootingEnemy.GetDropItem();
 
-                    // Enemy가 죽은 경우에만 시도 
-                    if (!_rootingEnemy.IsDead()) return;
-
-                    // 드롭 아이템 정보 Get
-                    _rootingDropItem = _rootingEnemy.GetDropItem();
-
-                    if (_rootingDropItem != null && _rootingDropItem.Count > 0)
-                    {
-                        PushRootingSlot();
-                        _isOpen = true;
-                        _goRootingUI.SetActive(_isOpen);
-                    }
-                    else
-                        _rootingEnemy = null;
-                }
-                else if (hit.transform.CompareTag("Npc"))
-                {
-
-                    if (!_isOpen)
-                    {
-                        _shop.CallMenu();
-                        _isOpen = true;
-                    }
-                }
-            }
+        if (_rootingDropItem != null && _rootingDropItem.Count > 0)
+        {
+            PushRootingSlot();
+            _goRootingUI.SetActive(true);
+            return true;
         }
+        else
+        {
+            _rootingEnemy = null;
+            return false;
+        }
+            
     }
 
     void PushRootingSlot()
@@ -94,8 +72,8 @@ public class Rooting : MonoBehaviour
         _rootingEnemy = null;
         _rootingDropItem = null;
 
-        _isOpen = false;
-        _goRootingUI.SetActive(_isOpen);
+        InteractionManager._isOpen = false;
+        _goRootingUI.SetActive(false);
 
     }
 

@@ -24,13 +24,15 @@ public class ShopSlot : MonoBehaviour, IPointerClickHandler
         _imgIcon.gameObject.SetActive(false);
     }
 
-    public void SetSlot(Item item)
+    public void SetSlot(Item item, int myGold)
     {
         _isEmptySlot = false;
         _item = item;
 
         _txtName.text = item.name;
         _txtPrice.text = string.Format("{0:#,##0}", item.price);
+        _txtPrice.color = (item.price > myGold) ? Color.red : Color.white;
+        
         _imgIcon.sprite = item.sprite;
         _imgIcon.gameObject.SetActive(true);
     }

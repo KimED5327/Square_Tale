@@ -15,6 +15,7 @@ public class ShopToolTip : MonoBehaviour
     [SerializeField] Text _txtOption = null;
     [SerializeField] Text _txtDesc = null;
     [SerializeField] Text _txtPrice = null;
+    [SerializeField] Text _txtCount = null;
 
     [Header("Button")]
     [SerializeField] Text _txtButton = null;
@@ -27,6 +28,7 @@ public class ShopToolTip : MonoBehaviour
     string _sellMessage = "해당 아이템을 판매하시겠습니까?";
 
     Item _touchItem;
+    int _count;
     int _price;
     bool _isBuy = false;
 
@@ -45,15 +47,23 @@ public class ShopToolTip : MonoBehaviour
     {
         _isBuy = isBuy;
         _touchItem = item;
+        _price = item.price;
+        _count = 1;
+
+        // 돈없으면 구매창 출력 X
+        if(_price > _inven.GetGold())
+        {
+            Notification.instance.ShowFloatingMessage(StringManager.msgNotEnoughGold);
+            return;
+        }
 
         // 툴팁 내용 세팅
         _txtName.text = item.name;
         _txtDesc.text = item.desc;
-        _price = item.price;
-
+        _imgIcon.sprite = item.sprite;
+        _txtCount.text = _count.ToString();
         _txtPrice.text = string.Format("{0:#,##0}", _price);
-        _txtPrice.color = (_price > _inven.GetGold()) ? Color.red : Color.yellow;
-        
+        _txtPrice.color = (_price > _inven.GetGold()) ? Color.red : Color.white;
         _txtOption.text = "";
         if (item.options.Count > 0)
         {
@@ -61,12 +71,10 @@ public class ShopToolTip : MonoBehaviour
                 _txtOption.text += item.options[i].name + " " + item.options[i].num + " ";
         }
 
-        _imgIcon.sprite = item.sprite;
-
         _txtTitle.text = (_isBuy) ? "상품 구매" : "상품 판매";
         _txtButton.text = (_isBuy) ? "구매" : "판매";
         _txtRequestion.text = (_isBuy) ? _buyMessage
-                                      : _sellMessage;
+                                       : _sellMessage;
 
         _goToolTip.SetActive(true);
     }
@@ -78,6 +86,60 @@ public class ShopToolTip : MonoBehaviour
     }
 
 
+    public void BtnIncreaseCount()
+    {
+        // 팔때 가격 살때 가격 구분 필요
+        if(_count < 99)
+        {
+            _count += 1;
+            _price += _touchItem.price;
+
+            if (_isBuy)
+            {
+                ShowPriceAndCount();
+            }
+        }
+    }
+    public void BtnDecreaseCount()
+    {
+        if(_count > 1) {
+            _count -= 1;
+            _price -= _touchItem.price;
+
+
+            ShowPriceAndCount();
+        }
+    }
+    public void BtnMaxCount()
+    {
+        if (_count < 99)
+        {
+            int maxCount = _inven.GetGold() / _touchItem.price;
+            if (maxCount > 99)
+                maxCount = 99;
+
+            _count = maxCount;
+            _price = _touchItem.price * _count;
+
+
+            ShowPriceAndCount();   
+        }
+    }
+    public void BtnMinCount()
+    {
+        _count = 1;
+        _price = _touchItem.price;
+
+        ShowPriceAndCount();
+    }
+
+    void ShowPriceAndCount()
+    {
+        _txtPrice.text = string.Format("{0:#,##0}", _price);
+        _txtPrice.color = (_price > _inven.GetGold()) ? Color.red : Color.white;
+        _txtCount.text = _count.ToString();
+    }
+
     // 구매 or 판매 의사 재질의
     public void BtnOK()
     {
@@ -86,7 +148,7 @@ public class ShopToolTip : MonoBehaviour
             if (_inven.GetGold() >= _price)
                 _goRequestionUI.SetActive(true);
             else
-                Debug.Log("골드가 부족합니다.");
+                Notification.instance.ShowFloatingMessage(StringManager.msgNotEnoughGold);
         }
         else
             _goRequestionUI.SetActive(true);
@@ -110,7 +172,7 @@ public class ShopToolTip : MonoBehaviour
     void Sell()
     {
         _inven.SetGold(_inven.GetGold() + _price);
-        _inven.RemoveItem(_touchItem);
+        _inven.DecreaseItemCount(_touchItem, _count);
         HideToolTip();
         _shop.ReSetUI();
     }
@@ -119,7 +181,7 @@ public class ShopToolTip : MonoBehaviour
     void Buy()
     {
         _inven.SetGold(_inven.GetGold() - _price);
-        _inven.TryToPushInventory(_touchItem);
+        _inven.TryToPushInventory(_touchItem, _count);
         HideToolTip();
         _shop.ReSetUI();
     }

@@ -10,8 +10,6 @@ public class GameHudMenu : MonoBehaviour
     [SerializeField] GameObject[] goHuds = null;
     [SerializeField] Text _txtGold = null;
     [SerializeField] Text _txtLevel = null;
-    [SerializeField] Text _txtHP = null;
-    [SerializeField] Text _txtMP = null;
 
     WaitForSeconds waitTime = new WaitForSeconds(0.1f);
 
@@ -37,8 +35,8 @@ public class GameHudMenu : MonoBehaviour
             yield return waitTime;
             _txtGold.text = string.Format("{0:#,##0}", _inven.GetGold());
             _txtLevel.text = $"{_playerStatus.GetLevel()} LV";
-            _txtHP.text = $"{_playerStatus.GetCurrentHp()} / {_playerStatus.GetMaxHp()}";
-            _txtMP.text = $"{_playerStatus.GetCurMp()} / {_playerStatus.GetMaxMp()}";
+            //_txtHP.text = $"{_playerStatus.GetCurrentHp()} / {_playerStatus.GetMaxHp()}";
+            //_txtMP.text = $"{_playerStatus.GetCurMp()} / {_playerStatus.GetMaxMp()}";
         }
 
     }

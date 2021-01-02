@@ -64,7 +64,6 @@ public class Shop : MonoBehaviour
 
         GameHudMenu.instance.HideMenu();
         _goShopPanel.SetActive(true);
-        TabItemPush();
 
         ReSetUI();
     }
@@ -81,7 +80,8 @@ public class Shop : MonoBehaviour
         }
             
         _isShow = false;
-        Rooting._isOpen = false; // 임시
+
+        InteractionManager._isOpen = false; 
         _goShopPanel.SetActive(false);
     }
 
@@ -117,7 +117,7 @@ public class Shop : MonoBehaviour
         for(int i = 0; i < _shopItemId[_tabNum].item.Length; i++)
         {
             _slots[i].gameObject.SetActive(true);
-            _slots[i].SetSlot(ItemDatabase.instance.GetItem(_shopItemId[_tabNum].item[i]));
+            _slots[i].SetSlot(ItemDatabase.instance.GetItem(_shopItemId[_tabNum].item[i]), _inven.GetGold());
         }
     }
 
@@ -142,5 +142,6 @@ public class Shop : MonoBehaviour
     public void ReSetUI()
     {
         _txtGold.text = string.Format("{0:#,##0}", _inven.GetGold());
+        TabItemPush();
     }
 }

@@ -6,13 +6,14 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
 {
+    static int SLOT_MAX_COUNT = 99;
 
-    [SerializeField] bool isEquipSlot = false;
+    [SerializeField] bool _isEquipSlot = false;
 
     // Item
     [SerializeField] int _count = 0;
     [SerializeField] Item _item = null;
-    bool hasItem = false;
+    bool _hasItem = false;
 
     // UI
     [SerializeField] Image _imgItem = null;
@@ -37,35 +38,52 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
         ShowUI(true);
     }
 
-    // 슬롯 아이템 개수 증가
-    public void IncreaseSlotCount(int count = 1)
+    /// <summary>
+    /// 슬롯 아이템 증가.
+    /// </summary>
+    /// <param name="count"></param>
+    /// <returns>최대 개수 초과시 초과된 개수</returns>
+    public int IncreaseSlotCount(int count = 1)
     {
         _count += count;
 
+        int overCount = 0;
+
+        if(_count > SLOT_MAX_COUNT)
+            overCount = _count - SLOT_MAX_COUNT;
+       
         ShowUI(true);
+
+        return overCount;
     }
    
 
     // 슬롯 아이템 개수 감소
-    public void DecreaseCount(int count = 1)
+    public int DecreaseCount(int count = 1)
     {
+        int overCount = 0;
+
         _count -= count;
+
+        if (_count < 0)
+            overCount = Mathf.Abs(_count);
 
         if(_count <= 0)
             ClearSlot();
         else
             ShowUI(true);
+
+        return overCount;
     }
 
     // UI 세팅
     void ShowUI(bool flag)
     {
-        hasItem = flag;
-
-        if (hasItem)
+        _hasItem = flag;
+        _imgItem.gameObject.SetActive(_hasItem);
+        if (_hasItem)
         {
             _imgItem.sprite = _item.sprite;
-            _imgItem.gameObject.SetActive(true);
             if(_item.type == ItemType.ETC)
             {
                 _txtItemCount.gameObject.SetActive(true);
@@ -82,7 +100,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
     }
 
     public bool IsSameItem(Item Item) { return _item.id == Item.id; }           // 같은 아이템인지 체크
-    public bool IsEmptySlot() { return !hasItem; }                              // 빈 슬롯인지 체크
+    public bool IsEmptySlot() { return !_hasItem; }                              // 빈 슬롯인지 체크
     public bool HasEnoughCount(int num) { return (_count >= num); }             // num 이상 가지고 있는지 체크
     public int GetSlotCount() { return _count; }                                // 슬롯 아이템 개수 확인
     public Item GetSlotItem() { return _item; }                                 // 슬롯 아이템 리턴
@@ -93,14 +111,14 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerClickHandler
 
         if (!Shop._isShow)
         {
-            if (hasItem)
-                SlotToolTip.instance.ShowToolTip(_item, transform.position, isEquipSlot);
+            if (_hasItem)
+                SlotToolTip.instance.ShowToolTip(_item, transform.position, _isEquipSlot);
             else
                 SlotToolTip.instance.HideToolTip();
         }
         else
         {
-            if (hasItem)
+            if (_hasItem)
                 ShopToolTip.instance.ShowToolTip(_item, false);
         }
 

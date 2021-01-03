@@ -536,11 +536,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attTime: 3
   timer: 1
-  reconTime: 0
+  reconTime: 3
   reconTimer: 0
-  maxFindRange: 5
-  maxMoveRange: 10
-  maxAttackRange: 1
+  maxFindRange: 0
+  maxMoveRange: 0
+  maxAttackRange: 0
   isLongMonster: 0
   maxLongAttackRange: 0
   reconRange: 0
@@ -614,8 +614,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5, z: 0.5}
-  m_Center: {x: 0, y: 0.21, z: 0}
+  m_Size: {x: 0.32, y: 0.29, z: 0.29}
+  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!54 &3297905987200430876
 Rigidbody:
   m_ObjectHideFlags: 0

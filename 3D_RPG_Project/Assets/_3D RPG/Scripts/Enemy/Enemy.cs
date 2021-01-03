@@ -35,8 +35,11 @@ public class Enemy : MonoBehaviour
     BoxCollider myColider;
     Rigidbody myRigid;
 
+
     EnemyStatus status;
     Vector3     _offset;
+    Vector3     _rayPos;
+    Vector3     _rayPos2;
 
     public State enemyState;
 
@@ -96,7 +99,7 @@ public class Enemy : MonoBehaviour
             {
                 agent.enabled = false;
                 myRigid.AddForce(Vector3.up * 8.5f, ForceMode.Impulse);
-                myRigid.AddForce(Vector3.forward * 1f, ForceMode.Impulse);
+                myRigid.AddForce(transform.forward * 2f, ForceMode.Impulse);
                 jumpCount++;
             }
         }
@@ -120,7 +123,47 @@ public class Enemy : MonoBehaviour
     }
     private void UpdateSearch()
     {
+        int randomCount;
+        randomCount = Random.Range(0,4);
+        _offset = new Vector3(0f, 1f, 0f);
+        Vector3 move = Vector3.forward;
+        switch (randomCount)
+        {
+            case 0:
+                move = transform.forward;
+                break;
+            case 1:
+                move = -transform.forward;
+                break;
+            case 2:
+                move = transform.right;
+                break;
+            case 3:
+                move = -transform.right;
+                break;
+        }
+        if (Physics.Raycast(transform.position + _offset, move - Vector3.one, out RaycastHit hit))
+        {
+            if (hit.transform.CompareTag("Floor") && transform.position.z > hit.transform.position.z)
+            {
+                _rayPos = hit.transform.position;
 
+                if (Vector3.SqrMagnitude(startPoint - _rayPos) < Mathf.Pow(maxFindRange, 2))
+                {
+                    agent.SetDestination(_rayPos);
+                    reconTimer = 0;
+                    enemyState = State.Idle;
+                }
+                else
+                {
+                    reconTimer = 0;
+                }
+            }
+            else
+            {
+                reconTimer = 0;
+            }
+        }
     }
 
     //기본 상태
@@ -129,7 +172,7 @@ public class Enemy : MonoBehaviour
         reconTimer += Time.deltaTime;
         if(reconTimer > reconTime)
         {
-
+            enemyState = State.Search;
         }
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
         {
@@ -152,15 +195,20 @@ public class Enemy : MonoBehaviour
             _offset = new Vector3(0f, myColider.bounds.extents.y, 0f);
             enemyAnimator.SetBool("Move", true);
             Debug.DrawRay(transform.position + _offset, transform.forward * 10, Color.red);
-            if (Physics.Raycast(transform.position + _offset, transform.forward, out RaycastHit hit, 1f))
-           {
-               if(hit.transform.CompareTag("Floor") && !jump)
-               {
 
-                    jump = true;
-                    Debug.Log("부딪쳤다");
-               }
-           }
+            if(transform.position.y < player.transform.position.y)
+            {
+
+                if (Physics.Raycast(transform.position + _offset, transform.forward, out RaycastHit hit, 1.2f))
+                {
+                    if (hit.transform.CompareTag("Floor") && !jump)
+                    {
+
+                        jump = true;
+                        Debug.Log("부딪쳤다");
+                    }
+                }
+            }
             //enemyAnimator.SetInteger("animation", 2);
 
             agent.SetDestination(player.transform.position);

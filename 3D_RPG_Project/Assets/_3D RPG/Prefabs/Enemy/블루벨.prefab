@@ -699,7 +699,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attTime: 3
   timer: 0
-  reconTime: 0
+  reconTime: 5
   reconTimer: 0
   maxFindRange: 5
   maxMoveRange: 10
@@ -777,8 +777,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5, z: 0.5}
-  m_Center: {x: 0, y: 0.7, z: 0}
+  m_Size: {x: 0.5, y: 1, z: 0.5}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!54 &-5210021338637608426
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3816153576647276070}
   - component: {fileID: 1964241834242259568}
   - component: {fileID: 1697820505907568272}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4316196027456989680}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: mouth_top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 3069377241776977855}
   - component: {fileID: 6603343193372657697}
   - component: {fileID: 5906364222527133741}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: "\uD2B8\uB9AC\uC838"
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -228,17 +228,7 @@ MonoBehaviour:
   _giveExp: 50
   _knockBackForce: 0.1
   _dropItemInfo:
-  - itemID: 0
-    itemCounts:
-      min: 0
-      max: 0
-    itemDropRate: 70
-  - itemID: 1
-    itemCounts:
-      min: 0
-      max: 0
-    itemDropRate: 70
-  - itemID: 2
+  - itemID: 3
     itemCounts:
       min: 0
       max: 0
@@ -283,7 +273,7 @@ GameObject:
   - component: {fileID: 5701352622097277044}
   - component: {fileID: 4648010775976487476}
   - component: {fileID: 2008137842428612533}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -359,7 +349,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 109146122719208251}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: mouth_under
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -389,7 +379,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3595434321748636347}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -420,7 +410,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1754224929157694914}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +445,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3002279523622081589}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -487,7 +477,7 @@ GameObject:
   m_Component:
   - component: {fileID: 439095513639588217}
   - component: {fileID: 8780105738944808518}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Devil_Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -572,7 +562,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1748521062923448178}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -610,7 +600,7 @@ GameObject:
   - component: {fileID: 165130884885201223}
   - component: {fileID: 5238337366774604690}
   - component: {fileID: 2274745285933658885}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -682,7 +672,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1622640137420830082}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -715,7 +705,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4086555421232527491}
   - component: {fileID: 2926455958160613540}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Hp_Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -807,7 +797,7 @@ GameObject:
   - component: {fileID: 1132092710991789293}
   - component: {fileID: 4693135913291197292}
   - component: {fileID: 5571658512067728054}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: EnemyUi
   m_TagString: Untagged
   m_Icon: {fileID: 0}

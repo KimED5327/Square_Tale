@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 388473029140432107}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 1053928519476262031}
   - component: {fileID: -3976740457373783910}
   - component: {fileID: 3743552888395532001}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: "\uD50C\uB85D\uC2A4"
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -159,17 +159,7 @@ MonoBehaviour:
   _giveExp: 50
   _knockBackForce: 0.1
   _dropItemInfo:
-  - itemID: 0
-    itemCounts:
-      min: 0
-      max: 0
-    itemDropRate: 70
-  - itemID: 1
-    itemCounts:
-      min: 0
-      max: 0
-    itemDropRate: 70
-  - itemID: 2
+  - itemID: 3
     itemCounts:
       min: 0
       max: 0
@@ -212,7 +202,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6351816404881466142}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leaf_l4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +232,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2025230898590515220}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leaf_r3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +263,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5786423130046643608}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,7 +299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4747874220865724275}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leaf_l1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -340,7 +330,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4336978586286874741}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,7 +362,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4895739968278307653}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leaf_r4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,7 +394,7 @@ GameObject:
   - component: {fileID: 3117611690826430927}
   - component: {fileID: 6993666499045733021}
   - component: {fileID: 5586257474596948461}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -482,7 +472,7 @@ GameObject:
   - component: {fileID: 2668389456598997846}
   - component: {fileID: 991881899417276925}
   - component: {fileID: 8409835979459672367}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -554,7 +544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 947298497326836814}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leaf_r2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -589,7 +579,7 @@ GameObject:
   - component: {fileID: 1900617817888030056}
   - component: {fileID: 6743820392568460470}
   - component: {fileID: 2891976784774197441}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: EnemyUi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -701,7 +691,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8857329810717887340}
   - component: {fileID: 5088273147326673367}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Hp_Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -789,7 +779,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3030325415310197866}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -822,7 +812,7 @@ GameObject:
   - component: {fileID: 1950815559603168470}
   - component: {fileID: 8590361735578134742}
   - component: {fileID: 1378482996823001437}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -894,7 +884,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7259315089647741008}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -925,7 +915,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3461578301248903059}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leaf_r1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -957,7 +947,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8973620677723247529}
   - component: {fileID: 4362885997295106226}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Turnipa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1049,7 +1039,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7293557551760401441}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leaf_l2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1080,7 +1070,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 833063572834530216}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1111,7 +1101,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6658548552624482272}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leaf_l3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

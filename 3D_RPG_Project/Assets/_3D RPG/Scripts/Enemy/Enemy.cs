@@ -219,7 +219,6 @@ public class Enemy : MonoBehaviour
             {
                 enemyState = State.Idle;
             }
-
         }
 
     }
@@ -253,12 +252,11 @@ public class Enemy : MonoBehaviour
        // enemyAnimator.SetInteger("animation", 5);
 
         enemyAnimator.SetBool("Die", true);
-
-        //myRigid.isKinematic = true;
+        myRigid.isKinematic = true;
         myColider.isTrigger = true;
-        myRigid.useGravity = false;
         agent.enabled = false;
         dieTime += Time.deltaTime;
+
         if(dieTime >= 60)
         {
             string name = GetComponent<EnemyStatus>().GetName();

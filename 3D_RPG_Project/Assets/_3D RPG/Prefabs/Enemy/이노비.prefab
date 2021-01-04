@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2761592941100659776}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: wing_l2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2761592941100659778}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: wing_l1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2761592941100659780}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2761592941100659782}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2761592941100659788}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: wingrl2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2761592941100659790}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: wing_r1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2761592941100659792}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: antenna_l4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +222,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2761592941100659794}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: antenna_l3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -253,7 +253,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2761592941100659796}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: antenna_l2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -283,7 +283,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2761592941100659798}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: antenna_l1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +314,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2761592941100659800}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -350,7 +350,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2761592941100659802}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,7 +381,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2761592941100659804}
   - component: {fileID: 2761592941097051510}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Beez
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,7 +479,7 @@ GameObject:
   - component: {fileID: 3850242013036631105}
   - component: {fileID: 1066911584394777611}
   - component: {fileID: 3297905987200430876}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: "\uC774\uB178\uBE44"
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -588,20 +588,10 @@ MonoBehaviour:
   _giveExp: 50
   _knockBackForce: 0.25
   _dropItemInfo:
-  - itemID: 0
+  - itemID: 3
     itemCounts:
       min: 1
       max: 1
-    itemDropRate: 70
-  - itemID: 1
-    itemCounts:
-      min: 1
-      max: 1
-    itemDropRate: 70
-  - itemID: 2
-    itemCounts:
-      min: 1
-      max: 3
     itemDropRate: 70
 --- !u!65 &1066911584394777611
 BoxCollider:
@@ -679,6 +669,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 2813310212506711463, guid: a0d64f5e57740d143a3c654698d90d74,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2813310212713526012, guid: a0d64f5e57740d143a3c654698d90d74,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2813310213168386410, guid: a0d64f5e57740d143a3c654698d90d74,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 2813310213168386411, guid: a0d64f5e57740d143a3c654698d90d74,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -698,6 +703,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: EnemyUi
+      objectReference: {fileID: 0}
+    - target: {fileID: 2813310213285529997, guid: a0d64f5e57740d143a3c654698d90d74,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2813310213285529998, guid: a0d64f5e57740d143a3c654698d90d74,
         type: 3}
@@ -819,6 +829,11 @@ PrefabInstance:
       propertyPath: hpBar
       value: 
       objectReference: {fileID: 1325232628747413888}
+    - target: {fileID: 2813310213968026384, guid: a0d64f5e57740d143a3c654698d90d74,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 2813310213968026385, guid: a0d64f5e57740d143a3c654698d90d74,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -828,6 +843,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2813310214080112002, guid: a0d64f5e57740d143a3c654698d90d74,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2813310214322398661, guid: a0d64f5e57740d143a3c654698d90d74,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0d64f5e57740d143a3c654698d90d74, type: 3}

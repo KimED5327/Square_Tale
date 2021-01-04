@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5185120824159537639}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leg_01_l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4708894660863162342}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7995221761186488534}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leaf_a_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4029644569411606217}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leg_02_l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5146346456353716567}
   - component: {fileID: 7412759232911824530}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Planta_Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6842434136659410513}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: head_b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4122847737906513150}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leg_02_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +293,7 @@ GameObject:
   - component: {fileID: 5700599896876772378}
   - component: {fileID: 5367177526151128947}
   - component: {fileID: 3444920713840259068}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8991276759220241269}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -407,7 +407,7 @@ GameObject:
   - component: {fileID: 5023040705241821287}
   - component: {fileID: 5901760668393026094}
   - component: {fileID: 8293403282776303390}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: "\uCEEC\uC2A4\uB514\uC5B8"
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -516,17 +516,7 @@ MonoBehaviour:
   _giveExp: 50
   _knockBackForce: 0.1
   _dropItemInfo:
-  - itemID: 0
-    itemCounts:
-      min: 0
-      max: 0
-    itemDropRate: 70
-  - itemID: 1
-    itemCounts:
-      min: 0
-      max: 0
-    itemDropRate: 70
-  - itemID: 2
+  - itemID: 3
     itemCounts:
       min: 0
       max: 0
@@ -571,7 +561,7 @@ GameObject:
   - component: {fileID: 1624656445907497246}
   - component: {fileID: 274487062648193960}
   - component: {fileID: 3591484727903508209}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -648,7 +638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9078426883189451535}
   - component: {fileID: 243069887547726331}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Hp_Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -738,7 +728,7 @@ GameObject:
   - component: {fileID: 5676986647162065636}
   - component: {fileID: 6216994523885159316}
   - component: {fileID: 2148426519338726373}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -810,7 +800,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5587562793085072801}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leaf_a_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -844,7 +834,7 @@ GameObject:
   - component: {fileID: 3688170329191163761}
   - component: {fileID: 7839976267936743284}
   - component: {fileID: 8800710882019864433}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: EnemyUi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -955,7 +945,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8834664205546538237}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leaf_a_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -985,7 +975,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2879112068503886085}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leg_01_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1016,7 +1006,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4333017092042639252}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leaf_a_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1046,7 +1036,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3051710621406647945}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1079,7 +1069,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8787159931215645324}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}

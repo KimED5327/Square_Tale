@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8262442942327442211}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8593394194914710041}
   - component: {fileID: 8903201263814239254}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Hp_Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 2628185466638395102}
   - component: {fileID: 883696022541992658}
   - component: {fileID: 6095712301119192017}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,7 +207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6512823244475428389}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leg_02_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -237,7 +237,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6385754436172305361}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: laef_b_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 7861131575717413989}
   - component: {fileID: 5188671873322043874}
   - component: {fileID: 6237620941738741993}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -341,7 +341,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1142141482239901065}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: head_b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,7 +376,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6515036602263970202}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: hair_a_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -406,7 +406,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4175186296132043905}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leg_02_l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -436,7 +436,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2144326198856618468}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leg_01_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -467,7 +467,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7745127034823383315}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: hair_a_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -497,7 +497,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7874980135098362006}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: laef_b_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -529,7 +529,7 @@ GameObject:
   - component: {fileID: 3278583023560461884}
   - component: {fileID: 8564193204821244524}
   - component: {fileID: 1327549719355758704}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -605,7 +605,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8606628854466936664}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -642,7 +642,7 @@ GameObject:
   - component: {fileID: 6220890659239806434}
   - component: {fileID: 6461609291295442536}
   - component: {fileID: -5210021338637608426}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: "\uBE14\uB8E8\uBCA8"
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -751,17 +751,7 @@ MonoBehaviour:
   _giveExp: 50
   _knockBackForce: 0.1
   _dropItemInfo:
-  - itemID: 0
-    itemCounts:
-      min: 0
-      max: 0
-    itemDropRate: 70
-  - itemID: 1
-    itemCounts:
-      min: 0
-      max: 0
-    itemDropRate: 70
-  - itemID: 2
+  - itemID: 3
     itemCounts:
       min: 0
       max: 0
@@ -805,7 +795,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4175529090937868485}
   - component: {fileID: 1113885804816397620}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Planta_Queen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -905,7 +895,7 @@ GameObject:
   - component: {fileID: 8525183732802082133}
   - component: {fileID: 1318870392519069126}
   - component: {fileID: 7525501804474410401}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: EnemyUi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1016,7 +1006,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4347812620789160078}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: laef_b_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1046,7 +1036,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3394814306678046117}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: laef_b_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1076,7 +1066,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6426159670076089570}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: hair_a_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1106,7 +1096,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7101738153220834740}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: hair_a_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1136,7 +1126,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3511380397661862815}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: hair_a_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1166,7 +1156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2988927688725660986}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leg_01_l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1197,7 +1187,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1620362805435779274}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1234,7 +1224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1104758846037477898}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}

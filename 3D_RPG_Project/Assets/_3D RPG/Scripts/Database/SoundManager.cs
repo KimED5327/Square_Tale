@@ -76,7 +76,6 @@ public class SoundManager : MonoBehaviour
                         effectPlayer[j].Play();
                         return;
                     }
-                    
                 }
                 Debug.LogError("모든 효과음 플레이어가 사용중입니다.");
                 return;

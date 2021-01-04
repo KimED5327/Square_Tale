@@ -28,7 +28,7 @@ public class EnemyUi : MonoBehaviour
 
         hpPercent = (_enemyStatus.GetCurrentHp() / (float)_enemyStatus.GetMaxHp()) * 100;
 
-        if (_enemy.enemyState == State.Attack || _enemy.enemyState == State.Move)
+        if (_enemy.enemyState == State.Attack)
             hpBar.gameObject.SetActive(true);
         else
             hpBar.gameObject.SetActive(false);

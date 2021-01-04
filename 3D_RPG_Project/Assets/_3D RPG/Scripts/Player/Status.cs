@@ -14,6 +14,12 @@ public abstract class Status : MonoBehaviour
     [SerializeField] protected int _giveExp = 50;
     protected bool _isDead = false;
 
+    private void Start()
+    {
+        if (_curHp < 0)
+            _curHp = _maxHp;
+    }
+
     public void Damage(int num, Vector3 targetPos)
     {
        _curHp -= num;
@@ -39,6 +45,7 @@ public abstract class Status : MonoBehaviour
     public string GetName() { return _name; }
     public int GetLevel() { return _level; }
     public int GetCurrentHp() { return _curHp; }
+    public int SetCurrentHp(int hp) => _curHp = hp;
     public int GetMaxHp() { return _maxHp; }
     public int GetAtk() { return _atk; }
     public bool IsDead() { return _isDead; }

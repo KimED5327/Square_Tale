@@ -72,8 +72,8 @@ MonoBehaviour:
     m_Enabled: 0
     m_Settings:
       focusDistance: 2.8
-      aperture: 0.1
-      focalLength: 36
+      aperture: 32
+      focalLength: 1
       useCameraFov: 0
       kernelSize: 0
   motionBlur:
@@ -100,9 +100,9 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       bloom:
-        intensity: 0.48
+        intensity: 0.18
         threshold: 0.79
-        softKnee: 0.078
+        softKnee: 0.06
         radius: 2.75
         antiFlicker: 0
       lensDirt:
@@ -149,14 +149,14 @@ MonoBehaviour:
             - serializedVersion: 2
               time: 0
               value: 0
-              inSlope: 0
+              inSlope: 1
               outSlope: 1
               tangentMode: 0
             - serializedVersion: 2
               time: 1
               value: 1
               inSlope: 1
-              outSlope: 0
+              outSlope: 1
               tangentMode: 0
             m_PreInfinity: 2
             m_PostInfinity: 2
@@ -171,18 +171,18 @@ MonoBehaviour:
             - serializedVersion: 2
               time: 0
               value: 0
-              inSlope: 0
+              inSlope: 1
               outSlope: 1
               tangentMode: 0
             - serializedVersion: 2
               time: 1
               value: 1
               inSlope: 1
-              outSlope: 0
+              outSlope: 1
               tangentMode: 0
             m_PreInfinity: 2
             m_PostInfinity: 2
-            m_RotationOrder: 0
+            m_RotationOrder: 4
           m_Loop: 0
           m_ZeroValue: 0
           m_Range: 1
@@ -193,12 +193,6 @@ MonoBehaviour:
             - serializedVersion: 2
               time: 0
               value: 0
-              inSlope: 0
-              outSlope: 1
-              tangentMode: 0
-            - serializedVersion: 2
-              time: 0.42857143
-              value: 0.4113924
               inSlope: 1
               outSlope: 1
               tangentMode: 0
@@ -206,11 +200,11 @@ MonoBehaviour:
               time: 1
               value: 1
               inSlope: 1
-              outSlope: 0
+              outSlope: 1
               tangentMode: 0
             m_PreInfinity: 2
             m_PostInfinity: 2
-            m_RotationOrder: 0
+            m_RotationOrder: 4
           m_Loop: 0
           m_ZeroValue: 0
           m_Range: 1
@@ -221,12 +215,6 @@ MonoBehaviour:
             - serializedVersion: 2
               time: 0
               value: 0
-              inSlope: 0
-              outSlope: 1
-              tangentMode: 0
-            - serializedVersion: 2
-              time: 0.39583334
-              value: 0.37341774
               inSlope: 1
               outSlope: 1
               tangentMode: 0
@@ -234,11 +222,11 @@ MonoBehaviour:
               time: 1
               value: 1
               inSlope: 1
-              outSlope: 0
+              outSlope: 1
               tangentMode: 0
             m_PreInfinity: 2
             m_PostInfinity: 2
-            m_RotationOrder: 0
+            m_RotationOrder: 4
           m_Loop: 0
           m_ZeroValue: 0
           m_Range: 1
@@ -283,8 +271,8 @@ MonoBehaviour:
           m_ZeroValue: 0.5
           m_Range: 1
         e_CurrentEditingCurve: 0
-        e_CurveY: 0
-        e_CurveR: 1
+        e_CurveY: 1
+        e_CurveR: 0
         e_CurveG: 0
         e_CurveB: 0
   userLut:
@@ -296,7 +284,7 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       spectralTexture: {fileID: 0}
-      intensity: 0.161
+      intensity: 0.198
   grain:
     m_Enabled: 0
     m_Settings:

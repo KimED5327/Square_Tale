@@ -13,6 +13,9 @@ public class MyInfoMenu : MonoBehaviour
     [SerializeField] Text txtHp = null;
     [SerializeField] Image imgUser = null;
 
+    [SerializeField] Text txtAdventure = null;
+    [SerializeField] Image imgAdventureGauge = null;
+
     bool isOpen = false;
 
     PlayerStatus thePlayerStatus;
@@ -38,6 +41,10 @@ public class MyInfoMenu : MonoBehaviour
         txtDef.text = thePlayerStatus.GetDef().ToString();
         txtHp.text = thePlayerStatus.GetMaxHp().ToString();
         imgUser.sprite = null;
+
+        float percent = Adventure.GetAdventureProgress();
+        txtAdventure.text = percent + " %";
+        imgAdventureGauge.fillAmount = percent / 100;
 
         goMyInfoMenu.SetActive(true);
     }

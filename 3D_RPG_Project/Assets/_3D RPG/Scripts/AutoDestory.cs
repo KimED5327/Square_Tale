@@ -7,9 +7,14 @@ public class AutoDestory : MonoBehaviour
     [SerializeField] string _name = "name";
     [SerializeField] float _destoryTime = 0.5f;
 
+    bool _isAwake = false;
+
     private void OnEnable()
     {
-        Invoke(nameof(AutoDestory), _destoryTime);
+        if(_isAwake)
+            Invoke("AutoDestroy", _destoryTime);
+
+        _isAwake = true;
     }
 
     void AutoDestroy()

@@ -16,5 +16,8 @@ EditorBuildSettings:
     guid: dbf2fd4392cc6c641867ee13a2470232
   - enabled: 1
     path: Assets/_3D RPG/Scenes/GameScene.unity
-    guid: 5fa9245801910c24ebca47be15a3f3ca
+    guid: adb4b08050795f94a9b6874c480bc3ae
+  - enabled: 1
+    path: Assets/Scenes/Map.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

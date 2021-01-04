@@ -9,6 +9,8 @@ public class Adventure : MonoBehaviour
     [SerializeField] GameObject _goUI = null;
     [SerializeField] Text _txtSynopsis = null;
     [SerializeField] Text _txtPage = null;
+    [SerializeField] Text _txtProgress = null;
+    [SerializeField] Image _imgProgress = null;
 
     [Header("Slots")]
     [SerializeField] KeywordSlot[] _slots = null;
@@ -21,10 +23,21 @@ public class Adventure : MonoBehaviour
 
     int _startKeywordID = 0;
 
+    static float _adventureProgress = 0f;
+
+    public static void IncreaseAdventureProgress(float num)
+    {
+        _adventureProgress += num;
+    }
+    public static float GetAdventureProgress() { return _adventureProgress; }
+
     // 모험담 메뉴출력
     public void ShowUI()
     {
         GameHudMenu.instance.HideMenu();
+
+        _txtProgress.text = _adventureProgress + " %";
+        _imgProgress.fillAmount = _adventureProgress / 100;
 
         _curChapter = 0;
         _curPage = 0;

@@ -31,11 +31,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _FogIntensity: 1
+    - _FogIntensity: 0
     - _FogMaxIntensity: 1
     - _GlossyReflections: 1
     - _SpecularHighlights: 1
     - __dirty: 0
     m_Colors:
     - _Color0: {r: 0.07136677, g: 0.44117647, b: 0.41057152, a: 0}
-    - _FogColor: {r: 0.32115054, g: 0.5868482, b: 0.8088235, a: 0}
+    - _FogColor: {r: 0.29065743, g: 0.5104878, b: 0.9411765, a: 0}

@@ -7,9 +7,14 @@ using UnityEngine.SceneManagement;
 public class LoadingScene : MonoBehaviour
 {
     [SerializeField]
-    Image progressBar;
+    Image progressBar = null;
+    [SerializeField] Image _imgScreen = null;
+    [SerializeField] float _fadeSpeed = 1f;
+
 
     static string nextScene;
+
+    bool _isFinished = true;
 
     public static void LoadScene(string sceneName)
     {
@@ -19,11 +24,28 @@ public class LoadingScene : MonoBehaviour
 
     void Start()
     {
+        _isFinished = false;
+        StartCoroutine(FadeInCo());
+
         StartCoroutine(LoadSceneProcess());
+    }
+
+    IEnumerator FadeInCo()
+    {
+        Color color = _imgScreen.color;
+        while (_imgScreen.color.a > 0)
+        {
+            color.a -= Time.deltaTime * _fadeSpeed;
+            _imgScreen.color = color;
+            yield return null;
+        }
+        _isFinished = true;
     }
 
     IEnumerator LoadSceneProcess()
     {
+        yield return new WaitUntil(() => _isFinished);
+
         AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
         op.allowSceneActivation = false;
 

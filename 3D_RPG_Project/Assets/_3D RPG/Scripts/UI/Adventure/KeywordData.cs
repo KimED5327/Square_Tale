@@ -9,6 +9,7 @@ public class Keyword
     public bool isGet;
     public string keyword;
     public string hideText;
+    public float progress;
 }
 
 [System.Serializable]
@@ -36,31 +37,31 @@ public class KeywordData : MonoBehaviour
     {
         instance = this;
 
-        Keyword keyword = new Keyword { id = 1, isGet = false, keyword = "릴리", hideText = "◇◇" };
+        Keyword keyword = new Keyword { id = 1, isGet = false, keyword = "릴리", hideText = "◇◇", progress = 10, };
         _cp1KeywordList.Add(keyword);
 
-        keyword = new Keyword { id = 2, isGet = false, keyword = "시간", hideText = "◆◆" };
+        keyword = new Keyword { id = 2, isGet = false, keyword = "시간", hideText = "◆◆", progress = 10, };
         _cp1KeywordList.Add(keyword);
 
-        keyword = new Keyword { id = 3, isGet = false, keyword = "저주", hideText = "☆☆" };
+        keyword = new Keyword { id = 3, isGet = false, keyword = "저주", hideText = "☆☆", progress = 10, };
         _cp1KeywordList.Add(keyword);
 
-        keyword = new Keyword { id = 4, isGet = false, keyword = "정화", hideText = "★★" };
+        keyword = new Keyword { id = 4, isGet = false, keyword = "정화", hideText = "★★", progress = 10, };
         _cp1KeywordList.Add(keyword);
 
-        keyword = new Keyword { id = 5, isGet = false, keyword = "마음", hideText = "■■" };
+        keyword = new Keyword { id = 5, isGet = false, keyword = "마음", hideText = "■■", progress = 10, };
         _cp1KeywordList.Add(keyword);
 
-        keyword = new Keyword { id = 6, isGet = false, keyword = "꽃", hideText = "♡" };
+        keyword = new Keyword { id = 6, isGet = false, keyword = "꽃", hideText = "♡", progress = 12.5f, };
         _cp1KeywordList.Add(keyword);
 
-        keyword = new Keyword { id = 7, isGet = false, keyword = "말라가게", hideText = "□□□□" };
+        keyword = new Keyword { id = 7, isGet = false, keyword = "말라가게", hideText = "□□□□", progress = 12.5f, };
         _cp1KeywordList.Add(keyword);
 
-        keyword = new Keyword { id = 8, isGet = false, keyword = "향기", hideText = "♧♧" };
+        keyword = new Keyword { id = 8, isGet = false, keyword = "향기", hideText = "♧♧", progress = 12.5f, };
         _cp1KeywordList.Add(keyword);
 
-        keyword = new Keyword { id = 9, isGet = false, keyword = "독한 호흡", hideText = "♠♠ ♠♠" };
+        keyword = new Keyword { id = 9, isGet = false, keyword = "독한 호흡", hideText = "♠♠ ♠♠", progress = 12.5f, };
         _cp1KeywordList.Add(keyword);
 
 
@@ -77,10 +78,15 @@ public class KeywordData : MonoBehaviour
     {
         if (_keywordDatas.ContainsKey(id))
         {
-            _keywordDatas[id].isGet = true;
-            string keyword = GetKeyword(id).keyword;
+            //_keywordDatas[id].isGet = true;
+            Keyword keyword = GetKeyword(id);
+            keyword.isGet = true;
+            string strKeyword = keyword.keyword;
             string msg = StringManager.msgGetKeword;
-            Notification.instance.ShowKeywordText(msg, keyword);
+            float progress = keyword.progress;
+
+            Adventure.IncreaseAdventureProgress(progress);
+            Notification.instance.ShowKeywordText(msg, strKeyword);
         }
         else
             Debug.LogError("id = " + id + " 는 존재하지 않는 키워드 id입니다");
@@ -102,7 +108,7 @@ public class KeywordData : MonoBehaviour
     public int GetStartKeywordID(int chapterNum, int page)
     {
         int id = 1;
-        for(int i = 0; i < chapterNum; i++)
+        for(int i = 0; i <= chapterNum; i++)
         {
             for(int k = 0; k < _chapterSynopsis[i].page.Length; k++)
             {

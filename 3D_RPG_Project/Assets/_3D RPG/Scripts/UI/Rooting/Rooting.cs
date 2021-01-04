@@ -53,6 +53,11 @@ public class Rooting : MonoBehaviour
                         _isOpen = true;
                     }
                 }
+                else if(hit.transform.CompareTag("QuestNPC"))
+                {
+                    //hit.transform.GetComponent<QuestNPC>().ClickNPC();
+                    hit.transform.GetComponent<ZoomNPC>().ZoomInNPC();
+                }
             }
         }
     }

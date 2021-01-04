@@ -35,18 +35,26 @@ public class Rooting : MonoBehaviour
         // 드롭 아이템 정보 Get
         _rootingDropItem = _rootingEnemy.GetDropItem();
 
-        if (_rootingDropItem != null && _rootingDropItem.Count > 0)
-        {
-            PushRootingSlot();
-            _goRootingUI.SetActive(true);
-            return true;
+                    if (_rootingDropItem != null && _rootingDropItem.Count > 0)
+                    {
+                        PushRootingSlot();
+                        _isOpen = true;
+                        _goRootingUI.SetActive(_isOpen);
+                    }
+                    else
+                        _rootingEnemy = null;
+                }
+                else if (hit.transform.CompareTag("Npc"))
+                {
+
+                    if (!_isOpen)
+                    {
+                        _shop.CallMenu();
+                        _isOpen = true;
+                    }
+                }
+            }
         }
-        else
-        {
-            _rootingEnemy = null;
-            return false;
-        }
-            
     }
 
     void PushRootingSlot()

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //NPC 네임태그를 클릭하면 줌인
 //X 아이콘을 클릭하면 줌아웃 
@@ -13,33 +14,36 @@ public class ZoomNPC : MonoBehaviour
         ZOOM_CENTER
     };
 
-    [SerializeField] ZoomState zoomState;
-    [SerializeField] Camera cam;
-    [SerializeField] GameObject player;
-    [SerializeField] GameObject canvasUI;
-    [SerializeField] Transform target;
-    [SerializeField] Vector3 targetOffset;
-    [SerializeField] float smoothSpeed = 0.125f;
-    public bool zoomedInToggle = false;
-    public bool zoomingIn = false; 
-    public bool zoomingOut = false;
-    private Vector3 prePos;
+    [SerializeField] ZoomState _zoomState;
+    [SerializeField] Camera _cam;
+    [SerializeField] GameObject _player;
+    [SerializeField] GameObject _hudCanvas;
+    [SerializeField] Transform _target;
+    [SerializeField] Text _nameTag;
+    [SerializeField] Vector3 _targetOffset;
+    [SerializeField] float _minDistance;
+    [SerializeField] float _smoothSpeed = 0.125f;
+
+    public bool _zoomedInToggle = false;
+    public bool _zoomingIn = false; 
+    public bool _zoomingOut = false;
+    private Vector3 _prePos;
 
     private void Awake()
     {
-        cam = Camera.main;
-        target = transform.parent.transform;
-        zoomedInToggle = false;
+        _cam = Camera.main;
+        _target = transform;
+        _zoomedInToggle = false;
     }
 
     private void FixedUpdate()
     {
-        if (zoomingIn)
+        if (_zoomingIn)
         {
             ZoomedIn();
         }
 
-        if (zoomingOut)
+        if (_zoomingOut)
         {
             ZoomedOut();
         }
@@ -52,15 +56,22 @@ public class ZoomNPC : MonoBehaviour
 
         //추후 플레이어 캐릭터 연동 시, 플레이어와 NPC와의 거리가
         //일정거리 이상 가까울 때만 버튼을 클릭할 수 있도록 할 것. 
+        if (Vector3.Distance(_player.transform.position, _target.position) > _minDistance) return; 
 
-        if (zoomedInToggle == false)
+        if (_zoomedInToggle == false)
         {
-            zoomedInToggle = true;
-            zoomingIn = true;
-            prePos = cam.transform.position;
+            _zoomedInToggle = true;
+            _zoomingIn = true;
+            _prePos = _cam.transform.position;
 
             //카메라 컨트롤러 끄기 
-            player.GetComponent<CameraController>().enabled = false; 
+            _player.GetComponent<CameraController>().enabled = false;
+
+            // HUD 캔버스 비활성화 
+            _hudCanvas.SetActive(false);
+
+            //네임태그 잠시 비활성화
+            _nameTag.enabled = false;
 
             Debug.Log("zoomin working");
         }
@@ -69,20 +80,20 @@ public class ZoomNPC : MonoBehaviour
     //X 아이콘 클릭 시 NPC 줌아웃 
     public void ZoomOutNPC()
     {
-        if (zoomedInToggle == true)
+        if (_zoomedInToggle == true)
         {
-            zoomedInToggle = false;
-            zoomingOut = true;
-            //canvasUI.SetActive(false);
+            _zoomedInToggle = false;
+            _zoomingOut = true;
+            //_canvasUI.SetActive(false);
 
             //카메라 컨트롤러 켜기 
-            player.GetComponent<CameraController>().enabled = true;
+            _player.GetComponent<CameraController>().enabled = true;
         }
     }
 
     public void ZoomedIn()
     {
-        switch (zoomState)
+        switch (_zoomState)
         {
             case ZoomState.ZOOM_LEFT:
                 break;
@@ -91,18 +102,18 @@ public class ZoomNPC : MonoBehaviour
                 break;
 
             case ZoomState.ZOOM_CENTER:
-                Vector3 desiredPos = target.position + targetOffset;
+                Vector3 desiredPos = _target.position + _targetOffset;
 
-                if (Vector3.Distance(cam.transform.position, desiredPos) <= 0.1f)
+                if (Vector3.Distance(_cam.transform.position, desiredPos) <= 0.1f)
                 {
-                    zoomingIn = false;
-                    canvasUI.SetActive(true);
+                    _zoomingIn = false;
+                    _zoomedInToggle = false; 
+                    transform.GetComponent<QuestNPC>().ClickNPC();
                 }
 
-                Vector3 smoothPos = Vector3.Lerp(cam.transform.position, desiredPos, smoothSpeed);
-                cam.transform.position = smoothPos;
-
-                cam.transform.LookAt(target);
+                Vector3 smoothPos = Vector3.Lerp(_cam.transform.position, desiredPos, _smoothSpeed);
+                _cam.transform.position = smoothPos;
+                _cam.transform.LookAt(_target);
                 break;
         }
     }
@@ -112,16 +123,19 @@ public class ZoomNPC : MonoBehaviour
         //추후 플레이어 연동 시 플레이어 위치에 따라 
         //플레이어를 따라다니는 기존의 카메라 시점으로 변경할 것. 
 
-        if (Vector3.Distance(cam.transform.position, prePos) <= 0.1f)
+        if (Vector3.Distance(_cam.transform.position, _prePos) <= 0.1f)
         {
-            zoomingOut = false;
-            canvasUI.SetActive(false);
+            _zoomingOut = false;
+            //_canvasUI.SetActive(false);
 
             //카메라 컨트롤러 켜기 
-            //player.GetComponent<CameraController>().enabled = true;
+            //_player.GetComponent<CameraController>().enabled = true;
+
+            //네임태그 활성화
+            _nameTag.enabled = true;
         }
 
-        Vector3 smoothPos = Vector3.Lerp(cam.transform.position, prePos, smoothSpeed);
-        cam.transform.position = smoothPos;
+        Vector3 smoothPos = Vector3.Lerp(_cam.transform.position, _prePos, _smoothSpeed);
+        _cam.transform.position = smoothPos;
     }
 }

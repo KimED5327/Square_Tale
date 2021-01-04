@@ -63,6 +63,12 @@ public class InteractionManager : MonoBehaviour
                         KeywordData.instance.AcquireKeyword(1);
                         hit.transform.gameObject.SetActive(false);
                     }
+
+                    else if (hit.transform.CompareTag(StringManager.questNPCTag))
+                    {
+                        //hit.transform.GetComponent<QuestNPC>().ClickNPC();
+                        hit.transform.GetComponent<ZoomNPC>().ZoomInNPC();
+                    }
                 }
 
                 // 거리가 너무 멀 때

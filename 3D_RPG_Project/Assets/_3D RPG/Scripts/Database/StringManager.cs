@@ -9,6 +9,7 @@ public class StringManager : MonoBehaviour
     public static string shopNpcTag = "Npc";
     public static string keywordTag = "Keyword";
     public static string groundTag = "Ground";
+    public static string questNPCTag = "QuestNPC";
 
     public static string msgLongDistance = "거리가 너무 멉니다.";
     public static string msgNotEnoughInventory = "인벤토리 공간이 부족합니다.";

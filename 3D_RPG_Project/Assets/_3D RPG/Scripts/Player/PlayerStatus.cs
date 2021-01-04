@@ -5,8 +5,6 @@ using UnityEngine;
 public class PlayerStatus : Status
 {
     [Header("Player Status")]
-    [SerializeField] int _maxMp = 0;
-    [SerializeField] int _curMp = 0;
     [SerializeField] int _str = 0;
     [SerializeField] int _int = 0;
 
@@ -18,29 +16,35 @@ public class PlayerStatus : Status
 
     int _curExp = 0;
 
-    public int GetMaxMp() { return _maxMp; }
-    public int GetCurMp() { return _curMp; }
     public int GetStr() { return _str; }
     public int GetInt() { return _int; }
     public int GetDef() { return _def; }
 
     void Start()
     {
-        _curExp = 0;
-        _level = 0;
-        _maxHp = 150;
-        _maxMp = 100;
-        _curMp = _maxMp;
         _curHp = _maxHp;
-        _str = 100;
-        _int = 10;
-        _def = 10;
-        _atk = 50;
     }
 
     void Update()
     {
         LevelUp();
+    }
+
+    public void IncreaseExp(int num)
+    {
+        if (_level < _levelUpExps.Length)
+        {
+            _curExp += num;
+            Debug.Log(num + "증가");
+            if (_levelUpExps[_level] <= _curExp)
+            {
+                _curExp -= _levelUpExps[_level];
+                _maxHp += _levelUpHp;
+                _str += _levelUpStr;
+                _def += _levelUpDef;
+                _level++;
+            }
+        }
     }
 
     void LevelUp()
@@ -63,5 +67,14 @@ public class PlayerStatus : Status
     protected override void HurtReaction(Vector3 targetPos)
     {
         ;
+    }
+
+    public float GetExpPercent()
+    {
+        return (float)_curExp / _levelUpExps[_level];
+    }
+    public float GetHpPercent()
+    {
+        return (float)_curHp / _maxHp;
     }
 }

@@ -7,7 +7,7 @@ public abstract class Status : MonoBehaviour
     [Header("Basic Status")]
     [SerializeField] protected string _name = "이름";
     [SerializeField] protected int _maxHp = 100;
-    [SerializeField] protected int _curHp = 100;
+    protected int _curHp = 100;
     [SerializeField] protected int _atk = 0;
     [SerializeField] protected int _def = 0;
     [SerializeField] protected int _level = 1;
@@ -38,6 +38,10 @@ public abstract class Status : MonoBehaviour
 
     protected virtual void Dead()
     {
+        if (transform.CompareTag(StringManager.enemyTag))
+        {
+            GetComponent<Enemy>().GetStatus().IncreaseExp(_giveExp);
+        }
         _isDead = true;
     }
 

@@ -38,6 +38,7 @@ public class Rooting : MonoBehaviour
         if (_rootingDropItem != null && _rootingDropItem.Count > 0)
         {
             PushRootingSlot();
+            _goRootingUI.SetActive(true);
             return true;
         }
         else

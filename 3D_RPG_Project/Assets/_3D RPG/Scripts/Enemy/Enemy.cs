@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
 {
     GameObject rangedWeapon;                    //몬스터 원거리 구체
     public float attTime;                       //몬스터 공격속도
+    public float dmgApplyTime;                  //실제 데미지 적용 시간.
     public float timer;                         //공격속도 조절값
     public float reconTime;                     //정찰 시작 시간
     public float reconTimer;                    //정찰 체크 시간
@@ -29,6 +30,8 @@ public class Enemy : MonoBehaviour
     public int maxLongAttackRange;              //몬스터 원거리 공격 범위
     public int reconRange;                      //정찰 범위
 
+
+    private bool _canApplyDamage = true;
     private bool _isChasing = false;
     private bool jump;
     private int jumpCount;
@@ -229,9 +232,16 @@ public class Enemy : MonoBehaviour
         {
             agent.ResetPath();
             timer += Time.deltaTime;
+
+            if(_canApplyDamage && enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= dmgApplyTime)
+            {
+                ApplyDamage();
+            }
+
             if (timer > attTime)
             {
                 timer = 0.0f;
+                _canApplyDamage = true;
             }
         }
 
@@ -245,6 +255,13 @@ public class Enemy : MonoBehaviour
             timer = 0.0f;
         }
     }
+    
+    void ApplyDamage()
+    {
+        _canApplyDamage = false;
+        player.GetComponent<Status>().Damage(GetComponent<Status>().GetAtk(), transform.position);
+    }
+
     //사망 상태
     private void UpdateDie()
     {
@@ -328,4 +345,6 @@ public class Enemy : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(startPoint, reconRange);
     }
+
+    public PlayerStatus GetStatus() { return player.GetComponent<PlayerStatus>(); }
 }

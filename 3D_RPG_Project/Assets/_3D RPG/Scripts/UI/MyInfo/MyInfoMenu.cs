@@ -35,7 +35,11 @@ public class MyInfoMenu : MonoBehaviour
     
     void ShowMenu() {
 
-        txtMyName.text = "LV " + thePlayerStatus.GetLevel() +  " - 닉네임";
+        if(PlayerPrefs.HasKey("Nickname"))
+            txtMyName.text = "LV " + thePlayerStatus.GetLevel() +  $" - {PlayerPrefs.GetString("Nickname")}";
+        else
+            txtMyName.text = "LV " + thePlayerStatus.GetLevel() + $" - 닉네임";
+
         txtStr.text = thePlayerStatus.GetStr().ToString();
         txtInt.text = thePlayerStatus.GetInt().ToString();
         txtDef.text = thePlayerStatus.GetDef().ToString();

@@ -535,6 +535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attTime: 3
+  dmgApplyTime: 0.5
   timer: 0
   reconTime: 3
   reconTimer: 0
@@ -581,8 +582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: "\uC774\uB178\uBE44"
   _maxHp: 100
-  _curHp: 100
-  _atk: 0
+  _atk: 10
   _def: 0
   _level: 5
   _giveExp: 50

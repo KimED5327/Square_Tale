@@ -258,8 +258,10 @@ public class Enemy : MonoBehaviour
 
         enemyAnimator.SetBool("Die", true);
 
-        myRigid.isKinematic = true;
-
+        //myRigid.isKinematic = true;
+        myColider.isTrigger = true;
+        myRigid.useGravity = false;
+        
         dieTime += Time.deltaTime;
         if(dieTime >= 60)
         {

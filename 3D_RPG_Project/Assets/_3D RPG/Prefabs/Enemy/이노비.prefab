@@ -535,12 +535,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attTime: 3
-  timer: 1
+  timer: 0
   reconTime: 3
   reconTimer: 0
-  maxFindRange: 0
-  maxMoveRange: 0
-  maxAttackRange: 0
+  maxFindRange: 3
+  maxMoveRange: 10
+  maxAttackRange: 1
   isLongMonster: 0
   maxLongAttackRange: 0
   reconRange: 0
@@ -614,8 +614,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.32, y: 0.29, z: 0.29}
-  m_Center: {x: 0, y: 0.3, z: 0}
+  m_Size: {x: 0.53, y: 0.5, z: 0.25}
+  m_Center: {x: 0, y: 0.26, z: 0}
 --- !u!54 &3297905987200430876
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -819,6 +819,11 @@ PrefabInstance:
       propertyPath: hpBar
       value: 
       objectReference: {fileID: 1325232628747413888}
+    - target: {fileID: 2813310213968026385, guid: a0d64f5e57740d143a3c654698d90d74,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2813310213968026385, guid: a0d64f5e57740d143a3c654698d90d74,
         type: 3}
       propertyPath: m_AnchorMax.y

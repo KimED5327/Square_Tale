@@ -124,6 +124,7 @@ public class ObjectPooling : MonoBehaviour
         if (_poolDictionary.ContainsKey(name))
         {
             go.SetActive(false);
+
             _poolDictionary[name].Enqueue(go);
         }
         else

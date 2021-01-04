@@ -99,9 +99,13 @@ public class Enemy : MonoBehaviour
             if(jumpCount == 0)
             {
                 agent.enabled = false;
-                myRigid.AddForce(Vector3.up * 7.5f, ForceMode.Impulse);
+                myRigid.AddForce(Vector3.up * 6f, ForceMode.Impulse);
                 myRigid.AddForce(transform.forward * 2f, ForceMode.Impulse);
                 jumpCount++;
+            }
+            if(myRigid.velocity.y < 0)
+            {
+                myColider.isTrigger = false;
             }
         }
         else
@@ -149,8 +153,6 @@ public class Enemy : MonoBehaviour
      
 
             }
-
-            Debug.Log(hit.transform.name);
         }
     }
 
@@ -166,7 +168,6 @@ public class Enemy : MonoBehaviour
         {
             
             enemyState = State.Move;
-            Debug.Log("Move상태 전환");
         }
     }
     //무브 상태
@@ -177,7 +178,6 @@ public class Enemy : MonoBehaviour
 
         if (Vector3.SqrMagnitude(transform.position - startPoint) > Mathf.Pow(maxMoveRange,2))
         {
-            Debug.Log("return");
             enemyState = State.Return;
           
         }
@@ -186,20 +186,19 @@ public class Enemy : MonoBehaviour
         {
 
 
-            _offset = new Vector3(0f, myColider.bounds.extents.y , 0f);
+            _offset = new Vector3(0f, 0.3f, 0f);
             enemyAnimator.SetBool("Move", true);
-            if (Physics.Raycast(transform.position + _offset, transform.forward, out RaycastHit hit, 1f))
+            if (Physics.Raycast(transform.position + _offset, transform.forward, out RaycastHit hit, 1.5f))
             {
                 if (hit.transform.CompareTag("Floor") && !jump)
                 {
-
+                    
+                    myColider.isTrigger = true;
                     jump = true;
-                    Debug.Log("부딪쳤다");
                 }
             }
             else
             {
-                Debug.Log("추격");
                 _isChasing = true;
                 agent.SetDestination(player.transform.position);
 
@@ -212,7 +211,6 @@ public class Enemy : MonoBehaviour
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange, 2))
         {
             // enemyAnimator.SetInteger("animation", 3);
-            Debug.Log("attack");
             enemyState = State.Attack;
             enemyAnimator.SetBool("Attack", true);
         }
@@ -220,7 +218,6 @@ public class Enemy : MonoBehaviour
         {
             if (Vector3.SqrMagnitude(transform.position - agent.destination) < 0.25f)
             {
-                Debug.Log("아이들");
                 enemyState = State.Idle;
             }
 
@@ -261,7 +258,7 @@ public class Enemy : MonoBehaviour
         //myRigid.isKinematic = true;
         myColider.isTrigger = true;
         myRigid.useGravity = false;
-        
+        agent.enabled = false;
         dieTime += Time.deltaTime;
         if(dieTime >= 60)
         {

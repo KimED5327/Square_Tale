@@ -539,7 +539,7 @@ MonoBehaviour:
   reconTime: 3
   reconTimer: 0
   maxFindRange: 3
-  maxMoveRange: 10
+  maxMoveRange: 6
   maxAttackRange: 1
   isLongMonster: 0
   maxLongAttackRange: 0

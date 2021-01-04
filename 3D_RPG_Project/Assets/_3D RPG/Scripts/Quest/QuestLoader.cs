@@ -8,13 +8,14 @@ using UnityEngine.Networking;
 
 public class QuestLoader : MonoBehaviour
 {
+    public static QuestLoader instance; 
     static readonly string streamingAssetsPath = Application.streamingAssetsPath;
+    string questInfoKey = "info";
 
     // 퀘스트 정보 DB 경로 
     [SerializeField] string questDBPath;
 
     // 퀘스트 타입별 DB 경로 
-    string questInfoKey = "info";
     [SerializeField] string deliverItemDBPath;
     [SerializeField] string collectLootDBPath;
     [SerializeField] string useItemDBPath;
@@ -22,6 +23,11 @@ public class QuestLoader : MonoBehaviour
     [SerializeField] string operateObjectDBPath;
     [SerializeField] string killEnemyDBPath;
     [SerializeField] string talkWithNpcDBPath;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this; 
+    }
 
     void Start()
     {

@@ -8,7 +8,7 @@ using UnityEngine;
 public class NpcDB : MonoBehaviour
 {
     public static NpcDB instance;
-    Dictionary<int, NPC> _npcDB = new Dictionary<int, NPC>();
+    Dictionary<int, NpcWithLines> _npcDB = new Dictionary<int, NpcWithLines>();
 
     private void Awake()
     {
@@ -20,7 +20,7 @@ public class NpcDB : MonoBehaviour
     /// </summary>
     /// <param name="npcID"></param>
     /// <param name="npc"></param>
-    public void AddNPC(int npcID, NPC npc)
+    public void AddNPC(int npcID, NpcWithLines npc)
     {
         _npcDB.Add(npcID, npc);
     }
@@ -30,9 +30,9 @@ public class NpcDB : MonoBehaviour
     /// </summary>
     /// <param name="npcID"></param>
     /// <returns></returns>
-    public NPC GetNPC(int npcID)
+    public NpcWithLines GetNPC(int npcID)
     {
-        NPC npc = _npcDB[npcID];
+        NpcWithLines npc = _npcDB[npcID];
 
         if (npc == null) Debug.Log("NPC ID " + npcID + "번은 등록되어있지 않습니다.");
 

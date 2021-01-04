@@ -47,7 +47,11 @@ public class QuestDialogue
     /// <param name="state"></param>
     /// <param name="idx"></param>
     /// <returns></returns>
-    public LineUnit GetLineUnit(QuestState state, int idx) { return _dialoguePerState[state].GetLineList()[idx]; }
+    public LineUnit GetLineUnit(QuestState state, int idx)
+    {
+        if (idx == _dialoguePerState[state].GetLineList().Count) return null;
+        else return _dialoguePerState[state].GetLineList()[idx];
+    }
 
     /// <summary>
     /// 해당 state key를 가진 DialogueUnit 클래스의 대사 리스트에서 idx 위치의 line(대사) 반환. lineList[idx].line 
@@ -55,7 +59,11 @@ public class QuestDialogue
     /// <param name="state"></param>
     /// <param name="idx"></param>
     /// <returns></returns>
-    public string GetLine(QuestState state, int idx) { return _dialoguePerState[state].GetLineList()[idx].GetLine(); } 
+    public string GetLine(QuestState state, int idx)
+    {
+        if (idx == _dialoguePerState[state].GetLineList().Count) return null;
+        else return _dialoguePerState[state].GetLineList()[idx].GetLine();
+    } 
 
     //setter
     public void SetQuestID(int questID) { this.questID = questID; }

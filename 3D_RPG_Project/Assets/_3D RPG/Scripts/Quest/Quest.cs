@@ -13,7 +13,7 @@ public enum QuestState
     QUEST_VEILED,          
 
     /// <summary>
-    /// 퀘스트가 해금되었어나 아직 진행되지 않은 퀘스트 진행가능 상태 
+    /// 퀘스트가 해금되어 진행할 수 있는 상태 
     /// </summary>
     QUEST_OPENED,           
 

@@ -7,6 +7,8 @@ public class SpriteManager : MonoBehaviour
     public static SpriteManager instance;
 
     public Sprite[] _spriteItem;
+    public Sprite[] _spriteBuff;
+
 
     private void Awake()
     {
@@ -16,5 +18,10 @@ public class SpriteManager : MonoBehaviour
     public Sprite GetItemSprite(int itemId)
     {
         return _spriteItem[itemId - 2];
+    }
+
+    public Sprite GetBuffSprite(int buffId)
+    {
+        return _spriteBuff[buffId - 1];
     }
 }

@@ -19,6 +19,9 @@ public class PlayerStatus : Status
     public int GetStr() { return _str; }
     public int GetInt() { return _int; }
     public int GetDef() { return _def; }
+    public void AdjustInt(int num) { _int += num; }
+    public void AdjustStr(int num) { _str += num; }
+    public void AdjustDef(int num) { _def += num; }
 
     void Start()
     {
@@ -35,7 +38,6 @@ public class PlayerStatus : Status
         if (_level < _levelUpExps.Length)
         {
             _curExp += num;
-            Debug.Log(num + "증가");
             if (_levelUpExps[_level] <= _curExp)
             {
                 _curExp -= _levelUpExps[_level];

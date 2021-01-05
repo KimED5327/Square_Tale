@@ -79,7 +79,7 @@ public class SlotToolTip : MonoBehaviour
         goToolTip.SetActive(true);
 
         // 장비템이면 장착 해제 버튼 출력
-        if (item.type != ItemType.ETC)
+        if (item.category != ItemCategory.ETC)
         {
             goEquipButton.SetActive(true);
 

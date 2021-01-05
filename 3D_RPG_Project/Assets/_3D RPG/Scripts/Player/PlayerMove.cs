@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     public float speed;
+    public float applySpeed;
     public float jumpForce;
     public GameObject effect1;
     public GameObject effect2;
@@ -124,7 +125,7 @@ public class PlayerMove : MonoBehaviour
             }
         }
 
-        transform.position += realMoveVec * speed * Time.deltaTime;
+        transform.position += realMoveVec * (speed * (1 + applySpeed)) * Time.deltaTime;
 
         transform.LookAt(transform.position + realMoveVec);
 

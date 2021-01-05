@@ -101,6 +101,7 @@ public class Inventory : MonoBehaviour
         if(hideMenu)
             GameHudMenu.instance.ShowMenu();
 
+        SlotToolTip.instance.HideToolTip();
         _goInventory.SetActive(false);
         _goEquip.SetActive(false);
     }

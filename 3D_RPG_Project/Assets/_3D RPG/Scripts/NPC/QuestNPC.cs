@@ -3,31 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// npcID에 맞는 퀘스트 NPC의 데이터 정보를 가지며, 기본대사 출력, 진행가능 퀘스트 탐색 등 퀘스트NPC의 기능 수행
+/// </summary>
 public class QuestNPC : MonoBehaviour
 {
-    [SerializeField] NpcWithLines _npc;
-    public int _npcID;
-    QuestState _questState;
-    bool _isParsingDone;
+    /// <summary>
+    /// npcID에 맞는 NPC 데이터로서, NpcDB에 저장된 데이터와는 별개이며 데이터값 수정 가능 
+    /// </summary>
+    [SerializeField] NpcWithLines _npc = new NpcWithLines();
+
+    /// <summary>
+    /// 원래 퀘스트용 변수이나 NPC의 퀘스트 진행상태를 파악하는 데 사용 (0.해금된 퀘스트 없음 1.진행가능 퀘스트 있음 2.퀘스트 진행중 3.퀘스트 완료가능 4.NPC의 모든 퀘스트 완료)
+    /// </summary>
+    [SerializeField] QuestState _questState;
+    
+    /// <summary>
+    /// 현재 NPC가 진행중인 퀘스트 ID (0 : 진행중인 퀘스트 없음)
+    /// </summary>
+    public int _ongoingQuestID;  // 현재 NPC가 진행 중인 퀘스트 ID
+    public int _npcID;           // 해당 객체의 NPC ID 
+    bool _isParsingDone;         // _npc객체에 NpcDB의 데이터가 파싱되었는지 확인 
 
     [Header("NPC UI")]
-    [Tooltip("기본 다이얼로그 캔버스")]
-    [SerializeField] GameObject _dialogueCanvas;
-    [Tooltip("퀘스트 다이얼로그 캔버스")]
-    [SerializeField] GameObject _questDialogueCanvas;
-    [Tooltip("NPC 퀘스트마크 이미지")]
+    [Tooltip("기본 다이얼로그 Panel")]
+    [SerializeField] GameObject _dialoguePanel;
+    [Tooltip("퀘스트 다이얼로그 Panel")]
+    [SerializeField] GameObject _questDialoguePanel;
+    [Tooltip("NPC 머리 상단에 띄우는 퀘스트마크 Image")]
     [SerializeField] Image _imgQuestMark;
-    [Tooltip("퀘스트마크 - 진행가능")]
+    [Tooltip("퀘스트마크 Sprite - 진행가능(노란색 느낌표)")]
     [SerializeField] Sprite _imgQuestOpened;
-    [Tooltip("퀘스트마크 - 진행중")]
+    [Tooltip("퀘스트마크 Sprite - 진행중(회색 물음표)")]
     [SerializeField] Sprite _imgQuestOngoing;
-    [Tooltip("퀘스트마크 - 완료가능")]
+    [Tooltip("퀘스트마크 Sprite - 완료가능(노란색 물음표)")]
     [SerializeField] Sprite _imgQuestCompletable;
-    [Tooltip("NPC 네임태그 텍스트")]
+    [Tooltip("NPC 머리 상단에 띄우는 네임태그 Text")]
     [SerializeField] Text _txtNameTag;
-    [Tooltip("다이얼로그 박스 내 NPC 이름 텍스트")]
+    [Tooltip("기본 다이얼로그 박스 내 NPC 이름 Text")]
     [SerializeField] Text _txtNpcName;
-    [Tooltip("다이얼로그 박스 내 NPC 대사 텍스트")]
+    [Tooltip("기본 다이얼로그 박스 내 NPC 대사 Text")]
     [SerializeField] Text _txtNpcLines;
 
     // Start is called before the first frame update
@@ -39,28 +54,26 @@ public class QuestNPC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ParsingData();
-  
+        ParsingData(); 
     }
 
     /// <summary>
-    /// npcID에 맞는 데이터 받아와서 _npc에 저장 
+    /// npcID에 맞는 데이터를 받아와서 동적할당한 NpcWithLines 객체(_npc)에 저장 
     /// </summary>
     private void ParsingData()
     {
         if (NPCLoader.instance.ParsingCompleted() && !_isParsingDone)
         {
             _npc = NpcDB.instance.GetNPC(_npcID);
-            _isParsingDone = true;
             CheckAvailableQuest();
             SetNameTag();
             SetQuestMark();
-            //SetDefaultLines();
+            _isParsingDone = true;
         }
     }
 
     /// <summary>
-    /// 진행 가능한 퀘스트가 있는지 탐색 
+    /// 현재 진행 가능한 퀘스트가 있는지 탐색 
     /// </summary>
     public bool CheckAvailableQuest()
     {
@@ -79,7 +92,7 @@ public class QuestNPC : MonoBehaviour
     }
 
     /// <summary>
-    /// 진행 가능한 퀘스트 ID 리턴 
+    /// 진행 가능한 퀘스트 ID 리턴 (0 : 진행 가능한 퀘스트 없음)
     /// </summary>
     /// <returns></returns>
     public int GetAvailableQuestID()
@@ -99,16 +112,15 @@ public class QuestNPC : MonoBehaviour
     }
 
     /// <summary>
-    /// NPC의 기본 대사들 중 랜덤한 대사를 세팅 
+    /// NPC 머리 상단의 네임태그 텍스트 세팅 
     /// </summary>
-    public void SetDefaultLines()
+    private void SetNameTag()
     {
-        _txtNpcName.text = _npc.GetName();
-        _txtNpcLines.text = _npc.GetLine(Random.Range(0, _npc.GetLinesCount()));
+        _txtNameTag.text = _npc.GetName();
     }
 
     /// <summary>
-    /// NPC의 퀘스트 진행상태에 따른 퀘스트 마크 세팅 
+    /// NPC의 퀘스트 진행상태에 따라 퀘스트 마크(NPC 머리 상단 위치) 세팅 
     /// </summary>
     public void SetQuestMark()
     {
@@ -136,37 +148,61 @@ public class QuestNPC : MonoBehaviour
     }
 
     /// <summary>
-    /// NPC 네임태그 텍스트 세팅 
+    /// NPC의 기본 대사들 중 랜덤한 대사 하나를 기본 다이얼로그 박스 내 세팅  
     /// </summary>
-    private void SetNameTag()
+    public void SetDefaultLines()
     {
-        _txtNameTag.text = _npc.GetName();
         _txtNpcName.text = _npc.GetName();
+        _txtNpcLines.text = _npc.GetLine(Random.Range(0, _npc.GetLinesCount()));
     }
 
+    /// <summary>
+    /// 진행중인 퀘스트가 있을 경우, 해당 퀘스트ID가 진행중일 때의 대사를 기본 다이얼로그 박스 내 세팅   
+    /// </summary>
+    public void SetQuestOngoingLines()
+    {
+        _txtNpcName.text = _npc.GetName();
+        _txtNpcLines.text = QuestDialogueDB.instance.GetDialogue(_ongoingQuestID).GetLine(_questState, 0);
+    }
+
+    /// <summary>
+    /// NPC 클릭(터치) 시 퀘스트 진행상태에 따라 다이얼로그 진행(퀘스트 진행가능, 진행중, 완료가능 상태를 제외하면 디폴트 대사 출력)
+    /// </summary>
     public void ClickNPC()
     {
+        //NPC 클릭 후 다이얼로그 진행 시에 NPC가 다시 터치되지 않도록 태그 변경(ray로 tag를 체크해서 터치 감지)
         transform.tag = "Untagged";
 
         switch (_questState)
         {
+            //진행 가능한 퀘스트가 있는 경우 
             case QuestState.QUEST_OPENED:
-                DialogueManager.instance.SetQuestInfo(GetAvailableQuestID(), QuestState.QUEST_OPENED);
+                DialogueManager.instance.SetQuestInfo(GetAvailableQuestID(), this);
                 DialogueManager.instance.QuestOpenedDialogue();
                 break;
-
+            
+            //현재 특정한 퀘스트를 진행중인 경우 (디폴트 패널로 대사 출력)
             case QuestState.QUEST_ONGOING:
-                break;
 
+                // 해당 상태에 출력 가능한 대사가 없을 경우 return; 
+                if (!QuestDialogueDB.instance.GetDialogue(_ongoingQuestID).CheckDialogue(_questState)) return;
+
+                SetQuestOngoingLines();
+                _dialoguePanel.SetActive(true);
+                DialogueManager.instance.SetQuestNPC(this);
+                break;
+            
+            //완료 가능한 퀘스트가 있는 경우 
             case QuestState.QUEST_COMPLETABLE:
                 DialogueManager.instance.SetQuestInfo(GetAvailableQuestID(), QuestState.QUEST_COMPLETABLE);
                 DialogueManager.instance.QuestOpenedDialogue();
                 break;
 
+            // 그 외 상태에서는 다이얼로그 패널로 디폴트 대사 출력  
             default:
                 SetDefaultLines();
-                _dialogueCanvas.SetActive(true);
-                DialogueManager.instance.SetNameTag(_txtNameTag);
+                _dialoguePanel.SetActive(true);
+                DialogueManager.instance.SetQuestNPC(this);
                 break;
         }
     }
@@ -180,4 +216,29 @@ public class QuestNPC : MonoBehaviour
             Debug.Log(_npc.GetLine(i));
         }
     }
+
+    /// <summary>
+    /// 퀘스트 진행중 상태에 대한 대사 유무를 bool 값으로 리턴  
+    /// </summary>
+    /// <returns></returns>
+    public bool CheckOngoingQuestDialogue()
+    {
+        return QuestDialogueDB.instance.GetDialogue(_ongoingQuestID).CheckDialogue(_questState);
+    }
+
+    /// <summary>
+    /// NPC 머리 상단의 네임태그 활성화 
+    /// </summary>
+    public void TurnOnNameTag() { _txtNameTag.enabled = true; }
+
+    /// <summary>
+    /// NPC 머리 상단의 네임태그 비활성화 
+    /// </summary>
+    public void TurnOffNameTag() { _txtNameTag.enabled = false; }
+
+    public int GetOngoingQuestID() { return _ongoingQuestID; }
+    public void SetOngoingQuestID(int questID) { _ongoingQuestID = questID; }
+
+    public QuestState GetQuestState() { return _questState; }
+    public void SetQuestState(QuestState state) { _questState = state; }
 }

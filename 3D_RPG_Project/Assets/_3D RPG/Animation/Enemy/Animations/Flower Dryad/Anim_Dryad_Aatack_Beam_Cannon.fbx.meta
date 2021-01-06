@@ -1,165 +1,473 @@
 fileFormatVersion: 2
 guid: 3b66e2ea77e26bc43b586d43d2763869
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: chest_l1
-    100004: chest_l2
-    100006: chest_r1
-    100008: chest_r2
-    100010: clavicle_l
-    100012: clavicle_r
-    100014: ear_ring_01
-    100016: ear_ring_02
-    100018: hair_back_01
-    100020: hair_back_02
-    100022: hair_back_03
-    100024: hair_back_04
-    100026: hair_flower_0
-    100028: hair_flower_1
-    100030: hair_flower_2
-    100032: hair_flower_3
-    100034: hair_flower_4
-    100036: hair_front_01
-    100038: hair_front_02
-    100040: hair_root
-    100042: hand_l
-    100044: hand_r
-    100046: head
-    100048: leaf_00
-    100050: leaf_01
-    100052: leaf_02
-    100054: leaf_02b
-    100056: leaf_02b1
-    100058: leaf_03
-    100060: leaf_03b
-    100062: leaf_03b1
-    100064: leaf_04
-    100066: leaf_04b
-    100068: leaf_04b1
-    100070: leaf_05b
-    100072: leaf_05b1
-    100074: lowerarm_l
-    100076: lowerarm_r
-    100078: neck_01
-    100080: pelvis
-    100082: petal_01
-    100084: petal_01b
-    100086: petal_01c
-    100088: petal_02
-    100090: petal_02b
-    100092: petal_02c
-    100094: petal_03
-    100096: petal_03b
-    100098: petal_03c
-    100100: petal_04
-    100102: petal_04b
-    100104: petal_04c
-    100106: petal_l_01
-    100108: petal_l_01b
-    100110: petal_l_02
-    100112: petal_l_02b
-    100114: petal_l_03
-    100116: petal_l_03b
-    100118: petal_l_04
-    100120: petal_l_04b
-    100122: petal_r_01
-    100124: petal_r_01b
-    100126: petal_r_02
-    100128: petal_r_02b
-    100130: petal_r_03
-    100132: petal_r_03b
-    100134: petal_r_04
-    100136: petal_r_04b
-    100138: pollen_l
-    100140: pollen_r
-    100142: root
-    100144: spine_02
-    100146: spine_03
-    100148: upperarm_l
-    100150: upperarm_r
-    400000: //RootNode
-    400002: chest_l1
-    400004: chest_l2
-    400006: chest_r1
-    400008: chest_r2
-    400010: clavicle_l
-    400012: clavicle_r
-    400014: ear_ring_01
-    400016: ear_ring_02
-    400018: hair_back_01
-    400020: hair_back_02
-    400022: hair_back_03
-    400024: hair_back_04
-    400026: hair_flower_0
-    400028: hair_flower_1
-    400030: hair_flower_2
-    400032: hair_flower_3
-    400034: hair_flower_4
-    400036: hair_front_01
-    400038: hair_front_02
-    400040: hair_root
-    400042: hand_l
-    400044: hand_r
-    400046: head
-    400048: leaf_00
-    400050: leaf_01
-    400052: leaf_02
-    400054: leaf_02b
-    400056: leaf_02b1
-    400058: leaf_03
-    400060: leaf_03b
-    400062: leaf_03b1
-    400064: leaf_04
-    400066: leaf_04b
-    400068: leaf_04b1
-    400070: leaf_05b
-    400072: leaf_05b1
-    400074: lowerarm_l
-    400076: lowerarm_r
-    400078: neck_01
-    400080: pelvis
-    400082: petal_01
-    400084: petal_01b
-    400086: petal_01c
-    400088: petal_02
-    400090: petal_02b
-    400092: petal_02c
-    400094: petal_03
-    400096: petal_03b
-    400098: petal_03c
-    400100: petal_04
-    400102: petal_04b
-    400104: petal_04c
-    400106: petal_l_01
-    400108: petal_l_01b
-    400110: petal_l_02
-    400112: petal_l_02b
-    400114: petal_l_03
-    400116: petal_l_03b
-    400118: petal_l_04
-    400120: petal_l_04b
-    400122: petal_r_01
-    400124: petal_r_01b
-    400126: petal_r_02
-    400128: petal_r_02b
-    400130: petal_r_03
-    400132: petal_r_03b
-    400134: petal_r_04
-    400136: petal_r_04b
-    400138: pollen_l
-    400140: pollen_r
-    400142: root
-    400144: spine_02
-    400146: spine_03
-    400148: upperarm_l
-    400150: upperarm_r
-    7400000: Anim_Dryad_Aatack_Beam_Cannon
-    9500000: //RootNode
+  serializedVersion: 19301
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: chest_l1
+  - first:
+      1: 100004
+    second: chest_l2
+  - first:
+      1: 100006
+    second: chest_r1
+  - first:
+      1: 100008
+    second: chest_r2
+  - first:
+      1: 100010
+    second: clavicle_l
+  - first:
+      1: 100012
+    second: clavicle_r
+  - first:
+      1: 100014
+    second: ear_ring_01
+  - first:
+      1: 100016
+    second: ear_ring_02
+  - first:
+      1: 100018
+    second: hair_back_01
+  - first:
+      1: 100020
+    second: hair_back_02
+  - first:
+      1: 100022
+    second: hair_back_03
+  - first:
+      1: 100024
+    second: hair_back_04
+  - first:
+      1: 100026
+    second: hair_flower_0
+  - first:
+      1: 100028
+    second: hair_flower_1
+  - first:
+      1: 100030
+    second: hair_flower_2
+  - first:
+      1: 100032
+    second: hair_flower_3
+  - first:
+      1: 100034
+    second: hair_flower_4
+  - first:
+      1: 100036
+    second: hair_front_01
+  - first:
+      1: 100038
+    second: hair_front_02
+  - first:
+      1: 100040
+    second: hair_root
+  - first:
+      1: 100042
+    second: hand_l
+  - first:
+      1: 100044
+    second: hand_r
+  - first:
+      1: 100046
+    second: head
+  - first:
+      1: 100048
+    second: leaf_00
+  - first:
+      1: 100050
+    second: leaf_01
+  - first:
+      1: 100052
+    second: leaf_02
+  - first:
+      1: 100054
+    second: leaf_02b
+  - first:
+      1: 100056
+    second: leaf_02b1
+  - first:
+      1: 100058
+    second: leaf_03
+  - first:
+      1: 100060
+    second: leaf_03b
+  - first:
+      1: 100062
+    second: leaf_03b1
+  - first:
+      1: 100064
+    second: leaf_04
+  - first:
+      1: 100066
+    second: leaf_04b
+  - first:
+      1: 100068
+    second: leaf_04b1
+  - first:
+      1: 100070
+    second: leaf_05b
+  - first:
+      1: 100072
+    second: leaf_05b1
+  - first:
+      1: 100074
+    second: lowerarm_l
+  - first:
+      1: 100076
+    second: lowerarm_r
+  - first:
+      1: 100078
+    second: neck_01
+  - first:
+      1: 100080
+    second: pelvis
+  - first:
+      1: 100082
+    second: petal_01
+  - first:
+      1: 100084
+    second: petal_01b
+  - first:
+      1: 100086
+    second: petal_01c
+  - first:
+      1: 100088
+    second: petal_02
+  - first:
+      1: 100090
+    second: petal_02b
+  - first:
+      1: 100092
+    second: petal_02c
+  - first:
+      1: 100094
+    second: petal_03
+  - first:
+      1: 100096
+    second: petal_03b
+  - first:
+      1: 100098
+    second: petal_03c
+  - first:
+      1: 100100
+    second: petal_04
+  - first:
+      1: 100102
+    second: petal_04b
+  - first:
+      1: 100104
+    second: petal_04c
+  - first:
+      1: 100106
+    second: petal_l_01
+  - first:
+      1: 100108
+    second: petal_l_01b
+  - first:
+      1: 100110
+    second: petal_l_02
+  - first:
+      1: 100112
+    second: petal_l_02b
+  - first:
+      1: 100114
+    second: petal_l_03
+  - first:
+      1: 100116
+    second: petal_l_03b
+  - first:
+      1: 100118
+    second: petal_l_04
+  - first:
+      1: 100120
+    second: petal_l_04b
+  - first:
+      1: 100122
+    second: petal_r_01
+  - first:
+      1: 100124
+    second: petal_r_01b
+  - first:
+      1: 100126
+    second: petal_r_02
+  - first:
+      1: 100128
+    second: petal_r_02b
+  - first:
+      1: 100130
+    second: petal_r_03
+  - first:
+      1: 100132
+    second: petal_r_03b
+  - first:
+      1: 100134
+    second: petal_r_04
+  - first:
+      1: 100136
+    second: petal_r_04b
+  - first:
+      1: 100138
+    second: pollen_l
+  - first:
+      1: 100140
+    second: pollen_r
+  - first:
+      1: 100142
+    second: root
+  - first:
+      1: 100144
+    second: spine_02
+  - first:
+      1: 100146
+    second: spine_03
+  - first:
+      1: 100148
+    second: upperarm_l
+  - first:
+      1: 100150
+    second: upperarm_r
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: chest_l1
+  - first:
+      4: 400004
+    second: chest_l2
+  - first:
+      4: 400006
+    second: chest_r1
+  - first:
+      4: 400008
+    second: chest_r2
+  - first:
+      4: 400010
+    second: clavicle_l
+  - first:
+      4: 400012
+    second: clavicle_r
+  - first:
+      4: 400014
+    second: ear_ring_01
+  - first:
+      4: 400016
+    second: ear_ring_02
+  - first:
+      4: 400018
+    second: hair_back_01
+  - first:
+      4: 400020
+    second: hair_back_02
+  - first:
+      4: 400022
+    second: hair_back_03
+  - first:
+      4: 400024
+    second: hair_back_04
+  - first:
+      4: 400026
+    second: hair_flower_0
+  - first:
+      4: 400028
+    second: hair_flower_1
+  - first:
+      4: 400030
+    second: hair_flower_2
+  - first:
+      4: 400032
+    second: hair_flower_3
+  - first:
+      4: 400034
+    second: hair_flower_4
+  - first:
+      4: 400036
+    second: hair_front_01
+  - first:
+      4: 400038
+    second: hair_front_02
+  - first:
+      4: 400040
+    second: hair_root
+  - first:
+      4: 400042
+    second: hand_l
+  - first:
+      4: 400044
+    second: hand_r
+  - first:
+      4: 400046
+    second: head
+  - first:
+      4: 400048
+    second: leaf_00
+  - first:
+      4: 400050
+    second: leaf_01
+  - first:
+      4: 400052
+    second: leaf_02
+  - first:
+      4: 400054
+    second: leaf_02b
+  - first:
+      4: 400056
+    second: leaf_02b1
+  - first:
+      4: 400058
+    second: leaf_03
+  - first:
+      4: 400060
+    second: leaf_03b
+  - first:
+      4: 400062
+    second: leaf_03b1
+  - first:
+      4: 400064
+    second: leaf_04
+  - first:
+      4: 400066
+    second: leaf_04b
+  - first:
+      4: 400068
+    second: leaf_04b1
+  - first:
+      4: 400070
+    second: leaf_05b
+  - first:
+      4: 400072
+    second: leaf_05b1
+  - first:
+      4: 400074
+    second: lowerarm_l
+  - first:
+      4: 400076
+    second: lowerarm_r
+  - first:
+      4: 400078
+    second: neck_01
+  - first:
+      4: 400080
+    second: pelvis
+  - first:
+      4: 400082
+    second: petal_01
+  - first:
+      4: 400084
+    second: petal_01b
+  - first:
+      4: 400086
+    second: petal_01c
+  - first:
+      4: 400088
+    second: petal_02
+  - first:
+      4: 400090
+    second: petal_02b
+  - first:
+      4: 400092
+    second: petal_02c
+  - first:
+      4: 400094
+    second: petal_03
+  - first:
+      4: 400096
+    second: petal_03b
+  - first:
+      4: 400098
+    second: petal_03c
+  - first:
+      4: 400100
+    second: petal_04
+  - first:
+      4: 400102
+    second: petal_04b
+  - first:
+      4: 400104
+    second: petal_04c
+  - first:
+      4: 400106
+    second: petal_l_01
+  - first:
+      4: 400108
+    second: petal_l_01b
+  - first:
+      4: 400110
+    second: petal_l_02
+  - first:
+      4: 400112
+    second: petal_l_02b
+  - first:
+      4: 400114
+    second: petal_l_03
+  - first:
+      4: 400116
+    second: petal_l_03b
+  - first:
+      4: 400118
+    second: petal_l_04
+  - first:
+      4: 400120
+    second: petal_l_04b
+  - first:
+      4: 400122
+    second: petal_r_01
+  - first:
+      4: 400124
+    second: petal_r_01b
+  - first:
+      4: 400126
+    second: petal_r_02
+  - first:
+      4: 400128
+    second: petal_r_02b
+  - first:
+      4: 400130
+    second: petal_r_03
+  - first:
+      4: 400132
+    second: petal_r_03b
+  - first:
+      4: 400134
+    second: petal_r_04
+  - first:
+      4: 400136
+    second: petal_r_04b
+  - first:
+      4: 400138
+    second: pollen_l
+  - first:
+      4: 400140
+    second: pollen_r
+  - first:
+      4: 400142
+    second: root
+  - first:
+      4: 400144
+    second: spine_02
+  - first:
+      4: 400146
+    second: spine_03
+  - first:
+      4: 400148
+    second: upperarm_l
+  - first:
+      4: 400150
+    second: upperarm_r
+  - first:
+      74: 7400000
+    second: Anim_Dryad_Aatack_Beam_Cannon
+  - first:
+      95: 9500000
+    second: //RootNode
   externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -188,6 +496,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Anim_Dryad_Aatack_Beam_Cannon
       takeName: Anim_Dryad_Aatack_Beam_Cannon
+      internalID: 0
       firstFrame: 41
       lastFrame: 70
       wrapMode: 0
@@ -196,7 +505,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -212,7 +521,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 41
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -220,25 +529,28 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -247,10 +559,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -260,13 +572,16 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

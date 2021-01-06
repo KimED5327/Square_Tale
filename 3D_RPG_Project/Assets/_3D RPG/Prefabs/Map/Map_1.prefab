@@ -5657,11 +5657,7 @@ MonoBehaviour:
   _spawnPoints:
   - priorMapName: Map_2
     tfSpawnPoint: {fileID: 1251369948196537976}
-  _monsterSpawnPoint:
-  - monsterName: "\uC774\uB178\uBE44"
-    tfSpawnLocation: {fileID: 1494824203}
-    count: 5
-    spawnRange: 7
+  _monsterSpawnPoint: []
   _respawnCheckTime: 1
 --- !u!1 &7133438159701119119
 GameObject:

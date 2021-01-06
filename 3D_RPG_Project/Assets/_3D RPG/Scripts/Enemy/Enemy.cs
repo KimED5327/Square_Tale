@@ -11,6 +11,7 @@ public enum State
 public class Enemy : MonoBehaviour
 {
     GameObject rangedWeapon;                    //몬스터 원거리 구체
+    public int Id;                              //몬스터 idNumber;
     public float attTime;                       //몬스터 공격속도
     public float dmgApplyTime;                  //실제 데미지 적용 시간.
     public float timer;                         //공격속도 조절값
@@ -214,7 +215,7 @@ public class Enemy : MonoBehaviour
         {
             // enemyAnimator.SetInteger("animation", 3);
             enemyState = State.Attack;
-            enemyAnimator.SetBool("Attack", true);
+            //enemyAnimator.SetBool("Attack", true);
         }
         if(!_isChasing)
         {
@@ -228,6 +229,7 @@ public class Enemy : MonoBehaviour
     //공격 상태
     private void UpdateAttack()
     {
+        enemyAnimator.SetTrigger("Attack 0");
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange,2))
         {
             agent.ResetPath();

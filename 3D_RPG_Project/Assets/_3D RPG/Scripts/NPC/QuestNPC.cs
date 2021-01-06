@@ -194,7 +194,7 @@ public class QuestNPC : MonoBehaviour
             
             //완료 가능한 퀘스트가 있는 경우 
             case QuestState.QUEST_COMPLETABLE:
-                DialogueManager.instance.SetQuestInfo(GetAvailableQuestID(), QuestState.QUEST_COMPLETABLE);
+                DialogueManager.instance.SetQuestInfo(GetAvailableQuestID(), this);
                 DialogueManager.instance.QuestOpenedDialogue();
                 break;
 
@@ -235,6 +235,9 @@ public class QuestNPC : MonoBehaviour
     /// NPC 머리 상단의 네임태그 비활성화 
     /// </summary>
     public void TurnOffNameTag() { _txtNameTag.enabled = false; }
+
+    public int GetNpcID() { return _npcID; }
+    public void SetNpcID(int npcID) { _npcID = npcID; }
 
     public int GetOngoingQuestID() { return _ongoingQuestID; }
     public void SetOngoingQuestID(int questID) { _ongoingQuestID = questID; }

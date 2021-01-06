@@ -64,9 +64,11 @@ public class InteractionManager : MonoBehaviour
                         hit.transform.gameObject.SetActive(false);
                     }
 
-                    // 퀘스트 NPC - 다이얼로그 실행 
+                    // Quest NPC - 다이얼로그 실행 
                     else if (hit.transform.CompareTag(StringManager.questNPCTag))
                     {
+                        QuestNPC npc = hit.transform.GetComponent<QuestNPC>();
+
                         // 퀘스트 진행중일 시 해당 상태에 대한 대사 유무를 체크해서 함수 실행 
                         if(hit.transform.GetComponent<QuestNPC>().GetQuestState() == QuestState.QUEST_ONGOING)
                         {

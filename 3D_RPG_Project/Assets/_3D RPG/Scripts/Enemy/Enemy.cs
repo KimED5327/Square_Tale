@@ -346,5 +346,5 @@ public class Enemy : MonoBehaviour
         Gizmos.DrawWireSphere(startPoint, reconRange);
     }
 
-    public PlayerStatus GetStatus() { return player.GetComponent<PlayerStatus>(); }
+    public PlayerStatus GetPlayerStatus() { return player.GetComponent<PlayerStatus>(); }
 }

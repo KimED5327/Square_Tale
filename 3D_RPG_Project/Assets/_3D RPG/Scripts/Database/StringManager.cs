@@ -10,6 +10,7 @@ public class StringManager : MonoBehaviour
     public static string keywordTag = "Keyword";
     public static string groundTag = "Ground";
     public static string questNPCTag = "QuestNPC";
+    public static string blockTag = "Block";
 
     public static string msgLongDistance = "거리가 너무 멉니다.";
     public static string msgNotEnoughInventory = "인벤토리 공간이 부족합니다.";
@@ -19,7 +20,11 @@ public class StringManager : MonoBehaviour
     public static string msgNotEnoughGold = "골드가 부족합니다.";
     public static string msgNoTarget = "대상이 없습니다.";
     public static string msgGetKeword = "키워드 'keyword' 획득";
+    public static string msgCanNotBlockEquip = "등록 불가합니다.";
+    public static string msgNotEnoughBlock = "블록 개수가 부족합니다.";
+    public static string msgEmptyBlockSlot = "등록된 블록이 없습니다.";
 
+    public static string block = "Block";
 
     public static string ItemTypeToString(OptionType type)
     {

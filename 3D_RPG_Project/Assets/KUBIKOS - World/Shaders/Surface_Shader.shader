@@ -46,7 +46,6 @@ Shader "Animmal/Surface"
 		ENDCG
 	}
 	Fallback "Diffuse"
-	CustomEditor "ASEMaterialInspector"
 }
 /*ASEBEGIN
 Version=15600

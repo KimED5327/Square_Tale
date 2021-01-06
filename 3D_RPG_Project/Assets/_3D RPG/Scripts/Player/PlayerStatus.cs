@@ -23,14 +23,18 @@ public class PlayerStatus : Status
     public void AdjustStr(int num) { _str += num; }
     public void AdjustDef(int num) { _def += num; }
 
-    void Start()
-    {
-        _curHp = _maxHp;
-    }
-
     void Update()
     {
         LevelUp();
+    }
+
+    PlayerBuffManager _buffManager;
+
+    public override void Initialized()
+    {
+        base.Initialized();
+        if (_buffManager == null)
+            _buffManager = FindObjectOfType<PlayerBuffManager>();
     }
 
     public void IncreaseExp(int num)
@@ -79,4 +83,6 @@ public class PlayerStatus : Status
     {
         return (float)_curHp / _maxHp;
     }
+
+    public PlayerBuffManager GetBuffManager() { return _buffManager; }
 }

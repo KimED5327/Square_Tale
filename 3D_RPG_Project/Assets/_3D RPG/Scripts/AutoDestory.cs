@@ -7,6 +7,7 @@ public class AutoDestory : MonoBehaviour
     [SerializeField] string _name = "name";
     [SerializeField] float _destoryTime = 0.5f;
 
+
     bool _isAwake = false;
 
     private void OnEnable()
@@ -19,7 +20,7 @@ public class AutoDestory : MonoBehaviour
 
     void AutoDestroy()
     {
-        if(!gameObject.activeSelf)
+        if(gameObject.activeSelf)
             ObjectPooling.instance.PushObjectToPool(_name, this.gameObject);
     }
 

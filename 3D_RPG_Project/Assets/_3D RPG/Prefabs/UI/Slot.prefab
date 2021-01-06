@@ -163,16 +163,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e7a22f1fac4ff47bfb84e4923ef40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEquipSlot: 0
+  _isEquipSlot: 0
   _count: 0
   _item:
     id: 0
     name: 
+    iconName: 
+    canSell: 0
     desc: 
+    stackable: 0
+    stack: 0
     levelLimit: 0
     type: 0
-    sprite: {fileID: 0}
-    price: 0
+    category: 0
+    priceBuy: 0
+    priceSell: 0
     options: []
   _imgItem: {fileID: 2705524897040718433}
   _txtItemCount: {fileID: 2569994428433851612}
@@ -241,9 +246,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: b12256d0f3c5c054b80c0807f7a1a36f, type: 3}
     m_FontSize: 30
-    m_FontStyle: 1
+    m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40

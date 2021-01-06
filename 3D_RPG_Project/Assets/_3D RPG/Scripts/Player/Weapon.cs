@@ -42,7 +42,7 @@ public class Weapon : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag(StringManager.enemyTag) || other.CompareTag(StringManager.blockTag))
         {
             Status targetStatus = other.GetComponent<Status>();
             if (!targetStatus.IsDead())

@@ -14,13 +14,20 @@ public abstract class Status : MonoBehaviour
     [SerializeField] protected int _giveExp = 50;
     protected bool _isDead = false;
 
-    private void Start()
+    protected void Start()
+    {
+        Initialized();
+    }
+
+    public virtual void Initialized()
     {
         if (_curHp < 0)
             _curHp = _maxHp;
+
+        _isDead = false;
     }
 
-    public void Damage(int num, Vector3 targetPos)
+    public virtual void Damage(int num, Vector3 targetPos)
     {
        _curHp -= num;
 
@@ -40,8 +47,9 @@ public abstract class Status : MonoBehaviour
     {
         if (transform.CompareTag(StringManager.enemyTag))
         {
-            GetComponent<Enemy>().GetStatus().IncreaseExp(_giveExp);
+            GetComponent<Enemy>().GetPlayerStatus().IncreaseExp(_giveExp);
         }
+        _curHp = 0;
         _isDead = true;
     }
 
@@ -50,6 +58,12 @@ public abstract class Status : MonoBehaviour
     public int GetLevel() { return _level; }
     public int GetCurrentHp() { return _curHp; }
     public int SetCurrentHp(int hp) => _curHp = hp;
+    public void IncreaseHp(int hp)
+    {
+        _curHp += hp;
+        if (_curHp > _maxHp)
+            _curHp = _maxHp;
+    }
     public int GetMaxHp() { return _maxHp; }
     public int GetAtk() { return _atk; }
     public bool IsDead() { return _isDead; }

@@ -8,6 +8,7 @@ public class SpriteManager : MonoBehaviour
 
     public Sprite[] _spriteItem;
     public Sprite[] _spriteBuff;
+    public Sprite[] _spriteBlock;
 
 
     private void Awake()
@@ -23,5 +24,10 @@ public class SpriteManager : MonoBehaviour
     public Sprite GetBuffSprite(int buffId)
     {
         return _spriteBuff[buffId - 1];
+    }
+
+    public Sprite GetBlockSprite(int blockNum)
+    {
+        return _spriteBlock[blockNum];
     }
 }

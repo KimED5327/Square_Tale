@@ -10,6 +10,7 @@ TagManager:
   - MapMovePoint
   - QuestNPC
   - Keyword
+  - Block
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Enemy
   - NPC
   - Keyword
-  - 
+  - Player
   - 
   - 
   - 

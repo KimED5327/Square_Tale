@@ -7,7 +7,7 @@ public class MapManager : MonoBehaviour
     public static MapManager instance;
 
     [SerializeField] Map[] _maps = null;
-    public Map _currentMap;
+    Map _currentMap;
 
     string _moveMap;
     string _priorMap;

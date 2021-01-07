@@ -39,7 +39,15 @@ public class QuestManager : MonoBehaviour
         _ongoingQuests.Add(ongoingQuest);
 
         // 퀘스트 타입이 'NPC와의 대화'일 경우 대화 상대 NPC의 상태값 세팅  
-        if (ongoingQuest.GetQuestType() == QuestType.TYPE_TALKWITHNPC) SetPartnerNpcStatus();
+        if (ongoingQuest.GetQuestType() == QuestType.TYPE_TALKWITHNPC) SetPartnerNpcStatus(ongoingQuest);
+    }
+
+    /// <summary>
+    /// 퀘스트가 완료되어 진행중인 퀘스트 리스트에서 삭제하기 
+    /// </summary>
+    public void DeleteOngoingQuest()
+    {
+        _ongoingQuests.RemoveAt(0);
     }
 
     /// <summary>
@@ -51,9 +59,12 @@ public class QuestManager : MonoBehaviour
     /// <summary>
     /// type7. 'NPC와의 대화' 퀘스트에서 대화 상대가 되는 NPC의 상태값 세팅 
     /// </summary>
-    public void SetPartnerNpcStatus()
+    public void SetPartnerNpcStatus(Quest quest)
     {
-
+        TalkWithNpc talkWithNpc = quest.GetQuestInfo()[questInfoKey] as TalkWithNpc;
+        talkWithNpc.GetQuestFinisher().SetQuestState(QuestState.QUEST_COMPLETABLE);
+        talkWithNpc.GetQuestFinisher().SetQuestMark();
+        talkWithNpc.GetQuestFinisher().SetOngoingQuestID(quest.GetQuestID());
     }
 
     /// <summary>

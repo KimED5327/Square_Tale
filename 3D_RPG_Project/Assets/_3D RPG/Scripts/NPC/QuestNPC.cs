@@ -21,9 +21,10 @@ public class QuestNPC : MonoBehaviour
     /// <summary>
     /// 현재 NPC가 진행중인 퀘스트 ID (0 : 진행중인 퀘스트 없음)
     /// </summary>
-    public int _ongoingQuestID;  // 현재 NPC가 진행 중인 퀘스트 ID
-    public int _npcID;           // 해당 객체의 NPC ID 
-    bool _isParsingDone;         // _npc객체에 NpcDB의 데이터가 파싱되었는지 확인 
+    public int _ongoingQuestID;     // 현재 NPC가 진행 중인 퀘스트 ID
+    public int _npcID;              // 해당 객체의 NPC ID 
+    bool _isParsingDone;            // _npc객체에 NpcDB의 데이터가 파싱되었는지 확인 
+    string questInfoKey = "info";   // 해시테이블 QuestInfo 키  
 
     [Header("NPC UI")]
     [Tooltip("기본 다이얼로그 Panel")]
@@ -79,14 +80,29 @@ public class QuestNPC : MonoBehaviour
     {
         bool isAvailable = false;
 
-        for (int i = 0; i < _npc.GetQuestsCount(); i++)
+        if(_npc.GetQuestsCount() <= 0)
         {
-            if(QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetState() == QuestState.QUEST_OPENED)
-            {
-                isAvailable = true;
-                _questState = QuestState.QUEST_OPENED;
-            }
+            _questState = QuestState.QUEST_COMPLETED;
+            return false; 
         }
+
+        for (int i = 0; i < _npc.GetQuestsCount(); i++)
+        { 
+            if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetState() != QuestState.QUEST_OPENED) continue;
+
+            if(QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestType() == QuestType.TYPE_TALKWITHNPC &&
+               QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetNpcID() != _npcID)
+            {
+                TalkWithNpc talkWithNpc = QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestInfo()[questInfoKey] as TalkWithNpc;
+                talkWithNpc.SetQuestFinisher(this);
+                continue;
+            }
+
+            isAvailable = true;
+            _questState = QuestState.QUEST_OPENED;
+        }
+
+        if (!isAvailable) _questState = QuestState.QUEST_VEILED;
 
         return isAvailable;
     }
@@ -109,6 +125,22 @@ public class QuestNPC : MonoBehaviour
         }
 
         return questID;
+    }
+
+    /// <summary>
+    /// 완료된 퀘스트는 NPC의 퀘스트 목록에서 지우기 
+    /// </summary>
+    /// <param name="questID"></param>
+    public void DeleteCompletedQuest(int questID)
+    {
+        for (int i = 0; i < _npc.GetQuestsCount(); i++)
+        {
+            if (questID == _npc.GetQuestID(i))
+            {
+                _npc.GetQuestList().RemoveAt(i);
+                Debug.Log(_npcID + "번 NPC의 " + questID + "번 퀘스트 삭제됨");
+            }
+        }
     }
 
     /// <summary>
@@ -194,7 +226,7 @@ public class QuestNPC : MonoBehaviour
             
             //완료 가능한 퀘스트가 있는 경우 
             case QuestState.QUEST_COMPLETABLE:
-                DialogueManager.instance.SetQuestInfo(GetAvailableQuestID(), this);
+                DialogueManager.instance.SetQuestInfo(_ongoingQuestID, this);
                 DialogueManager.instance.QuestOpenedDialogue();
                 break;
 

@@ -37,7 +37,7 @@ public class QuestLoader : MonoBehaviour
 
         // 퀘스트 타입별 상세정보 파싱 
         ParsingQuestTypeDB();
-        PrintQuestTypeInfo();
+        //PrintQuestTypeInfo();
     }
 
     /// <summary>
@@ -144,12 +144,12 @@ public class QuestLoader : MonoBehaviour
     /// </summary>
     private void ParsingQuestTypeDB()
     {
-        ParsingDeliverItemDB();
-        ParsingCollectLootDB();
-        ParsingUseItemDB();
-        ParsingAcquireItemDB();
+        //ParsingDeliverItemDB();
+        //ParsingCollectLootDB();
+        //ParsingUseItemDB();
+        //ParsingAcquireItemDB();
         //ParsingOperateObjectDB();
-        ParsingKillEnemyDB();
+        //ParsingKillEnemyDB();
         ParsingTalkWithNpc();
     }
 

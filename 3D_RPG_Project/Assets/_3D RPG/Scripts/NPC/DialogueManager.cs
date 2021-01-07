@@ -10,11 +10,12 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager instance;
 
-    int _questID = 0;           // 현재 퀘스트 다이얼로그가 진행되는 퀘스트 ID
-    int _lineIdx = 0;           // 대화 상자에 출력되는 대사의 index 값 
-    bool _isTalking = false;    // 현재 대화중인지 확인하는 변수 
-    QuestState _state;          // 현재 퀘스트 다이얼로그가 진행되는 퀘스트의 진행상태 
-    QuestNPC _questNPC;         // 현재 대화상대인 NPC 참조값 
+    int _questID = 0;               // 현재 퀘스트 다이얼로그가 진행되는 퀘스트 ID
+    int _lineIdx = 0;               // 대화 상자에 출력되는 대사의 index 값 
+    bool _isTalking = false;        // 현재 대화중인지 확인하는 변수 
+    QuestState _state;              // 현재 퀘스트 다이얼로그가 진행되는 퀘스트의 진행상태 
+    QuestNPC _questNPC;             // 현재 대화상대인 NPC 참조값 
+    string questInfoKey = "info";   // 해시테이블 QuestInfo 키  
 
     // UI 관련 변수 
     Transform _npcTransform;
@@ -30,10 +31,16 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject _questDialoguePanel;
     [Tooltip("퀘스트 수락 Panel")]
     [SerializeField] GameObject _questAcceptedPanel;
+    [Tooltip("퀘스트 완료 Panel")]
+    [SerializeField] GameObject _questCompletedPanel;
 
-    [Header("QuestPopup UI")]
+    [Header("Quest Accept UI")]
     [Tooltip("퀘스트 수락 Panel 내 퀘스트 Title")]
     [SerializeField] Text _questAcceptedTitle;
+
+    [Header("Quest Complete UI")]
+    [Tooltip("퀘스트 완료 Panel 내 퀘스트 Title")]
+    [SerializeField] Text _questCompletedTitle;
 
     [Header("Quest Dialogue UI")]
     [Tooltip("퀘스트 다이얼로그 Panel 내 퀘스트 Title")]
@@ -158,20 +165,61 @@ public class DialogueManager : MonoBehaviour
         _questAcceptedTitle.text = "'" + _questTitle.text + "'";
         _questAcceptedPanel.SetActive(true);
         CloseQuestDialoguePanel();
-        //_questAcceptedPanel.GetComponent<Animator>().Play("FadeOut");
-
-        // 수락한 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에 추가 
-        Quest questAccepted = new Quest();
-        questAccepted = QuestDB.instance.GetQuest(_questID);
-        QuestManager.instance.AddOngoingQuest(questAccepted);
 
         // 퀘스트를 부여한 NPC의 상태값 변경 
         _questNPC.SetOngoingQuestID(_questID);
         _questNPC.SetQuestState(QuestState.QUEST_ONGOING);
         _questNPC.SetQuestMark();
+
+        // 수락한 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에 추가 
+        Quest questAccepted = new Quest();
+        questAccepted = QuestDB.instance.GetQuest(_questID);
+
+        // 수락한 퀘스트 Type이 'NPC와 대화'일 경우, 퀘스트를 부여한 NPC의 참조값을 저장 
+        if (questAccepted.GetQuestType() == QuestType.TYPE_TALKWITHNPC)
+        {
+            TalkWithNpc talkWithNpc = questAccepted.GetQuestInfo()[questInfoKey] as TalkWithNpc;
+            talkWithNpc.SetQuestGiver(_questNPC);
+
+            //Debug.Log("퀘스트 부여자 ID : " + talkWithNpc.GetQuestGiver().GetNpcID());
+            //Debug.Log("퀘스트 완료자 ID : " + talkWithNpc.GetQuestFinisher().GetNpcID());
+        }
+
+        QuestManager.instance.AddOngoingQuest(questAccepted);
     }
 
-    public void CompleteQuest() { }
+    public void CompleteQuest()
+    {
+        // 퀘스트 완료 팝업메뉴 실행 
+        _questCompletedTitle.text = "'" + _questTitle.text + "'";
+        _questCompletedPanel.SetActive(true);
+        CloseQuestDialoguePanel();
+
+        // 퀘스트를 완료한 NPC의 상태값 변경 
+        _questNPC.SetOngoingQuestID(0);
+        _questNPC.DeleteCompletedQuest(_questID);
+        _questNPC.CheckAvailableQuest();
+        _questNPC.SetQuestMark();
+
+        // 완료된 퀘스트를 퀘스트 매니져의 완료된 퀘스트 리스트에 추가 
+        Quest questCompleted = new Quest();
+        questCompleted = QuestDB.instance.GetQuest(_questID);
+
+        // 완료된 퀘스트 Type이 'NPC와 대화'일 경우, 퀘스트를 부여한 NPC의 상태값 변경  
+        if (questCompleted.GetQuestType() == QuestType.TYPE_TALKWITHNPC)
+        {
+            TalkWithNpc talkWithNpc = questCompleted.GetQuestInfo()[questInfoKey] as TalkWithNpc;
+            talkWithNpc.GetQuestGiver().SetOngoingQuestID(0);
+            talkWithNpc.GetQuestGiver().DeleteCompletedQuest(_questID);
+            talkWithNpc.GetQuestGiver().CheckAvailableQuest();
+            talkWithNpc.GetQuestGiver().SetQuestMark();
+        }
+
+        QuestManager.instance.AddFinishedQuest(questCompleted);
+
+        // 완료된 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에서 삭제
+        QuestManager.instance.DeleteOngoingQuest();
+    }
 
     /// <summary>
     /// 퀘스트 다이얼로그 건너뛰기 기능 수행 

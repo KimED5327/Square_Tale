@@ -330,24 +330,27 @@ public class KillEnemy
 /// </summary>
 public class TalkWithNpc
 {
-    int _questID;       // 퀘스트 ID
-    int _npcID;         // NPC ID
-    int _firstLineID;   // 해당 NPC와의 대화에서 첫 대사 ID
-    int _lastLineID;    // 해당 NPC와의 대화에서 마지막 대사 ID
-    //int _lineID;    // 해당 NPC와의 대화에서 첫 대사 ID
+    int _questID;               // 퀘스트 ID
+    int _npcID;                 // NPC ID
+    int _firstLineID;           // 해당 NPC와의 대화에서 첫 대사 ID
+    int _lastLineID;            // 해당 NPC와의 대화에서 마지막 대사 ID
+    QuestNPC _questGiver;       // 퀘스트를 부여하는 NPC 참조값
+    QuestNPC _questFinisher;    // 퀘스트를 완료하는 NPC 참조값 
 
     //getter
     public int GetQuestID() { return _questID; }
     public int GetNpcID() { return _npcID; }
     public int GetFirstLineID() { return _firstLineID; }
     public int GetLastLineID() { return _lastLineID; }
-    //public int GetLineID() { return _lineID; }
+    public QuestNPC GetQuestGiver() { return _questGiver; }
+    public QuestNPC GetQuestFinisher() { return _questFinisher; }
 
     //setter
     public void SetQuestID(int questID) { _questID = questID; }
     public void SetNpcID(int npcID) { _npcID = npcID; }
     public void SetFirstLineID(int firstLineID) { _firstLineID = firstLineID; }
     public void SetLastLineID(int lastLineID) { _lastLineID = lastLineID; }
-    //public void SetLineID(int lineID) { _lineID = lineID; }
+    public void SetQuestGiver(QuestNPC questGiver) { _questGiver = questGiver; }
+    public void SetQuestFinisher(QuestNPC questFinisher) { _questFinisher = questFinisher; }
 }
 

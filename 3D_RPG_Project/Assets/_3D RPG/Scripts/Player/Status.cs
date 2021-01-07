@@ -27,7 +27,7 @@ public abstract class Status : MonoBehaviour
         _isDead = false;
     }
 
-    public void Damage(int num, Vector3 targetPos, string skillType = "normal")
+    public virtual void Damage(int num, Vector3 targetPos, string skillType = "normal")
     {
         //if (skillType.Equals("overlap")) return;
         _curHp -= num;

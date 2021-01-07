@@ -36,19 +36,19 @@ public abstract class Block : Status
         }
     }
 
-    //public override void Damage(int num, Vector3 targetPos)
-    //{
-    //    _curHp -= 1;
+    public override void Damage(int num, Vector3 targetPos, string skillType = "normal")
+    {
+        _curHp -= 1;
 
-    //    if (_curHp <= 0)
-    //    {
-    //        Dead();
-    //    }
-    //    else
-    //    {
-    //        HurtReaction(targetPos);
-    //    }
-    //}
+        if (_curHp <= 0)
+        {
+            Dead();
+        }
+        else
+        {
+            HurtReaction(targetPos);
+        }
+    }
 
 
     protected override void Dead()

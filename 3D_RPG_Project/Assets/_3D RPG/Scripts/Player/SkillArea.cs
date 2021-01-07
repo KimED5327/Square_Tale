@@ -6,10 +6,26 @@ public class SkillArea : MonoBehaviour
 {
     PlayerStatus _status;
 
+    bool isHit;
+
+    float hitCount;
+
     // Start is called before the first frame update
     void Start()
     {
         _status = FindObjectOfType<PlayerStatus>();
+    }
+
+    void Update()
+    {
+        if (isHit)
+        {
+            hitCount += Time.deltaTime;
+            if (hitCount > 5f)
+            {
+                isHit = false;
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -19,7 +35,12 @@ public class SkillArea : MonoBehaviour
             Status targetStatus = other.GetComponent<Status>();
             if (!targetStatus.IsDead())
             {
-                targetStatus.Damage(_status.GetAtk(), transform.position);
+                if (!isHit)
+                {
+                    isHit = true;
+                    //targetStatus.Damage(_status.GetAtk(), transform.position);
+                    targetStatus.Damage(10, transform.position);
+                }
             }
         }
     }

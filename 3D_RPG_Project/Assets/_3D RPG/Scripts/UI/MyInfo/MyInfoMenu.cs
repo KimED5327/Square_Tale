@@ -16,6 +16,10 @@ public class MyInfoMenu : MonoBehaviour
     [SerializeField] Text txtAdventure = null;
     [SerializeField] Image imgAdventureGauge = null;
 
+    public GameObject sword;
+    public GameObject mage;
+    public Player player;
+
     bool isOpen = false;
 
     PlayerStatus thePlayerStatus;
@@ -55,6 +59,22 @@ public class MyInfoMenu : MonoBehaviour
 
     public void HideMenu()
     {
+        goMyInfoMenu.SetActive(false);
+    }
+
+    public void SwapSword()
+    {
+        player.anim = player.anims[0];
+        sword.SetActive(true);
+        mage.SetActive(false);
+        goMyInfoMenu.SetActive(false);
+    }
+
+    public void SwapMage()
+    {
+        player.anim = player.anims[1];
+        sword.SetActive(false);
+        mage.SetActive(true);
         goMyInfoMenu.SetActive(false);
     }
 }

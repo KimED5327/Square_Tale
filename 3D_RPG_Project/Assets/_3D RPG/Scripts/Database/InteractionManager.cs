@@ -21,7 +21,7 @@ public class InteractionManager : MonoBehaviour
     {
         _rootingSystem = FindObjectOfType<Rooting>();
         _shop = FindObjectOfType<Shop>();
-        _playerPos = FindObjectOfType<PlayerMove>().transform;
+        _playerPos = FindObjectOfType<Player>().transform;
     }
 
 

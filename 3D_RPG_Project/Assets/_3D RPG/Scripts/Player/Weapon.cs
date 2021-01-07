@@ -47,7 +47,8 @@ public class Weapon : MonoBehaviour
             Status targetStatus = other.GetComponent<Status>();
             if (!targetStatus.IsDead())
             {
-                other.GetComponent<Status>().Damage(_status.GetAtk(), transform.position);
+                //other.GetComponent<Status>().Damage(_status.GetAtk(), transform.position);
+                other.GetComponent<Status>().Damage(10, transform.position);
             }
         }
     }

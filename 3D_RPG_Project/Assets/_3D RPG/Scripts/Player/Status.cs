@@ -20,11 +20,12 @@ public abstract class Status : MonoBehaviour
             _curHp = _maxHp;
     }
 
-    public void Damage(int num, Vector3 targetPos)
+    public void Damage(int num, Vector3 targetPos, string skillType = "normal")
     {
-       _curHp -= num;
+        //if (skillType.Equals("overlap")) return;
+        _curHp -= num;
 
-       if(_curHp <= 0)
+        if(_curHp <= 0)
         {
             Dead();
         }

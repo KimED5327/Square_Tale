@@ -12,8 +12,8 @@ public class BlockHealing : Block
     {
         Collider[] cols = Physics.OverlapSphere(transform.position, _radius, _layerMask);
 
-        if (cols == null) return;
-        Debug.Log(cols.Length);
+        if (cols.Length == 0) return;
+
         Status targetStatus = cols[0].transform.GetComponent<Status>();
         int heal = (int)(targetStatus.GetMaxHp() * _healRatio);
         targetStatus.IncreaseHp(heal);

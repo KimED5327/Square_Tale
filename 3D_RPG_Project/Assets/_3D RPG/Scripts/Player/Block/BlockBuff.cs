@@ -12,7 +12,7 @@ public class BlockBuff : Block
     {
         Collider[] cols = Physics.OverlapSphere(transform.position, _radius, _layerMask);
 
-        if (cols == null) return;
+        if (cols.Length == 0) return;
 
         int randomIndex = Random.Range(0, _buffID.Length);
         int randomBuffID = _buffID[randomIndex];

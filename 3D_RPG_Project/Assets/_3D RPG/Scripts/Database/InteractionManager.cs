@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//using UnityEngine.EventSystems;
 
 public class InteractionManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class InteractionManager : MonoBehaviour
     [SerializeField] string _keywordEffectName = "키워드 획득";
     [SerializeField] float _interactionRange = 1.5f;
 
+    [SerializeField] GameObject _goTouchBoard = null;
     [SerializeField] LayerMask _layerMask = 0;
 
     Shop _shop;
@@ -24,14 +26,12 @@ public class InteractionManager : MonoBehaviour
         _playerPos = FindObjectOfType<PlayerMove>().transform;
     }
 
-
-
     // Update is called once per frame
     void Update()
     {
         if (_isOpen) return;
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonUp(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -39,8 +39,11 @@ public class InteractionManager : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, 1000, _layerMask))
             {
 
+                //if (EventSystem.current.IsPointerOverGameObject() == true) return;
+
                 // 1.5블록 이내일 경우
-                if (Vector3.SqrMagnitude(_playerPos.position - hit.transform.position) < Mathf.Pow(_interactionRange, 2)) {
+                if (Vector3.SqrMagnitude(_playerPos.position - hit.transform.position) < Mathf.Pow(_interactionRange, 2))
+                {
 
                     // Enemy - 루팅
                     if (hit.transform.CompareTag(StringManager.enemyTag))
@@ -64,6 +67,7 @@ public class InteractionManager : MonoBehaviour
                         hit.transform.gameObject.SetActive(false);
                     }
 
+                    // QuestNPC - 퀘스트 NPC 대화
                     else if (hit.transform.CompareTag(StringManager.questNPCTag))
                     {
                         //hit.transform.GetComponent<QuestNPC>().ClickNPC();
@@ -74,7 +78,25 @@ public class InteractionManager : MonoBehaviour
                 // 거리가 너무 멀 때
                 else
                 {
-                    Notification.instance.ShowFloatingMessage(StringManager.msgLongDistance);
+                    if (hit.transform.CompareTag(StringManager.enemyTag))
+                    {
+                        if (hit.transform.GetComponent<EnemyStatus>().IsDead())
+                        {
+                            Notification.instance.ShowFloatingMessage(StringManager.msgLongDistance);
+                        }
+                    }
+                    else if (hit.transform.CompareTag(StringManager.shopNpcTag))
+                    {
+                        Notification.instance.ShowFloatingMessage(StringManager.msgLongDistance);
+                    }
+                    else if (hit.transform.CompareTag(StringManager.keywordTag))
+                    {
+                        Notification.instance.ShowFloatingMessage(StringManager.msgLongDistance);
+                    }
+                    else if (hit.transform.CompareTag(StringManager.questNPCTag))
+                    {
+                        Notification.instance.ShowFloatingMessage(StringManager.msgLongDistance);
+                    }
                 }
             }
         }

@@ -12,9 +12,9 @@ public class BlockExplosion : Block
     {
         Collider[] cols = Physics.OverlapSphere(transform.position, _radius, _layerMask);
 
-        if (cols == null) return;
+        if (cols.Length == 0) return;
 
-        for(int i = 0; i < cols.Length; i++)
+        for (int i = 0; i < cols.Length; i++)
         {
             Status targetStatus = cols[i].transform.GetComponent<Status>();
             int damage = (int)(targetStatus.GetMaxHp() * _damageRatio);

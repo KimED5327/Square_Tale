@@ -53,29 +53,40 @@ public class BlockController : MonoBehaviour
             // 일정 거리 이상 스와이프를 한 경우
             if (Vector2.SqrMagnitude(_priorMousePos - _lastMousePos) > _swipeDistance)
             {
-                // 왼쪽이나 위쪽으로 스와이프 한 경우
-                if(_priorMousePos.x > _lastMousePos.x || _priorMousePos.y < _lastMousePos.y)
-                {
-                    Vector2 dir = (_priorMousePos - _lastMousePos).normalized;
 
-                    // 방향이 가로로 더 치우쳐진 경우
-                    if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+                Vector2 dir = (_priorMousePos - _lastMousePos).normalized;
+
+                // 방향이 가로로 더 치우쳐진 경우
+                if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+                {
+                    // 왼쪽으로 스와이프 한 경우
+                    if (_priorMousePos.x > _lastMousePos.x)
                     {
-                        Debug.Log("가로 스와이프 스킬");
+                        Debug.Log("왼쪽 스와이프 스킬");
                         _blockName = _blockManager.GetBlockName(0);
                         canSummonBlock = true;
                     }
-                    // 방향이 세로로 더 치우쳐진 경우
                     else
                     {
-                        Debug.Log("세로 스와이프 스킬");
+                        Debug.Log("오른쪽 방향으로 스와이프");
+                    }
+
+                }
+                // 방향이 세로로 더 치우쳐진 경우
+                else
+                {
+                    // 위쪽으로 스와이프 한 경우
+                    if (_priorMousePos.y < _lastMousePos.y)
+                    {
+                        Debug.Log("위쪽 스와이프 스킬");
                         _blockName = _blockManager.GetBlockName(1);
                         canSummonBlock = true;
                     }
-                }
-                else
-                {
-                    Debug.Log("이상한 방향으로 스와이프");
+                    else
+                    {
+                        Debug.Log("아래 방향으로 스와이프");
+                    }
+
                 }
             }
             else

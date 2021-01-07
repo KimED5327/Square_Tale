@@ -18,7 +18,7 @@ public class MyInfoMenu : MonoBehaviour
 
     public GameObject sword;
     public GameObject mage;
-    public Player player;
+    public PlayerMove player;
 
     bool isOpen = false;
 

@@ -5660,8 +5660,8 @@ MonoBehaviour:
   _monsterSpawnPoint:
   - monsterName: "\uC774\uB178\uBE44"
     tfSpawnLocation: {fileID: 1494824203}
-    count: 5
-    spawnRange: 7
+    count: 1
+    spawnRange: 1
   _respawnCheckTime: 1
 --- !u!1 &7133438159701119119
 GameObject:

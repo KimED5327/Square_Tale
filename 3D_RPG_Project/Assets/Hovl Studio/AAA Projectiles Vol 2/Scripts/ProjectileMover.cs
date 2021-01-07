@@ -12,12 +12,18 @@ public class ProjectileMover : MonoBehaviour
     public GameObject flash;
     private Rigidbody rb;
     public GameObject[] Detached;
-    
-    PlayerStatus _status;
+    Transform player;
+    EnemyStatus states;
+    Boss boss;
 
+    public void Pushinfo(Transform transform, EnemyStatus enemystatus, Boss bo)
+    {
+        player = transform;
+        states = enemystatus;
+        boss = bo;
+    }
     void Start()
     {
-        _status = FindObjectOfType<PlayerStatus>();
         rb = GetComponent<Rigidbody>();
         if (flash != null)
         {
@@ -34,15 +40,15 @@ public class ProjectileMover : MonoBehaviour
                 Destroy(flashInstance, flashPsParts.main.duration);
             }
         }
-        Destroy(gameObject,5);
+        //Destroy(gameObject,5);
 	}
 
     void FixedUpdate ()
     {
 		if (speed != 0)
         {
-            rb.velocity = transform.forward * speed;
-            //transform.position += transform.forward * (speed * Time.deltaTime);         
+            
+            transform.position += transform.forward * (speed * Time.deltaTime);         
         }
 	}
 
@@ -50,6 +56,19 @@ public class ProjectileMover : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         //Lock all axes movement and rotation
+        if (!collision.transform.CompareTag("Player"))
+            return;
+        if (collision.transform.CompareTag("Floor"))
+            return;
+        
+        if(boss.getIsDamage())
+        {
+            collision.transform.GetComponent<Status>().Damage(states.GetAtk(), transform.position);
+        }
+        else if(!boss.getIsDamage())
+        {
+           collision.transform.GetComponent<Status>().Damage(states.GetAtk(), transform.position);
+        }
         rb.constraints = RigidbodyConstraints.FreezeAll;
         speed = 0;
 
@@ -83,30 +102,5 @@ public class ProjectileMover : MonoBehaviour
             }
         }
         Destroy(gameObject);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Enemy"))
-        {
-            Status targetStatus = other.GetComponent<Status>();
-            if (!targetStatus.IsDead())
-            {
-                //targetStatus.Damage(_status.GetAtk(), transform.position);
-                targetStatus.Damage(10, transform.position);
-
-                GameObject instant = Instantiate(hit, transform.position, transform.rotation);
-                Rigidbody rigid = instant.GetComponent<Rigidbody>();
-                Destroy(instant, 1f);
-                Destroy(gameObject);
-            }
-        }
-        if (other.CompareTag("Floor"))
-        {
-            GameObject instant = Instantiate(hit, transform.position, transform.rotation);
-            Rigidbody rigid = instant.GetComponent<Rigidbody>();
-            Destroy(instant, 1f);
-            Destroy(gameObject);
-        }
     }
 }

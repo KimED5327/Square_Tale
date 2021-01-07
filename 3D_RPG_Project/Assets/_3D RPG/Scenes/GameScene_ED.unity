@@ -1657,6 +1657,86 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 67408748}
   m_CullTransparentMesh: 0
+--- !u!1 &68076100
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 68076101}
+  - component: {fileID: 68076103}
+  - component: {fileID: 68076102}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &68076101
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 68076100}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 301116824}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -834.79, y: 283.81}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &68076102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 68076100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: b12256d0f3c5c054b80c0807f7a1a36f, type: 3}
+    m_FontSize: 30
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
+    m_LineSpacing: 1
+  m_Text: "\uCE90\uB9AD\uD130 \uC2A4\uC651 : \uD604\uC7AC Info \uCC3D\uC5D0\uC11C
+    \uAC00\uB2A5\n\uBE14\uB85D \uC18C\uD658 : \uBE14\uB85D \uBC84\uD2BC \uD130\uCE58\uD6C4
+    \uC67C or \uC704 \uC2A4\uC640\uC774\uD504 "
+--- !u!222 &68076103
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 68076100}
+  m_CullTransparentMesh: 0
 --- !u!1 &72202130
 GameObject:
   m_ObjectHideFlags: 0
@@ -10988,6 +11068,7 @@ RectTransform:
   - {fileID: 1235069900}
   - {fileID: 85527148}
   - {fileID: 588609821}
+  - {fileID: 68076101}
   m_Father: {fileID: 534068642}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13026,7 +13107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556efba6a7b00fc4fa3a33ee90266199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _imgBtn: {fileID: 0}
+  _imgBtn: {fileID: 312062479}
   _txtButton: {fileID: 887278493}
   _txtCount: {fileID: 304699598}
   _imgIcon: {fileID: 725897351}
@@ -24177,7 +24258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556efba6a7b00fc4fa3a33ee90266199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _imgBtn: {fileID: 0}
+  _imgBtn: {fileID: 1080938716}
   _txtButton: {fileID: 1592140510}
   _txtCount: {fileID: 1156641263}
   _imgIcon: {fileID: 1725549747}
@@ -48200,7 +48281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556efba6a7b00fc4fa3a33ee90266199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _imgBtn: {fileID: 0}
+  _imgBtn: {fileID: 1136676721}
   _txtButton: {fileID: 1199594181}
   _txtCount: {fileID: 1799823951}
   _imgIcon: {fileID: 1170782810}
@@ -68860,7 +68941,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556efba6a7b00fc4fa3a33ee90266199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _imgBtn: {fileID: 0}
+  _imgBtn: {fileID: 736368153}
   _txtButton: {fileID: 616288295}
   _txtCount: {fileID: 610942754}
   _imgIcon: {fileID: 58860230}

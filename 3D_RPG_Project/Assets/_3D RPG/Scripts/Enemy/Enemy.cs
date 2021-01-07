@@ -163,15 +163,16 @@ public class Enemy : MonoBehaviour
     //기본 상태
     private void UpdateIdle()
     {
+        if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
+        {
+            enemyState = State.Move;
+        }
         reconTimer += Time.deltaTime;
         if(reconTimer > reconTime)
         {
             enemyState = State.Search;
         }
-        if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
-        {
-            enemyState = State.Move;
-        }
+ 
     }
     //무브 상태
     private void UpdateMove()

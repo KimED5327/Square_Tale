@@ -697,7 +697,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3069c6168fed53c4cacf3c4bffeeb5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 0
   attTime: 3
+  dmgApplyTime: 0
   timer: 0
   reconTime: 5
   reconTimer: 0
@@ -744,7 +746,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: "\uBE14\uB8E8\uBCA8"
   _maxHp: 100
-  _curHp: 80
   _atk: 0
   _def: 0
   _level: 5
@@ -783,7 +784,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!1 &6480696023627685283
 GameObject:

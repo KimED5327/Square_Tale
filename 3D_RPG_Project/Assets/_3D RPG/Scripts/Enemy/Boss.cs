@@ -41,8 +41,15 @@ public class Boss : MonoBehaviour
     bool isSkillTwo = false;
     GameObject skill;
     bool skillCount;
+    bool isDamage;                              //대미지 받는 변수
     bool skillAttack = false;
     float skillAttackTime = 0;
+    int skillUpcount = 0;                           //스킬 크기 조절 값
+
+
+    public bool getIsDamage() { return isDamage; }
+
+
     private void Start()
     {
         bossState = state.idle;
@@ -55,7 +62,11 @@ public class Boss : MonoBehaviour
 
     private void Update()
     {
-       switch(bossState)
+        if (skillAttack)
+        {
+            SkillAttackUpdate();
+        }
+        switch (bossState)
         {
             case state.idle:
                 IdleUpdate();
@@ -74,10 +85,7 @@ public class Boss : MonoBehaviour
         {
             bossState = state.die;
         }
-        if(skillAttack)
-        {
-            SkillAttackUpdate();
-        }
+
 
     }
     private void SkillAttackUpdate()
@@ -85,14 +93,20 @@ public class Boss : MonoBehaviour
         skillAttackTime += Time.deltaTime;
         if(skillAttackTime > 1)
         {
-            skill.transform.localScale += new Vector3(0.5f, 0, 0.5f);
+            skill.transform.localScale += new Vector3(0.1f, 0, 0.1f);
+            skillUpcount++;
             skillAttackTime = 0;
+            isDamage = true;
         }
-
-        if(skill.transform.localScale.x > 20)
+        Debug.Log(skillUpcount);
+        if(skillUpcount > 20)
         {
             Destroy(skill);
             skillAttack = false;
+            isSkillOne = false;
+            skillCount = false;
+            skillAttackTime = 0;
+            skillUpcount = 0;
         }
     }
     private void IdleUpdate()
@@ -140,10 +154,9 @@ public class Boss : MonoBehaviour
             Vector3 attackDir = player.position - AttackLocation.transform.position;
         
             GameObject attack = Instantiate(AttackEffect, AttackLocation.transform.position, transform.rotation);
-            attack.GetComponent<ProjectileMover>().Pushinfo(player, status);
+            attack.GetComponent<ProjectileMover>().Pushinfo(player, status, this);
             Rigidbody attackRigid = attack.GetComponent<Rigidbody>();
             attack.transform.rotation = Quaternion.LookRotation(attackDir);
-            attackRigid.velocity = attackDir * 30;
             isAttack = false;
         }
 
@@ -189,7 +202,7 @@ public class Boss : MonoBehaviour
                 skillAttack = true;
                 timer = 0;
                 bossState = state.idle;
-                skill.transform.position = new Vector3(player.transform.position.x, 1.2f, player.transform.position.z);
+                skill.transform.position = new Vector3(player.transform.position.x, 0.5f, player.transform.position.z);
             }
             skill.transform.position = new Vector3(player.transform.position.x, 1.2f, player.transform.position.z);
         }

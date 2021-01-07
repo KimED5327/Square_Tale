@@ -14,12 +14,13 @@ public class ProjectileMover : MonoBehaviour
     public GameObject[] Detached;
     Transform player;
     EnemyStatus states;
+    Boss boss;
 
-    public void Pushinfo(Transform transform, EnemyStatus enemystatus)
+    public void Pushinfo(Transform transform, EnemyStatus enemystatus, Boss bo)
     {
-
         player = transform;
         states = enemystatus;
+        boss = bo;
     }
     void Start()
     {
@@ -39,7 +40,7 @@ public class ProjectileMover : MonoBehaviour
                 Destroy(flashInstance, flashPsParts.main.duration);
             }
         }
-        Destroy(gameObject,5);
+        //Destroy(gameObject,5);
 	}
 
     void FixedUpdate ()
@@ -47,7 +48,7 @@ public class ProjectileMover : MonoBehaviour
 		if (speed != 0)
         {
             
-            //transform.position += transform.forward * (speed * Time.deltaTime);         
+            transform.position += transform.forward * (speed * Time.deltaTime);         
         }
 	}
 
@@ -57,9 +58,17 @@ public class ProjectileMover : MonoBehaviour
         //Lock all axes movement and rotation
         if (!collision.transform.CompareTag("Player"))
             return;
-
+        if (collision.transform.CompareTag("Floor"))
+            return;
         
-        collision.transform.GetComponent<Status>().Damage(states.GetAtk(), transform.position);
+        if(boss.getIsDamage())
+        {
+            collision.transform.GetComponent<Status>().Damage(states.GetAtk(), transform.position);
+        }
+        else if(!boss.getIsDamage())
+        {
+           collision.transform.GetComponent<Status>().Damage(states.GetAtk(), transform.position);
+        }
         rb.constraints = RigidbodyConstraints.FreezeAll;
         speed = 0;
 

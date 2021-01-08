@@ -138,7 +138,7 @@ public class Shop : MonoBehaviour
         // 선택되어 있던 카테고리로 인벤을 재정렬 시킴.
         _inven.SortItem((ItemCategory)_tabNum);
     }
-
+    
     public void BtnBuyWindow()
     {
         SoundManager.instance.PlayEffectSound("Click");

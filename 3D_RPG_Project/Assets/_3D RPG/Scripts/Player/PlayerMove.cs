@@ -7,6 +7,7 @@ public class PlayerMove : MonoBehaviour
     public float speed;
     public float applySpeed;
     public float jumpForce;
+
     public GameObject attackEffect1;
     public GameObject attackEffect2;
     public GameObject attackEffect3;
@@ -64,6 +65,8 @@ public class PlayerMove : MonoBehaviour
     float skill4Cooldown;
 
     int comboCount = 0;
+
+    bool isVictory = false;
 
     bool isJump;
     bool isDodge;
@@ -124,12 +127,15 @@ public class PlayerMove : MonoBehaviour
             attackDelay += Time.deltaTime;
             isAttackReady = equipWeapon.GetWeaponRate() < attackDelay;
 
-            Move();
-            MMove();
-            Jump();
-            Dodge();
+            if (!isVictory)
+            {
+                Move();
+                MMove();
+                Jump();
+                Dodge();
+            }
+
             Cooldown();
-            Victory();
 
             if (isCombo)
             {
@@ -308,6 +314,8 @@ public class PlayerMove : MonoBehaviour
 
     public void Attack()
     {
+        if (isVictory) return;
+
         if (isSword)
         {
 
@@ -460,6 +468,8 @@ public class PlayerMove : MonoBehaviour
 
     public void Skill1()
     {
+        if (isVictory) return;
+
         if (isSkill1)
         {
             Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSkill);
@@ -513,6 +523,8 @@ public class PlayerMove : MonoBehaviour
 
     public void Skill2()
     {
+        if (isVictory) return;
+
         if (isSkill2)
         {
             Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSkill);
@@ -575,6 +587,8 @@ public class PlayerMove : MonoBehaviour
 
     public void Skill3()
     {
+        if (isVictory) return;
+
         if (isSkill3)
         {
             Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSkill);
@@ -637,6 +651,8 @@ public class PlayerMove : MonoBehaviour
 
     public void Skill4()
     {
+        if (isVictory) return;
+
         if (isSkill4)
         {
             Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSkill);
@@ -694,6 +710,8 @@ public class PlayerMove : MonoBehaviour
 
     public void useLeftSkill()
     {
+        if (isVictory) return;
+
         if (isSword)
         {
             if (skillButton.GetSkillButtonName(0).Equals("회전 베기"))
@@ -736,6 +754,8 @@ public class PlayerMove : MonoBehaviour
 
     public void useRightSkill()
     {
+        if (isVictory) return;
+
         if (isSword)
         {
             if (skillButton.GetSkillButtonName(1).Equals("회전 베기"))
@@ -906,7 +926,8 @@ public class PlayerMove : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.CompareTag("Floor"))
+        if (collision.transform.CompareTag(StringManager.groundTag) ||
+            collision.transform.CompareTag(StringManager.blockTag))
         {
             if (isJump)
             {
@@ -919,12 +940,20 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    void Victory()
+    public void Victory()
     {
-        if (Input.GetKeyDown("i")) 
-        {
-            anim.SetTrigger("doWin");
-        }
+        isVictory = true;
+        anim.SetTrigger("doWin");
+        StartCoroutine(VictoryFinish());
+    }
+
+    IEnumerator VictoryFinish()
+    {
+        yield return new WaitForSeconds(2.5f);
+        anim.SetTrigger("forceRun");
+        anim.SetBool("isJump", false);
+        isJump = false;
+        isVictory = false;
     }
 
     public int getSkillNum()

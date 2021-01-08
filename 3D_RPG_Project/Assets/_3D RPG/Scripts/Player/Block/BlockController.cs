@@ -6,8 +6,7 @@ public class BlockController : MonoBehaviour
 {
     [SerializeField] GameObject _goBlockPreview = null;
 
-    [SerializeField] float _coolTime = 3f;
-    float _curTime = 0f;
+    [SerializeField] float _coolTime = 3f; float _curTime = 0f;
 
     [SerializeField] float _previewEffectHeight = -0.25f;
     [SerializeField] float _summonHeight = 0.5f;
@@ -23,6 +22,7 @@ public class BlockController : MonoBehaviour
 
 
     static readonly string _strPreviewEffectName = "블록 프리뷰 이펙트";
+    const int LEFT = 0, UP = 1;
 
     BlockManager _blockManager;
     BlockPreview _preview;
@@ -54,7 +54,6 @@ public class BlockController : MonoBehaviour
             // 일정 거리 이상 스와이프를 한 경우
             if (Vector2.SqrMagnitude(_priorMousePos - _lastMousePos) > _swipeDistance)
             {
-
                 Vector2 dir = (_priorMousePos - _lastMousePos).normalized;
 
                 // 방향이 가로로 더 치우쳐진 경우
@@ -62,46 +61,26 @@ public class BlockController : MonoBehaviour
                 {
                     // 왼쪽으로 스와이프 한 경우
                     if (_priorMousePos.x > _lastMousePos.x)
-                    {
-                        if(_preview.IsExistObject())
-                        {
-                            Notification.instance.ShowFloatingMessage(StringManager.msgBlockExistObject);
-                            return;
-                        }
-                        _blockName = _blockManager.GetBlockName(0);
-                        canSummonBlock = true;
-                    }
+                        canSummonBlock = CanBlockSummon(LEFT);
+                    // 오른쪽 스와이프
                     else
-                    {
-                        Debug.Log("오른쪽 방향으로 스와이프");
-                    }
-
+                        Notification.instance.ShowFloatingMessage(StringManager.msgWrongSwipeBlock);
                 }
                 // 방향이 세로로 더 치우쳐진 경우
                 else
                 {
                     // 위쪽으로 스와이프 한 경우
                     if (_priorMousePos.y < _lastMousePos.y)
-                    {
-                        if (_preview.IsExistObject())
-                        {
-                            Notification.instance.ShowFloatingMessage(StringManager.msgBlockExistObject);
-                            return;
-                        }
-                        _blockName = _blockManager.GetBlockName(1);
-                        canSummonBlock = true;
-                    }
+                        canSummonBlock = CanBlockSummon(UP);
+                    // 아래 방향 스와이프
                     else
-                    {
-                        Debug.Log("아래 방향으로 스와이프");
-                    }
-
+                        Notification.instance.ShowFloatingMessage(StringManager.msgWrongSwipeBlock);
                 }
             }
             else
-            {
                 Debug.Log("너무 짧게 스와이프");
-            }
+            
+
             if (canSummonBlock)
             {
                 Vector3 pos = _goBlockPreview.transform.position + Vector3.up * _summonHeight;
@@ -109,12 +88,29 @@ public class BlockController : MonoBehaviour
                 ObjectPooling.instance.GetObjectFromPool(_strPreviewEffectName, _goBlockPreview.transform.position + Vector3.up * _previewEffectHeight); ;
             }
 
-            _isTouching = false;
-            _canTouch = false;
-            _goBlockPreview.SetActive(false);
-            _priorMousePos = Vector2.zero;
-            _lastMousePos = Vector2.zero;
+            Initialized();
         }
+    }
+
+
+    bool CanBlockSummon(int index)
+    {
+        if (_preview.IsExistObject())
+        {
+            Notification.instance.ShowFloatingMessage(StringManager.msgBlockExistObject);
+            return false;
+        }
+        _blockName = _blockManager.GetBlockName(index);
+        return true;
+    }
+
+    void Initialized()
+    {
+        _isTouching = false;
+        _canTouch = false;
+        _goBlockPreview.SetActive(false);
+        _priorMousePos = Vector2.zero;
+        _lastMousePos = Vector2.zero;
     }
 
 

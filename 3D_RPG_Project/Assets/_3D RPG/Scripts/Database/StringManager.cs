@@ -8,7 +8,7 @@ public class StringManager : MonoBehaviour
     public static string enemyTag = "Enemy";
     public static string shopNpcTag = "Npc";
     public static string keywordTag = "Keyword";
-    public static string groundTag = "Ground";
+    public static string groundTag = "Floor";
     public static string questNPCTag = "QuestNPC";
     public static string blockTag = "Block";
 
@@ -27,6 +27,8 @@ public class StringManager : MonoBehaviour
     public static string msgBlockExistObject = "소환 위치에 방해되는 물체가 있습니다";
     public static string msgEmptySkillSlot = "등록된 스킬이 없습니다.";
     public static string msgCanNotSkill = "쿨타임 입니다.";
+    public static string msgNotAccessChapter = "해금되지 않은 챕터입니다.";
+
 
     public static string block = "Block";
     public static string skill = "Skill";

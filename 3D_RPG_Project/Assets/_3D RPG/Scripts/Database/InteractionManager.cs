@@ -64,6 +64,7 @@ public class InteractionManager : MonoBehaviour
                         ObjectPooling.instance.GetObjectFromPool(_keywordEffectName, _playerPos.position);
 
                         KeywordData.instance.AcquireKeyword(1);
+                        _playerPos.GetComponent<PlayerMove>().Victory();
                         hit.transform.gameObject.SetActive(false);
                     }
 

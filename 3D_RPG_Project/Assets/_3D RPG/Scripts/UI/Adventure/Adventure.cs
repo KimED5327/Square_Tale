@@ -18,7 +18,7 @@ public class Adventure : MonoBehaviour
 
     int _curChapter = 0;
     int _curPage = 0;
-    int _maxPage = 1;
+    int _maxPage = 2;
     int _pageKeywordMaxCount;
 
     int _startKeywordID = 0;
@@ -87,22 +87,32 @@ public class Adventure : MonoBehaviour
                 _txtSynopsis.text = _txtSynopsis.text.Replace(curChapterKeywordList[i].keyword, curChapterKeywordList[i].hideText);
         }
 
-        _txtPage.text = (_curPage + 1).ToString();
+        _txtPage.text = $"{(_curPage + 1)}/{_maxPage}";
     }
 
     // 챕터 선택
     public void BtnSelectChapter(int index)
     {
-        _curChapter = index;
-        _curPage = 0;
+        if(index == 1)
+        {
+            _curChapter = index;
+            _curPage = 0;
 
-        KeywordSetting();
+            KeywordSetting();
+        }
+        else
+        {
+            Notification.instance.ShowFloatingMessage(StringManager.msgNotAccessChapter);
+        }
+ 
     }
 
     // 페이지 이동
     public void BtnMovePage(int count)
     {
         _curPage = (_curPage + count) % (_maxPage + 1);
+        if (_curPage < 0)
+            _curPage = _maxPage;
 
         KeywordSetting();
     }

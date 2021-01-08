@@ -534,14 +534,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3069c6168fed53c4cacf3c4bffeeb5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Id: 0
+  Id: 2
   attTime: 3
   dmgApplyTime: 0.5
   timer: 0
   reconTime: 3
   reconTimer: 0
-  maxFindRange: 3
-  maxMoveRange: 6
+  maxFindRange: 5
+  maxMoveRange: 10
   maxAttackRange: 1
   isLongMonster: 0
   maxLongAttackRange: 0
@@ -582,11 +582,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uC774\uB178\uBE44"
-  _maxHp: 100
+  _maxHp: 115
   _atk: 10
-  _def: 0
-  _level: 5
-  _giveExp: 50
+  _def: 3
+  _level: 1
+  _giveExp: 11
   _knockBackForce: 0.25
   _dropItemInfo:
   - itemID: 3

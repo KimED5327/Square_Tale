@@ -19,7 +19,6 @@ public class ZoomNPC : MonoBehaviour
     [SerializeField] GameObject _player;
     [SerializeField] GameObject _hudCanvas;
     [SerializeField] Transform _target;
-    [SerializeField] Text _nameTag;
     [SerializeField] Vector3 _targetOffset;
     [SerializeField] float _minDistance;
     [SerializeField] float _smoothSpeed = 0.125f;
@@ -69,9 +68,6 @@ public class ZoomNPC : MonoBehaviour
 
             // HUD 캔버스 비활성화 
             _hudCanvas.SetActive(false);
-
-            //네임태그 잠시 비활성화
-            _nameTag.enabled = false;
 
             Debug.Log("zoomin working");
         }
@@ -130,9 +126,6 @@ public class ZoomNPC : MonoBehaviour
 
             //카메라 컨트롤러 켜기 
             //_player.GetComponent<CameraController>().enabled = true;
-
-            //네임태그 활성화
-            _nameTag.enabled = true;
         }
 
         Vector3 smoothPos = Vector3.Lerp(_cam.transform.position, _prePos, _smoothSpeed);

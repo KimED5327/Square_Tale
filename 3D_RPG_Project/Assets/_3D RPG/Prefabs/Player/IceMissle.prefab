@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1227577362469686613}
   - component: {fileID: 1430189436270373301}
-  - component: {fileID: 1192956774552312701}
   - component: {fileID: 1430791312181370797}
   - component: {fileID: 1195897992169241733}
   - component: {fileID: 1272138389596458317}
   - component: {fileID: 1223537239728808917}
+  - component: {fileID: 1057402572810286603}
   m_Layer: 0
   m_Name: IceMissle
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 1232830356199950701}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 1231722468376852385}
   - {fileID: 7961607516977777728}
@@ -4754,26 +4754,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!114 &1192956774552312701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1232830356199950701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 605a456cfc02f6b499a64717539a27e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  hitOffset: 0.1
-  UseFirePointRotation: 0
-  rotationOffset: {x: 0, y: 0, z: 0}
-  hit: {fileID: 1486957119801806, guid: cab6c62da7f9f2840be63f9dd3c34637, type: 3}
-  flash: {fileID: 1177731487666324, guid: b60b851266323fb4b9becb9f63f748c9, type: 3}
-  Detached:
-  - {fileID: 1233699158172872921}
 --- !u!199 &1430791312181370797
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -4910,7 +4890,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -4928,6 +4908,25 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.05
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1057402572810286603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232830356199950701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 315a4718abd0e554d87bfd3b248cb19c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  hitOffset: 0
+  UseFirePointRotation: 0
+  rotationOffset: {x: 0, y: 0, z: 0}
+  hit: {fileID: 1486957119801806, guid: cab6c62da7f9f2840be63f9dd3c34637, type: 3}
+  flash: {fileID: 1177731487666324, guid: b60b851266323fb4b9becb9f63f748c9, type: 3}
+  Detached: []
 --- !u!1 &1232965692745144627
 GameObject:
   m_ObjectHideFlags: 0

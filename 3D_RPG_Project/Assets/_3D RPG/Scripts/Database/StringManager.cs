@@ -23,8 +23,11 @@ public class StringManager : MonoBehaviour
     public static string msgCanNotBlockEquip = "등록 불가합니다.";
     public static string msgNotEnoughBlock = "블록 개수가 부족합니다.";
     public static string msgEmptyBlockSlot = "등록된 블록이 없습니다.";
+    public static string msgEmptySkillSlot = "등록된 스킬이 없습니다.";
+    public static string msgCanNotSkill = "쿨타임 입니다.";
 
     public static string block = "Block";
+    public static string skill = "Skill";
 
     public static string ItemTypeToString(OptionType type)
     {

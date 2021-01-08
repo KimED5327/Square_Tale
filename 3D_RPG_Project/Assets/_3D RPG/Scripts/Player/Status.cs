@@ -14,6 +14,8 @@ public abstract class Status : MonoBehaviour
     [SerializeField] protected int _giveExp = 50;
     protected bool _isDead = false;
 
+    string _skillType = "normal";
+
     protected void Start()
     {
         Initialized();
@@ -30,15 +32,20 @@ public abstract class Status : MonoBehaviour
     public virtual void Damage(int num, Vector3 targetPos, string skillType = "normal")
     {
         //if (skillType.Equals("overlap")) return;
+        if (_skillType.Equals("overlap")) return;
+        _skillType = skillType;
         _curHp -= num;
-
+        Invoke("ChangeSkillType", 0.5f);
         if(_curHp <= 0)
         {
             Dead();
         }
         else
         {
-            HurtReaction(targetPos);
+            if (_skillType.Equals("overlap"))
+            {
+                HurtReaction(targetPos);
+            }
         }
     }
 
@@ -68,4 +75,8 @@ public abstract class Status : MonoBehaviour
     public int GetMaxHp() { return _maxHp; }
     public int GetAtk() { return _atk; }
     public bool IsDead() { return _isDead; }
+    public void ChangeSkillType()
+    {
+        _skillType = "normal";
+    }
 }

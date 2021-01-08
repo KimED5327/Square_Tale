@@ -9550,12 +9550,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3423163184710075840}
   - component: {fileID: 3256165634694239562}
-  - component: {fileID: 3321788247919164022}
   - component: {fileID: 3263671843889339828}
   - component: {fileID: 3318428582625452572}
   - component: {fileID: 3408617029307337636}
   - component: {fileID: 3345624189343816042}
-  - component: {fileID: 3321816119807103660}
+  - component: {fileID: -1498701191133428592}
   m_Layer: 0
   m_Name: Bubble
   m_TagString: Untagged
@@ -9572,7 +9571,7 @@ Transform:
   m_GameObject: {fileID: 3426253135710972608}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 3431739941150512722}
   - {fileID: 6826280424031149822}
@@ -14313,26 +14312,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!114 &3321788247919164022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3426253135710972608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 605a456cfc02f6b499a64717539a27e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 15
-  hitOffset: 0.1
-  UseFirePointRotation: 0
-  rotationOffset: {x: 0, y: 0, z: 0}
-  hit: {fileID: 1036333269638840, guid: c5a11cdca0c02ec46af89a4f25515b5f, type: 3}
-  flash: {fileID: 1368339559166676, guid: 1702711b22bc3204d80c7f85a3de0c80, type: 3}
-  Detached:
-  - {fileID: 3425705034997615684}
 --- !u!199 &3263671843889339828
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -14469,7 +14448,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -14487,7 +14466,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.05
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3321816119807103660
+--- !u!114 &-1498701191133428592
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14496,9 +14475,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3426253135710972608}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 199e3c49ebcb3fe46997b10cf6a8eb52, type: 3}
+  m_Script: {fileID: 11500000, guid: 315a4718abd0e554d87bfd3b248cb19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
+  hitOffset: 0
+  UseFirePointRotation: 0
+  rotationOffset: {x: 0, y: 0, z: 0}
+  hit: {fileID: 1036333269638840, guid: c5a11cdca0c02ec46af89a4f25515b5f, type: 3}
+  flash: {fileID: 1368339559166676, guid: 1702711b22bc3204d80c7f85a3de0c80, type: 3}
+  Detached: []
 --- !u!1001 &6824453613337240594
 PrefabInstance:
   m_ObjectHideFlags: 0

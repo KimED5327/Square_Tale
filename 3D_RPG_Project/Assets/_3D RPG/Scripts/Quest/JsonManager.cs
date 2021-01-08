@@ -25,18 +25,21 @@ public class JsonManager : MonoBehaviour
     {
         string jsonString = "";
 
-        // 안드로이드 
-        if(Application.platform == RuntimePlatform.Android)
+        if (Application.platform == RuntimePlatform.Android)
         {
-            UnityWebRequest reader = new UnityWebRequest(path);
-
+            WWW reader = new WWW(path);
             while (!reader.isDone)
-                jsonString = reader.downloadHandler.text;
+            {
+
+            }
+            jsonString = reader.text;
         }
-        else // PC
+        else
         {
             jsonString = File.ReadAllText(path);
         }
+
+
 
         return JsonMapper.ToObject(jsonString);
     }

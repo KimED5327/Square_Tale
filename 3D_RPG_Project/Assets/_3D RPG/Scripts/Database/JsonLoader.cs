@@ -23,11 +23,22 @@ public class JsonLoader : MonoBehaviour
     void ParsingItemDB()
     {
 
-
+        string jsonString;
         string path = streamingAssetsPath + itemDBPath;
-        WWW androidPath = new WWW(path);
+        if(Application.platform == RuntimePlatform.Android){
+            WWW reader = new WWW(path);
+            while (!reader.isDone)
+            {
 
-        JsonData jData = JsonMapper.ToObject(File.ReadAllText(androidPath.text));
+            }
+            jsonString = reader.text;
+        }
+        else
+        {
+            jsonString = File.ReadAllText(path);
+        }
+
+        JsonData jData = JsonMapper.ToObject(jsonString);
 
         // 모든 Row 순회
         for (int i = 0; i < jData.Count; i++)

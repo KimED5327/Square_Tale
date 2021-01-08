@@ -49,6 +49,8 @@ public class GameHudMenu : MonoBehaviour
     {
         for (int i = 0; i < goHuds.Length; i++)
         {
+            SoundManager.instance.PlayEffectSound("PopUp");
+            
             goHuds[i].SetActive(false);
         }
     }
@@ -57,6 +59,7 @@ public class GameHudMenu : MonoBehaviour
     {
         for (int i = 0; i < goHuds.Length; i++)
         {
+            SoundManager.instance.PlayEffectSound("PopDown");
             goHuds[i].SetActive(true);
         }
 

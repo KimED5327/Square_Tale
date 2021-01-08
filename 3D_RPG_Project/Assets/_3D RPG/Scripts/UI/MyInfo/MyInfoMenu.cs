@@ -39,7 +39,9 @@ public class MyInfoMenu : MonoBehaviour
     
     void ShowMenu() {
 
-        if(PlayerPrefs.HasKey("Nickname"))
+        SoundManager.instance.PlayEffectSound("PopUp");
+
+        if (PlayerPrefs.HasKey("Nickname"))
             txtMyName.text = "LV " + thePlayerStatus.GetLevel() +  $" - {PlayerPrefs.GetString("Nickname")}";
         else
             txtMyName.text = "LV " + thePlayerStatus.GetLevel() + $" - 닉네임";
@@ -59,11 +61,13 @@ public class MyInfoMenu : MonoBehaviour
 
     public void HideMenu()
     {
+        SoundManager.instance.PlayEffectSound("PopDown");
         goMyInfoMenu.SetActive(false);
     }
 
     public void SwapSword()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         player.anim = player.anims[0];
         sword.SetActive(true);
         mage.SetActive(false);
@@ -71,6 +75,7 @@ public class MyInfoMenu : MonoBehaviour
 
     public void SwapMage()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         player.anim = player.anims[1];
         sword.SetActive(false);
         mage.SetActive(true);

@@ -47,6 +47,8 @@ public class SlotToolTip : MonoBehaviour
     // 툴팁 출력
     public void ShowToolTip(Item item, Vector3 pos, bool isEquipSlot)
     {
+        SoundManager.instance.PlayEffectSound("Click");
+
         _touchItem = item;
 
         // 툴팁 내용 세팅
@@ -112,6 +114,7 @@ public class SlotToolTip : MonoBehaviour
     // 툴팁 종료
     public void HideToolTip()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         goToolTip.SetActive(false);
     }
 
@@ -119,6 +122,7 @@ public class SlotToolTip : MonoBehaviour
     // 장착
     public void EquipItem()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         if (_canEquip)
         {
             // 다른 클래스 장비를 장착하면 그대로 경고 후 취소.
@@ -149,6 +153,7 @@ public class SlotToolTip : MonoBehaviour
     // 장착 해제
     public void UnEquipItem()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         if (_canUnEquip)
         {
             Item returnEquipItem = theEquip.TakeOffEquipSlot(_touchItem);

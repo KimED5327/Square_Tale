@@ -93,7 +93,9 @@ public class Adventure : MonoBehaviour
     // 챕터 선택
     public void BtnSelectChapter(int index)
     {
-        if(index == 1)
+        SoundManager.instance.PlayEffectSound("Click");
+
+        if (index == 1)
         {
             _curChapter = index;
             _curPage = 0;
@@ -110,6 +112,8 @@ public class Adventure : MonoBehaviour
     // 페이지 이동
     public void BtnMovePage(int count)
     {
+        SoundManager.instance.PlayEffectSound("Click");
+
         _curPage = (_curPage + count) % (_maxPage + 1);
         if (_curPage < 0)
             _curPage = _maxPage;

@@ -98,9 +98,10 @@ public class Inventory : MonoBehaviour
     // 닫기
     public void HideInven(bool hideMenu = true)
     {
-        if(hideMenu)
+        if (hideMenu)
+        {
             GameHudMenu.instance.ShowMenu();
-
+        }
         SlotToolTip.instance.HideToolTip();
         _goInventory.SetActive(false);
         _goEquip.SetActive(false);
@@ -109,6 +110,7 @@ public class Inventory : MonoBehaviour
     // 정렬 탭 터치
     public void OnTouchTab(int index)
     {
+        SoundManager.instance.PlayEffectSound("Click");
         SlotToolTip.instance.HideToolTip();
 
         _currentTab = index;

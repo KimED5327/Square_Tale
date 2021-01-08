@@ -321,6 +321,7 @@ public class PlayerMove : MonoBehaviour
 
             if (isAttackReady && !isDodge && !isJump && !isCombo && !isDie)
             {
+                SoundManager.instance.PlayEffectSound("Slash_S");
                 equipWeapon.Use();
                 isCombo = true;
                 isComboCount = true;
@@ -334,6 +335,7 @@ public class PlayerMove : MonoBehaviour
             {
                 if (comboCount == 1 && !isAttack2)
                 {
+                    SoundManager.instance.PlayEffectSound("Slash_M");
                     equipWeapon.Use();
                     isAttack2 = true;
                     isComboCount = true;
@@ -345,6 +347,7 @@ public class PlayerMove : MonoBehaviour
                 }
                 else if (comboCount == 2 && !isAttack3)
                 {
+                    SoundManager.instance.PlayEffectSound("Slash_L");
                     equipWeapon.Use();
                     isAttack3 = true;
                     isComboCount = true;
@@ -494,6 +497,7 @@ public class PlayerMove : MonoBehaviour
             GameObject instantEffect = Instantiate(effect1, transform.position, transform.rotation);
             Rigidbody rigid = instantEffect.GetComponent<Rigidbody>();
             Destroy(instantEffect, 0.5f);
+            SoundManager.instance.PlayEffectSound("Skill1");
             skill1Effect.SetActive(true);
         }
         if (isMage)
@@ -555,6 +559,8 @@ public class PlayerMove : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
             for (int i = 0; i < 5; i++)
             {
+
+                SoundManager.instance.PlayEffectSound("Skill2");
                 GameObject instantEffect = Instantiate(effect2, transform.position, transform.rotation);
 
                 Rigidbody rigid = instantEffect.GetComponent<Rigidbody>();

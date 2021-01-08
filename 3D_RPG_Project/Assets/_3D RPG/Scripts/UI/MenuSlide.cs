@@ -19,6 +19,7 @@ public class MenuSlide : MonoBehaviour
     {
         if (canTouch)
         {
+            SoundManager.instance.PlayEffectSound("Click");
             isShow = !isShow;
             StartCoroutine(SlideCo());
         }

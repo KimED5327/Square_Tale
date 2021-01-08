@@ -10,7 +10,6 @@ public class InteractionManager : MonoBehaviour
     [SerializeField] string _keywordEffectName = "키워드 획득";
     [SerializeField] float _interactionRange = 1.5f;
 
-    [SerializeField] GameObject _goTouchBoard = null;
     [SerializeField] LayerMask _layerMask = 0;
 
     Shop _shop;

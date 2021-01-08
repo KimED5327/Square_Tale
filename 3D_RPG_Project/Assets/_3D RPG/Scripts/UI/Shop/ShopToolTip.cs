@@ -45,6 +45,7 @@ public class ShopToolTip : MonoBehaviour
     // 툴팁 출력
     public void ShowToolTip(Item item, bool isBuy = true)
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _isBuy = isBuy;
         _touchItem = item;
         _price = isBuy ? item.priceBuy : item.priceSell;
@@ -87,14 +88,16 @@ public class ShopToolTip : MonoBehaviour
     // 툴팁 종료
     public void HideToolTip()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _goToolTip.SetActive(false);
     }
 
 
     public void BtnIncreaseCount()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         // 팔때 가격 살때 가격 구분 필요
-        if(_count < 99)
+        if (_count < 99)
         {
             _count += 1;
             if (_isBuy)
@@ -110,7 +113,8 @@ public class ShopToolTip : MonoBehaviour
     }
     public void BtnDecreaseCount()
     {
-        if(_count > 1) {
+        SoundManager.instance.PlayEffectSound("Click");
+        if (_count > 1) {
             _count -= 1;
             if (_isBuy)
                 _price -= _touchItem.priceBuy;
@@ -122,6 +126,7 @@ public class ShopToolTip : MonoBehaviour
     }
     public void BtnMaxCount()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         if (_count < 99)
         {
             if (_isBuy)
@@ -140,6 +145,7 @@ public class ShopToolTip : MonoBehaviour
     }
     public void BtnMinCount()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _count = 1;
 
         _price = (_isBuy) ? _touchItem.priceBuy : _touchItem.priceSell;
@@ -160,6 +166,7 @@ public class ShopToolTip : MonoBehaviour
     // 구매 or 판매 의사 재질의
     public void BtnOK()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         if (_isBuy)
         {
             if (_inven.GetGold() >= _price)
@@ -174,6 +181,7 @@ public class ShopToolTip : MonoBehaviour
     // 승인
     public void BtnConfirm()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _goRequestionUI.SetActive(false);
         if (_isBuy) Buy();
         else Sell();
@@ -182,6 +190,7 @@ public class ShopToolTip : MonoBehaviour
     // 취소
     public void BtnCancel()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _goRequestionUI.SetActive(false);
     }
 

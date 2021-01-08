@@ -34,7 +34,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    void PlayBGM(string p_name)
+    public void PlayBGM(string p_name)
     {
         for(int i = 0;i < bgmSound.Length; i++)
         {
@@ -50,19 +50,19 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    void StopBGM()
+    public void StopBGM()
     {
         bgmPlayer.Stop();
     }
-    void PauseBGM()
+    public void PauseBGM()
     {
         bgmPlayer.Pause();
     }
-    void UnPauseBGM()
+    public void UnPauseBGM()
     {
         bgmPlayer.UnPause();
     }
-    void PlayEffectSound(string p_name)
+    public void PlayEffectSound(string p_name)
     {
         for(int i = 0; i < effectSounds.Length;i++)
         {
@@ -77,14 +77,13 @@ public class SoundManager : MonoBehaviour
                         return;
                     }
                 }
-                Debug.LogError("모든 효과음 플레이어가 사용중입니다.");
+                Debug.Log("모든 효과음 플레이어가 사용중입니다.");
                 return;
             }
-            Debug.LogError(p_name + "에 해당하는 효과음 사운드가 없습니다");
         }
     }
 
-    void StopAllEffectSound()
+    public void StopAllEffectSound()
     {
         for(int i = 0; i < effectPlayer.Length; i++)
         {

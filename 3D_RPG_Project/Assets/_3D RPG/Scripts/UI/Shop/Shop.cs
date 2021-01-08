@@ -63,7 +63,6 @@ public class Shop : MonoBehaviour
     void ShowMenu()
     {
         BtnBuyWindow();
-
         GameHudMenu.instance.HideMenu();
         _goShopPanel.SetActive(true);
 
@@ -89,6 +88,8 @@ public class Shop : MonoBehaviour
 
     public void TouchTabBtn(int num)
     {
+        SoundManager.instance.PlayEffectSound("Click");
+
         _tabNum = num;
 
         for (int i = 0; i < _tabButton.Length; i++)
@@ -125,6 +126,7 @@ public class Shop : MonoBehaviour
 
     public void BtnSellWindow()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _imgBuyBtn.color = Color.gray;
         _imgSellBtn.color = Color.white;
 
@@ -139,6 +141,7 @@ public class Shop : MonoBehaviour
 
     public void BtnBuyWindow()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _imgBuyBtn.color = Color.white;
         _imgSellBtn.color = Color.gray;
 

@@ -11,17 +11,21 @@ public class TitleMenu : MonoBehaviour
     private void Awake()
     {
         Screen.SetResolution(1920, 1080, true);
+        SoundManager.instance.PlayBGM("BGM_Lobby");
     }
 
     public void BtnTouchScreen()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _goTouch.SetActive(false);
         _goNickname.SetActive(true);
     }
 
     public void BtnTouchWorld()
     {
-        if(_inNickname.text == "")
+        SoundManager.instance.PlayEffectSound("Click");
+
+        if (_inNickname.text == "")
         {
             Debug.Log("닉네임을 입력해주세요");
             return;
@@ -41,8 +45,10 @@ public class TitleMenu : MonoBehaviour
 
     public void BtnTouchExit()
     {
-        #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
+        SoundManager.instance.PlayEffectSound("Click");
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
         #else
                 Application.Quit();
         #endif

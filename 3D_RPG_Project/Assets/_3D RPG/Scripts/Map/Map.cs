@@ -44,9 +44,14 @@ public class Map : MonoBehaviour
     // 스폰된 몬스터 관리.
     List<SpawnMonster> _spawnEnemyList = new List<SpawnMonster>();
 
+    Transform _TfPlayer;
+
     void Awake()
     {
+        _TfPlayer = FindObjectOfType<PlayerMove>().transform;
         waitTime = new WaitForSeconds(_respawnCheckTime);
+
+        SoundManager.instance.PlayBGM("BGM_Village");
     }
 
     // 맵 활성화되면 몬스터들 스폰.
@@ -111,7 +116,7 @@ public class Map : MonoBehaviour
 
         GameObject enemy = ObjectPooling.instance.GetObjectFromPool(monsterName, pos);
         enemy.transform.eulerAngles = rot;
-
+        enemy.GetComponent<Enemy>().LinkPlayer(_TfPlayer);
         return enemy;
     }
 

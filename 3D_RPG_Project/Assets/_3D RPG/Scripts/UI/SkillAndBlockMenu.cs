@@ -32,18 +32,23 @@ public class SkillAndBlockMenu : MonoBehaviour
 
     public void BtnMenuOpen()
     {
+
+        SoundManager.instance.PlayEffectSound("PopUp");
         _goUI.SetActive(true);
         BtnTab(0);
     }
 
     public void BtnMenuClose()
     {
+        SoundManager.instance.PlayEffectSound("PopDown");
         _goUI.SetActive(false);
     }
 
     public void BtnTab(int index)
     {
-        if(index == 0)
+        SoundManager.instance.PlayEffectSound("Click");
+
+        if (index == 0)
         {
             _goSkillUI.SetActive(true);
             _goBlockUI.SetActive(false);

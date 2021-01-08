@@ -53,6 +53,10 @@ public abstract class Block : Status
 
     protected override void Dead()
     {
+
+
+        SoundManager.instance.PlayEffectSound("Explosion");
+
         if (_hitEffectName != "")
         {
             ObjectPooling.instance.GetObjectFromPool(_hitEffectName, _tfPlayer.position);

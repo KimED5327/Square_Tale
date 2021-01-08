@@ -44,6 +44,8 @@ public class MainMenu : MonoBehaviour
         // 캐릭터를 터치하면 말풍선 On
         if (Input.GetMouseButtonDown(0))
         {
+            SoundManager.instance.PlayEffectSound("Click");
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if(Physics.Raycast(ray, out RaycastHit hit, 1000))
@@ -68,17 +70,20 @@ public class MainMenu : MonoBehaviour
 
     public void OnTouchBalloon()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _goBalloon.SetActive(false);
     }
 
 
     public void OnTouchBookShelf()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _goChapter.SetActive(true);
     }
 
     public void OnTouchChapter(int index)
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _choiceChapter = index;
 
         _goRequestion.SetActive(true);
@@ -88,15 +93,18 @@ public class MainMenu : MonoBehaviour
     }
     public void OnTouchChapterCancel()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _goChapter.SetActive(false);
     }
     public void OnTouchQuestionOK()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _goRequestion.SetActive(false);
         LoadingScene.LoadScene("GameScene");
     }
     public void OnTouchQuestionCancel()
     {
+        SoundManager.instance.PlayEffectSound("Click");
         _goRequestion.SetActive(false);
     }
 }

@@ -61,7 +61,6 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         enemyState = State.Idle;
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         enemyAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         startPoint = transform.position;
@@ -69,6 +68,8 @@ public class Enemy : MonoBehaviour
         myColider = GetComponent<BoxCollider>();
         myRigid = GetComponent<Rigidbody>();
     }
+
+    public void LinkPlayer(Transform tfPlayer) { player = tfPlayer; }
 
     //에너미 업데이트
     private void Update()

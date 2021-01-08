@@ -27,10 +27,7 @@ public class QuestNPC : MonoBehaviour
     string questInfoKey = "info";   // 해시테이블 QuestInfo 키  
 
     [Header("NPC UI")]
-    [Tooltip("기본 다이얼로그 Panel")]
-    [SerializeField] GameObject _dialoguePanel;
-    [Tooltip("퀘스트 다이얼로그 Panel")]
-    [SerializeField] GameObject _questDialoguePanel;
+
     [Tooltip("NPC 머리 상단에 띄우는 퀘스트마크 Image")]
     [SerializeField] Image _imgQuestMark;
     [Tooltip("퀘스트마크 Sprite - 진행가능(노란색 느낌표)")]
@@ -41,15 +38,27 @@ public class QuestNPC : MonoBehaviour
     [SerializeField] Sprite _imgQuestCompletable;
     [Tooltip("NPC 머리 상단에 띄우는 네임태그 Text")]
     [SerializeField] Text _txtNameTag;
+
+    // 캔버스 UI 클래스에서 파싱하는 방식으로 변경
+    [Tooltip("기본 다이얼로그 Panel")]
+    GameObject _dialoguePanel;
+    [Tooltip("퀘스트 다이얼로그 Panel")]
+    GameObject _questDialoguePanel;
     [Tooltip("기본 다이얼로그 박스 내 NPC 이름 Text")]
-    [SerializeField] Text _txtNpcName;
+    Text _txtNpcName;
     [Tooltip("기본 다이얼로그 박스 내 NPC 대사 Text")]
-    [SerializeField] Text _txtNpcLines;
+    Text _txtNpcLines;
 
     // Start is called before the first frame update
     void Start()
     {
         _questState = QuestState.QUEST_VEILED;
+
+        DialogueUI dialogueUI = FindObjectOfType<DialogueUI>();
+        _dialoguePanel = dialogueUI.GetDialoguePanel();
+        _questDialoguePanel = dialogueUI.GetQuestPanel();
+        _txtNpcName = dialogueUI.GetNpcName();
+        _txtNpcLines = dialogueUI.GetLines();
     }
 
     // Update is called once per frame

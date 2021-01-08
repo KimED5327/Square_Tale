@@ -14,10 +14,11 @@ public class ZoomNPC : MonoBehaviour
         ZOOM_CENTER
     };
 
+    Camera _cam;
+    GameObject _player;
+    GameObject _hudCanvas;
+
     [SerializeField] ZoomState _zoomState;
-    [SerializeField] Camera _cam;
-    [SerializeField] GameObject _player;
-    [SerializeField] GameObject _hudCanvas;
     [SerializeField] Transform _target;
     [SerializeField] Vector3 _targetOffset;
     [SerializeField] float _minDistance;
@@ -31,6 +32,8 @@ public class ZoomNPC : MonoBehaviour
     private void Awake()
     {
         _cam = Camera.main;
+        _player = FindObjectOfType<PlayerMove>().gameObject;
+        _hudCanvas = FindObjectOfType<GameHudMenu>().gameObject;
         _target = transform;
         _zoomedInToggle = false;
     }

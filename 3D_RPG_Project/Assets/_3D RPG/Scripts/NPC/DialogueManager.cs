@@ -20,11 +20,10 @@ public class DialogueManager : MonoBehaviour
     // UI 관련 변수 
     Transform _npcTransform;
  
-    [SerializeField] Transform _player;
+    Transform _player;
 
     [Header("Panel UI")]
-    [Tooltip("HUD Canvas")]
-    [SerializeField] GameObject _hudCanvas;
+    GameObject _hudCanvas;
     [Tooltip("기본 다이얼로그 Panel")]
     [SerializeField] GameObject _dialoguePanel;
     [Tooltip("퀘스트 다이얼로그 Panel")]
@@ -54,7 +53,11 @@ public class DialogueManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null) instance = this; 
+        if (instance == null) {
+            instance = this;
+            _player = FindObjectOfType<PlayerMove>().transform;
+            _hudCanvas = FindObjectOfType<GameHudMenu>().gameObject;
+        } 
     }
 
     /// <summary>

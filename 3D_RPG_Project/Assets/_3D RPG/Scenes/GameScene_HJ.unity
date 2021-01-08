@@ -2822,6 +2822,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _keywordEffectName: "\uD0A4\uC6CC\uB4DC \uD68D\uB4DD"
   _interactionRange: 1.5
+  _goTouchBoard: {fileID: 0}
   _layerMask:
     serializedVersion: 2
     m_Bits: 3584
@@ -3869,8 +3870,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6013dcfaa0729da4a8ab06b723fb065e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 1186102229}
-  _hudCanvas: {fileID: 85527141}
   _dialoguePanel: {fileID: 927163113}
   _questDialoguePanel: {fileID: 905616290}
   _questAcceptedPanel: {fileID: 656567805}
@@ -11422,6 +11421,9 @@ MonoBehaviour:
   imgUser: {fileID: 206600834}
   txtAdventure: {fileID: 1912922404}
   imgAdventureGauge: {fileID: 1525606499}
+  sword: {fileID: 0}
+  mage: {fileID: 0}
+  player: {fileID: 0}
 --- !u!223 &588609820
 Canvas:
   m_ObjectHideFlags: 0
@@ -21526,6 +21528,7 @@ MonoBehaviour:
   _int: 0
   _levelUpExps: 64000000ca000000320100009c0100000802000076020000e602000058030000cc03000042040000ba04000034050000b00500002e060000
   _levelUpStr: 2
+  _levelUpInt: 5
   _levelUpHp: 10
   _levelUpDef: 1
 --- !u!114 &1186102227
@@ -21541,15 +21544,50 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
+  applySpeed: 0
   jumpForce: 8.5
-  effect1: {fileID: 96267739}
-  effect2: {fileID: 96267738}
-  effect3: {fileID: 96267736}
+  attackEffect1: {fileID: 0}
+  attackEffect2: {fileID: 0}
+  attackEffect3: {fileID: 0}
   skill1Effect: {fileID: 469681431}
   skill2Effect: {fileID: 1901132573}
   skill3Effect: {fileID: 1130714420}
   skill4Effect: {fileID: 693625366}
+  effect1: {fileID: 96267739}
+  effect2: {fileID: 96267738}
+  effect3: {fileID: 96267736}
   effect4: {fileID: 6469284526224153728, guid: 6fe595208ffa50744b967696fc485aad, type: 3}
+  sword: {fileID: 0}
+  mage: {fileID: 0}
+  magicAttack1Pos: {fileID: 0}
+  magicAttack2Pos: {fileID: 0}
+  magicAttack3Pos: {fileID: 0}
+  blackholePos: {fileID: 0}
+  iceMissile: {fileID: 0}
+  bubble: {fileID: 0}
+  blood: {fileID: 0}
+  startLightning: {fileID: 0}
+  lightning: {fileID: 0}
+  startRain: {fileID: 0}
+  rain: {fileID: 0}
+  blackhole: {fileID: 0}
+  meteo: {fileID: 0}
+  swordButton: {fileID: 0}
+  mageButton: {fileID: 0}
+  swordSkillUI: {fileID: 0}
+  mageSkillUI: {fileID: 0}
+  swordUseSkill: {fileID: 0}
+  mageUseSkill: {fileID: 0}
+  swordAttack1Img: {fileID: 0}
+  swordAttack2Img: {fileID: 0}
+  swordAttack3Img: {fileID: 0}
+  mageAttack1Img: {fileID: 0}
+  mageAttack2Img: {fileID: 0}
+  mageAttack3Img: {fileID: 0}
+  resurrectionBtn: {fileID: 0}
+  swapBtn: {fileID: 0}
+  anim: {fileID: 0}
+  anims: []
 --- !u!65 &1186102228
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -32159,6 +32197,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6a9d2311c12efc646a1513bb36e18671, type: 3}
   - {fileID: 21300000, guid: 01c0e8561dcaef84ea3ca1e53b0dd1e4, type: 3}
   - {fileID: 21300000, guid: 95f06724e7b44ee4688213106c482d12, type: 3}
+  _spriteBuff: []
+  _spriteBlock: []
+  _spriteSwordSkill: []
+  _spriteMageSkill: []
 --- !u!1 &1731236201
 GameObject:
   m_ObjectHideFlags: 0
@@ -35071,7 +35113,6 @@ MonoBehaviour:
   _maps:
   - {fileID: 8665849594334441733, guid: 6c4ef0a4357d7ef409b32f28c9dd481d, type: 3}
   - {fileID: 963015483899494556, guid: bef3a58f583f51c4cb49f35f3b7ca397, type: 3}
-  _currentMap: {fileID: 0}
 --- !u!4 &1911956462
 Transform:
   m_ObjectHideFlags: 0

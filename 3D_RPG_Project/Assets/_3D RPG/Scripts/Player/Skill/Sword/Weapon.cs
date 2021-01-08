@@ -33,9 +33,11 @@ public class Weapon : MonoBehaviour
         attackArea.enabled = false;
 
         yield return _enableWait;
+        //yield return new WaitForSeconds(0.1f);
         attackArea.enabled = true;
 
         yield return _disableWait;
+        //yield return new WaitForSeconds(0.1f);
         attackArea.enabled = false;
     }
 
@@ -48,7 +50,7 @@ public class Weapon : MonoBehaviour
             if (!targetStatus.IsDead())
             {
                 //other.GetComponent<Status>().Damage(_status.GetAtk(), transform.position);
-                other.GetComponent<Status>().Damage(10, transform.position);
+                other.GetComponent<Status>().Damage((int)(_status.GetStr() * 0.5f), transform.position);
             }
         }
     }

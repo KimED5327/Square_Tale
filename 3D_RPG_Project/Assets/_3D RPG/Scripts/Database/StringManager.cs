@@ -25,8 +25,11 @@ public class StringManager : MonoBehaviour
     public static string msgEmptyBlockSlot = "등록된 블록이 없습니다.";
     public static string msgWrongSwipeBlock = "잘못된 스와이프 방향입니다.";
     public static string msgBlockExistObject = "소환 위치에 방해되는 물체가 있습니다";
+    public static string msgEmptySkillSlot = "등록된 스킬이 없습니다.";
+    public static string msgCanNotSkill = "쿨타임 입니다.";
 
     public static string block = "Block";
+    public static string skill = "Skill";
 
     public static string ItemTypeToString(OptionType type)
     {

@@ -10,7 +10,8 @@ public class PlayerStatus : Status
 
     [Header("Level Up Info")]
     [SerializeField] int[] _levelUpExps = null;
-    [SerializeField] int _levelUpStr = 2;
+    [SerializeField] int _levelUpStr = 5;
+    [SerializeField] int _levelUpInt = 5;
     [SerializeField] int _levelUpHp = 10;
     [SerializeField] int _levelUpDef = 1;
 
@@ -42,11 +43,13 @@ public class PlayerStatus : Status
         if (_level < _levelUpExps.Length)
         {
             _curExp += num;
-            if (_levelUpExps[_level] <= _curExp)
+            if (_levelUpExps[_level - 1] <= _curExp)
             {
-                _curExp -= _levelUpExps[_level];
+                _curExp -= _levelUpExps[_level - 1];
                 _maxHp += _levelUpHp;
+                _curHp = _maxHp;
                 _str += _levelUpStr;
+                _int += _levelUpInt;
                 _def += _levelUpDef;
                 _level++;
             }
@@ -55,14 +58,17 @@ public class PlayerStatus : Status
 
     void LevelUp()
     {
-        if (Input.GetKeyDown("l") && _level < _levelUpExps.Length)
+        //if (Input.GetKeyDown("l") && _level < _levelUpExps.Length)
+        if (Input.GetKeyDown("l"))
         {
             _curExp += 50;
-            if (_levelUpExps[_level] <= _curExp)
+            if (_levelUpExps[_level - 1] <= _curExp)
             {
                 _curExp -= _levelUpExps[_level];
                 _maxHp += _levelUpHp;
+                _curHp = _maxHp;
                 _str += _levelUpStr;
+                _int += _levelUpInt;
                 _def += _levelUpDef;
                 _level++;
             }
@@ -77,7 +83,7 @@ public class PlayerStatus : Status
 
     public float GetExpPercent()
     {
-        return (float)_curExp / _levelUpExps[_level];
+        return (float)_curExp / _levelUpExps[_level - 1];
     }
     public float GetHpPercent()
     {

@@ -20,10 +20,14 @@ public class SkillAndBlockMenu : MonoBehaviour
     string _strBlock = "블록";
 
     BlockManager _blockManager;
+    SkillManager _skillManager;
+    MageSkillManager _mageSkillManager;
 
     private void Awake()
     {
         _blockManager = FindObjectOfType<BlockManager>();
+        _skillManager = FindObjectOfType<SkillManager>();
+        _mageSkillManager = FindObjectOfType<MageSkillManager>();
     }
 
     public void BtnMenuOpen()
@@ -46,9 +50,12 @@ public class SkillAndBlockMenu : MonoBehaviour
             _goSkillUI2.SetActive(true);
             _goBlockUI2.SetActive(false);
             _txtTitle.text = _strSkill;
+
             _imgSkillBtn.color = Color.white;
             _imgBlockBtn.color = Color.gray;
 
+            _skillManager.Setting();
+            _mageSkillManager.Setting();
         }
         else
         {

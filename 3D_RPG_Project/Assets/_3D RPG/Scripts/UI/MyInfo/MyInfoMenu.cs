@@ -67,7 +67,6 @@ public class MyInfoMenu : MonoBehaviour
         player.anim = player.anims[0];
         sword.SetActive(true);
         mage.SetActive(false);
-        goMyInfoMenu.SetActive(false);
     }
 
     public void SwapMage()
@@ -75,6 +74,5 @@ public class MyInfoMenu : MonoBehaviour
         player.anim = player.anims[1];
         sword.SetActive(false);
         mage.SetActive(true);
-        goMyInfoMenu.SetActive(false);
     }
 }

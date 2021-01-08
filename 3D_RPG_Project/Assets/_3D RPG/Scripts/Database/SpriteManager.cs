@@ -9,6 +9,8 @@ public class SpriteManager : MonoBehaviour
     public Sprite[] _spriteItem;
     public Sprite[] _spriteBuff;
     public Sprite[] _spriteBlock;
+    public Sprite[] _spriteSwordSkill;
+    public Sprite[] _spriteMageSkill;
 
 
     private void Awake()
@@ -29,5 +31,15 @@ public class SpriteManager : MonoBehaviour
     public Sprite GetBlockSprite(int blockNum)
     {
         return _spriteBlock[blockNum];
+    }
+
+    public Sprite GetSwordSkillSprite(int skillNum)
+    {
+        return _spriteSwordSkill[skillNum];
+    }
+
+    public Sprite GetMageSkillSprite(int skillNum)
+    {
+        return _spriteMageSkill[skillNum];
     }
 }

@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4913245147391686220}
   - component: {fileID: 5080500210758785458}
-  - component: {fileID: 5019447729405921514}
   - component: {fileID: 5025203944215537476}
   - component: {fileID: 5114637256856375306}
   - component: {fileID: 4971466022063469838}
   - component: {fileID: 5034195726886709680}
+  - component: {fileID: -7339933830968659383}
   m_Layer: 0
   m_Name: Blood
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 4916725854129562300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 4913065250505758532}
   - {fileID: 5714280254170211467}
@@ -4754,26 +4754,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!114 &5019447729405921514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4916725854129562300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 605a456cfc02f6b499a64717539a27e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 20
-  hitOffset: 0.1
-  UseFirePointRotation: 0
-  rotationOffset: {x: 0, y: 0, z: 0}
-  hit: {fileID: 1059669524233346, guid: 7bb551564a4a9a1498e0624fd34ce7d3, type: 3}
-  flash: {fileID: 1224217824244948, guid: 291223895b5952f488a6f94886872e78, type: 3}
-  Detached:
-  - {fileID: 4917332228910670840}
 --- !u!108 &5025203944215537476
 Light:
   m_ObjectHideFlags: 0
@@ -4910,7 +4890,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -4928,6 +4908,25 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.01
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-7339933830968659383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4916725854129562300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 315a4718abd0e554d87bfd3b248cb19c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  hitOffset: 0
+  UseFirePointRotation: 0
+  rotationOffset: {x: 0, y: 0, z: 0}
+  hit: {fileID: 1059669524233346, guid: 7bb551564a4a9a1498e0624fd34ce7d3, type: 3}
+  flash: {fileID: 1224217824244948, guid: 291223895b5952f488a6f94886872e78, type: 3}
+  Detached: []
 --- !u!1 &4916765524278077818
 GameObject:
   m_ObjectHideFlags: 0

@@ -73,4 +73,5 @@ public abstract class Block : Status
     }
 
     protected abstract void BlockEffect();
+
 }

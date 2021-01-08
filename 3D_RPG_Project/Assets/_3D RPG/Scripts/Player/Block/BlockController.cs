@@ -25,11 +25,12 @@ public class BlockController : MonoBehaviour
     static readonly string _strPreviewEffectName = "블록 프리뷰 이펙트";
 
     BlockManager _blockManager;
-
+    BlockPreview _preview;
 
     private void Awake()
     {
         _blockManager = FindObjectOfType<BlockManager>();
+        _preview = _goBlockPreview.GetComponent<BlockPreview>();
     }
 
     public void BtnTouchDown()
@@ -62,7 +63,11 @@ public class BlockController : MonoBehaviour
                     // 왼쪽으로 스와이프 한 경우
                     if (_priorMousePos.x > _lastMousePos.x)
                     {
-                        Debug.Log("왼쪽 스와이프 스킬");
+                        if(_preview.IsExistObject())
+                        {
+                            Notification.instance.ShowFloatingMessage(StringManager.msgBlockExistObject);
+                            return;
+                        }
                         _blockName = _blockManager.GetBlockName(0);
                         canSummonBlock = true;
                     }
@@ -78,7 +83,11 @@ public class BlockController : MonoBehaviour
                     // 위쪽으로 스와이프 한 경우
                     if (_priorMousePos.y < _lastMousePos.y)
                     {
-                        Debug.Log("위쪽 스와이프 스킬");
+                        if (_preview.IsExistObject())
+                        {
+                            Notification.instance.ShowFloatingMessage(StringManager.msgBlockExistObject);
+                            return;
+                        }
                         _blockName = _blockManager.GetBlockName(1);
                         canSummonBlock = true;
                     }

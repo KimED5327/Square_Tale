@@ -23,6 +23,8 @@ public class StringManager : MonoBehaviour
     public static string msgCanNotBlockEquip = "등록 불가합니다.";
     public static string msgNotEnoughBlock = "블록 개수가 부족합니다.";
     public static string msgEmptyBlockSlot = "등록된 블록이 없습니다.";
+    public static string msgWrongSwipeBlock = "잘못된 스와이프 방향입니다.";
+    public static string msgBlockExistObject = "소환 위치에 방해되는 물체가 있습니다";
 
     public static string block = "Block";
 

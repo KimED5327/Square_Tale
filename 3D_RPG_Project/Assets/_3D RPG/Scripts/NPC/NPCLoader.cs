@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 public class NPCLoader : MonoBehaviour
 {
     public static NPCLoader instance; 
-    static readonly string streamingAssetsPath = Application.streamingAssetsPath;
+    static string streamingAssetsPath = Application.streamingAssetsPath;
     bool _isParsingDone = false; 
 
     // NPC 정보 DB 경로 
@@ -29,8 +29,13 @@ public class NPCLoader : MonoBehaviour
 
     private void ParsingNpcDB()
     {
+
+
         string path = streamingAssetsPath + npcDBPath;
-        JsonData jData = JsonManager.instance.GetJsonData(path);
+
+        WWW androidPath = new WWW(path);
+
+        JsonData jData = JsonMapper.ToObject(File.ReadAllText(path));
 
         for (int i = 0; i < jData.Count; i++)
         {

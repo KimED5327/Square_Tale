@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 public class QuestLoader : MonoBehaviour
 {
     public static QuestLoader instance; 
-    static readonly string streamingAssetsPath = Application.streamingAssetsPath;
+    static string streamingAssetsPath = Application.streamingAssetsPath;
     string questInfoKey = "info";
 
     // 퀘스트 정보 DB 경로 
@@ -45,10 +45,10 @@ public class QuestLoader : MonoBehaviour
     /// </summary>
     private void ParsingQuestDB()
     {
-        // jsonData get
+
         string path = streamingAssetsPath + questDBPath;
-        JsonData jData = JsonManager.instance.GetJsonData(path);
-  
+        JsonData jData = JsonMapper.ToObject(File.ReadAllText(path));
+
         // 모든 row 순회 
         for (int i = 0; i < jData.Count; i++)
         {

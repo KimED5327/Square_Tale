@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 public class JsonLoader : MonoBehaviour
 {
-    static readonly string streamingAssetsPath = Application.streamingAssetsPath;
+    static string streamingAssetsPath = Application.streamingAssetsPath;
 
     [SerializeField] string itemDBPath = "/ItemDB.json";
     //[SerializeField] string enemyDBPath = "/EnemyDB.json";
@@ -22,9 +22,10 @@ public class JsonLoader : MonoBehaviour
     // JSON -> DB 파싱
     void ParsingItemDB()
     {
-        // jsonData Get
+
+
         string path = streamingAssetsPath + itemDBPath;
-        JsonData jData = GetJsonData(path);
+        JsonData jData = JsonMapper.ToObject(File.ReadAllText(path));
 
         // 모든 Row 순회
         for (int i = 0; i < jData.Count; i++)

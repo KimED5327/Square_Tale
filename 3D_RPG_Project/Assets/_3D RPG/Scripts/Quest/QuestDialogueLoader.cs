@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 
 public class QuestDialogueLoader : MonoBehaviour
 {
-    static readonly string streamingAssetsPath = Application.streamingAssetsPath;
+    static string streamingAssetsPath = Application.streamingAssetsPath;
 
     [SerializeField] string questDialogueDBPath;
 
@@ -140,8 +140,9 @@ public class QuestDialogueLoader : MonoBehaviour
 
     private void ParsingQuestDialogueDB()
     {
+
         string path = streamingAssetsPath + questDialogueDBPath;
-        JsonData jData = JsonManager.instance.GetJsonData(path);
+        JsonData jData = JsonMapper.ToObject(File.ReadAllText(path));
 
         for (int i = 0; i < jData.Count; i++)
         {

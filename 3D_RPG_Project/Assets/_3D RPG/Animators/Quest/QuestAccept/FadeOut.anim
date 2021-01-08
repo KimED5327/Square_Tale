@@ -952,7 +952,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 1.0333333
-    functionName: TurnOffQuestAcceptedPanel
+    functionName: TurnOffPanel
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

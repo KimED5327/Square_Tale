@@ -47,7 +47,9 @@ public class QuestLoader : MonoBehaviour
     {
 
         string path = streamingAssetsPath + questDBPath;
-        JsonData jData = JsonMapper.ToObject(File.ReadAllText(path));
+        WWW androidPath = new WWW(path);
+
+        JsonData jData = JsonMapper.ToObject(File.ReadAllText(androidPath.text));
 
         // 모든 row 순회 
         for (int i = 0; i < jData.Count; i++)

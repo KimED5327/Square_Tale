@@ -35,7 +35,7 @@ public class NPCLoader : MonoBehaviour
 
         WWW androidPath = new WWW(path);
 
-        JsonData jData = JsonMapper.ToObject(File.ReadAllText(path));
+        JsonData jData = JsonMapper.ToObject(File.ReadAllText(androidPath.text));
 
         for (int i = 0; i < jData.Count; i++)
         {

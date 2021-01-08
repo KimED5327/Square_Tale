@@ -25,7 +25,9 @@ public class JsonLoader : MonoBehaviour
 
 
         string path = streamingAssetsPath + itemDBPath;
-        JsonData jData = JsonMapper.ToObject(File.ReadAllText(path));
+        WWW androidPath = new WWW(path);
+
+        JsonData jData = JsonMapper.ToObject(File.ReadAllText(androidPath.text));
 
         // 모든 Row 순회
         for (int i = 0; i < jData.Count; i++)

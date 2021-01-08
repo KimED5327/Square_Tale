@@ -142,7 +142,10 @@ public class QuestDialogueLoader : MonoBehaviour
     {
 
         string path = streamingAssetsPath + questDialogueDBPath;
-        JsonData jData = JsonMapper.ToObject(File.ReadAllText(path));
+
+        WWW androidPath = new WWW(path);
+
+        JsonData jData = JsonMapper.ToObject(File.ReadAllText(androidPath.text));
 
         for (int i = 0; i < jData.Count; i++)
         {

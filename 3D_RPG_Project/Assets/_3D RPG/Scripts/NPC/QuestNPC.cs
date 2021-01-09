@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class QuestNPC : MonoBehaviour
 {
     /// <summary>
-    /// npcID에 맞는 NPC 데이터로서, NpcDB에 저장된 데이터와는 별개이며 데이터값 수정 가능 
+    /// npcID에 맞는 NPC 데이터로서, NpcDB의 데이터를 깊은 복사를 통해 새롭게 할당하여 데이터값 수정 가능 
     /// </summary>
     [SerializeField] NpcWithLines _npc = new NpcWithLines();
 
@@ -52,7 +52,10 @@ public class QuestNPC : MonoBehaviour
     void Start()
     {
         _questState = QuestState.QUEST_VEILED;
+        QuestManager.CheckAvailableQuest += UpdateQuestState;
+        QuestManager.CheckAvailableQuest += SetQuestMark;
 
+        // 다이얼로그 UI 값 세팅 
         DialogueUI dialogueUI = FindObjectOfType<DialogueUI>();
         _dialoguePanel = dialogueUI.GetDialoguePanel();
         _questDialoguePanel = dialogueUI.GetQuestPanel();
@@ -73,7 +76,8 @@ public class QuestNPC : MonoBehaviour
     {
         if (NPCLoader.instance.ParsingCompleted() && !_isParsingDone)
         {
-            _npc = NpcDB.instance.GetNPC(_npcID);
+            // NpcDB의 데이터를 'Deep Copy' 를 통해 할당 
+            _npc = NpcDB.instance.GetNPC(_npcID).DeepCopy();
             CheckAvailableQuest();
             SetNameTag();
             SetQuestMark();
@@ -136,6 +140,38 @@ public class QuestNPC : MonoBehaviour
     }
 
     /// <summary>
+    /// NPC의 퀘스트 진행상태값 업데이트 
+    /// </summary>
+    public void UpdateQuestState()
+    {
+        bool isAvailable = false;
+
+        if (_npc.GetQuestsCount() <= 0)
+        {
+            _questState = QuestState.QUEST_COMPLETED;
+            return;
+        }
+
+        for (int i = 0; i < _npc.GetQuestsCount(); i++)
+        {
+            if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetState() != QuestState.QUEST_OPENED) continue;
+
+            if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestType() == QuestType.TYPE_TALKWITHNPC &&
+               QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetNpcID() != _npcID)
+            {
+                TalkWithNpc talkWithNpc = QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestInfo()[questInfoKey] as TalkWithNpc;
+                talkWithNpc.SetQuestFinisher(this);
+                continue;
+            }
+
+            isAvailable = true;
+            _questState = QuestState.QUEST_OPENED;
+        }
+
+        if (!isAvailable) _questState = QuestState.QUEST_VEILED;
+    }
+
+    /// <summary>
     /// 완료된 퀘스트는 NPC의 퀘스트 목록에서 지우기 
     /// </summary>
     /// <param name="questID"></param>
@@ -147,6 +183,9 @@ public class QuestNPC : MonoBehaviour
             {
                 _npc.GetQuestList().RemoveAt(i);
                 Debug.Log(_npcID + "번 NPC의 " + questID + "번 퀘스트 삭제됨");
+
+                //Debug.Log("복사한 객체의 퀘스트 개수 : " + _npc.GetQuestsCount());
+                //Debug.Log("오리지널 객체의 퀘스트 개수 : " + NpcDB.instance.GetNPC(_npcID).GetQuestsCount());
             }
         }
     }

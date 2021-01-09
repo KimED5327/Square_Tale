@@ -229,7 +229,7 @@ public class DialogueManager : MonoBehaviour
         QuestManager.instance.AddFinishedQuest(questCompleted);
 
         // 완료된 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에서 삭제
-        QuestManager.instance.DeleteOngoingQuest();
+        //QuestManager.instance.DeleteOngoingQuest();
     }
 
     /// <summary>

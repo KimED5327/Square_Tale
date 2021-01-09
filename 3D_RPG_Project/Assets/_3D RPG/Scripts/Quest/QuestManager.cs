@@ -8,6 +8,9 @@ using UnityEngine;
 public class QuestManager : MonoBehaviour
 {
     public static QuestManager instance;
+    public delegate void EventHandler();
+    public static event EventHandler CheckAvailableQuest;
+
     string questInfoKey = "info";
 
     /// <summary>
@@ -23,11 +26,6 @@ public class QuestManager : MonoBehaviour
     private void Awake()
     {
         if (instance == null) instance = this; 
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
     }
 
     /// <summary>
@@ -48,7 +46,6 @@ public class QuestManager : MonoBehaviour
     public void DeleteOngoingQuest()
     {
         _ongoingQuests.RemoveAt(0);
-
     }
 
     /// <summary>
@@ -57,7 +54,27 @@ public class QuestManager : MonoBehaviour
     /// <param name="finishedQuest"></param>
     public void AddFinishedQuest(Quest finishedQuest)
     {
+        Debug.Log(finishedQuest.GetQuestID() + "번 퀘스트 완료");
         _finishedQuests.Add(finishedQuest);
+
+        // 퀘스트 완료로 해금된 퀘스트가 있다면 오픈 
+        OpenQuest(finishedQuest.GetQuestID());
+    }
+
+    /// <summary>
+    /// 선행 퀘스트가 완료된 퀘스트의 진행상태를 미해금 상태에서 진행가능 상태로 변경 
+    /// </summary>
+    public void OpenQuest(int questID)
+    {
+        // 완료된 퀘스트의 ID(questID)가 선행 퀘스트 ID와 일치하는 퀘스트를 진행가능 상태로 변경 
+        for (int i = 1; i < QuestDB.instance.GetMaxCount() + 1; i++)
+        {
+            if (QuestDB.instance.GetQuest(i).GetPrecedentID() != questID) continue;
+
+            Debug.Log(QuestDB.instance.GetQuest(i).GetQuestID() + "번 퀘스트 해금");
+            QuestDB.instance.GetQuest(i).SetState(QuestState.QUEST_OPENED);
+            CheckAvailableQuest();
+        }
     }
 
     /// <summary>
@@ -70,28 +87,4 @@ public class QuestManager : MonoBehaviour
         talkWithNpc.GetQuestFinisher().SetQuestMark();
         talkWithNpc.GetQuestFinisher().SetOngoingQuestID(quest.GetQuestID());
     }
-
-    /// <summary>
-    /// type7. 특정 NPC와 대화하여 완수하는 타입의 퀘스트 완료 조건 검사 
-    /// </summary>
-    public void CheckTalkWithNpc(int npcID)
-    {
-        // 대화 상대의 tag가 QuestNPC일 때만 검사 
-
-        // 현재 진행중인 퀘스트 리스트 카운트만큼 검사 
-        for (int i = 0; i < _ongoingQuests.Count; i++)
-        {
-            // 해당 퀘스트 타입이 아닐 경우 건너뛰기 
-            if (_ongoingQuests[i].GetQuestType() != QuestType.TYPE_TALKWITHNPC) continue;
-
-            TalkWithNpc questInfo = _ongoingQuests[1].GetQuestInfo()[questInfoKey] as TalkWithNpc;
-
-            // 대화상대 NPC ID와 일치하지 않는 경우 건너뛰기  
-            if (npcID != questInfo.GetNpcID()) continue;
-
-            // 대화상대 NPC ID와 일치하는 경우 
-
-        }
-    }
-
 }

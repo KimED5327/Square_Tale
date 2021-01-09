@@ -1,11 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class NpcWithLines : NPC
 {
     List<int> _questList = new List<int>();       // NPC에게 할당된 퀘스트 ID 리스트 
     List<string> _lineList = new List<string>();  // NPC 기본 대사 리스트 
+    
+    /// <summary>
+    /// 새로운 객체를 할당하여 해당 객체를 'Deep Copy' 한 후 리턴 
+    /// </summary>
+    /// <returns></returns>
+    public NpcWithLines DeepCopy()
+    {
+        NpcWithLines newCopy = new NpcWithLines();
+
+        newCopy.SetID(this.GetID());
+        newCopy.SetName(this.GetName());
+
+        List<int> questListCopy = new List<int>(this.GetQuestList());
+        newCopy.SetQuestList(questListCopy);
+
+        List<string> lineListCopy = new List<string>(this.GetLineList());
+        newCopy.SetLineList(lineListCopy);
+
+        return newCopy;
+    }
 
     //getter
     public List<string> GetLineList() { return _lineList; }

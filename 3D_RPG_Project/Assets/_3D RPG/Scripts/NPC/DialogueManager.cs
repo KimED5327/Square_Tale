@@ -13,14 +13,17 @@ public class DialogueManager : MonoBehaviour
     int _questID = 0;               // 현재 퀘스트 다이얼로그가 진행되는 퀘스트 ID
     int _lineIdx = 0;               // 대화 상자에 출력되는 대사의 index 값 
     bool _isTalking = false;        // 현재 대화중인지 확인하는 변수 
-    QuestState _state;              // 현재 퀘스트 다이얼로그가 진행되는 퀘스트의 진행상태 
+    public QuestState _state;       // 현재 퀘스트 다이얼로그가 진행되는 퀘스트의 진행상태 
     QuestNPC _questNPC;             // 현재 대화상대인 NPC 참조값 
+    string _questTitle;             // 퀘스트 제목 
     string questInfoKey = "info";   // 해시테이블 QuestInfo 키  
+
+    string _keywordEffectName = "키워드 획득";
 
     // UI 관련 변수 
     Transform _npcTransform;
- 
     Transform _player;
+    float _delayBeforeGettingKeyword = 1.7f;    // 퀘스트 완료 시 키워드 보상 획득 딜레이 
 
     [Header("Panel UI")]
     GameObject _hudCanvas;
@@ -43,7 +46,7 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Quest Dialogue UI")]
     [Tooltip("퀘스트 다이얼로그 Panel 내 퀘스트 Title")]
-    [SerializeField] Text _questTitle;
+    [SerializeField] Text _txtQuestTitle;
     [Tooltip("퀘스트 다이얼로그 Panel 내 NPC 이름 Text")]
     [SerializeField] Text _npcName;
     [Tooltip("퀘스트 다이얼로그 Panel 내 NPC 대사 Text")]
@@ -53,7 +56,8 @@ public class DialogueManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null) {
+        if (instance == null)
+        {
             instance = this;
             _player = FindObjectOfType<PlayerMove>().transform;
             _hudCanvas = FindObjectOfType<GameHudMenu>().gameObject;
@@ -61,10 +65,10 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 퀘스트를 수락할 때 이루어지는 대화 
+    /// 퀘스트 수락, 완료 시의 대화 실행 
     /// </summary>
     /// <param name="questID"></param>
-    public void QuestOpenedDialogue()
+    public void DoQuestDialouge()
     {
         GetLine(_questID);
         _questDialoguePanel.SetActive(_isTalking);
@@ -88,14 +92,6 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 퀘스트가 완료되었을 때 이루어지는 대화 
-    /// </summary>
-    public void QuestCompletedDialogue()
-    {
-
-    }
-
-    /// <summary>
     /// 기본 다이얼로그 Panel 닫기 
     /// </summary>
     public void CloseDialoguePanel()
@@ -116,7 +112,10 @@ public class DialogueManager : MonoBehaviour
         _questDialoguePanel.SetActive(false);
         _hudCanvas.SetActive(true);
         _questNPC.TurnOnNameTag();
-        _questNPC.GetComponent<Transform>().tag = "QuestNPC";
+
+        // 바로 tag를 QuestNPC로 바꾸면 중복터치 문제가 생기므로 
+        // 일정 딜레이 후 tag를 변경하는 코루틴을 호출하는 함수를 실행 
+        _questNPC.PlaySetQuestNpcTagCoroutine();
 
         // 퀘스트 다이얼로그를 종료하므로 대사 번호도 0으로 변경 
         _lineIdx = 0;
@@ -162,10 +161,10 @@ public class DialogueManager : MonoBehaviour
     /// <summary>
     /// 퀘스트 수락에 따라 팝업메뉴을 실행하고, 퀘스트 매니져에 진행중인 퀘스트 추가 및 NPC 상태값 변경 
     /// </summary>
-    public void AcceptQuest()
+    void AcceptQuest()
     {
         // 퀘스트 수락 팝업메뉴 실행 
-        _questAcceptedTitle.text = "'" + _questTitle.text + "'";
+        SetQuestAcceptPanel();
         _questAcceptedPanel.SetActive(true);
         CloseQuestDialoguePanel();
 
@@ -191,12 +190,21 @@ public class DialogueManager : MonoBehaviour
         QuestManager.instance.AddOngoingQuest(questAccepted);
     }
 
-    public void CompleteQuest()
+    /// <summary>
+    /// 퀘스트 완료에 따라 팝업메뉴을 실행하고, 퀘스트 매니져에 완료된 퀘스트 추가 및 NPC 상태값 변경
+    /// </summary>
+    void CompleteQuest()
     {
         // 퀘스트 완료 팝업메뉴 실행 
-        _questCompletedTitle.text = "'" + _questTitle.text + "'";
+        SetQuestCompletePanel();
         _questCompletedPanel.SetActive(true);
         CloseQuestDialoguePanel();
+
+        // 키워드 보상이 있는 경우 일정 딜레이 후 키워드 획득 
+        if (QuestDB.instance.GetQuest(_questID).GetKeywords().Count > 0)
+        {
+            StartCoroutine("GetKeyword");
+        }
 
         // 퀘스트를 완료한 NPC의 상태값 변경 
         _questNPC.SetOngoingQuestID(0);
@@ -225,6 +233,35 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 퀘스트 수락 Panel의 UI 데이터 값 설정 
+    /// </summary>
+    public void SetQuestAcceptPanel()
+    {
+        _questAcceptedTitle.text = "'" + _questTitle + "'";
+    }
+
+    /// <summary>
+    /// 퀘스트 완료 Panel의 UI 데이터 값 설정 
+    /// </summary>
+    public void SetQuestCompletePanel()
+    {
+        _questCompletedTitle.text = "'" + _questTitle + "'";
+    }
+
+    /// <summary>
+    /// 일정시간의 딜레이 후 키워드 획득 
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator GetKeyword()
+    {
+        yield return new WaitForSeconds(_delayBeforeGettingKeyword);
+
+        ObjectPooling.instance.GetObjectFromPool(_keywordEffectName, _player.position);
+        KeywordData.instance.AcquireKeyword(QuestDB.instance.GetQuest(_questID).GetKeywords()[0]);
+        _player.GetComponent<PlayerMove>().Victory();
+    }
+
+    /// <summary>
     /// 퀘스트 다이얼로그 건너뛰기 기능 수행 
     /// </summary>
     public void SkipDialogue()
@@ -233,28 +270,21 @@ public class DialogueManager : MonoBehaviour
         int lineCount = QuestDialogueDB.instance.GetDialogue(_questID).GetLinesCount(_state);
         _lineIdx = lineCount;
 
-        QuestOpenedDialogue();
+        DoQuestDialouge();
     }
 
     /// <summary>
     /// 현재 대화가 이루어질 퀘스트에 대한 정보 세팅 
     /// </summary>
     /// <param name="questID"></param>
-    /// <param name="state"></param>
-    public void SetQuestInfo(int questID, QuestState state)
-    {
-        _questID = questID;
-        _state = state;
-        _questTitle.text = QuestDB.instance.GetQuest(questID).GetTitle();
-    }
-
-
+    /// <param name="questNPC"></param>
     public void SetQuestInfo(int questID, QuestNPC questNPC)
     {
         _questID = questID;
         _questNPC = questNPC;
         _state = _questNPC.GetQuestState();
-        _questTitle.text = QuestDB.instance.GetQuest(questID).GetTitle();
+        _txtQuestTitle.text = QuestDB.instance.GetQuest(questID).GetTitle();
+        _questTitle = QuestDB.instance.GetQuest(questID).GetTitle();
     }
 
     /// <summary>

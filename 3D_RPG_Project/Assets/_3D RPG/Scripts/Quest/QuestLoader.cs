@@ -45,25 +45,9 @@ public class QuestLoader : MonoBehaviour
     /// </summary>
     private void ParsingQuestDB()
     {
-
-
         string path = streamingAssetsPath + questDBPath;
-        string jsonString;
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            WWW reader = new WWW(path);
-            while (!reader.isDone)
-            {
+        JsonData jData = JsonManager.instance.GetJsonData(path);
 
-            }
-            jsonString = reader.text;
-        }
-        else
-        {
-            jsonString = File.ReadAllText(path);
-        }
-
-        JsonData jData = JsonMapper.ToObject(jsonString);
         // 모든 row 순회 
         for (int i = 0; i < jData.Count; i++)
         {

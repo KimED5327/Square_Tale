@@ -7,27 +7,29 @@ using UnityEngine.UI;
 //X 아이콘을 클릭하면 줌아웃 
 public class ZoomNPC : MonoBehaviour
 {
-    enum ZoomState
+    /// <summary>
+    /// 줌인 시 대상의 위치(좌측, 정면, 우측) 설정 스테이트 
+    /// </summary>
+    enum ZoomState  
     {
         ZOOM_LEFT,
         ZOOM_RIGHT,
         ZOOM_CENTER
     };
 
-    Camera _cam;
-    GameObject _player;
-    GameObject _hudCanvas;
+    [SerializeField] ZoomState _zoomState = ZoomState.ZOOM_CENTER;    // 줌인 상태(좌측, 정면, 우측)
+    [SerializeField] Vector3 _targetOffset;                           // 줌인 시 오프셋 값  
+    [SerializeField] float _smoothSpeed = 0.125f;                     // 줌인 시 속도 
+    [SerializeField] bool _zoomedInToggle = false;                    // 줌인 토글(on/off 설정)
+    [SerializeField] bool _zoomingIn = false;                         // 줌인 실행중인지 확인하는 bool값 
+    [SerializeField] bool _zoomingOut = false;                        // 줌아웃 실행중인지 확인하는 bool값 
 
-    [SerializeField] ZoomState _zoomState;
-    [SerializeField] Transform _target;
-    [SerializeField] Vector3 _targetOffset;
-    [SerializeField] float _minDistance;
-    [SerializeField] float _smoothSpeed = 0.125f;
-
-    public bool _zoomedInToggle = false;
-    public bool _zoomingIn = false; 
-    public bool _zoomingOut = false;
-    private Vector3 _prePos;
+    Camera _cam;                    // 카메라  
+    GameObject _player;             // 플레이어 
+    GameObject _hudCanvas;          // HUD 캔버스 
+    Transform _target;              // 타겟 NPC
+    float _minDistance = 2.0f;      // 줌인 발동 최소거리 
+    Vector3 _prePos;                // 줌인 시 카메라 이동 전 위치값 
 
     private void Awake()
     {
@@ -36,6 +38,9 @@ public class ZoomNPC : MonoBehaviour
         _hudCanvas = FindObjectOfType<GameHudMenu>().gameObject;
         _target = transform;
         _zoomedInToggle = false;
+
+        // 카메라 오프셋값 설정 
+        _targetOffset = new Vector3(-1.1f, -0.1f, 0.01f);
     }
 
     private void FixedUpdate()
@@ -51,13 +56,10 @@ public class ZoomNPC : MonoBehaviour
         }
     }
 
-    //NPC 네임태그 클릭 시 NPC 줌인 
+    //NPC 클릭 시 NPC 줌인 
     public void ZoomInNPC()
     {
-        Debug.Log("button working");
-
-        //추후 플레이어 캐릭터 연동 시, 플레이어와 NPC와의 거리가
-        //일정거리 이상 가까울 때만 버튼을 클릭할 수 있도록 할 것. 
+        // 플레이어와 NPC의 거리가 일정 거리 이하일 때만 줌인 발동 
         if (Vector3.Distance(_player.transform.position, _target.position) > _minDistance) return; 
 
         if (_zoomedInToggle == false)
@@ -83,7 +85,6 @@ public class ZoomNPC : MonoBehaviour
         {
             _zoomedInToggle = false;
             _zoomingOut = true;
-            //_canvasUI.SetActive(false);
 
             //카메라 컨트롤러 켜기 
             _player.GetComponent<CameraController>().enabled = true;
@@ -106,7 +107,7 @@ public class ZoomNPC : MonoBehaviour
                 if (Vector3.Distance(_cam.transform.position, desiredPos) <= 0.1f)
                 {
                     _zoomingIn = false;
-                    _zoomedInToggle = false; 
+                    _zoomedInToggle = false;
                     transform.GetComponent<QuestNPC>().ClickNPC();
                 }
 
@@ -119,13 +120,9 @@ public class ZoomNPC : MonoBehaviour
 
     public void ZoomedOut()
     {
-        //추후 플레이어 연동 시 플레이어 위치에 따라 
-        //플레이어를 따라다니는 기존의 카메라 시점으로 변경할 것. 
-
         if (Vector3.Distance(_cam.transform.position, _prePos) <= 0.1f)
         {
             _zoomingOut = false;
-            //_canvasUI.SetActive(false);
 
             //카메라 컨트롤러 켜기 
             //_player.GetComponent<CameraController>().enabled = true;

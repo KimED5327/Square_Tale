@@ -72,7 +72,7 @@ public class InteractionManager : MonoBehaviour
                     {
                         QuestNPC npc = hit.transform.GetComponent<QuestNPC>();
 
-                        // 퀘스트 진행중일 시 해당 상태에 대한 대사 유무를 체크해서 함수 실행 
+                        // 퀘스트 진행중일 시 해당 상태에 대한 대사 유무를 체크해서 대화 실행 
                         if(hit.transform.GetComponent<QuestNPC>().GetQuestState() == QuestState.QUEST_ONGOING)
                         {
                             if (!hit.transform.GetComponent<QuestNPC>().CheckOngoingQuestDialogue()) return; 

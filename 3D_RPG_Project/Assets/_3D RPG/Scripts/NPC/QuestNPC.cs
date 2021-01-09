@@ -27,7 +27,6 @@ public class QuestNPC : MonoBehaviour
     string questInfoKey = "info";   // 해시테이블 QuestInfo 키  
 
     [Header("NPC UI")]
-
     [Tooltip("NPC 머리 상단에 띄우는 퀘스트마크 Image")]
     [SerializeField] Image _imgQuestMark;
     [Tooltip("퀘스트마크 Sprite - 진행가능(노란색 느낌표)")]
@@ -83,7 +82,7 @@ public class QuestNPC : MonoBehaviour
     }
 
     /// <summary>
-    /// 현재 진행 가능한 퀘스트가 있는지 탐색 
+    /// 현재 진행 가능한 퀘스트가 있는지 탐색하여 bool값 형태로 리턴하며, NPC의 퀘스트 진행상태값 업데이트 
     /// </summary>
     public bool CheckAvailableQuest()
     {
@@ -219,7 +218,7 @@ public class QuestNPC : MonoBehaviour
             //진행 가능한 퀘스트가 있는 경우 
             case QuestState.QUEST_OPENED:
                 DialogueManager.instance.SetQuestInfo(GetAvailableQuestID(), this);
-                DialogueManager.instance.QuestOpenedDialogue();
+                DialogueManager.instance.DoQuestDialouge();
                 break;
             
             //현재 특정한 퀘스트를 진행중인 경우 (디폴트 패널로 대사 출력)
@@ -236,7 +235,7 @@ public class QuestNPC : MonoBehaviour
             //완료 가능한 퀘스트가 있는 경우 
             case QuestState.QUEST_COMPLETABLE:
                 DialogueManager.instance.SetQuestInfo(_ongoingQuestID, this);
-                DialogueManager.instance.QuestOpenedDialogue();
+                DialogueManager.instance.DoQuestDialouge();
                 break;
 
             // 그 외 상태에서는 다이얼로그 패널로 디폴트 대사 출력  
@@ -248,16 +247,6 @@ public class QuestNPC : MonoBehaviour
         }
     }
 
-    private void Test()
-    {
-        Debug.Log("NPC" + _npcID + " : " + _npc.GetName());
-
-        for (int i = 0; i < _npc.GetLinesCount(); i++)
-        {
-            Debug.Log(_npc.GetLine(i));
-        }
-    }
-
     /// <summary>
     /// 퀘스트 진행중 상태에 대한 대사 유무를 bool 값으로 리턴  
     /// </summary>
@@ -265,6 +254,25 @@ public class QuestNPC : MonoBehaviour
     public bool CheckOngoingQuestDialogue()
     {
         return QuestDialogueDB.instance.GetDialogue(_ongoingQuestID).CheckDialogue(_questState);
+    }
+
+    /// <summary>
+    /// NPC tag를 "QuestNPC" 로 설정하는 코루틴 함수를 실행 
+    /// </summary>
+    public void PlaySetQuestNpcTagCoroutine()
+    {
+        StartCoroutine("SetQuestNpcTag");
+    }
+
+    /// <summary>
+    /// 1초간의 딜레이 후 NPC의 tag를 "QuestNPC" 로 설정 
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator SetQuestNpcTag()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        transform.tag = "QuestNPC";
     }
 
     /// <summary>
@@ -285,4 +293,6 @@ public class QuestNPC : MonoBehaviour
 
     public QuestState GetQuestState() { return _questState; }
     public void SetQuestState(QuestState state) { _questState = state; }
+
+
 }

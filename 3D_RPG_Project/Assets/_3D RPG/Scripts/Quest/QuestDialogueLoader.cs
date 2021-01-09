@@ -140,24 +140,8 @@ public class QuestDialogueLoader : MonoBehaviour
 
     private void ParsingQuestDialogueDB()
     {
-
         string path = streamingAssetsPath + questDialogueDBPath;
-        string jsonString;
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            WWW reader = new WWW(path);
-            while (!reader.isDone)
-            {
-
-            }
-            jsonString = reader.text;
-        }
-        else
-        {
-            jsonString = File.ReadAllText(path);
-        }
-
-        JsonData jData = JsonMapper.ToObject(jsonString);
+        JsonData jData = JsonManager.instance.GetJsonData(path);
 
         for (int i = 0; i < jData.Count; i++)
         {

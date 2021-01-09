@@ -48,13 +48,17 @@ public class QuestManager : MonoBehaviour
     public void DeleteOngoingQuest()
     {
         _ongoingQuests.RemoveAt(0);
+
     }
 
     /// <summary>
     /// 완료된 퀘스트 리스트에 finishedQuest를 원소로 추가하기 
     /// </summary>
     /// <param name="finishedQuest"></param>
-    public void AddFinishedQuest(Quest finishedQuest) { _finishedQuests.Add(finishedQuest); }
+    public void AddFinishedQuest(Quest finishedQuest)
+    {
+        _finishedQuests.Add(finishedQuest);
+    }
 
     /// <summary>
     /// type7. 'NPC와의 대화' 퀘스트에서 대화 상대가 되는 NPC의 상태값 세팅 

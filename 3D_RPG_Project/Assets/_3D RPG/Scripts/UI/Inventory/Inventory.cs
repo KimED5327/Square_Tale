@@ -54,8 +54,8 @@ public class Inventory : MonoBehaviour
         TryToPushInventory(ItemDatabase.instance.GetItem(2));
         TryToPushInventory(ItemDatabase.instance.GetItem(2));
         TryToPushInventory(ItemDatabase.instance.GetItem(2));
-        TryToPushInventory(ItemDatabase.instance.GetItem(3));
-        TryToPushInventory(ItemDatabase.instance.GetItem(3));
+        //TryToPushInventory(ItemDatabase.instance.GetItem(3));
+        //TryToPushInventory(ItemDatabase.instance.GetItem(3));
 
         // 기본값 - 무기 우선 정렬 
         OnTouchTab(0);
@@ -223,7 +223,6 @@ public class Inventory : MonoBehaviour
     // true : 획득 성공, false : 획득 실패 (빈 슬롯 부족 등등)
     public bool TryToPushInventory(Item item, int count = 1)
     {
-
         // 빈 슬롯이 있다면-
         if (CheckIsEmptySlot())
         {
@@ -326,10 +325,10 @@ public class Inventory : MonoBehaviour
                         _slots[originSlotIndex].ForceSetSlotCount(originCount);
                         return false;
                     }
-
                 }
 
-
+                // 진행 중인 퀘스트 중 '아이템 전달' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 
+                QuestManager.instance.CheckDeliverItemQuest();
                 return true;
             }
         }
@@ -344,6 +343,9 @@ public class Inventory : MonoBehaviour
             if (_slots[i].IsEmptySlot())
             {
                 _slots[i].PushSlot(item, count);
+
+                // 진행 중인 퀘스트 중 '아이템 전달' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 
+                QuestManager.instance.CheckDeliverItemQuest();
                 return true;
             }
         }
@@ -392,9 +394,12 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < _slots.Length; i++)
         {
-            if (item.id == _slots[i].GetSlotItem().id)
+            if (!_slots[i].IsEmptySlot())
             {
-                return _slots[i].GetSlotCount();
+                if (item.id == _slots[i].GetSlotItem().id)
+                {
+                    return _slots[i].GetSlotCount();
+                }
             }
         }
 
@@ -404,7 +409,6 @@ public class Inventory : MonoBehaviour
     
     public Item GetSlotItem(int index) { return _slots[index].GetSlotItem(); }
     public Vector3 GetSlotLocalPos(int index) { return _slots[index].transform.localPosition; }
-
 
     public int GetGold() { return gold; }
     public int GetRuby() { return ruby; }

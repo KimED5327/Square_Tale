@@ -34,6 +34,18 @@ public class QuestManager : MonoBehaviour
         _inventory = FindObjectOfType<Inventory>();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            Debug.Log("3번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(3)));
+            Debug.Log("4번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(4)));
+
+            _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(3));
+            Debug.Log("3번 아이템 획득");
+        }
+    }
+
     /// <summary>
     /// 진행중인 퀘스트 리스트에 ongoingQuest를 원소로 추가하기 
     /// </summary>
@@ -42,6 +54,9 @@ public class QuestManager : MonoBehaviour
     {
         Debug.Log(ongoingQuest.GetQuestID() + "번 퀘스트 수락");
         _ongoingQuests.Add(ongoingQuest);
+
+        // 퀘스트 부여자의 상대값 변경 
+        SetQuestGiverToOngoingState(ongoingQuest);
 
         // 퀘스트 수락에 따른 퀘스트 타입별 상호작용 
         AcceptInterationPerType(ongoingQuest);
@@ -55,6 +70,13 @@ public class QuestManager : MonoBehaviour
     {
         Debug.Log(finishedQuest.GetQuestID() + "번 퀘스트 완료");
         _finishedQuests.Add(finishedQuest);
+
+        // 퀘스트 완료자의 상태값을 퀘스트 완료로 변경 
+        SetQuestFinisherToCompleteState(finishedQuest);
+
+        // 퀘스트 부여자와 완료자가 일치하지 않을 경우 퀘스트 부여자의 상태값을 퀘스트 완료로 변경 
+        if (finishedQuest.GetQuestGiver() != finishedQuest.GetQuestFinisher())
+            SetQuestGiverToCompleteState(finishedQuest);
 
         // 퀘스트 완료에 따른 퀘스트 타입 별 상호작용 
         CompleteInteractionPerType(finishedQuest);
@@ -95,7 +117,7 @@ public class QuestManager : MonoBehaviour
         switch (quest.GetQuestType())
         {
             case QuestType.TYPE_DELIVERITEM:
-                // 해당 아이템이 있는지 검사하기 
+                // 아이템 소지 여부 확인하여 퀘스트 조건 검사하기 
                 CheckItemsToDeliver(quest);
                 break;
 
@@ -109,7 +131,8 @@ public class QuestManager : MonoBehaviour
                 break;
 
             case QuestType.TYPE_TALKWITHNPC:
-                SetQuestFinisherStatus(quest);
+                // 대화 상대자인 퀘스트 완료자의 상태값을 퀘스트 완료가능으로 변경 
+                SetQuestFinisherToCompletableState(quest);
                 break;
         }
     }
@@ -122,6 +145,8 @@ public class QuestManager : MonoBehaviour
         switch (quest.GetQuestType())
         {
             case QuestType.TYPE_DELIVERITEM:
+                // 전달된 아이템을 인벤토리 목록에서 삭제 
+                DeleteItemsDelivered(quest);
                 break;
 
             case QuestType.TYPE_ACQUIREITEM:
@@ -134,8 +159,21 @@ public class QuestManager : MonoBehaviour
                 break;
 
             case QuestType.TYPE_TALKWITHNPC:
-                SetQuestGiverStatus(quest);
+                //SetQuestGiverStatus(quest);
                 break;
+        }
+    }
+
+    /// <summary>
+    /// 진행 중인 퀘스트 중 '아이템 전달' 타입의 퀘스트가 있다면, 퀘스트 달성 요건 확인 
+    /// </summary>
+    public void CheckDeliverItemQuest()
+    {
+        for (int i = 0; i < _ongoingQuests.Count; i++)
+        {
+            if (_ongoingQuests[i].GetQuestType() != QuestType.TYPE_DELIVERITEM) continue;
+
+            CheckItemsToDeliver(_ongoingQuests[i]);
         }
     }
 
@@ -159,39 +197,70 @@ public class QuestManager : MonoBehaviour
             }
         }
 
-        if(isAvailable) SetQuestGiverToCompleteState(quest);
+        if(isAvailable) SetQuestFinisherToCompletableState(quest);
     }
 
     /// <summary>
-    /// Type7. 'NPC와의 대화' 퀘스트에서 대화 상대가 되는 퀘스트 완료자 NPC의 상태값 세팅 
-    /// </summary>
-    void SetQuestFinisherStatus(Quest quest)
-    {
-        TalkWithNpc talkWithNpc = quest.GetQuestInfo()[_questInfoKey] as TalkWithNpc;
-        talkWithNpc.GetQuestFinisher().SetQuestState(QuestState.QUEST_COMPLETABLE);
-        talkWithNpc.GetQuestFinisher().SetQuestMark();
-        talkWithNpc.GetQuestFinisher().SetOngoingQuestID(quest.GetQuestID());
-    }
-
-    /// <summary>
-    /// Type7. 'NPC의 대화' 퀘스트에서 퀘스트를 부여한 NPC의 상태값 세팅 
+    /// Type1. '아이템 전달' 퀘스트 완료 후 전달된 아이템을 인벤토리에서 제거 
     /// </summary>
     /// <param name="quest"></param>
-    void SetQuestGiverStatus(Quest quest)
+    public void DeleteItemsDelivered(Quest quest)
     {
-        TalkWithNpc talkWithNpc = quest.GetQuestInfo()[_questInfoKey] as TalkWithNpc;
-        talkWithNpc.GetQuestGiver().SetOngoingQuestID(0);
-        talkWithNpc.GetQuestGiver().DeleteCompletedQuest(quest.GetQuestID());
-        talkWithNpc.GetQuestGiver().CheckAvailableQuest();
-        talkWithNpc.GetQuestGiver().SetQuestMark();
+        DeliverItem deliverItem = quest.GetQuestInfo()[_questInfoKey] as DeliverItem;
+
+        for (int i = 0; i < deliverItem.GetItemList().Count; i++)
+        {
+            _inventory.DecreaseItemCount(ItemDatabase.instance.GetItem(deliverItem.GetItem(i).GetItemID()),
+                deliverItem.GetItem(i).GetCount());
+
+            Debug.Log(deliverItem.GetItem(i).GetItemID() + "번 아이템 : " +
+                _inventory.GetItemCount(ItemDatabase.instance.GetItem(deliverItem.GetItem(i).GetItemID())) + "개 삭제");
+        }
     }
 
     /// <summary>
-    /// 퀘스트 부여자의 상태 값을 퀘스트 완료상태로 변경 
+    /// 퀘스트를 수락하여 퀘스트 부여자의 상태 값을 퀘스트 진행중으로 변경 
     /// </summary>
+    /// <param name="quest"></param>
+    void SetQuestGiverToOngoingState(Quest quest)
+    {
+        quest.GetQuestGiver().SetOngoingQuestID(quest.GetQuestID());
+        quest.GetQuestGiver().SetQuestState(QuestState.QUEST_ONGOING);
+        quest.GetQuestGiver().SetQuestMark();
+    }
+
+    /// <summary>
+    /// 퀘스트를 완료하여 퀘스트 부여자의 상태 값을 퀘스트 완료로 변경 
+    /// </summary>
+    /// <param name="state"></param>
     void SetQuestGiverToCompleteState(Quest quest)
     {
-        quest.GetQuestGiver().SetQuestState(QuestState.QUEST_COMPLETABLE);
+        quest.GetQuestGiver().SetOngoingQuestID(0);
+        quest.GetQuestGiver().DeleteCompletedQuest(quest.GetQuestID());
+        quest.GetQuestGiver().UpdateQuestState();
         quest.GetQuestGiver().SetQuestMark();
+    }
+
+    /// <summary>
+    /// 퀘스트 완료조건을 충족하여 퀘스트 완료자의 상태 값을 퀘스트 완료가능으로 변경 
+    /// </summary>
+    /// <param name="state"></param>
+    void SetQuestFinisherToCompletableState(Quest quest)
+    {
+        quest.GetQuestFinisher().SetOngoingQuestID(quest.GetQuestID());
+        quest.GetQuestFinisher().SetQuestState(QuestState.QUEST_COMPLETABLE);
+        quest.GetQuestFinisher().SetQuestMark();
+    }
+
+    /// <summary>
+    /// 퀘스트를 완료하여 퀘스트 완료자의 상태 값을 퀘스트 완료로 변경 
+    /// </summary>
+    /// <param name="quest"></param>
+    void SetQuestFinisherToCompleteState(Quest quest)
+    {
+        quest.GetQuestFinisher().SetOngoingQuestID(0);
+        quest.GetQuestFinisher().DeleteCompletedQuest(quest.GetQuestID());
+        quest.GetQuestFinisher().UpdateQuestState();
+        quest.GetQuestFinisher().SetQuestMark();
     }
 }

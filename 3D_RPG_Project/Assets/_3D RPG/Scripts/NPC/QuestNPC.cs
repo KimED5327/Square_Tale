@@ -102,17 +102,10 @@ public class QuestNPC : MonoBehaviour
         { 
             if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetState() != QuestState.QUEST_OPENED) continue;
 
-            // 퀘스트 타입이 'NPC와 대화'일 경우, '퀘스트 부여자', '퀘스트 완료자' 로 나누어서 참조값 저장  
-            if(QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestType() == QuestType.TYPE_TALKWITHNPC)
+            if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetNpcID() != _npc.GetID())
             {
-                TalkWithNpc talkWithNpc = QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestInfo()[questInfoKey] as TalkWithNpc;
-
-                if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetNpcID() == _npc.GetID()) talkWithNpc.SetQuestGiver(this);
-                else
-                {
-                    talkWithNpc.SetQuestFinisher(this);
-                    continue;
-                }
+                QuestDB.instance.GetQuest(_npc.GetQuestID(i)).SetQuestFinisher(this);
+                continue; 
             }
 
             isAvailable = true;
@@ -163,17 +156,15 @@ public class QuestNPC : MonoBehaviour
         {
             if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetState() != QuestState.QUEST_OPENED) continue;
 
-            // 퀘스트 타입이 'NPC와 대화'일 경우, '퀘스트 부여자', '퀘스트 완료자' 로 나누어서 참조값 저장  
-            if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestType() == QuestType.TYPE_TALKWITHNPC)
+            if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetNpcID() != _npc.GetID())
             {
-                TalkWithNpc talkWithNpc = QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestInfo()[questInfoKey] as TalkWithNpc;
-
-                if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetNpcID() == _npc.GetID()) talkWithNpc.SetQuestGiver(this);
-                else
-                {
-                    talkWithNpc.SetQuestFinisher(this);
-                    continue;
-                }
+                QuestDB.instance.GetQuest(_npc.GetQuestID(i)).SetQuestFinisher(this);
+                continue;
+            }
+            else 
+            {
+                if(QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestGiver() == null)
+                    QuestDB.instance.GetQuest(_npc.GetQuestID(i)).SetQuestFinisher(this);
             }
 
             isAvailable = true;

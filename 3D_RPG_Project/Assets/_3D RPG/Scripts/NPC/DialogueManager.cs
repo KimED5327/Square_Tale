@@ -167,11 +167,6 @@ public class DialogueManager : MonoBehaviour
         _questAcceptedPanel.SetActive(true);
         CloseQuestDialoguePanel();
 
-        // 퀘스트를 부여한 NPC의 상태값 변경 
-        _questNPC.SetOngoingQuestID(_questID);
-        _questNPC.SetQuestState(QuestState.QUEST_ONGOING);
-        _questNPC.SetQuestMark();
-
         // 수락한 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에 추가 
         Quest questAccepted = new Quest();
         questAccepted = QuestDB.instance.GetQuest(_questID);
@@ -193,12 +188,6 @@ public class DialogueManager : MonoBehaviour
         {
             StartCoroutine("GetKeyword");
         }
-
-        // 퀘스트를 완료한 NPC의 상태값 변경 
-        _questNPC.SetOngoingQuestID(0);
-        _questNPC.DeleteCompletedQuest(_questID);
-        _questNPC.CheckAvailableQuest();
-        _questNPC.SetQuestMark();
 
         // 완료된 퀘스트를 퀘스트 매니져의 완료된 퀘스트 리스트에 추가 
         Quest questCompleted = new Quest();

@@ -50,6 +50,13 @@ public class Inventory : MonoBehaviour
         TryToPushInventory(ItemDatabase.instance.GetItem(5));
         TryToPushInventory(ItemDatabase.instance.GetItem(6));
 
+        // 퀘스트 테스트용으로 추가 
+        TryToPushInventory(ItemDatabase.instance.GetItem(2));
+        TryToPushInventory(ItemDatabase.instance.GetItem(2));
+        TryToPushInventory(ItemDatabase.instance.GetItem(2));
+        TryToPushInventory(ItemDatabase.instance.GetItem(3));
+        TryToPushInventory(ItemDatabase.instance.GetItem(3));
+
         // 기본값 - 무기 우선 정렬 
         OnTouchTab(0);
     }
@@ -391,7 +398,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        return -1;
+        return 0;
     }
 
     

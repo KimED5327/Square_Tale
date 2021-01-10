@@ -11,7 +11,8 @@ public class QuestManager : MonoBehaviour
     public delegate void EventHandler();
     public static event EventHandler CheckAvailableQuest;
 
-    string questInfoKey = "info";
+    Inventory _inventory;            // 인벤토리 참조자 
+    string _questInfoKey = "info";   // 퀘스트 타입 해시테이블 키 
 
     /// <summary>
     /// 현재 진행중인 퀘스트 리스트 
@@ -28,24 +29,22 @@ public class QuestManager : MonoBehaviour
         if (instance == null) instance = this; 
     }
 
+    private void Start()
+    {
+        _inventory = FindObjectOfType<Inventory>();
+    }
+
     /// <summary>
     /// 진행중인 퀘스트 리스트에 ongoingQuest를 원소로 추가하기 
     /// </summary>
     /// <param name="ongoingQuest"></param>
     public void AddOngoingQuest(Quest ongoingQuest)
     {
+        Debug.Log(ongoingQuest.GetQuestID() + "번 퀘스트 수락");
         _ongoingQuests.Add(ongoingQuest);
 
-        // 퀘스트 타입이 'NPC와의 대화'일 경우 대화 상대 NPC의 상태값 세팅  
-        if (ongoingQuest.GetQuestType() == QuestType.TYPE_TALKWITHNPC) SetPartnerNpcStatus(ongoingQuest);
-    }
-
-    /// <summary>
-    /// 퀘스트가 완료되어 진행중인 퀘스트 리스트에서 삭제하기 
-    /// </summary>
-    public void DeleteOngoingQuest()
-    {
-        _ongoingQuests.RemoveAt(0);
+        // 퀘스트 수락에 따른 퀘스트 타입별 상호작용 
+        AcceptInterationPerType(ongoingQuest);
     }
 
     /// <summary>
@@ -57,8 +56,19 @@ public class QuestManager : MonoBehaviour
         Debug.Log(finishedQuest.GetQuestID() + "번 퀘스트 완료");
         _finishedQuests.Add(finishedQuest);
 
+        // 퀘스트 완료에 따른 퀘스트 타입 별 상호작용 
+        CompleteInteractionPerType(finishedQuest);
+
         // 퀘스트 완료로 해금된 퀘스트가 있다면 오픈 
         OpenQuest(finishedQuest.GetQuestID());
+    }
+
+    /// <summary>
+    /// 퀘스트가 완료되어 진행중인 퀘스트 리스트에서 삭제하기 
+    /// </summary>
+    public void DeleteOngoingQuest()
+    {
+        _ongoingQuests.RemoveAt(0);
     }
 
     /// <summary>
@@ -78,13 +88,110 @@ public class QuestManager : MonoBehaviour
     }
 
     /// <summary>
-    /// type7. 'NPC와의 대화' 퀘스트에서 대화 상대가 되는 NPC의 상태값 세팅 
+    /// 퀘스트 수락에 따른 퀘스트 타입 별 상호작용 
     /// </summary>
-    public void SetPartnerNpcStatus(Quest quest)
+    void AcceptInterationPerType(Quest quest)
     {
-        TalkWithNpc talkWithNpc = quest.GetQuestInfo()[questInfoKey] as TalkWithNpc;
+        switch (quest.GetQuestType())
+        {
+            case QuestType.TYPE_DELIVERITEM:
+                // 해당 아이템이 있는지 검사하기 
+                CheckItemsToDeliver(quest);
+                break;
+
+            case QuestType.TYPE_ACQUIREITEM:
+                break;
+
+            case QuestType.TYPE_OPERATEOBJECT:
+                break;
+
+            case QuestType.TYPE_KILLENEMY:
+                break;
+
+            case QuestType.TYPE_TALKWITHNPC:
+                SetQuestFinisherStatus(quest);
+                break;
+        }
+    }
+    
+    /// <summary>
+    /// 퀘스트 완료에 따른 퀘스트 타입 별 상호작용 
+    /// </summary>
+    void CompleteInteractionPerType(Quest quest)
+    {
+        switch (quest.GetQuestType())
+        {
+            case QuestType.TYPE_DELIVERITEM:
+                break;
+
+            case QuestType.TYPE_ACQUIREITEM:
+                break;
+
+            case QuestType.TYPE_OPERATEOBJECT:
+                break;
+
+            case QuestType.TYPE_KILLENEMY:
+                break;
+
+            case QuestType.TYPE_TALKWITHNPC:
+                SetQuestGiverStatus(quest);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Type1. '아이템 전달' 퀘스트의 달성 요건 확인 후, 요건 충족 시 퀘스트 부여자의 상태(퀘스트 진행상태, 퀘스트 마크) 변경  
+    /// </summary>
+    public void CheckItemsToDeliver(Quest quest)
+    {
+        bool isAvailable = true;
+
+        DeliverItem deliverItem = quest.GetQuestInfo()[_questInfoKey] as DeliverItem;
+
+        for (int i = 0; i < deliverItem.GetItemList().Count; i++)
+        {
+            if(!_inventory.HaveItemCount(ItemDatabase.instance.GetItem(deliverItem.GetItem(i).GetItemID()),
+               deliverItem.GetItem(i).GetCount()))
+            {
+                Debug.Log(deliverItem.GetItem(i).GetItemID() + "번 아이템 : " +
+                    _inventory.GetItemCount(ItemDatabase.instance.GetItem(deliverItem.GetItem(i).GetItemID())) + "개 소지");
+                isAvailable = false; 
+            }
+        }
+
+        if(isAvailable) SetQuestGiverToCompleteState(quest);
+    }
+
+    /// <summary>
+    /// Type7. 'NPC와의 대화' 퀘스트에서 대화 상대가 되는 퀘스트 완료자 NPC의 상태값 세팅 
+    /// </summary>
+    void SetQuestFinisherStatus(Quest quest)
+    {
+        TalkWithNpc talkWithNpc = quest.GetQuestInfo()[_questInfoKey] as TalkWithNpc;
         talkWithNpc.GetQuestFinisher().SetQuestState(QuestState.QUEST_COMPLETABLE);
         talkWithNpc.GetQuestFinisher().SetQuestMark();
         talkWithNpc.GetQuestFinisher().SetOngoingQuestID(quest.GetQuestID());
+    }
+
+    /// <summary>
+    /// Type7. 'NPC의 대화' 퀘스트에서 퀘스트를 부여한 NPC의 상태값 세팅 
+    /// </summary>
+    /// <param name="quest"></param>
+    void SetQuestGiverStatus(Quest quest)
+    {
+        TalkWithNpc talkWithNpc = quest.GetQuestInfo()[_questInfoKey] as TalkWithNpc;
+        talkWithNpc.GetQuestGiver().SetOngoingQuestID(0);
+        talkWithNpc.GetQuestGiver().DeleteCompletedQuest(quest.GetQuestID());
+        talkWithNpc.GetQuestGiver().CheckAvailableQuest();
+        talkWithNpc.GetQuestGiver().SetQuestMark();
+    }
+
+    /// <summary>
+    /// 퀘스트 부여자의 상태 값을 퀘스트 완료상태로 변경 
+    /// </summary>
+    void SetQuestGiverToCompleteState(Quest quest)
+    {
+        quest.GetQuestGiver().SetQuestState(QuestState.QUEST_COMPLETABLE);
+        quest.GetQuestGiver().SetQuestMark();
     }
 }

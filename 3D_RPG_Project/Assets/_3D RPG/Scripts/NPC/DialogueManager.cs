@@ -16,7 +16,6 @@ public class DialogueManager : MonoBehaviour
     public QuestState _state;       // 현재 퀘스트 다이얼로그가 진행되는 퀘스트의 진행상태 
     QuestNPC _questNPC;             // 현재 대화상대인 NPC 참조값 
     string _questTitle;             // 퀘스트 제목 
-    string questInfoKey = "info";   // 해시테이블 QuestInfo 키  
 
     string _keywordEffectName = "키워드 획득";
 
@@ -176,17 +175,6 @@ public class DialogueManager : MonoBehaviour
         // 수락한 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에 추가 
         Quest questAccepted = new Quest();
         questAccepted = QuestDB.instance.GetQuest(_questID);
-
-        // 수락한 퀘스트 Type이 'NPC와 대화'일 경우, 퀘스트를 부여한 NPC의 참조값을 저장 
-        if (questAccepted.GetQuestType() == QuestType.TYPE_TALKWITHNPC)
-        {
-            TalkWithNpc talkWithNpc = questAccepted.GetQuestInfo()[questInfoKey] as TalkWithNpc;
-            talkWithNpc.SetQuestGiver(_questNPC);
-
-            //Debug.Log("퀘스트 부여자 ID : " + talkWithNpc.GetQuestGiver().GetNpcID());
-            //Debug.Log("퀘스트 완료자 ID : " + talkWithNpc.GetQuestFinisher().GetNpcID());
-        }
-
         QuestManager.instance.AddOngoingQuest(questAccepted);
     }
 
@@ -215,17 +203,6 @@ public class DialogueManager : MonoBehaviour
         // 완료된 퀘스트를 퀘스트 매니져의 완료된 퀘스트 리스트에 추가 
         Quest questCompleted = new Quest();
         questCompleted = QuestDB.instance.GetQuest(_questID);
-
-        // 완료된 퀘스트 Type이 'NPC와 대화'일 경우, 퀘스트를 부여한 NPC의 상태값 변경  
-        if (questCompleted.GetQuestType() == QuestType.TYPE_TALKWITHNPC)
-        {
-            TalkWithNpc talkWithNpc = questCompleted.GetQuestInfo()[questInfoKey] as TalkWithNpc;
-            talkWithNpc.GetQuestGiver().SetOngoingQuestID(0);
-            talkWithNpc.GetQuestGiver().DeleteCompletedQuest(_questID);
-            talkWithNpc.GetQuestGiver().CheckAvailableQuest();
-            talkWithNpc.GetQuestGiver().SetQuestMark();
-        }
-
         QuestManager.instance.AddFinishedQuest(questCompleted);
 
         // 완료된 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에서 삭제

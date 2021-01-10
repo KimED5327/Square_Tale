@@ -102,16 +102,23 @@ public class QuestNPC : MonoBehaviour
         { 
             if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetState() != QuestState.QUEST_OPENED) continue;
 
-            if(QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestType() == QuestType.TYPE_TALKWITHNPC &&
-               QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetNpcID() != _npcID)
+            // 퀘스트 타입이 'NPC와 대화'일 경우, '퀘스트 부여자', '퀘스트 완료자' 로 나누어서 참조값 저장  
+            if(QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestType() == QuestType.TYPE_TALKWITHNPC)
             {
                 TalkWithNpc talkWithNpc = QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestInfo()[questInfoKey] as TalkWithNpc;
-                talkWithNpc.SetQuestFinisher(this);
-                continue;
+
+                if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetNpcID() == _npc.GetID()) talkWithNpc.SetQuestGiver(this);
+                else
+                {
+                    talkWithNpc.SetQuestFinisher(this);
+                    continue;
+                }
             }
 
             isAvailable = true;
             _questState = QuestState.QUEST_OPENED;
+            QuestDB.instance.GetQuest(_npc.GetQuestID(i)).SetQuestGiver(this);
+            break; 
         }
 
         if (!isAvailable) _questState = QuestState.QUEST_VEILED;
@@ -156,16 +163,23 @@ public class QuestNPC : MonoBehaviour
         {
             if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetState() != QuestState.QUEST_OPENED) continue;
 
-            if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestType() == QuestType.TYPE_TALKWITHNPC &&
-               QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetNpcID() != _npcID)
+            // 퀘스트 타입이 'NPC와 대화'일 경우, '퀘스트 부여자', '퀘스트 완료자' 로 나누어서 참조값 저장  
+            if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestType() == QuestType.TYPE_TALKWITHNPC)
             {
                 TalkWithNpc talkWithNpc = QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestInfo()[questInfoKey] as TalkWithNpc;
-                talkWithNpc.SetQuestFinisher(this);
-                continue;
+
+                if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetNpcID() == _npc.GetID()) talkWithNpc.SetQuestGiver(this);
+                else
+                {
+                    talkWithNpc.SetQuestFinisher(this);
+                    continue;
+                }
             }
 
             isAvailable = true;
             _questState = QuestState.QUEST_OPENED;
+            QuestDB.instance.GetQuest(_npc.GetQuestID(i)).SetQuestGiver(this);
+            break;
         }
 
         if (!isAvailable) _questState = QuestState.QUEST_VEILED;

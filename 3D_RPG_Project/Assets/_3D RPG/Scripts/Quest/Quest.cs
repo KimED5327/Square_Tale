@@ -89,6 +89,7 @@ public class Quest
 
     QuestType _type;                  // 퀘스트 타입 
     QuestState _state;                // 퀘스트 진행상태 
+    QuestNPC _questGiver;             // 퀘스트 부여자 참조값 
     int _exp;                         // 퀘스트 보상 경험치  
     int _gold;                        // 퀘스트 보상 골드 
     List<BlockUnit> _blockList;       // 퀘스트 보상 블럭 
@@ -105,6 +106,7 @@ public class Quest
 
     public QuestType GetQuestType() { return _type; }
     public QuestState GetState() { return _state; }
+    public QuestNPC GetQuestGiver() { return _questGiver; }
     public int GetExp() { return _exp; }
     public int GetGold() { return _gold; }
     public List<BlockUnit> GetBlocks() { return _blockList; }
@@ -121,6 +123,7 @@ public class Quest
 
     public void SetQuestType(QuestType type) { _type = type; }
     public void SetState(QuestState state) { _state = state; }
+    public void SetQuestGiver(QuestNPC questGiver) { _questGiver = questGiver; }
     public void SetExp(int exp) { _exp = exp; }
     public void SetGold(int gold) { _gold = gold; }
     public void SetBlocks(List<BlockUnit> blocks) { _blockList = blocks; }

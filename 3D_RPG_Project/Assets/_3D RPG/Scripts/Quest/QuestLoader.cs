@@ -143,7 +143,7 @@ public class QuestLoader : MonoBehaviour
     /// </summary>
     private void ParsingQuestTypeDB()
     {
-        //ParsingDeliverItemDB();
+        ParsingDeliverItemDB();
         //ParsingCollectLootDB();
         //ParsingUseItemDB();
         //ParsingAcquireItemDB();
@@ -182,8 +182,8 @@ public class QuestLoader : MonoBehaviour
                 {
                     ItemUnit item = new ItemUnit();
 
-                    item.SetItemID(int.Parse(jData[i][1].ToString()));
-                    item.SetCount(int.Parse(jData[i][2].ToString()));
+                    item.SetItemID(int.Parse(jData[i][1][j].ToString()));
+                    item.SetCount(int.Parse(jData[i][2][j].ToString()));
                     deliverItem.AddItem(item);
                 }
             }

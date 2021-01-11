@@ -12,6 +12,7 @@ public class QuestManager : MonoBehaviour
     public static event EventHandler CheckAvailableQuest;
 
     Inventory _inventory;            // 인벤토리 참조자 
+    QuestHUD _questHUD;              // QuestHUD 참조자 
     string _questInfoKey = "info";   // 퀘스트 타입 해시테이블 키 
 
     /// <summary>
@@ -32,6 +33,9 @@ public class QuestManager : MonoBehaviour
     private void Start()
     {
         _inventory = FindObjectOfType<Inventory>();
+        _questHUD = FindObjectOfType<QuestHUD>();
+
+        SetCompleteQuestHUD();
     }
 
     private void Update()
@@ -41,11 +45,11 @@ public class QuestManager : MonoBehaviour
             //Debug.Log("3번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(3)));
             //Debug.Log("4번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(4)));
 
-            //_inventory.TryToPushInventory(ItemDatabase.instance.GetItem(3));
-            //Debug.Log("3번 아이템 획득");
+            _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(3));
+            Debug.Log("3번 아이템 획득");
 
-            _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(10));
-            Debug.Log("10번 아이템 소지개수 : " + _inventory.GetItemCount(ItemDatabase.instance.GetItem(10)));
+            //_inventory.TryToPushInventory(ItemDatabase.instance.GetItem(10));
+            //Debug.Log("10번 아이템 소지개수 : " + _inventory.GetItemCount(ItemDatabase.instance.GetItem(10)));
         }
     }
 
@@ -63,6 +67,9 @@ public class QuestManager : MonoBehaviour
 
         // 퀘스트 수락에 따른 퀘스트 타입별 상호작용 
         AcceptInterationPerType(ongoingQuest);
+
+        // 퀘스트 HUD 값 세팅 
+        SetOngoingQuestHUD(ongoingQuest);
     }
 
     /// <summary>
@@ -86,6 +93,9 @@ public class QuestManager : MonoBehaviour
 
         // 퀘스트 완료로 해금된 퀘스트가 있다면 오픈 
         OpenQuest(finishedQuest.GetQuestID());
+
+        // 퀘스트 HUD 값 세팅 
+        SetCompleteQuestHUD();
     }
 
     /// <summary>
@@ -178,7 +188,12 @@ public class QuestManager : MonoBehaviour
         {
             if (_ongoingQuests[i].GetQuestType() != QuestType.TYPE_DELIVERITEM) continue;
 
-            if (CheckItemsToDeliver(_ongoingQuests[i])) SetQuestFinisherToCompletableState(_ongoingQuests[i]);
+            UpdateQuestHUD(_ongoingQuests[i]);
+
+            if (CheckItemsToDeliver(_ongoingQuests[i]))
+            {
+                SetQuestFinisherToCompletableState(_ongoingQuests[i]);
+            }
         }
     }
 
@@ -232,7 +247,10 @@ public class QuestManager : MonoBehaviour
         {
             if (_ongoingQuests[i].GetQuestType() != QuestType.TYPE_CARRYITEM) continue;
 
-            if (CheckItemsToCarry(_ongoingQuests[i])) SetQuestFinisherToCompletableState(_ongoingQuests[i]);
+            if (CheckItemsToCarry(_ongoingQuests[i]))
+            {
+                SetQuestFinisherToCompletableState(_ongoingQuests[i]);
+            }
         }
     }
 
@@ -282,6 +300,9 @@ public class QuestManager : MonoBehaviour
         quest.GetQuestFinisher().SetOngoingQuestID(quest.GetQuestID());
         quest.GetQuestFinisher().SetQuestState(QuestState.QUEST_COMPLETABLE);
         quest.GetQuestFinisher().SetQuestMark();
+
+        // 퀘스트 HUD의 update 아이콘 활성화 
+        _questHUD.GetUpdateImg().enabled = true; 
     }
 
     /// <summary>
@@ -294,5 +315,73 @@ public class QuestManager : MonoBehaviour
         quest.GetQuestFinisher().DeleteCompletedQuest(quest.GetQuestID());
         quest.GetQuestFinisher().UpdateQuestState();
         quest.GetQuestFinisher().SetQuestMark();
+    }
+
+    /// <summary>
+    /// 퀘스트 HUD에 진행중인 퀘스트 정보 값 세팅하기 
+    /// </summary>
+    /// <param name="quest"></param>
+    public void SetOngoingQuestHUD(Quest quest)
+    {
+        _questHUD.OpenQuestList();
+        _questHUD.GetQuestBtn().enabled = true;
+
+        UpdateQuestHUD(quest);
+    }
+
+    /// <summary>
+    /// 퀘스트가 완료되어 퀘스트 HUD 비활성화 
+    /// </summary>
+    public void SetCompleteQuestHUD()
+    {
+        _questHUD.CloseQuestList();
+        _questHUD.GetQuestBtn().enabled = false;
+        _questHUD.GetUpdateImg().enabled = false; 
+    }
+
+    /// <summary>
+    /// 퀘스트 HUD 데이터 업데이트 
+    /// </summary>
+    public void UpdateQuestHUD(Quest quest)
+    {
+        _questHUD.SetQuestTitle(quest.GetTitle());
+        _questHUD.SetQuestGoal2("");
+
+        switch (quest.GetQuestType())
+        {
+            case QuestType.TYPE_DELIVERITEM:
+                SetDeliverItemGoal(quest);
+                break;
+
+            case QuestType.TYPE_KILLENEMY:
+                break;
+
+            default:
+                _questHUD.SetQuestGoal1(quest.GetGoal());
+                break;
+        }
+    }
+
+    /// <summary>
+    /// '아이템 전달' 타입 퀘스트의 목표 값 세팅 
+    /// </summary>
+    void SetDeliverItemGoal(Quest quest)
+    {
+        DeliverItem deliverItem = quest.GetQuestInfo()[_questInfoKey] as DeliverItem;
+
+        for (int i = 0; i < deliverItem.GetItemList().Count; i++)
+        {
+            string goal;
+
+            Item item = ItemDatabase.instance.GetItem(deliverItem.GetItem(i).GetItemID());
+
+            int carryCount = (_inventory.GetItemCount(item) > deliverItem.GetItem(i).GetCount()) ?
+                deliverItem.GetItem(i).GetCount() : _inventory.GetItemCount(item);
+
+            goal = item.name + " (" + carryCount + "/" + deliverItem.GetItem(i).GetCount() + ")";
+
+            if (i == 0) _questHUD.SetQuestGoal1(goal);
+            else _questHUD.SetQuestGoal2(goal);
+        }
     }
 }

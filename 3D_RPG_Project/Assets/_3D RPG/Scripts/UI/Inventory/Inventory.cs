@@ -329,6 +329,8 @@ public class Inventory : MonoBehaviour
 
                 // 진행 중인 퀘스트 중 '아이템 전달' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 
                 QuestManager.instance.CheckDeliverItemQuest();
+                // 진행 중인 퀘스트 중 '아이템 소지' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 
+                QuestManager.instance.CheckCarryItemQuest();
                 return true;
             }
         }
@@ -346,6 +348,8 @@ public class Inventory : MonoBehaviour
 
                 // 진행 중인 퀘스트 중 '아이템 전달' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 
                 QuestManager.instance.CheckDeliverItemQuest();
+                // 진행 중인 퀘스트 중 '아이템 소지' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 
+                QuestManager.instance.CheckCarryItemQuest();
                 return true;
             }
         }

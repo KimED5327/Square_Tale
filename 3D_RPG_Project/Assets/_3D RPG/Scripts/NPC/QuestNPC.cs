@@ -78,7 +78,7 @@ public class QuestNPC : MonoBehaviour
         {
             // NpcDB의 데이터를 'Deep Copy' 를 통해 할당 
             _npc = NpcDB.instance.GetNPC(_npcID).DeepCopy();
-            CheckAvailableQuest();
+            UpdateQuestState();
             SetNameTag();
             SetQuestMark();
             _isParsingDone = true;
@@ -159,17 +159,22 @@ public class QuestNPC : MonoBehaviour
             if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetNpcID() != _npc.GetID())
             {
                 QuestDB.instance.GetQuest(_npc.GetQuestID(i)).SetQuestFinisher(this);
+                Debug.Log(QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestID() + "번 퀘스트 완료자 NPC ID : " + _npc.GetID());
                 continue;
             }
             else 
             {
-                if(QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestGiver() == null)
+                if(QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestFinisher() == null)
+                {
                     QuestDB.instance.GetQuest(_npc.GetQuestID(i)).SetQuestFinisher(this);
+                    Debug.Log(QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestID() + "번 퀘스트 완료자 NPC ID : " + _npc.GetID());
+                }
             }
 
             isAvailable = true;
             _questState = QuestState.QUEST_OPENED;
             QuestDB.instance.GetQuest(_npc.GetQuestID(i)).SetQuestGiver(this);
+            Debug.Log(QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestID() + "번 퀘스트 부여자 NPC ID : " + _npc.GetID());
             break;
         }
 

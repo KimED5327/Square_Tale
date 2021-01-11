@@ -47765,7 +47765,7 @@ MonoBehaviour:
   deliverItemDBPath: /Quest/DeliverItemDB.json
   collectLootDBPath: /Quest/CollectLootDB.json
   useItemDBPath: /Quest/UseItemDB.json
-  acquireItemDBPath: /Quest/AcquireItemDB.json
+  carryItemDBPath: /Quest/CarryItemDB.json
   operateObjectDBPath: /Quest/
   killEnemyDBPath: /Quest/KillEnemyDB.json
   talkWithNpcDBPath: /Quest/TalkWithNpcDB.json

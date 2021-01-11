@@ -54,9 +54,9 @@ public enum QuestType
     TYPE_USEITEM,
 
     /// <summary>
-    /// 퀘스트 NPC와 대화 후 특정 아이템을 획득하고 완수되는 퀘스트 타입
+    /// 아이템 소지여부를 확인하여 특정한 아이템을 소지중인 경우 완수되는 퀘스트 타입 
     /// </summary>
-    TYPE_ACQUIREITEM,
+    TYPE_CARRYITEM,
 
     /// <summary>
     /// 특정 오브젝트를 조작하여 완수하는 퀘스트 타입 (레버를 폭파시켜 다리를 생성하는 퀘스트)
@@ -135,7 +135,7 @@ public class Quest
 }
 
 /// <summary>
-/// AcquireItem 퀘스트를 통해 획득하는 아이템 클래스 (아이템 ID, 개수)
+/// CarryItem 퀘스트를 통해 획득하는 아이템 클래스 (아이템 ID, 개수)
 /// </summary>
 [System.Serializable]
 public class ItemUnit
@@ -268,16 +268,18 @@ public class UseItem
 }
 
 /// <summary>
-/// type4. 퀘스트 NPC와 대화 후 특정 아이템을 획득하고 완수되는 퀘스트 타입 
+/// type4. 아이템 소지여부를 확인하여 특정한 아이템을 소지중일 경우 완수되는 퀘스트 타입 
 /// </summary>
-public class AcquireItem
+public class CarryItem
 {
     int _questID;                     // 퀘스트 ID
-    ItemUnit _item = new ItemUnit();  // 획득하는 아이템 
+    ItemUnit _item = new ItemUnit();  // 소지해야 하는 아이템  
 
     //getter
     public int GetQuestID() { return _questID; }
     public ItemUnit GetItem() { return _item; }
+    public int GetItemID() { return _item.GetItemID(); }
+    public int GetItemCount() { return _item.GetCount(); }
 
     //setter
     public void SetQuestID(int questID) { _questID = questID; }

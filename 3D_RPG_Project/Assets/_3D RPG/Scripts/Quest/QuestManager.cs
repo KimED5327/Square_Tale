@@ -38,11 +38,14 @@ public class QuestManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            Debug.Log("3번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(3)));
-            Debug.Log("4번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(4)));
+            //Debug.Log("3번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(3)));
+            //Debug.Log("4번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(4)));
 
-            _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(3));
-            Debug.Log("3번 아이템 획득");
+            //_inventory.TryToPushInventory(ItemDatabase.instance.GetItem(3));
+            //Debug.Log("3번 아이템 획득");
+
+            _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(10));
+            Debug.Log("10번 아이템 소지개수 : " + _inventory.GetItemCount(ItemDatabase.instance.GetItem(10)));
         }
     }
 
@@ -94,22 +97,6 @@ public class QuestManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 선행 퀘스트가 완료된 퀘스트의 진행상태를 미해금 상태에서 진행가능 상태로 변경 
-    /// </summary>
-    public void OpenQuest(int questID)
-    {
-        // 완료된 퀘스트의 ID(questID)가 선행 퀘스트 ID와 일치하는 퀘스트를 진행가능 상태로 변경 
-        for (int i = 1; i < QuestDB.instance.GetMaxCount() + 1; i++)
-        {
-            if (QuestDB.instance.GetQuest(i).GetPrecedentID() != questID) continue;
-
-            Debug.Log(QuestDB.instance.GetQuest(i).GetQuestID() + "번 퀘스트 해금");
-            QuestDB.instance.GetQuest(i).SetState(QuestState.QUEST_OPENED);
-            CheckAvailableQuest();
-        }
-    }
-
-    /// <summary>
     /// 퀘스트 수락에 따른 퀘스트 타입 별 상호작용 
     /// </summary>
     void AcceptInterationPerType(Quest quest)
@@ -118,10 +105,12 @@ public class QuestManager : MonoBehaviour
         {
             case QuestType.TYPE_DELIVERITEM:
                 // 아이템 소지 여부 확인하여 퀘스트 조건 검사하기 
-                CheckItemsToDeliver(quest);
+                if (CheckItemsToDeliver(quest)) SetQuestFinisherToCompletableState(quest);
                 break;
 
-            case QuestType.TYPE_ACQUIREITEM:
+            case QuestType.TYPE_CARRYITEM:
+                // 아이템 소지 여부 확인하여 퀘스트 조건 검사하기 
+                if (CheckItemsToCarry(quest)) SetQuestFinisherToCompletableState(quest);
                 break;
 
             case QuestType.TYPE_OPERATEOBJECT:
@@ -149,7 +138,7 @@ public class QuestManager : MonoBehaviour
                 DeleteItemsDelivered(quest);
                 break;
 
-            case QuestType.TYPE_ACQUIREITEM:
+            case QuestType.TYPE_CARRYITEM:
                 break;
 
             case QuestType.TYPE_OPERATEOBJECT:
@@ -165,6 +154,22 @@ public class QuestManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 선행 퀘스트가 완료된 퀘스트의 진행상태를 미해금 상태에서 진행가능 상태로 변경 
+    /// </summary>
+    public void OpenQuest(int questID)
+    {
+        // 완료된 퀘스트의 ID(questID)가 선행 퀘스트 ID와 일치하는 퀘스트를 진행가능 상태로 변경 
+        for (int i = 1; i < QuestDB.instance.GetMaxCount() + 1; i++)
+        {
+            if (QuestDB.instance.GetQuest(i).GetPrecedentID() != questID) continue;
+
+            Debug.Log(QuestDB.instance.GetQuest(i).GetQuestID() + "번 퀘스트 해금");
+            QuestDB.instance.GetQuest(i).SetState(QuestState.QUEST_OPENED);
+            CheckAvailableQuest();
+        }
+    }
+
+    /// <summary>
     /// 진행 중인 퀘스트 중 '아이템 전달' 타입의 퀘스트가 있다면, 퀘스트 달성 요건 확인 
     /// </summary>
     public void CheckDeliverItemQuest()
@@ -173,14 +178,14 @@ public class QuestManager : MonoBehaviour
         {
             if (_ongoingQuests[i].GetQuestType() != QuestType.TYPE_DELIVERITEM) continue;
 
-            CheckItemsToDeliver(_ongoingQuests[i]);
+            if (CheckItemsToDeliver(_ongoingQuests[i])) SetQuestFinisherToCompletableState(_ongoingQuests[i]);
         }
     }
 
     /// <summary>
-    /// Type1. '아이템 전달' 퀘스트의 달성 요건 확인 후, 요건 충족 시 퀘스트 부여자의 상태(퀘스트 진행상태, 퀘스트 마크) 변경  
+    /// Type1. '아이템 전달' 퀘스트의 달성 요건 확인 후, 요건 충족 여부를 bool 값으로 리턴   
     /// </summary>
-    public void CheckItemsToDeliver(Quest quest)
+    public bool CheckItemsToDeliver(Quest quest)
     {
         bool isAvailable = true;
 
@@ -197,7 +202,7 @@ public class QuestManager : MonoBehaviour
             }
         }
 
-        if(isAvailable) SetQuestFinisherToCompletableState(quest);
+        return isAvailable;
     }
 
     /// <summary>
@@ -216,6 +221,33 @@ public class QuestManager : MonoBehaviour
             Debug.Log(deliverItem.GetItem(i).GetItemID() + "번 아이템 : " +
                 _inventory.GetItemCount(ItemDatabase.instance.GetItem(deliverItem.GetItem(i).GetItemID())) + "개 삭제");
         }
+    }
+
+    /// <summary>
+    /// Type4. 진행 중인 퀘스트 중 '아이템 소지' 타입의 퀘스트가 있다면, 퀘스트 달성 요건 확인 
+    /// </summary>
+    public void CheckCarryItemQuest()
+    {
+        for (int i = 0; i < _ongoingQuests.Count; i++)
+        {
+            if (_ongoingQuests[i].GetQuestType() != QuestType.TYPE_CARRYITEM) continue;
+
+            if (CheckItemsToCarry(_ongoingQuests[i])) SetQuestFinisherToCompletableState(_ongoingQuests[i]);
+        }
+    }
+
+    /// <summary>
+    /// Type4. '아이템 소지' 퀘스트의 달성 요건 확인 후, 요건 충족 여부를 bool 값으로 리턴 
+    /// </summary>
+    /// <param name="quest"></param>
+    public bool CheckItemsToCarry(Quest quest)
+    {
+        CarryItem carryItem = quest.GetQuestInfo()[_questInfoKey] as CarryItem;
+
+        bool isAvailable = (_inventory.HaveItemCount(ItemDatabase.instance.GetItem(carryItem.GetItemID()),
+            carryItem.GetItemCount())) ? true : false; 
+
+        return isAvailable;
     }
 
     /// <summary>

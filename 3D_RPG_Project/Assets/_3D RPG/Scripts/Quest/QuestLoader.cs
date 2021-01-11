@@ -19,7 +19,7 @@ public class QuestLoader : MonoBehaviour
     [SerializeField] string deliverItemDBPath;
     [SerializeField] string collectLootDBPath;
     [SerializeField] string useItemDBPath;
-    [SerializeField] string acquireItemDBPath;
+    [SerializeField] string carryItemDBPath;
     [SerializeField] string operateObjectDBPath;
     [SerializeField] string killEnemyDBPath;
     [SerializeField] string talkWithNpcDBPath;
@@ -146,7 +146,7 @@ public class QuestLoader : MonoBehaviour
         ParsingDeliverItemDB();
         //ParsingCollectLootDB();
         //ParsingUseItemDB();
-        //ParsingAcquireItemDB();
+        ParsingCarryItemDB();
         //ParsingOperateObjectDB();
         //ParsingKillEnemyDB();
         ParsingTalkWithNpc();
@@ -262,24 +262,24 @@ public class QuestLoader : MonoBehaviour
     }
 
     /// <summary>
-    /// type4. AcquireItem 타입 퀘스트 DB 파싱 
+    /// type4. CarryItem 타입 퀘스트 DB 파싱 
     /// </summary>
-    private void ParsingAcquireItemDB()
+    private void ParsingCarryItemDB()
     {
-        string path = streamingAssetsPath + acquireItemDBPath;
+        string path = streamingAssetsPath + carryItemDBPath;
         JsonData jData = JsonManager.instance.GetJsonData(path);
 
         for (int i = 0; i < jData.Count; i++)
         {
             Hashtable questInfo = new Hashtable();
-            AcquireItem acquireItem = new AcquireItem();
+            CarryItem carryItem = new CarryItem();
 
             int questID = int.Parse(jData[i][0].ToString());
-            acquireItem.GetItem().SetItemID(int.Parse(jData[i][1].ToString()));
-            acquireItem.GetItem().SetCount(int.Parse(jData[i][2].ToString()));
+            carryItem.GetItem().SetItemID(int.Parse(jData[i][1].ToString()));
+            carryItem.GetItem().SetCount(int.Parse(jData[i][2].ToString()));
 
-            acquireItem.SetQuestID(questID);
-            questInfo.Add(questInfoKey, acquireItem);
+            carryItem.SetQuestID(questID);
+            questInfo.Add(questInfoKey, carryItem);
             QuestDB.instance.GetQuest(questID).SetQuestInfo(questInfo);
         }
     }
@@ -392,7 +392,7 @@ public class QuestLoader : MonoBehaviour
         //PrintDeliverItemInfo();
         //PrintCollectLootInfo();
         //PrintUseItemInfo();
-        //PrintAcquireItemInfo();
+        //PrintCarryItemInfo();
         //PrintKillEnemyInfo();
         //PrintTalkWithNpcInfo();
     }
@@ -449,13 +449,13 @@ public class QuestLoader : MonoBehaviour
         }
     }
 
-    void PrintAcquireItemInfo()
+    void PrintCarryItemInfo()
     {
         for (int i = 0; i < QuestDB.instance.GetMaxCount(); i++)
         {
-            if (QuestDB.instance.GetQuest(i + 1).GetQuestType() == QuestType.TYPE_ACQUIREITEM)
+            if (QuestDB.instance.GetQuest(i + 1).GetQuestType() == QuestType.TYPE_CARRYITEM)
             {
-                AcquireItem questInfo = QuestDB.instance.GetQuest(i + 1).GetQuestInfo()[questInfoKey] as AcquireItem;
+                CarryItem questInfo = QuestDB.instance.GetQuest(i + 1).GetQuestInfo()[questInfoKey] as CarryItem;
 
                 Debug.Log(questInfo.GetQuestID() + "번째 퀘스트 " +
                      questInfo.GetItem().GetItemID() + "번 아이템 " +

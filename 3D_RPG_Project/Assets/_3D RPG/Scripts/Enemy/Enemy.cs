@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,7 +11,6 @@ public enum State
 
 public class Enemy : MonoBehaviour
 {
-    GameObject rangedWeapon;                    //몬스터 원거리 구체
     public int Id;                              //몬스터 idNumber;
     public float attTime;                       //몬스터 공격속도
     public float dmgApplyTime;                  //실제 데미지 적용 시간.
@@ -26,9 +26,7 @@ public class Enemy : MonoBehaviour
 
     public int maxFindRange;                    //몬스터 인식 범위
     public int maxMoveRange;                    //몬스터 추적 범위
-    public int maxAttackRange;                  //몬스터 근접 공격 범위
-    public bool isLongMonster;                  //원거리 몬스터인가?
-    public int maxLongAttackRange;              //몬스터 원거리 공격 범위
+    public float maxAttackRange;                  //몬스터 근접 공격 범위
     public int reconRange;                      //정찰 범위
 
 
@@ -39,7 +37,7 @@ public class Enemy : MonoBehaviour
     Animator enemyAnimator;                     //몬스터 애니메이터
     BoxCollider myColider;
     Rigidbody myRigid;
-
+    PlayerMove playerMove;
 
     EnemyStatus status;
     Vector3     _offset;
@@ -47,6 +45,8 @@ public class Enemy : MonoBehaviour
     Vector3     _rayPos2;
 
     public State enemyState;
+
+   
 
     bool IsPlaying(string stateName)
     {
@@ -67,11 +67,14 @@ public class Enemy : MonoBehaviour
         status = GetComponent<EnemyStatus>();
         myColider = GetComponent<BoxCollider>();
         myRigid = GetComponent<Rigidbody>();
+        playerMove = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMove>();
     }
 
     public void LinkPlayer(Transform tfPlayer) { player = tfPlayer; }
 
     //에너미 업데이트
+
+    
     private void Update()
     {
         if(!status.IsDead() && !jump)
@@ -130,13 +133,14 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
     private void UpdateSearch()
     {
         _offset = new Vector3(0f, transform.position.y + 1, 0f);
         Vector3 move = Vector3.forward;
 
-        float x = Random.Range((float)startPoint.x - maxMoveRange, (float)startPoint.x + maxMoveRange);
-        float z = Random.Range((float)startPoint.z - maxMoveRange, (float)startPoint.z + maxMoveRange);
+        float x = UnityEngine.Random.Range((float)startPoint.x - maxMoveRange, (float)startPoint.x + maxMoveRange);
+        float z = UnityEngine.Random.Range((float)startPoint.z - maxMoveRange, (float)startPoint.z + maxMoveRange);
         move = new Vector3(x, 0f, z);
 
         Debug.DrawRay(move + _offset, Vector3.down, Color.yellow, 100);
@@ -145,18 +149,11 @@ public class Enemy : MonoBehaviour
         {
             if (hit.transform.CompareTag("Floor"))
             {
+                enemyAnimator.SetBool("Move", true);
                 _rayPos = hit.transform.position;
-
                 agent.SetDestination(_rayPos);
                 reconTimer = 0;
-
-               
                 enemyState = State.Move;
-
-
-               
-     
-
             }
         }
     }
@@ -178,9 +175,6 @@ public class Enemy : MonoBehaviour
     //무브 상태
     private void UpdateMove()
     {
-
-
-
         if (Vector3.SqrMagnitude(transform.position - startPoint) > Mathf.Pow(maxMoveRange,2))
         {
             enemyState = State.Return;
@@ -193,6 +187,7 @@ public class Enemy : MonoBehaviour
 
             _offset = new Vector3(0f, 0.3f, 0f);
             enemyAnimator.SetBool("Move", true);
+
             if (Physics.Raycast(transform.position + _offset, transform.forward, out RaycastHit hit, 1.5f))
             {
                 if (hit.transform.CompareTag("Floor") && !jump)
@@ -221,8 +216,9 @@ public class Enemy : MonoBehaviour
         }
         if(!_isChasing)
         {
-            if (Vector3.SqrMagnitude(transform.position - agent.destination) < 0.25f)
+            if (Vector3.SqrMagnitude(transform.position - agent.destination) < 0.3f)
             {
+                enemyAnimator.SetBool("Move", false);
                 enemyState = State.Idle;
             }
         }
@@ -231,7 +227,7 @@ public class Enemy : MonoBehaviour
     //공격 상태
     private void UpdateAttack()
     {
-        enemyAnimator.SetTrigger("Attack 0");
+        
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange,2))
         {
             agent.ResetPath();
@@ -239,12 +235,15 @@ public class Enemy : MonoBehaviour
 
             if(_canApplyDamage && enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= dmgApplyTime)
             {
+                enemyAnimator.SetBool("Attack", true);
+                //if(!playerMove.getDodge())
                 ApplyDamage();
             }
 
             if (timer > attTime)
             {
                 timer = 0.0f;
+                
                 _canApplyDamage = true;
             }
         }
@@ -263,6 +262,7 @@ public class Enemy : MonoBehaviour
     void ApplyDamage()
     {
         _canApplyDamage = false;
+        enemyAnimator.SetBool("Attack", false);
         player.GetComponent<Status>().Damage(GetComponent<Status>().GetAtk(), transform.position);
     }
 
@@ -325,20 +325,10 @@ public class Enemy : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //원거리 공격 가능 범위
-        if(isLongMonster)
-        {
-          Gizmos.color = Color.yellow;
-          Gizmos.DrawWireSphere(transform.position, maxLongAttackRange);
-        }
 
         //근접 공격 가능 범위
-        if(!isLongMonster)
-        {
-          Gizmos.color = Color.red;
-          Gizmos.DrawWireSphere(transform.position, maxAttackRange);
-        }
-
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, maxAttackRange);
         //인식 범위
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, maxFindRange);
@@ -351,4 +341,15 @@ public class Enemy : MonoBehaviour
     }
 
     public PlayerStatus GetPlayerStatus() { return player.GetComponent<PlayerStatus>(); }
+
+
+    private void OnEnable()
+    {
+        Initialized();
+    }
+
+    private void Initialized()
+    {
+        ;
+    }
 }

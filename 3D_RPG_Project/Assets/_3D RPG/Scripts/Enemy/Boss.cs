@@ -98,7 +98,6 @@ public class Boss : MonoBehaviour
             skillAttackTime = 0;
             isDamage = true;
         }
-        Debug.Log(skillUpcount);
         if(skillUpcount > 20)
         {
             Destroy(skill);
@@ -135,20 +134,6 @@ public class Boss : MonoBehaviour
         Vector3 dir = player.transform.position - transform.position;
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * speed);
 
-
-        //timer += Time.deltaTime;
-        //
-        //if(timer > attTime)
-        //{
-        //    Vector3 attackDir = player.position - AttackLocation.transform.position;
-        //
-        //    GameObject attack = Instantiate(AttackEffect, AttackLocation.transform.position, transform.rotation);
-        //    Rigidbody attackRigid = attack.GetComponent<Rigidbody>();
-        //    attack.transform.rotation = Quaternion.LookRotation(attackDir);
-        //    attackRigid.velocity = attackDir * 30;
-        //    timer = 0;
-        //}
-
         if (isAttack)
         {
             Vector3 attackDir = player.position - AttackLocation.transform.position;
@@ -165,18 +150,28 @@ public class Boss : MonoBehaviour
             bossState = state.idle;
         }
 
-        if ((status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.7f)
+        //1차 토네이도 리프
+        if ((status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.8f)
         {
             isSkillOne = true;
             bossState = state.skill;
+            enemyAnimator.SetBool("Skill", true);
         }
+        //2차  토네이도 리프
+        if ((status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.6f)
+        {
+            isSkillOne = true;
+            bossState = state.skill;
+            enemyAnimator.SetBool("Skill", true);
+        }
+        //3차  토네이도 리프
         if ((status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.4f)
         {
-            isSkillTwo = true;
+            isSkillOne = true;
             bossState = state.skill;
+            enemyAnimator.SetBool("Skill", true);
         }
-
-        if(Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             isSkillOne = true;
             bossState = state.skill;
@@ -202,7 +197,8 @@ public class Boss : MonoBehaviour
                 skillAttack = true;
                 timer = 0;
                 bossState = state.idle;
-                skill.transform.position = new Vector3(player.transform.position.x, 0.5f, player.transform.position.z);
+                skill.transform.position = new Vector3(player.transform.position.x, 0.1f, player.transform.position.z);
+                enemyAnimator.SetBool("Skill", false);
             }
             skill.transform.position = new Vector3(player.transform.position.x, 1.2f, player.transform.position.z);
         }

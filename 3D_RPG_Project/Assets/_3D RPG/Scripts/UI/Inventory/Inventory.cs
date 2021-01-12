@@ -386,9 +386,12 @@ public class Inventory : MonoBehaviour
         int total = 0;
         for(int i = 0; i < _slots.Length; i++)
         {
-            if(item.id == _slots[i].GetSlotItem().id)
+            if (!_slots[i].IsEmptySlot())
             {
-                total += _slots[i].GetSlotCount();
+                if (item.id == _slots[i].GetSlotItem().id)
+                {
+                    total += _slots[i].GetSlotCount();
+                }
             }
         }
         return count <= total;

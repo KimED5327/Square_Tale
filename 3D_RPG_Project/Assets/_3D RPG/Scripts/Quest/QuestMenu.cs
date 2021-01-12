@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 퀘스트 메뉴 UI를 관리하는 클래스
+/// </summary>
 public class QuestMenu : MonoBehaviour
 {
     [Header("Panel UI")]
@@ -36,14 +39,6 @@ public class QuestMenu : MonoBehaviour
         //TouchTabBtn(0);
     }
 
-    public void CallMenu()
-    {
-        _isShow = !_isShow;
-
-        if (_isShow) ShowMenu();
-        else HideMenu();
-    }
-
     void ShowMenu()
     {
         //BtnBuyWindow();
@@ -64,4 +59,17 @@ public class QuestMenu : MonoBehaviour
         _questMenuPanel.SetActive(false);
     }
 
+    public void OpenMenu()
+    {
+        InteractionManager._isOpen = true; 
+        GameHudMenu.instance.HideMenu();
+        _questMenuPanel.SetActive(true);
+    }
+
+    public void CloseMenu()
+    {
+        InteractionManager._isOpen = false; 
+        GameHudMenu.instance.ShowMenu();
+        _questMenuPanel.SetActive(false);
+    }
 }

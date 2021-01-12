@@ -56,7 +56,13 @@ public class MapManager : MonoBehaviour
         yield return new WaitUntil(() => ScreenEffect.instance._isFinished);
 
         // 로딩 후 ActiveMap 실행
-        LoadingScene.LoadScene("GameScene");
+        LoadingScene.LoadScene("GameScene_HJ");
+
+        QuestManager.instance.UpdateQuestHudOnStart();
+        if (QuestManager.instance.GetOngoingQuest() == null) Debug.Log("현재 진행중인 퀘스트가 없습니다.");
+        else Debug.Log(QuestManager.instance.GetOngoingQuest().GetQuestID() + "번 퀘스트가 진행 중입니다.");
+
+        Debug.Log(QuestDB.instance.GetQuest(QuestManager.instance.GetOngoingQuest().GetQuestID()).GetTitle());
     }
 
     public void ActiveMap()

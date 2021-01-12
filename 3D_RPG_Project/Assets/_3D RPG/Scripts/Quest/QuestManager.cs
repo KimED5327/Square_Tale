@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,9 +12,11 @@ public class QuestManager : MonoBehaviour
     public delegate void EventHandler();
     public static event EventHandler CheckAvailableQuest;
 
-    Inventory _inventory;            // 인벤토리 참조자 
-    QuestHUD _questHUD;              // QuestHUD 참조자 
-    string _questInfoKey = "info";   // 퀘스트 타입 해시테이블 키 
+    Inventory _inventory;               // 인벤토리 참조자 
+    QuestHUD _questHUD;                 // QuestHUD 참조자 
+    bool _isHudOpen = false;            // QuestHUD 창 오픈여부 확인 변수 
+    bool _isCompletableIconOn = false;  // QuestHUD 완료가능 아이콘 on/off 변수 
+    string _questInfoKey = "info";      // 퀘스트 타입 해시테이블 키 
 
     /// <summary>
     /// 현재 진행중인 퀘스트 리스트 
@@ -27,7 +30,12 @@ public class QuestManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null) instance = this; 
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else Destroy(gameObject);
     }
 
     private void Start()
@@ -36,6 +44,7 @@ public class QuestManager : MonoBehaviour
         _questHUD = FindObjectOfType<QuestHUD>();
 
         SetCompleteQuestHUD();
+        Debug.Log("Start 함수가 실행되었습니다.");
     }
 
     private void Update()
@@ -45,11 +54,14 @@ public class QuestManager : MonoBehaviour
             //Debug.Log("3번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(3)));
             //Debug.Log("4번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(4)));
 
-            _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(3));
-            Debug.Log("3번 아이템 획득");
+            //_inventory.TryToPushInventory(ItemDatabase.instance.GetItem(3));
+            //Debug.Log("3번 아이템 획득");
 
             //_inventory.TryToPushInventory(ItemDatabase.instance.GetItem(10));
             //Debug.Log("10번 아이템 소지개수 : " + _inventory.GetItemCount(ItemDatabase.instance.GetItem(10)));
+
+            if (QuestManager.instance.GetOngoingQuest() == null) Debug.Log("현재 진행중인 퀘스트가 없습니다.");
+            else Debug.Log(QuestManager.instance.GetOngoingQuest().GetQuestID() + "번 퀘스트가 진행 중입니다.");
         }
     }
 
@@ -127,6 +139,7 @@ public class QuestManager : MonoBehaviour
                 break;
 
             case QuestType.TYPE_KILLENEMY:
+                //Test(quest);
                 break;
 
             case QuestType.TYPE_TALKWITHNPC:
@@ -135,7 +148,21 @@ public class QuestManager : MonoBehaviour
                 break;
         }
     }
-    
+
+    private void Test(Quest quest )
+    {
+        KillEnemy questInfo = quest.GetQuestInfo()[_questInfoKey] as KillEnemy;
+
+        for (int i = 0; i < questInfo.GetEnemyList().Count; i++)
+        {
+            questInfo.GetEnemy(i).SetCount(questInfo.GetEnemy(i).GetCount() - 1);
+            Debug.Log(questInfo.GetEnemy(i).GetEnemyID() + "번 몬스터 : " + questInfo.GetEnemy(i).GetCount() + "마리");
+
+            KillEnemy questDB = QuestDB.instance.GetQuest(quest.GetQuestID()).GetQuestInfo()[_questInfoKey] as KillEnemy;
+            Debug.Log(questDB.GetEnemy(i).GetEnemyID() + "번 몬스터 : " + questDB.GetEnemy(i).GetCount() + "마리"); 
+        }
+    }
+
     /// <summary>
     /// 퀘스트 완료에 따른 퀘스트 타입 별 상호작용 
     /// </summary>
@@ -269,6 +296,54 @@ public class QuestManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 진행 중인 퀘스트 중 '몬스터 처치' 타입의 퀘스트가 있다면, 퀘스트 달성 요건 확인 
+    /// </summary>
+    /// <param name="enemyID"></param>
+    public void CheckKillEnemyQuest(int enemyID)
+    {
+        for (int i = 0; i < _ongoingQuests.Count; i++)
+        {
+            if (_ongoingQuests[i].GetQuestType() != QuestType.TYPE_KILLENEMY) continue;
+
+            if (CheckEnemiesToKill(_ongoingQuests[i], enemyID))
+            {
+                SetQuestFinisherToCompletableState(_ongoingQuests[i]);
+            }
+
+            UpdateQuestHUD(_ongoingQuests[i]);
+        }
+    }
+
+    /// <summary>
+    /// '몬스터 처치' 퀘스트의 달성 요건 확인 후, 요건 충족 여부를 bool 값으로 리턴 
+    /// </summary>
+    /// <param name="quest"></param>
+    /// <param name="enemyID"></param>
+    /// <returns></returns>
+    public bool CheckEnemiesToKill(Quest quest, int enemyID)
+    {
+        bool isCompleted = false;
+
+        KillEnemy killEnemy = quest.GetQuestInfo()[_questInfoKey] as KillEnemy;
+
+        foreach(EnemyUnit enemy in killEnemy.GetEnemyList())
+        {
+            if (enemy.GetEnemyID() != enemyID) continue;
+
+            if (enemy.GetCount() > 0)
+            {
+                Debug.Log(enemy.GetEnemyID() + "번 몬스터 잡은 횟수" + enemy.GetCount());
+
+                enemy.SetCount(enemy.GetCount() - 1);
+                if(enemy.GetCount() <= 0) isCompleted = true;
+                break; 
+            }
+        }
+
+        return isCompleted;
+    }
+
+    /// <summary>
     /// 퀘스트를 수락하여 퀘스트 부여자의 상태 값을 퀘스트 진행중으로 변경 
     /// </summary>
     /// <param name="quest"></param>
@@ -297,12 +372,15 @@ public class QuestManager : MonoBehaviour
     /// <param name="state"></param>
     void SetQuestFinisherToCompletableState(Quest quest)
     {
+        // 퀘스트 HUD의 update 아이콘 활성화 
+        _questHUD.TurnOnCompletableIcon();
+        _isCompletableIconOn = true; 
+
+        if (quest.GetQuestFinisher() == null) return; 
+
         quest.GetQuestFinisher().SetOngoingQuestID(quest.GetQuestID());
         quest.GetQuestFinisher().SetQuestState(QuestState.QUEST_COMPLETABLE);
         quest.GetQuestFinisher().SetQuestMark();
-
-        // 퀘스트 HUD의 update 아이콘 활성화 
-        _questHUD.GetUpdateImg().enabled = true; 
     }
 
     /// <summary>
@@ -336,7 +414,9 @@ public class QuestManager : MonoBehaviour
     {
         _questHUD.CloseQuestList();
         _questHUD.GetQuestBtn().enabled = false;
-        _questHUD.GetUpdateImg().enabled = false; 
+        _questHUD.TurnOffCompletableIcon();
+        _isCompletableIconOn = false; 
+        
     }
 
     /// <summary>
@@ -354,10 +434,44 @@ public class QuestManager : MonoBehaviour
                 break;
 
             case QuestType.TYPE_KILLENEMY:
+                SetKillEnemyGoal(quest);
                 break;
 
             default:
                 _questHUD.SetQuestGoal1(quest.GetGoal());
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 씬이 초기화될 때 퀘스트 HUD 데이터 업데이트 
+    /// </summary>
+    public void UpdateQuestHudOnStart()
+    {
+        if (_ongoingQuests.Count <= 0) return;
+
+        _questHUD = FindObjectOfType<QuestHUD>();
+        _inventory = FindObjectOfType<Inventory>();
+
+        // 퀘스트 매니져에 퀘스트 HUD 메뉴, 완료가능 아이콘 on/off 여부 저장해놓고 UI에 적용
+        if (_isHudOpen) _questHUD.OpenQuestList();
+        if(_isCompletableIconOn) _questHUD.TurnOnCompletableIcon();
+
+        _questHUD.SetQuestTitle(_ongoingQuests[0].GetTitle());
+        _questHUD.SetQuestGoal2("");
+
+        switch (_ongoingQuests[0].GetQuestType())
+        {
+            case QuestType.TYPE_DELIVERITEM:
+                SetDeliverItemGoal(_ongoingQuests[0]);
+                break;
+
+            case QuestType.TYPE_KILLENEMY:
+                SetKillEnemyGoal(_ongoingQuests[0]);
+                break;
+
+            default:
+                _questHUD.SetQuestGoal1(_ongoingQuests[0].GetGoal());
                 break;
         }
     }
@@ -384,4 +498,36 @@ public class QuestManager : MonoBehaviour
             else _questHUD.SetQuestGoal2(goal);
         }
     }
+
+    /// <summary>
+    /// '몬스터 처치' 타입 퀘스트의 목표 값 세팅 
+    /// </summary>
+    /// <param name="quest"></param>
+    void SetKillEnemyGoal(Quest quest)
+    {
+        KillEnemy killEnemy = quest.GetQuestInfo()[_questInfoKey] as KillEnemy;
+        KillEnemy originDB = QuestDB.instance.GetQuest(quest.GetQuestID()).GetQuestInfo()[_questInfoKey] as KillEnemy;
+
+        for (int i = 0; i < killEnemy.GetEnemyList().Count; i++)
+        {
+            string goal;
+
+            int countToKill = originDB.GetEnemy(i).GetCount();
+
+            goal = EnemyDB.instance.GetName(killEnemy.GetEnemy(i).GetEnemyID()) + " 처치 (" +
+                (countToKill - killEnemy.GetEnemy(i).GetCount()) + "/" + countToKill + ")";
+
+            if (i == 0) _questHUD.SetQuestGoal1(goal);
+            else _questHUD.SetQuestGoal2(goal);
+        }
+    }
+
+    public Quest GetOngoingQuest()
+    {
+        return _ongoingQuests[0];
+    }
+
+    public bool GetIsHudOpen() { return _isHudOpen; }
+    public void SetIsHudOpen(bool value) { _isHudOpen = value; }
+
 }

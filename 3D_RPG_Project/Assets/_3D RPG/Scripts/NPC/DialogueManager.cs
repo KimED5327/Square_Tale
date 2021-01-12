@@ -168,8 +168,8 @@ public class DialogueManager : MonoBehaviour
         CloseQuestDialoguePanel();
 
         // 수락한 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에 추가 
-        Quest questAccepted = new Quest();
-        questAccepted = QuestDB.instance.GetQuest(_questID);
+        Quest questAccepted = QuestDB.instance.GetQuest(_questID).DeepCopy();
+        //questAccepted = QuestDB.instance.GetQuest(_questID);
         QuestManager.instance.AddOngoingQuest(questAccepted);
     }
 
@@ -184,18 +184,19 @@ public class DialogueManager : MonoBehaviour
         CloseQuestDialoguePanel();
 
         // 키워드 보상이 있는 경우 일정 딜레이 후 키워드 획득 
-        if (QuestDB.instance.GetQuest(_questID).GetKeywords().Count > 0)
+        if (QuestDB.instance.GetQuest(_questID).GetKeywordList().Count > 0)
         {
             StartCoroutine("GetKeyword");
         }
 
         // 완료된 퀘스트를 퀘스트 매니져의 완료된 퀘스트 리스트에 추가 
-        Quest questCompleted = new Quest();
-        questCompleted = QuestDB.instance.GetQuest(_questID);
+        Quest questCompleted = QuestDB.instance.GetQuest(_questID).DeepCopy();
+        //questCompleted = QuestDB.instance.GetQuest(_questID);
         QuestManager.instance.AddFinishedQuest(questCompleted);
 
         // 완료된 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에서 삭제
-        //QuestManager.instance.DeleteOngoingQuest();
+        QuestManager.instance.DeleteOngoingQuest();
+        Debug.Log(_questID + "번 퀘스트 " + QuestDB.instance.GetQuest(_questID).GetTitle());
     }
 
     /// <summary>
@@ -223,7 +224,7 @@ public class DialogueManager : MonoBehaviour
         yield return new WaitForSeconds(_delayBeforeGettingKeyword);
 
         ObjectPooling.instance.GetObjectFromPool(_keywordEffectName, _player.position);
-        KeywordData.instance.AcquireKeyword(QuestDB.instance.GetQuest(_questID).GetKeywords()[0]);
+        KeywordData.instance.AcquireKeyword(QuestDB.instance.GetQuest(_questID).GetKeywordList()[0]);
         _player.GetComponent<PlayerMove>().Victory();
     }
 

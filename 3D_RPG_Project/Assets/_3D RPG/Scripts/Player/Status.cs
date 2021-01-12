@@ -51,16 +51,28 @@ public abstract class Status : MonoBehaviour
 
     protected abstract void HurtReaction(Vector3 targetPos);
 
+    /// <summary>
+    /// 몬스터가 죽을 때마다 호출되는 함수 
+    /// </summary>
     protected virtual void Dead()
     {
         if (transform.CompareTag(StringManager.enemyTag))
         {
-            GetComponent<Enemy>().GetPlayerStatus().IncreaseExp(_giveExp);
-        }
-        _curHp = 0;
-        _isDead = true;
-    }
+            if(GetComponent<Status>().GetName() == "릴리")
+            {
+                // 마지막 보스 잡기 퀘스트 
+                QuestManager.instance.CheckKillEnemyQuest(6);
+            }
 
+            GetComponent<Enemy>().GetPlayerStatus().IncreaseExp(_giveExp);
+
+            // 현재 '몬스터 처치' 퀘스트를 진행 중이라면, 퀘스트 달성 조건 검사 
+            QuestManager.instance.CheckKillEnemyQuest(GetComponent<Enemy>().Id);
+        }
+
+        _curHp = 0;
+        _isDead = true;       
+    }
 
     public string GetName() { return _name; }
     public int GetLevel() { return _level; }

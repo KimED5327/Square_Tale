@@ -9,6 +9,9 @@ public class SkillDamage : MonoBehaviour
         if(collision.transform.CompareTag("Face"))
         {
 
+
+
+            Destroy(this);
         }
     }
 }

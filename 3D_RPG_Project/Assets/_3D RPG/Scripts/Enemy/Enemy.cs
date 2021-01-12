@@ -183,12 +183,16 @@ public class Enemy : MonoBehaviour
 
         else if(Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange,2))
         {
+
+
             _offset = new Vector3(0f, 0.3f, 0f);
             enemyAnimator.SetBool("Move", true);
+
             if (Physics.Raycast(transform.position + _offset, transform.forward, out RaycastHit hit, 1.5f))
             {
                 if (hit.transform.CompareTag("Floor") && !jump)
                 {
+                    
                     myColider.isTrigger = true;
                     jump = true;
                 }
@@ -197,13 +201,16 @@ public class Enemy : MonoBehaviour
             {
                 _isChasing = true;
                 agent.SetDestination(player.transform.position);
+
             }
+
             //enemyAnimator.SetInteger("animation", 2);
+
         }
 
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange, 2))
         {
-            //enemyAnimator.SetInteger("animation", 3);
+            // enemyAnimator.SetInteger("animation", 3);
             enemyState = State.Attack;
             //enemyAnimator.SetBool("Attack", true);
         }
@@ -220,27 +227,34 @@ public class Enemy : MonoBehaviour
     //공격 상태
     private void UpdateAttack()
     {
+        
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange,2))
         {
             agent.ResetPath();
             timer += Time.deltaTime;
+
             if(_canApplyDamage && enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= dmgApplyTime)
             {
                 enemyAnimator.SetBool("Attack", true);
                 //if(!playerMove.getDodge())
                 ApplyDamage();
             }
+
             if (timer > attTime)
             {
                 timer = 0.0f;
+                
                 _canApplyDamage = true;
             }
         }
+
         else
         {
             //enemyAnimator.SetInteger("animation", 2);
+
             enemyAnimator.SetBool("Attack", false);
             enemyState = State.Move;
+
             timer = 0.0f;
         }
     }
@@ -285,11 +299,13 @@ public class Enemy : MonoBehaviour
         else
         {
             //enemyAnimator.SetInteger("animation", 1);
+
             enemyAnimator.SetBool("Move", false);
             agent.ResetPath();
             _isChasing = false;
             transform.position = startPoint;
             enemyState = State.Idle;
+
         }
     }
     //피격 상태
@@ -301,11 +317,15 @@ public class Enemy : MonoBehaviour
     IEnumerator DamageProc()
     {
         yield return new WaitForSeconds(1.0f);
+
         enemyState = State.Move;
     }
 
+
+
     private void OnDrawGizmos()
     {
+
         //근접 공격 가능 범위
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, maxAttackRange);
@@ -315,12 +335,14 @@ public class Enemy : MonoBehaviour
         //최대 추적 범위
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(startPoint, maxMoveRange);
+
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(startPoint, reconRange);
     }
 
     public PlayerStatus GetPlayerStatus() { return player.GetComponent<PlayerStatus>(); }
-    
+
+
     private void OnEnable()
     {
         Initialized();

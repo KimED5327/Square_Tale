@@ -468,11 +468,9 @@ MonoBehaviour:
   timer: 0
   reconTime: 3
   reconTimer: 0
-  maxFindRange: 5
-  maxMoveRange: 10
-  maxAttackRange: 1
-  isLongMonster: 0
-  maxLongAttackRange: 0
+  maxFindRange: 2
+  maxMoveRange: 5
+  maxAttackRange: 0.8
   reconRange: 0
   enemyState: 0
 --- !u!195 &8141725687198286980

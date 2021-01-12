@@ -658,7 +658,7 @@ Transform:
   m_GameObject: {fileID: 5945479940699226170}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 4175529090937868485}
   - {fileID: 8606628854466936664}
@@ -703,11 +703,9 @@ MonoBehaviour:
   timer: 0
   reconTime: 3
   reconTimer: 0
-  maxFindRange: 5
-  maxMoveRange: 30
-  maxAttackRange: 1
-  isLongMonster: 0
-  maxLongAttackRange: 0
+  maxFindRange: 2
+  maxMoveRange: 5
+  maxAttackRange: 0.8
   reconRange: 0
   enemyState: 0
 --- !u!195 &1705460921147308287

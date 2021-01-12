@@ -460,7 +460,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6069856617124653097}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.413, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 6069856617124557835}
@@ -535,11 +535,9 @@ MonoBehaviour:
   timer: 0
   reconTime: 3
   reconTimer: 0
-  maxFindRange: 4
-  maxMoveRange: 10
-  maxAttackRange: 1
-  isLongMonster: 0
-  maxLongAttackRange: 0
+  maxFindRange: 2
+  maxMoveRange: 5
+  maxAttackRange: 0.8
   reconRange: 0
   enemyState: 0
 --- !u!114 &8951833758637400826

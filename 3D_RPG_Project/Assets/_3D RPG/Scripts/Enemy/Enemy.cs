@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -18,6 +17,7 @@ public class Enemy : MonoBehaviour
     public float reconTime;                     //정찰 시작 시간
     public float reconTimer;                    //정찰 체크 시간
     private float dieTime;                      //죽고 난 뒤 시간
+    public float motionTime;                   //공격 모션 시간
 
     Vector3 startPoint;                         //최초 생성 값
     Transform player;                           //공격 목표 (플레이어)
@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
     public float maxAttackRange;                  //몬스터 근접 공격 범위
     public int reconRange;                      //정찰 범위
 
-
+    private bool _isDie = false;
     private bool _canApplyDamage = true;
     private bool _isChasing = false;
     private bool jump;
@@ -60,10 +60,9 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        enemyState = State.Idle;
+   
         enemyAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        startPoint = transform.position;
         status = GetComponent<EnemyStatus>();
         myColider = GetComponent<BoxCollider>();
         myRigid = GetComponent<Rigidbody>();
@@ -139,8 +138,8 @@ public class Enemy : MonoBehaviour
         _offset = new Vector3(0f, transform.position.y + 1, 0f);
         Vector3 move = Vector3.forward;
 
-        float x = UnityEngine.Random.Range((float)startPoint.x - maxMoveRange, (float)startPoint.x + maxMoveRange);
-        float z = UnityEngine.Random.Range((float)startPoint.z - maxMoveRange, (float)startPoint.z + maxMoveRange);
+        float x = Random.Range((float)startPoint.x - maxFindRange, (float)startPoint.x + maxFindRange);
+        float z = Random.Range((float)startPoint.z - maxFindRange, (float)startPoint.z + maxFindRange);
         move = new Vector3(x, 0f, z);
 
         Debug.DrawRay(move + _offset, Vector3.down, Color.yellow, 100);
@@ -150,10 +149,11 @@ public class Enemy : MonoBehaviour
             if (hit.transform.CompareTag("Floor"))
             {
                 enemyAnimator.SetBool("Move", true);
-                _rayPos = hit.transform.position;
-                agent.SetDestination(_rayPos);
+                _rayPos = hit.point;
                 reconTimer = 0;
                 enemyState = State.Move;
+                agent.SetDestination(_rayPos);
+
             }
         }
     }
@@ -203,20 +203,15 @@ public class Enemy : MonoBehaviour
                 agent.SetDestination(player.transform.position);
 
             }
-
-            //enemyAnimator.SetInteger("animation", 2);
-
         }
 
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange, 2))
         {
-            // enemyAnimator.SetInteger("animation", 3);
             enemyState = State.Attack;
-            //enemyAnimator.SetBool("Attack", true);
         }
         if(!_isChasing)
         {
-            if (Vector3.SqrMagnitude(transform.position - agent.destination) < 0.3f)
+            if (Vector3.SqrMagnitude(transform.position - agent.destination) < 0.01f)
             {
                 enemyAnimator.SetBool("Move", false);
                 enemyState = State.Idle;
@@ -227,34 +222,32 @@ public class Enemy : MonoBehaviour
     //공격 상태
     private void UpdateAttack()
     {
-        
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange,2))
         {
             agent.ResetPath();
             timer += Time.deltaTime;
+            motionTime += Time.deltaTime;
 
-            if(_canApplyDamage && enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= dmgApplyTime)
+            if (motionTime > attTime - 0.01f)
             {
-                enemyAnimator.SetBool("Attack", true);
-                //if(!playerMove.getDodge())
+                motionTime = 0.0f;
+                enemyAnimator.SetTrigger("Attack 0");
+            }
+            if (_canApplyDamage && enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= dmgApplyTime)
+            {
                 ApplyDamage();
             }
 
             if (timer > attTime)
             {
                 timer = 0.0f;
-                
                 _canApplyDamage = true;
             }
         }
 
         else
         {
-            //enemyAnimator.SetInteger("animation", 2);
-
-            enemyAnimator.SetBool("Attack", false);
             enemyState = State.Move;
-
             timer = 0.0f;
         }
     }
@@ -262,50 +255,45 @@ public class Enemy : MonoBehaviour
     void ApplyDamage()
     {
         _canApplyDamage = false;
-        enemyAnimator.SetBool("Attack", false);
+       
         player.GetComponent<Status>().Damage(GetComponent<Status>().GetAtk(), transform.position);
     }
 
     //사망 상태
     private void UpdateDie()
     {
-    
-       // enemyAnimator.SetInteger("animation", 5);
-
-        enemyAnimator.SetBool("Die", true);
+        if(!_isDie)
+        {
+            _isDie = true;
+            enemyAnimator.SetTrigger("Die 0");
+        }    
         myRigid.isKinematic = true;
         myColider.isTrigger = true;
         agent.enabled = false;
         dieTime += Time.deltaTime;
-
         if(dieTime >= 60)
         {
             string name = GetComponent<EnemyStatus>().GetName();
-
-            
             ObjectPooling.instance.PushObjectToPool(name,this.gameObject);
         }
-        
     }
 
    
     //복귀 상태
     private void UpdateReturn()
     {
-        if(Vector3.SqrMagnitude(transform.position - startPoint) > 0.01)
+        if(Vector3.SqrMagnitude(transform.position - startPoint) > 0.5f)
         {
             agent.SetDestination(startPoint);
         }
         else
         {
             //enemyAnimator.SetInteger("animation", 1);
-
             enemyAnimator.SetBool("Move", false);
             agent.ResetPath();
             _isChasing = false;
             transform.position = startPoint;
             enemyState = State.Idle;
-
         }
     }
     //피격 상태
@@ -346,10 +334,12 @@ public class Enemy : MonoBehaviour
     private void OnEnable()
     {
         Initialized();
+        
     }
 
     private void Initialized()
     {
-        ;
+        enemyState = State.Idle;
+        startPoint = transform.position;
     }
 }

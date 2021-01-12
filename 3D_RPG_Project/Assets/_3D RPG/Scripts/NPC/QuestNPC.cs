@@ -17,11 +17,11 @@ public class QuestNPC : MonoBehaviour
     /// 원래 퀘스트용 변수이나 NPC의 퀘스트 진행상태를 파악하는 데 사용 (0.해금된 퀘스트 없음 1.진행가능 퀘스트 있음 2.퀘스트 진행중 3.퀘스트 완료가능 4.NPC의 모든 퀘스트 완료)
     /// </summary>
     [SerializeField] QuestState _questState;
-    
+
     /// <summary>
     /// 현재 NPC가 진행중인 퀘스트 ID (0 : 진행중인 퀘스트 없음)
     /// </summary>
-    public int _ongoingQuestID;     // 현재 NPC가 진행 중인 퀘스트 ID
+    public int _ongoingQuestID = 0; // 현재 NPC가 진행 중인 퀘스트 ID
     public int _npcID;              // 해당 객체의 NPC ID 
     bool _isParsingDone;            // _npc객체에 NpcDB의 데이터가 파싱되었는지 확인 
     string questInfoKey = "info";   // 해시테이블 QuestInfo 키  
@@ -52,8 +52,13 @@ public class QuestNPC : MonoBehaviour
     void Start()
     {
         _questState = QuestState.QUEST_VEILED;
+
+        // 선행 퀘스트를 완료 한 퀘스트를 오픈할 수 있도록 함. 
         QuestManager.CheckAvailableQuest += UpdateQuestState;
         QuestManager.CheckAvailableQuest += SetQuestMark;
+
+        // 씬 전환 시 NPC 데이터가 퀘스트 데이터에 싱크가 맞도록 설정 
+        QuestManager.SyncWithQuestOnStart += SyncWithOngoingQuest;
 
         // 다이얼로그 UI 값 세팅 
         DialogueUI dialogueUI = FindObjectOfType<DialogueUI>();
@@ -66,7 +71,8 @@ public class QuestNPC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ParsingData(); 
+        ParsingData();
+        //QuestManager.instance.SyncWithNpcOnStart();
     }
 
     /// <summary>
@@ -82,7 +88,11 @@ public class QuestNPC : MonoBehaviour
             SetNameTag();
             SetQuestMark();
             _isParsingDone = true;
+
+            Debug.Log("파싱함수 호출");
         }
+
+        QuestManager.instance.SyncWithNpcOnStart();
     }
 
     /// <summary>
@@ -198,6 +208,20 @@ public class QuestNPC : MonoBehaviour
                 //Debug.Log("오리지널 객체의 퀘스트 개수 : " + NpcDB.instance.GetNPC(_npcID).GetQuestsCount());
             }
         }
+    }
+
+    public void SyncWithOngoingQuest(Quest quest)
+    {
+        if (quest.GetNpcID() != _npcID) return;
+
+        Debug.Log(_npcID + "번 NPC : 진행중인 퀘스트의 부여자");
+        Debug.Log(quest.GetQuestID() + "번 퀘스트 진행중");
+
+        _ongoingQuestID = quest.GetQuestID();
+        _questState = quest.GetState();
+
+
+        this.SetQuestMark();
     }
 
     /// <summary>

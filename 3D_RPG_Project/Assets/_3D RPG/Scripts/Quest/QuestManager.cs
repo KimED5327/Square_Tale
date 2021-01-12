@@ -12,6 +12,9 @@ public class QuestManager : MonoBehaviour
     public delegate void EventHandler();
     public static event EventHandler CheckAvailableQuest;
 
+    public delegate void SyncHandler(Quest quest);
+    public static event SyncHandler SyncWithQuestOnStart;
+
     Inventory _inventory;               // 인벤토리 참조자 
     QuestHUD _questHUD;                 // QuestHUD 참조자 
     bool _isHudOpen = false;            // QuestHUD 창 오픈여부 확인 변수 
@@ -372,7 +375,7 @@ public class QuestManager : MonoBehaviour
     /// <param name="state"></param>
     void SetQuestFinisherToCompletableState(Quest quest)
     {
-        // 퀘스트 HUD의 update 아이콘 활성화 
+        // 퀘스트 HUD의 완료가능 아이콘 활성화 
         _questHUD.TurnOnCompletableIcon();
         _isCompletableIconOn = true; 
 
@@ -450,6 +453,11 @@ public class QuestManager : MonoBehaviour
     {
         if (_ongoingQuests.Count <= 0) return;
 
+        foreach (Quest quest in _ongoingQuests)
+        {
+            Debug.Log("정상 작동");
+            SyncWithQuestOnStart(quest);
+        }
         _questHUD = FindObjectOfType<QuestHUD>();
         _inventory = FindObjectOfType<Inventory>();
 
@@ -473,6 +481,18 @@ public class QuestManager : MonoBehaviour
             default:
                 _questHUD.SetQuestGoal1(_ongoingQuests[0].GetGoal());
                 break;
+        }
+    }
+
+    /// <summary>
+    /// 씬이 초기화될 때 진행 중인 퀘스트를 확인하여 NPC 데이터 및 상태값 업데이트 
+    /// </summary>
+    public void SyncWithNpcOnStart()
+    {
+        foreach(Quest quest in _ongoingQuests)
+        {
+            Debug.Log("정상 작동"); 
+            SyncWithQuestOnStart(quest);
         }
     }
 

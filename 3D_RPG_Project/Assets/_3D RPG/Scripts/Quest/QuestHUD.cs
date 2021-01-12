@@ -35,11 +35,7 @@ public class QuestHUD : MonoBehaviour
     public Button GetQuestBtn() { return _btnQuest; }
 
     //setter 
-    public void SetQuestTitle(string text)
-    {
-        Debug.Log("UpdateQuestHUD 실행되었음.");
-        _questTitle.text = text;
-    }
+    public void SetQuestTitle(string text) { _questTitle.text = text; }
     public void SetQuestGoal1(string text) { _questGoal1.text = text; }
     public void SetQuestGoal2(string text) { _questGoal2.text = text; }
     public void TurnOnCompletableIcon() { _completableIcon.SetActive(true); }

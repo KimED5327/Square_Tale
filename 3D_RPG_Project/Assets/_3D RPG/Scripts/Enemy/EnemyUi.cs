@@ -13,20 +13,29 @@ public class EnemyUi : MonoBehaviour
     public Text _Ui;
     float hpPercent;
 
-    private void Start()
+    void Start()
     {
         _enemy = GetComponentInParent<Enemy>();
         _enemyStatus = GetComponentInParent<EnemyStatus>();
-        cam = Camera.main.transform;
         hpBar = GetComponentInChildren<Slider>();
-        
+    }
+
+    void OnEnable()
+    {
+        cam = Camera.main.transform;
     }
 
     void Update()
     {
+
         transform.LookAt(transform.position + cam.forward);
 
         hpPercent = (_enemyStatus.GetCurrentHp() / (float)_enemyStatus.GetMaxHp()) * 100;
+
+        if(hpBar == null)
+        {
+            hpBar = GetComponentInChildren<Slider>();
+        }
 
         if (_enemy.enemyState == State.Attack)
             hpBar.gameObject.SetActive(true);

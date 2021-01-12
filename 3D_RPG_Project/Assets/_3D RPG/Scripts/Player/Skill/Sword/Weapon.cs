@@ -15,6 +15,10 @@ public class Weapon : MonoBehaviour
 
     PlayerStatus _status;
 
+    [SerializeField] float _alpha = 0.15f;
+
+    int _combo = 0;
+
     void Start()
     {
         _status = GetComponentInParent<PlayerStatus>();
@@ -22,8 +26,9 @@ public class Weapon : MonoBehaviour
         _disableWait = new WaitForSeconds(disableTime);
     }
 
-    public void Use()
+    public void Use(int combo)
     {
+        _combo = combo;
         StopAllCoroutines();
         StartCoroutine(Swing());
     }
@@ -33,11 +38,15 @@ public class Weapon : MonoBehaviour
         attackArea.enabled = false;
 
         yield return _enableWait;
-        //yield return new WaitForSeconds(0.1f);
+        if (_combo == 2)
+            yield return new WaitForSeconds(0.25f);
+        else
+            yield return new WaitForSeconds(0.05f);
+
         attackArea.enabled = true;
 
         yield return _disableWait;
-        //yield return new WaitForSeconds(0.1f);
+
         attackArea.enabled = false;
     }
 
@@ -49,7 +58,13 @@ public class Weapon : MonoBehaviour
             Status targetStatus = other.GetComponent<Status>();
             if (!targetStatus.IsDead())
             {
-                //other.GetComponent<Status>().Damage(_status.GetAtk(), transform.position);
+                if(_combo != 2)
+                    SoundManager.instance.PlayEffectSound("Slash1");
+                else
+                    SoundManager.instance.PlayEffectSound("Slash2");
+
+                ScreenEffect.instance.ExecuteSplash(_alpha);
+
                 other.GetComponent<Status>().Damage((int)(_status.GetStr() * 0.5f), transform.position);
             }
         }

@@ -194,10 +194,13 @@ public class PlayerMove : MonoBehaviour
 
     void Move()
     {
+        if (!Camera.main.gameObject.activeSelf) return;
+
         hAxis = Input.GetAxisRaw("Horizontal");
         vAxis = Input.GetAxisRaw("Vertical");
 
         moveVec = new Vector3(hAxis, 0, vAxis).normalized;
+
 
         realMoveVec = (moveVec.z * Camera.main.transform.forward + Camera.main.transform.right * moveVec.x);
 
@@ -262,6 +265,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (Input.GetKeyDown("space") && !isJump && !isDodge)
         {
+            SoundManager.instance.PlayEffectSound("Jump");
             isJump = true;
             myRigid.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             anim.SetBool("isJump", true);
@@ -273,6 +277,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (!isJump && !isDodge)
         {
+            SoundManager.instance.PlayEffectSound("Jump");
             isJump = true;
             myRigid.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             anim.SetBool("isJump", true);
@@ -284,6 +289,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (Input.GetKeyDown("left shift") && !isJump && moveVec != Vector3.zero && !isDodge)
         {
+            SoundManager.instance.PlayEffectSound("Shout2");
             dodgeVec = realMoveVec;
             speed *= 2;
             anim.SetTrigger("doDodge");
@@ -297,6 +303,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (!isJump && moveVec != Vector3.zero && !isDodge)
         {
+            SoundManager.instance.PlayEffectSound("Shout2");
             dodgeVec = realMoveVec;
             speed *= 2;
             anim.SetTrigger("doDodge");
@@ -321,8 +328,9 @@ public class PlayerMove : MonoBehaviour
 
             if (isAttackReady && !isDodge && !isJump && !isCombo && !isDie)
             {
+                SoundManager.instance.PlayEffectSound("Shout1");
                 SoundManager.instance.PlayEffectSound("Slash_S");
-                equipWeapon.Use();
+                equipWeapon.Use(0);
                 isCombo = true;
                 isComboCount = true;
                 anim.SetTrigger("doAttack1");
@@ -335,8 +343,9 @@ public class PlayerMove : MonoBehaviour
             {
                 if (comboCount == 1 && !isAttack2)
                 {
+                    SoundManager.instance.PlayEffectSound("Shout2");
                     SoundManager.instance.PlayEffectSound("Slash_M");
-                    equipWeapon.Use();
+                    equipWeapon.Use(1);
                     isAttack2 = true;
                     isComboCount = true;
                     comboDelay = 0;
@@ -347,8 +356,7 @@ public class PlayerMove : MonoBehaviour
                 }
                 else if (comboCount == 2 && !isAttack3)
                 {
-                    SoundManager.instance.PlayEffectSound("Slash_L");
-                    equipWeapon.Use();
+                    equipWeapon.Use(2);
                     isAttack3 = true;
                     isComboCount = true;
                     StopCoroutine("Effect3");
@@ -365,6 +373,8 @@ public class PlayerMove : MonoBehaviour
             {
                 isCombo = true;
                 isComboCount = true;
+                SoundManager.instance.PlayEffectSound("Shout1");
+                SoundManager.instance.PlayEffectSound("MageAttack1");
                 anim.SetTrigger("doAttack1");
                 StopCoroutine("Effect1");
                 StartCoroutine("Effect1");
@@ -378,6 +388,8 @@ public class PlayerMove : MonoBehaviour
                     isAttack2 = true;
                     isComboCount = true;
                     comboDelay = 0;
+                    SoundManager.instance.PlayEffectSound("Shout2");
+                    SoundManager.instance.PlayEffectSound("MageAttack2");
                     anim.SetTrigger("doAttack2");
                     StopCoroutine("Effect2");
                     StartCoroutine("Effect2");
@@ -449,9 +461,13 @@ public class PlayerMove : MonoBehaviour
 
     IEnumerator Effect3()
     {
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(0.3f);
+        SoundManager.instance.PlayEffectSound("Shout3");
+
+        yield return new WaitForSeconds(0.3f);
         if (isSword)
         {
+            SoundManager.instance.PlayEffectSound("Slash_L");
             myRigid.velocity = transform.forward * 3f;
             swordAttack3Img.SetActive(false);
             swordAttack1Img.SetActive(true);
@@ -459,6 +475,7 @@ public class PlayerMove : MonoBehaviour
         }
         if (isMage)
         {
+            SoundManager.instance.PlayEffectSound("MageAttack3");
             mageAttack3Img.SetActive(false);
             mageAttack1Img.SetActive(true);
             GameObject instantMagic = Instantiate(blood, magicAttack3Pos.position, magicAttack3Pos.rotation);

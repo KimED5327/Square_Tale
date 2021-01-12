@@ -752,11 +752,12 @@ MonoBehaviour:
   _giveExp: 21
   _knockBackForce: 0.1
   _dropItemInfo:
-  - itemID: 3
+  - itemID: 9
     itemCounts:
       min: 0
       max: 0
     itemDropRate: 70
+  _isForceDead: 0
 --- !u!65 &6461609291295442536
 BoxCollider:
   m_ObjectHideFlags: 0

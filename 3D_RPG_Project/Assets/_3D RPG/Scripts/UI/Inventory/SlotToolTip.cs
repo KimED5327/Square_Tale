@@ -145,6 +145,7 @@ public class SlotToolTip : MonoBehaviour
                 theInven.ResortItem();
             }
 
+            theInven.SaveInventory();
             HideToolTip();
         }
 
@@ -161,6 +162,7 @@ public class SlotToolTip : MonoBehaviour
                 theInven.TryToPushInventory(returnEquipItem);
 
             theInven.ResortItem();
+            theInven.SaveInventory();
             HideToolTip();
         }
 

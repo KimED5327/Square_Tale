@@ -11,6 +11,7 @@ public class StringManager : MonoBehaviour
     public static string groundTag = "Floor";
     public static string questNPCTag = "QuestNPC";
     public static string blockTag = "Block";
+    public static string TriggerTag = "Trigger";
 
     public static string msgLongDistance = "거리가 너무 멉니다.";
     public static string msgNotEnoughInventory = "인벤토리 공간이 부족합니다.";
@@ -24,14 +25,70 @@ public class StringManager : MonoBehaviour
     public static string msgNotEnoughBlock = "블록 개수가 부족합니다.";
     public static string msgEmptyBlockSlot = "등록된 블록이 없습니다.";
     public static string msgWrongSwipeBlock = "잘못된 스와이프 방향입니다.";
+    public static string msgBlockAcquire = "블록 이용권 1회 추가!";
     public static string msgBlockExistObject = "소환 위치에 방해되는 물체가 있습니다";
     public static string msgEmptySkillSlot = "등록된 스킬이 없습니다.";
     public static string msgCanNotSkill = "쿨타임 입니다.";
     public static string msgNotAccessChapter = "해금되지 않은 챕터입니다.";
+    public static string msgAlreadyActivateTrigger = "이미 작동시킨 장치입니다.";
 
 
     public static string block = "Block";
     public static string skill = "Skill";
+
+    public static string BombBlock = "폭발 블록";
+
+    public static string treasureKey = "Treasure";
+    public static string GetTresureKey(int id)
+    {
+        return treasureKey + id;
+    }
+
+    public static string crystalKey = "Crystal";
+    public static string GetCrystalKey(int id)
+    {
+        return crystalKey + id;
+    }
+
+    public static string eventKey = "Event";
+    public static string GetEventKey(int id)
+    {
+        return eventKey + id;
+    }
+
+
+    public static string mapNameVegonia = "Vegonia";
+    public static string mapNameTown = "Town";
+    public static string mapNameCroa = "Vegonia";
+    public static string mapNameDelphinium = "Delphinium";
+    public static string mapNameHyacinth = "Hyacinth";
+    public static string mapNameLilyCastleFront = "LilyCastleFront";
+    public static string mapNameLilyCastle = "LilyCastle";
+    public static string mapNameLilyCastleBossRoom = "LilyCastleBossRoom";
+
+    public static string GetMapKoreanName(string name)
+    {
+        if (name == mapNameTown)
+            return "마을";
+        if (name == mapNameCroa)
+            return "크로아";
+        if (name == mapNameVegonia)
+            return "베고니아";
+        if (name == mapNameDelphinium)
+            return "델피니움";
+        if (name == mapNameHyacinth)
+            return "히아신스";
+        if (name == mapNameLilyCastleFront)
+            return "릴리의 성 정문";
+        if (name == mapNameLilyCastle)
+            return "릴리의 성";
+        if (name == mapNameLilyCastleBossRoom)
+            return "릴리의 방";
+        else
+            return "기타";
+
+
+    }
 
     public static string ItemTypeToString(OptionType type)
     {

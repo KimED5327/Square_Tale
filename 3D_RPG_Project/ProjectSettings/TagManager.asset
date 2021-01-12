@@ -11,6 +11,7 @@ TagManager:
   - QuestNPC
   - Keyword
   - Block
+  - Trigger
   layers:
   - Default
   - TransparentFX
@@ -23,11 +24,11 @@ TagManager:
   - UIPlayer
   - Enemy
   - NPC
-  - Keyword
+  - Chest
   - Player
   - PreviewBlock
   - Floor
-  - 
+  - Trigger
   - 
   - 
   - 

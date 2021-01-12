@@ -16,6 +16,14 @@ public class BlockManager : MonoBehaviour
         _blockCount[id] += count;
     }
 
+    public static void AllIncreaseBlockCount(int count)
+    {
+        for(int i = 0; i < _blockCount.Length; i++)
+        {
+            _blockCount[i] += count;
+        }
+    }
+
     public static void DecreaseBlockCount(int id, int count)
     {
         _blockCount[id] -= count;

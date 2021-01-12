@@ -12,6 +12,8 @@ public class CameraController : MonoBehaviour
 
     Transform _tfCam;
 
+    bool _canMove = true;
+
     void Start()
     {
         _tfCam = Camera.main.transform;
@@ -25,9 +27,13 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!_canMove) return;
+        
         cameraAngleX += tb.touchDis.x * cameraSpeed;
 
         _tfCam.position = transform.position + Quaternion.AngleAxis(cameraAngleX, Vector3.up) * _offset;
         _tfCam.rotation = Quaternion.LookRotation(transform.position + Vector3.up * _height - _tfCam.position, Vector3.up);
     }
+
+    public void SetCanMove(bool flag) { _canMove = flag; }
 }

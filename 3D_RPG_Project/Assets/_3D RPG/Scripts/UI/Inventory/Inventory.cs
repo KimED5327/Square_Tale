@@ -14,7 +14,6 @@ public class Inventory : MonoBehaviour
     [SerializeField] GameObject _goBackButton = null;
     [SerializeField] GameObject _goBackground = null;
 
-
     bool _isOpen = false;
 
     [Header("Slots")]
@@ -40,20 +39,73 @@ public class Inventory : MonoBehaviour
     // 테스트용 인벤 채우기
     void Start()
     {
-        TryToPushInventory(ItemDatabase.instance.GetItem(3));
-        TryToPushInventory(ItemDatabase.instance.GetItem(5));
-        TryToPushInventory(ItemDatabase.instance.GetItem(6));
-        TryToPushInventory(ItemDatabase.instance.GetItem(3));
-        TryToPushInventory(ItemDatabase.instance.GetItem(5));
-        TryToPushInventory(ItemDatabase.instance.GetItem(6));
-        TryToPushInventory(ItemDatabase.instance.GetItem(3));
-        TryToPushInventory(ItemDatabase.instance.GetItem(5));
-        TryToPushInventory(ItemDatabase.instance.GetItem(6));
-
+        if (!PlayerPrefs.HasKey("InvenSlotItemId" + 0))
+        {
+            TryToPushInventory(ItemDatabase.instance.GetItem(3));
+            TryToPushInventory(ItemDatabase.instance.GetItem(5));
+            TryToPushInventory(ItemDatabase.instance.GetItem(6));
+            TryToPushInventory(ItemDatabase.instance.GetItem(3));
+            TryToPushInventory(ItemDatabase.instance.GetItem(5));
+            TryToPushInventory(ItemDatabase.instance.GetItem(6));
+            TryToPushInventory(ItemDatabase.instance.GetItem(3));
+            TryToPushInventory(ItemDatabase.instance.GetItem(5));
+            TryToPushInventory(ItemDatabase.instance.GetItem(6));
+        }
         // 기본값 - 무기 우선 정렬 
         OnTouchTab(0);
+
+
+        LoadInventory();
     }
     #endregion
+
+    public void LoadInventory()
+    {
+        for (int i = 0; i < _slots.Length; i++)
+        {
+
+            if (!PlayerPrefs.HasKey("InvenSlotItemId" + i))
+            {
+                SaveInventory();
+                return;
+            }
+            else
+            {
+                int id = PlayerPrefs.GetInt("InvenSlotItemId" + i);
+                if(id != 0)
+                {
+                    _slots[i].PushSlot(
+                        ItemDatabase.instance.GetItem(
+                            PlayerPrefs.GetInt("InvenSlotItemId" + i))
+                        ,
+                        PlayerPrefs.GetInt("InvenSlotItemCount" + i)
+                    );
+                }
+            }
+        }
+        gold = PlayerPrefs.GetInt("Gold");
+    }
+
+
+    public void SaveInventory()
+    {
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            if (_slots[i].IsEmptySlot())
+            {
+                PlayerPrefs.SetInt("InvenSlotItemId" + i, 0);
+                PlayerPrefs.SetInt("InvenSlotItemCount" + i, 0);
+                PlayerPrefs.SetInt("Gold", gold);
+            }
+            else
+            {
+                Item item = _slots[i].GetSlotItem();
+                PlayerPrefs.SetInt("InvenSlotItemId" + i, item.id);
+                PlayerPrefs.SetInt("InvenSlotItemCount" + i, _slots[i].GetSlotCount());
+                PlayerPrefs.SetInt("Gold", gold);
+            }
+        }
+    }
 
     private void Awake()
     {
@@ -209,7 +261,6 @@ public class Inventory : MonoBehaviour
                 _slots[currentIndex].PushSlot(popItemList[listCount], popItemCountList[listCount]);
                 listCount++;
             }
-            
         }
     }
 
@@ -274,6 +325,7 @@ public class Inventory : MonoBehaviour
                 return;
             }
         }
+
     }
 
     public void DecreaseItemCount(Item item, int count)
@@ -321,7 +373,6 @@ public class Inventory : MonoBehaviour
                     }
 
                 }
-
 
                 return true;
             }
@@ -390,7 +441,7 @@ public class Inventory : MonoBehaviour
                 return _slots[i].GetSlotCount();
             }
         }
-
+        
         return -1;
     }
 
@@ -401,7 +452,7 @@ public class Inventory : MonoBehaviour
 
     public int GetGold() { return gold; }
     public int GetRuby() { return ruby; }
-    public void SetGold(int num) { gold = num; if (gold < 0) gold = 0; }
+    public void SetGold(int num) { gold = num; if (gold < 0) gold = 0; SaveInventory(); }
     public void SetRuby(int num) { ruby = num; if (ruby < 0) ruby = 0; }
 
 

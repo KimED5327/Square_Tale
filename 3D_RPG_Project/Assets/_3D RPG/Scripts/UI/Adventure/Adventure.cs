@@ -18,7 +18,7 @@ public class Adventure : MonoBehaviour
 
     int _curChapter = 0;
     int _curPage = 0;
-    int _maxPage = 2;
+    int _maxPage = 3;
     int _pageKeywordMaxCount;
 
     int _startKeywordID = 0;
@@ -87,7 +87,7 @@ public class Adventure : MonoBehaviour
                 _txtSynopsis.text = _txtSynopsis.text.Replace(curChapterKeywordList[i].keyword, curChapterKeywordList[i].hideText);
         }
 
-        _txtPage.text = $"{(_curPage + 1)}/{_maxPage}";
+        _txtPage.text = $"{(_curPage + 1)}/{_maxPage + 1}";
     }
 
     // 챕터 선택
@@ -114,9 +114,8 @@ public class Adventure : MonoBehaviour
     {
         SoundManager.instance.PlayEffectSound("Click");
 
-        _curPage = (_curPage + count) % (_maxPage + 1);
-        if (_curPage < 0)
-            _curPage = _maxPage;
+        _curPage = (_curPage < 0) ? _curPage = _maxPage
+                                  : (_curPage + count) % (_maxPage + 1);
 
         KeywordSetting();
     }

@@ -67,4 +67,6 @@ public class MapManager : MonoBehaviour
         Instantiate(_currentMap.gameObject);
         _currentMap.SearchSpawnPoint(tfPlayer, _priorMap);
     }
+
+    public string GetCurrentMapName() { return _currentMap.GetMapName(); }
 }

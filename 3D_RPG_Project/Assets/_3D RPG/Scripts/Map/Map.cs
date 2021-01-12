@@ -51,7 +51,13 @@ public class Map : MonoBehaviour
         _TfPlayer = FindObjectOfType<PlayerMove>().transform;
         waitTime = new WaitForSeconds(_respawnCheckTime);
 
-        SoundManager.instance.PlayBGM("BGM_Village");
+        if (_mapName == "Town")
+            SoundManager.instance.PlayBGM("BGM_Village");
+        else if (_mapName == "LilyCastleBossRoom")
+            SoundManager.instance.PlayBGM("BGM_Boss");
+        else
+            SoundManager.instance.PlayBGM("BGM_Field");
+
     }
 
     // 맵 활성화되면 몬스터들 스폰.
@@ -76,7 +82,6 @@ public class Map : MonoBehaviour
 
             GameObject goEnemy = _spawnEnemyList[i].enemyStatus.gameObject;
             string monsterName = _spawnEnemyList[i].enemyStatus.GetName();
-
             ObjectPooling.instance.PushObjectToPool(monsterName, goEnemy);
         }
         _spawnEnemyList.Clear();

@@ -4,12 +4,15 @@ using UnityEngine;
 
 public abstract class Block : Status
 {
-    [SerializeField] string _destroyEffectName = "";    // 블록 파괴 연출 이펙트
+    [SerializeField] protected string _destroyEffectName = "";    // 블록 파괴 연출 이펙트
+    [SerializeField] protected string _destroySoundName = "Explosion";    // 블록 파괴 연출 이펙트
+
     [SerializeField] string _hitEffectName = "";        // 블록 피격 연출 이펙트 (플레이어)
     [SerializeField] float _destroyTime = 10f;
     [SerializeField] bool _autoDestoryBlock = false;
+    [SerializeField] bool _isObjectPool = true;
     Transform _tfPlayer = null;
-    Animator _anim = null;
+    protected Animator _anim = null;
 
     static readonly string _aniPlayShake = "Shake";
 
@@ -53,20 +56,19 @@ public abstract class Block : Status
 
     protected override void Dead()
     {
-
-
-        SoundManager.instance.PlayEffectSound("Explosion");
+        SoundManager.instance.PlayEffectSound(_destroySoundName);
 
         if (_hitEffectName != "")
-        {
             ObjectPooling.instance.GetObjectFromPool(_hitEffectName, _tfPlayer.position);
-        }
-        ObjectPooling.instance.GetObjectFromPool(_destroyEffectName, transform.position);
+        if(_destroyEffectName != "")
+            ObjectPooling.instance.GetObjectFromPool(_destroyEffectName, transform.position);
+        
         _isDead = true;
 
         BlockEffect();
 
-        ObjectPooling.instance.PushObjectToPool(_name, this.gameObject);
+        if(_isObjectPool)
+            ObjectPooling.instance.PushObjectToPool(_name, this.gameObject);
     }
 
 
@@ -77,5 +79,4 @@ public abstract class Block : Status
     }
 
     protected abstract void BlockEffect();
-
 }

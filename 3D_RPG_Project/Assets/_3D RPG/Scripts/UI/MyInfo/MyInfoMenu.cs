@@ -50,7 +50,6 @@ public class MyInfoMenu : MonoBehaviour
         txtInt.text = thePlayerStatus.GetInt().ToString();
         txtDef.text = thePlayerStatus.GetDef().ToString();
         txtHp.text = thePlayerStatus.GetMaxHp().ToString();
-        imgUser.sprite = null;
 
         float percent = Adventure.GetAdventureProgress();
         txtAdventure.text = percent + " %";

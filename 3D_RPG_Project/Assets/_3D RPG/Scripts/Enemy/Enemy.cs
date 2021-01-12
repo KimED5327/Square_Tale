@@ -69,7 +69,9 @@ public class Enemy : MonoBehaviour
         myRigid = GetComponent<Rigidbody>();
     }
 
-    public void LinkPlayer(Transform tfPlayer) { player = tfPlayer; }
+    public void LinkPlayer(Transform tfPlayer) { 
+        player = tfPlayer; 
+    }
 
     //에너미 업데이트
     private void Update()

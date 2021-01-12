@@ -24,11 +24,13 @@ public class BlockPreview : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        _enterObjectList.Add(other.gameObject);
+        if(!other.CompareTag(StringManager.TriggerTag))
+            _enterObjectList.Add(other.gameObject);
     }
     private void OnTriggerExit(Collider other)
     {
-        _enterObjectList.Remove(other.gameObject);
+        if (!other.CompareTag(StringManager.TriggerTag))
+            _enterObjectList.Remove(other.gameObject);
     }
 
     private void Update()

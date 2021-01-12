@@ -15,16 +15,56 @@ public class Equipment : MonoBehaviour
 {
     static readonly int WEAPON = 0, ARMOR = 1;
 
-    // 이후 스왑관련 나오면 변경
     [SerializeField] Slot[] _slots = null;
     [SerializeField] EquipSwapItem[] _equipItems = null;
+    [SerializeField] GameObject[] _goCharacters = null;
 
     int _currentSwapNum = -1;
 
     [SerializeField] Image[] _imgButtons = null;
 
+    public void SaveEquip()
+    {
+        for(int i = 0; i < _equipItems.Length; i++)
+        {
+            for(int j = 0; j < _equipItems[i].items.Length; j++)
+            {
+                if (_equipItems[i].isEquipItems[j])
+                {
+                    Item item = _equipItems[i].items[j];
+                    PlayerPrefs.SetInt("Class" + i + "Item" + j, _equipItems[i].items[j].id);
+                }
+                else
+                    PlayerPrefs.SetInt("Class" + i + "Item" + j, 0);
+            }
+        }
+    }
+
+    public void LoadEquip()
+    {
+        for (int i = 0; i < _equipItems.Length; i++)
+        {
+            for (int j = 0; j < _equipItems[i].items.Length; j++)
+            {
+                if (!PlayerPrefs.HasKey("Class" + i + "Item" + j))
+                {
+                    SaveEquip();
+                    return;
+                }
+
+                int itemID = PlayerPrefs.GetInt("Class" + i + "Item" + j);
+                if(itemID != 0)
+                {
+                    _equipItems[i].isEquipItems[j] = true;
+                    _equipItems[i].items[j] = ItemDatabase.instance.GetItem(itemID);
+                }
+            }
+        }
+    }
+
     void Awake()
     {
+        LoadEquip();
         SwapWeaponNum(0);
     }
     // 장착 시도
@@ -49,6 +89,8 @@ public class Equipment : MonoBehaviour
 
             return equipItem;
         }
+
+
     }
 
     void SetEquipSlot(Item item, int slotType, bool isClear)
@@ -60,6 +102,8 @@ public class Equipment : MonoBehaviour
 
         _equipItems[_currentSwapNum].items[slotType] = item;
         _equipItems[_currentSwapNum].isEquipItems[slotType] = !isClear;
+
+        SaveEquip();
     }
 
     // 장착 슬롯 빼기
@@ -74,6 +118,10 @@ public class Equipment : MonoBehaviour
 
     public void SwapWeaponNum(int num)
     {
+        _goCharacters[num].SetActive(true);
+        _goCharacters[(num + 1) % 2].SetActive(false);
+
+
         _imgButtons[num].color = Color.white;
         _imgButtons[(num + 1) % _imgButtons.Length].color = Color.gray;
 

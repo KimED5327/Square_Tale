@@ -79,11 +79,6 @@ public class ObjectPooling : MonoBehaviour
                 // 풀에서 오브젝트를 리턴시킨다.
                 GameObject go = _poolDictionary[name].Dequeue();
                 go.transform.position = pos;
-
-                Status status = go.GetComponent<Status>();
-                if (status != null)
-                    status.Initialized();
-
                 go.SetActive(true);
                 return go;
             }

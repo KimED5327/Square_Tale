@@ -13,17 +13,16 @@ public abstract class Status : MonoBehaviour
     [SerializeField] protected int _level = 1;
     [SerializeField] protected int _giveExp = 50;
     protected bool _isDead = false;
-
     string _skillType = "normal";
 
-    protected void Start()
+    private void OnEnable()
     {
         Initialized();
     }
 
     public virtual void Initialized()
     {
-        if (_curHp < 0)
+        if (_curHp <= 0)
             _curHp = _maxHp;
 
         _isDead = false;
@@ -35,6 +34,13 @@ public abstract class Status : MonoBehaviour
         if (_skillType.Equals("overlap")) return;
         _skillType = skillType;
         _curHp -= num;
+
+        SoundManager.instance.PlayEffectSound("Damage");
+        GameObject go = ObjectPooling.instance.GetObjectFromPool("피격 이펙트", transform.position + Vector3.up * 0.5f);
+
+        GameObject goFloating = ObjectPooling.instance.GetObjectFromPool("플로팅 텍스트", transform.position + Vector3.up * 0.75f);
+        goFloating.GetComponent<FloatingText>().SetText(num, transform.CompareTag(StringManager.playerTag));
+
         Invoke("ChangeSkillType", 0.5f);
         if(_curHp <= 0)
         {
@@ -42,10 +48,7 @@ public abstract class Status : MonoBehaviour
         }
         else
         {
-            if (_skillType.Equals("overlap"))
-            {
-                HurtReaction(targetPos);
-            }
+            HurtReaction(targetPos);
         }
     }
 
@@ -55,7 +58,9 @@ public abstract class Status : MonoBehaviour
     {
         if (transform.CompareTag(StringManager.enemyTag))
         {
-            GetComponent<Enemy>().GetPlayerStatus().IncreaseExp(_giveExp);
+            Enemy enemy = GetComponent<Enemy>();
+            if(enemy != null)
+                enemy.GetPlayerStatus().IncreaseExp(_giveExp);
         }
         _curHp = 0;
         _isDead = true;

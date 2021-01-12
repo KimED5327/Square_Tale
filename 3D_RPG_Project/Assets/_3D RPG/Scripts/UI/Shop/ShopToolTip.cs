@@ -105,10 +105,7 @@ public class ShopToolTip : MonoBehaviour
             else
                 _price += _touchItem.priceSell;
 
-            if (_isBuy)
-            {
-                ShowPriceAndCount();
-            }
+            ShowPriceAndCount();
         }
     }
     public void BtnDecreaseCount()
@@ -199,8 +196,7 @@ public class ShopToolTip : MonoBehaviour
     {
         _inven.SetGold(_inven.GetGold() + _price);
         _inven.DecreaseItemCount(_touchItem, _count);
-        HideToolTip();
-        _shop.ReSetUI();
+        FinishProcess();
     }
     
     // 구매 실행
@@ -208,7 +204,14 @@ public class ShopToolTip : MonoBehaviour
     {
         _inven.SetGold(_inven.GetGold() - _price);
         _inven.TryToPushInventory(_touchItem, _count);
+        FinishProcess();
+    }
+
+    // 마무리
+    void FinishProcess()
+    {
         HideToolTip();
         _shop.ReSetUI();
+        _inven.SaveInventory();
     }
 }

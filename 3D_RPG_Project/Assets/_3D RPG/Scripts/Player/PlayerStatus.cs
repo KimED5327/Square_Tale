@@ -7,6 +7,7 @@ public class PlayerStatus : Status
     [Header("Player Status")]
     [SerializeField] int _str = 0;
     [SerializeField] int _int = 0;
+    [SerializeField] Sprite _profile = null;
 
     [Header("Level Up Info")]
     [SerializeField] int[] _levelUpExps = null;
@@ -90,5 +91,6 @@ public class PlayerStatus : Status
         return (float)_curHp / _maxHp;
     }
 
+    public Sprite GetProfileSprite() { return _profile; }
     public PlayerBuffManager GetBuffManager() { return _buffManager; }
 }

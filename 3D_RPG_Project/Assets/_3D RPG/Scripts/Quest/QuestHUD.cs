@@ -21,6 +21,11 @@ public class QuestHUD : MonoBehaviour
     [SerializeField] Text _questGoal2 = null;
 
 
+    private void Awake()
+    {
+        QuestManager.instance.InitializeLink();
+    }
+
     private void Start()
     {
         QuestManager.instance.UpdateQuestHudOnStart();
@@ -46,6 +51,8 @@ public class QuestHUD : MonoBehaviour
     /// </summary>
     public void OpenQuestList()
     {
+        if (_questListPanel == null) Debug.Log("패널 missing");
+
         _questListPanel.SetActive(true);
         _btnQuest.image.sprite = _imgBtnSelected;
         QuestManager.instance.SetIsHudOpen(true);

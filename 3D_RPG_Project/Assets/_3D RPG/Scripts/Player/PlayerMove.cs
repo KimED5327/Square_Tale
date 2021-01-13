@@ -886,20 +886,20 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    //public void Die()
-    //{
-    //    if (myStatus.GetCurrentHp() <= 0)
-    //    {
-    //        isDie = true;
-    //        resurrectionBtn.SetActive(true);
-    //        blockCon.enabled = false;
-    //        if (!isDieTrigger)
-    //        {
-    //            isDieTrigger = true;
-    //            anim.SetTrigger("doDie");
-    //        }
-    //    }
-    //}
+    public void Die()
+    {
+        if (myStatus.GetCurrentHp() <= 0)
+        {
+            isDie = true;
+            resurrectionBtn.SetActive(true);
+            blockCon.enabled = false;
+            if (!isDieTrigger)
+            {
+                isDieTrigger = true;
+                anim.SetTrigger("doDie");
+            }
+        }
+    }
 
     public void Resurrection()
     {

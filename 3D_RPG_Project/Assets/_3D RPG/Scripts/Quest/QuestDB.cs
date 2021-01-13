@@ -41,7 +41,7 @@ public class QuestDB : MonoBehaviour
 
         if (quest == null) Debug.Log("퀘스트 ID " + questID + "번은 등록되어있지 않습니다.");
 
-        return quest;
+        return questDB[questID];
     }
 
     /// <summary>

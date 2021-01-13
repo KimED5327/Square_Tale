@@ -26,11 +26,18 @@ public class QuestLoader : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null) instance = this; 
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else Destroy(gameObject);
     }
 
     void Start()
     {
+        if (QuestDB.instance.GetMaxCount() > 0) return; 
+
         // 퀘스트 기본정보 파싱 
         ParsingQuestDB();
         //PrintQuestInfo();

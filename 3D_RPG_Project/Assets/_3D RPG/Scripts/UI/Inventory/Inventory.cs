@@ -51,9 +51,9 @@ public class Inventory : MonoBehaviour
         TryToPushInventory(ItemDatabase.instance.GetItem(6));
 
         // 퀘스트 테스트용으로 추가 
-        TryToPushInventory(ItemDatabase.instance.GetItem(2));
-        TryToPushInventory(ItemDatabase.instance.GetItem(2));
-        TryToPushInventory(ItemDatabase.instance.GetItem(2));
+        //TryToPushInventory(ItemDatabase.instance.GetItem(2));
+        //TryToPushInventory(ItemDatabase.instance.GetItem(2));
+        //TryToPushInventory(ItemDatabase.instance.GetItem(2));
         //TryToPushInventory(ItemDatabase.instance.GetItem(3));
         //TryToPushInventory(ItemDatabase.instance.GetItem(3));
 
@@ -295,6 +295,7 @@ public class Inventory : MonoBehaviour
                 
             }
         }
+
         SerializeItem();
     }
 
@@ -327,6 +328,7 @@ public class Inventory : MonoBehaviour
                     }
                 }
 
+                // ※ 퀘스트 조건검사 
                 // 진행 중인 퀘스트 중 '아이템 전달' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 
                 QuestManager.instance.CheckDeliverItemQuest();
                 // 진행 중인 퀘스트 중 '아이템 소지' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 
@@ -346,6 +348,7 @@ public class Inventory : MonoBehaviour
             {
                 _slots[i].PushSlot(item, count);
 
+                // ※ 퀘스트 조건검사
                 // 진행 중인 퀘스트 중 '아이템 전달' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 
                 QuestManager.instance.CheckDeliverItemQuest();
                 // 진행 중인 퀘스트 중 '아이템 소지' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 

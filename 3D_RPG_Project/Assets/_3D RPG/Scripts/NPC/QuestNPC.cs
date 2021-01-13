@@ -48,17 +48,20 @@ public class QuestNPC : MonoBehaviour
     [Tooltip("기본 다이얼로그 박스 내 NPC 대사 Text")]
     Text _txtNpcLines;
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        _questState = QuestState.QUEST_VEILED;
-
         // 선행 퀘스트를 완료 한 퀘스트를 오픈할 수 있도록 함. 
         QuestManager.CheckAvailableQuest += UpdateQuestState;
         QuestManager.CheckAvailableQuest += SetQuestMark;
 
         // 씬 전환 시 NPC 데이터가 퀘스트 데이터에 싱크가 맞도록 설정 
         QuestManager.SyncWithQuestOnStart += SyncWithOngoingQuest;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        _questState = QuestState.QUEST_VEILED;
 
         // 다이얼로그 UI 값 세팅 
         DialogueUI dialogueUI = FindObjectOfType<DialogueUI>();
@@ -66,13 +69,22 @@ public class QuestNPC : MonoBehaviour
         _questDialoguePanel = dialogueUI.GetQuestPanel();
         _txtNpcName = dialogueUI.GetNpcName();
         _txtNpcLines = dialogueUI.GetLines();
+
+        Debug.Log("퀘스트 3번 상태 : " + QuestDB.instance.GetQuest(3).GetState());
     }
 
     // Update is called once per frame
     void Update()
     {
         ParsingData();
-        //QuestManager.instance.SyncWithNpcOnStart();
+    }
+
+    private void OnDisable()
+    {
+        // 씬이 변경됨에 따라 이벤트 함수들이 중복해서 추가되지 않도록 씬이 끝날 때 삭제  
+        QuestManager.CheckAvailableQuest -= UpdateQuestState;
+        QuestManager.CheckAvailableQuest -= SetQuestMark;
+        QuestManager.SyncWithQuestOnStart -= SyncWithOngoingQuest;
     }
 
     /// <summary>
@@ -90,9 +102,8 @@ public class QuestNPC : MonoBehaviour
             _isParsingDone = true;
 
             Debug.Log("파싱함수 호출");
+            QuestManager.instance.SyncWithNpcOnStart();
         }
-
-        QuestManager.instance.SyncWithNpcOnStart();
     }
 
     /// <summary>
@@ -181,6 +192,8 @@ public class QuestNPC : MonoBehaviour
                 }
             }
 
+            if (QuestManager.instance.CheckIfQuestIsCompleted(_npc.GetQuestID(i))) continue; 
+
             isAvailable = true;
             _questState = QuestState.QUEST_OPENED;
             QuestDB.instance.GetQuest(_npc.GetQuestID(i)).SetQuestGiver(this);
@@ -210,18 +223,81 @@ public class QuestNPC : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 씬이 시작될 때마다 진행 중인 퀘스트에 맞게 NPC 상태값 싱크 맞추기 
+    /// </summary>
+    /// <param name="quest"></param>
     public void SyncWithOngoingQuest(Quest quest)
     {
-        if (quest.GetNpcID() != _npcID) return;
+        bool isOngoing = false; 
 
-        Debug.Log(_npcID + "번 NPC : 진행중인 퀘스트의 부여자");
-        Debug.Log(quest.GetQuestID() + "번 퀘스트 진행중");
+        // NPC의 퀘스트 목록 내 진행중인 퀘스트와 같은 ID를 가진 퀘스트가 있다면 싱크 실행 
+        foreach(int questID in _npc.GetQuestList())
+        {
+            if (questID == quest.GetQuestID()) isOngoing = true; 
+        }
 
-        _ongoingQuestID = quest.GetQuestID();
-        _questState = quest.GetState();
+        if (!isOngoing) return;
 
+        // 퀘스트의 진행 상태에 따라 싱크 실행 
+        switch (quest.GetState())
+        {
+            case QuestState.QUEST_ONGOING:
+                // 퀘스트의 부여자/완료자를 나누어 참조, 상태값 설정 
+                if (quest.GetNpcID() == _npcID)
+                {
+                    if (quest.GetQuestFinisher().GetNpcID() == _npcID)
+                        QuestManager.instance.GetOngoingQuest().SetQuestFinisher(this);
 
-        this.SetQuestMark();
+                    SetNpcOngoingState(quest);
+                    QuestManager.instance.GetOngoingQuest().SetQuestGiver(this);
+                    break;
+                }
+
+                QuestManager.instance.GetOngoingQuest().SetQuestFinisher(this);
+                break;
+
+            case QuestState.QUEST_COMPLETABLE:
+                // 퀘스트의 부여자/완료자를 나누어 참조, 상태값 설정 
+                if (quest.GetNpcID() == _npcID)
+                {
+                    SetNpcOngoingState(quest);
+                    QuestManager.instance.GetOngoingQuest().SetQuestGiver(this);
+
+                    if (quest.GetQuestFinisher().GetNpcID() == _npcID)
+                    {
+                        SetNpcCompletableState(quest);
+                        QuestManager.instance.GetOngoingQuest().SetQuestFinisher(this);
+                    }
+                    break;
+                }
+
+                SetNpcCompletableState(quest);
+                QuestManager.instance.GetOngoingQuest().SetQuestFinisher(this);
+                break;
+        }
+
+        SetQuestMark();
+    }
+
+    /// <summary>
+    /// NPC의 상태값을 퀘스트 진행중 상태로 설정 
+    /// </summary>
+    /// <param name="quest"></param>
+    private void SetNpcOngoingState(Quest quest)
+    {
+        SetOngoingQuestID(quest.GetQuestID());
+        SetQuestState(QuestState.QUEST_ONGOING);
+    }
+
+    /// <summary>
+    /// NPC의 상태값을 퀘스트 완료가능 상태로 설정 
+    /// </summary>
+    /// <param name="quest"></param>
+    private void SetNpcCompletableState(Quest quest)
+    {
+        SetOngoingQuestID(quest.GetQuestID());
+        SetQuestState(QuestState.QUEST_COMPLETABLE);
     }
 
     /// <summary>
@@ -362,7 +438,7 @@ public class QuestNPC : MonoBehaviour
     public void SetNpcID(int npcID) { _npcID = npcID; }
 
     public int GetOngoingQuestID() { return _ongoingQuestID; }
-    public void SetOngoingQuestID(int questID) { _ongoingQuestID = questID; }
+    public void SetOngoingQuestID(int questID) { Debug.Log("현재 진행중인 퀘스트 " + questID + "번으로 설정");  _ongoingQuestID = questID; }
 
     public QuestState GetQuestState() { return _questState; }
     public void SetQuestState(QuestState state) { _questState = state; }

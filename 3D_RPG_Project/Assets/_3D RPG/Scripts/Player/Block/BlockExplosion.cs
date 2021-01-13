@@ -17,6 +17,10 @@ public class BlockExplosion : Block
         for (int i = 0; i < cols.Length; i++)
         {
             Status targetStatus = cols[i].transform.GetComponent<Status>();
+
+            if(targetStatus == null)
+                continue;
+
             int damage = (int)(targetStatus.GetMaxHp() * _damageRatio);
             targetStatus.Damage(damage, transform.position);
         }

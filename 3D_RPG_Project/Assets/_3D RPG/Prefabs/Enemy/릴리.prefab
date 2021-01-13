@@ -1523,12 +1523,14 @@ MonoBehaviour:
   _level: 5
   _giveExp: 42
   _knockBackForce: 0.1
+  _canKnockBack: 1
   _dropItemInfo:
   - itemID: 3
     itemCounts:
       min: 0
       max: 0
     itemDropRate: 70
+  _isForceDead: 0
 --- !u!114 &4860459568502794618
 MonoBehaviour:
   m_ObjectHideFlags: 0

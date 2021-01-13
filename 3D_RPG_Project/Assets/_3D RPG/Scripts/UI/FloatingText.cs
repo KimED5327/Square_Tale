@@ -12,5 +12,10 @@ public class FloatingText : MonoBehaviour
         _txtDamage.text = num.ToString();
         _txtDamage.color = (isPlayerHurt) ? Color.red : Color.white;
     }
+    public void SetHealingText(int num)
+    {
+        _txtDamage.text = num.ToString();
+        _txtDamage.color = Color.green;
+    }
 
 }

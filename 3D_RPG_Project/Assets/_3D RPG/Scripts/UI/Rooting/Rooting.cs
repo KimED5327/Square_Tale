@@ -62,6 +62,15 @@ public class Rooting : MonoBehaviour
             else
                 _rootingSlots[i].gameObject.SetActive(false);
         }
+
+        if (_rootingDropItem.Count == 0)
+            StartCoroutine(WaitCoroutine());
+    }
+
+    IEnumerator WaitCoroutine()
+    {
+        yield return new WaitForSeconds(0.15f);
+        BtnExit();
     }
 
     public void BtnExit()
@@ -73,7 +82,6 @@ public class Rooting : MonoBehaviour
 
         InteractionManager._isOpen = false;
         _goRootingUI.SetActive(false);
-
     }
 
     public void PushInventory(Item item, int count)

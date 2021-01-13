@@ -46,10 +46,11 @@ public abstract class Status : MonoBehaviour
         _curHp -= num;
 
         SoundManager.instance.PlayEffectSound("Damage");
-        GameObject go = ObjectPooling.instance.GetObjectFromPool("피격 이펙트", transform.position + Vector3.up * 0.5f);
-
+        ObjectPooling.instance.GetObjectFromPool("피격 이펙트", transform.position + Vector3.up * 0.5f);
         GameObject goFloating = ObjectPooling.instance.GetObjectFromPool("플로팅 텍스트", transform.position + Vector3.up * 0.75f);
         goFloating.GetComponent<FloatingText>().SetText(num, transform.CompareTag(StringManager.playerTag));
+        Debug.Log("맞은 유닛 : " + transform.name);
+
 
         Invoke("ChangeSkillType", 0.5f);
         if(_curHp <= 0)
@@ -85,6 +86,9 @@ public abstract class Status : MonoBehaviour
     public int SetCurrentHp(int hp) => _curHp = hp;
     public void IncreaseHp(int hp)
     {
+        GameObject goFloating = ObjectPooling.instance.GetObjectFromPool("플로팅 텍스트", transform.position + Vector3.up * 0.75f);
+        goFloating.GetComponent<FloatingText>().SetHealingText(hp);
+
         _curHp += hp;
         if (_curHp > _maxHp)
             _curHp = _maxHp;

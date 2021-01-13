@@ -31,6 +31,7 @@ public class StringManager : MonoBehaviour
     public static string msgCanNotSkill = "쿨타임 입니다.";
     public static string msgNotAccessChapter = "해금되지 않은 챕터입니다.";
     public static string msgAlreadyActivateTrigger = "이미 작동시킨 장치입니다.";
+    public static string msgCanNotSwap = "스킬 쿨타임 일때 변경 할 수 없습니다.";
 
 
     public static string block = "Block";

@@ -11,16 +11,13 @@ public class SkillEquipSlot : MonoBehaviour
     [SerializeField] int _skillID = 0;
 
     bool _isEquipSkill = false;
-
-
-
+    
     // Start is called before the first frame update
     void Start()
     {
         if (_equipSkillName != "")
             _isEquipSkill = true;
     }
-
 
     public void PushEquipSlot(int id, string name, Sprite sprite)
     {

@@ -28,8 +28,6 @@ public class SkillSlot : MonoBehaviour
         ReUI();
     }
 
-
-
     public bool TryEquip()
     {
         _isEquip = !_isEquip;
@@ -54,4 +52,6 @@ public class SkillSlot : MonoBehaviour
     public string GetSkillName() { return _skillName; }
 
     public Sprite GetSkillSprite() { return _imgIcon.sprite; }
+    public bool GetIsEquip() { return _isEquip; }
+    public void SetIsEquip(bool isEquip) { _isEquip = isEquip; }
 }

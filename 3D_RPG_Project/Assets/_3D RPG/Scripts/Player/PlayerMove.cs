@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour
 { 
@@ -10,31 +11,32 @@ public class PlayerMove : MonoBehaviour
 
     public GameObject attackEffect1;
     public GameObject attackEffect2;
-    public GameObject attackEffect3;
+    public GameObject attackEffect3; // 검사 기본공격 이펙트
     public GameObject skill1Effect;
     public GameObject skill2Effect;
     public GameObject skill3Effect;
-    public GameObject skill4Effect;
+    public GameObject skill4Effect; // 스킬 이펙트
     public GameObject effect1;
     public GameObject effect2;
     public GameObject effect3;
-    public GameObject effect4;
+    public GameObject effect4; // 검사의 실제 데미지 콜라이더
 
     public GameObject sword;
-    public GameObject mage;
+    public GameObject mage; // 캐릭터
+
     public Transform magicAttack1Pos;
     public Transform magicAttack2Pos;
-    public Transform magicAttack3Pos;
-    public Transform blackholePos;
+    public Transform magicAttack3Pos; // 마법사 기본공격 위치
+    public Transform blackholePos; // 블랙홀의 시작위치
     public GameObject iceMissile;
     public GameObject bubble;
-    public GameObject blood;
-    public GameObject startLightning;
-    public GameObject lightning;
-    public GameObject startRain;
-    public GameObject rain;
-    public GameObject blackhole;
-    public GameObject meteo;
+    public GameObject blood; // 마법사 기본공격 이펙트
+    public GameObject startLightning; // 마법사 선더볼트 지팡이 이펙트
+    public GameObject lightning; // 선더볼트 이펙트
+    public GameObject startRain; // 아이스 레인의 캐스팅 이펙트
+    public GameObject rain; // 아이스레인 이펙트
+    public GameObject blackhole; // 블랙홀 이펙트
+    public GameObject meteo; // 익스플로전 이펙트
 
     public GameObject swordButton;
     public GameObject mageButton;
@@ -51,18 +53,33 @@ public class PlayerMove : MonoBehaviour
     public GameObject mageAttack2Img;
     public GameObject mageAttack3Img;
 
-    public GameObject resurrectionBtn;
+    public GameObject resurrectionUI;
     public GameObject swapBtn;
+
+    public GameObject resurrectionEffect; // 부활 이펙트
+
+    public GameObject[] _skillCoolImg = null; // 스킬 쿨타임 이미지 받는곳
 
     float hAxis;
     float vAxis;
     float attackDelay;
     float comboDelay;
     float comboCountDelay;
-    float skill1Cooldown;
-    float skill2Cooldown;
-    float skill3Cooldown;
-    float skill4Cooldown;
+    // 스킬 쿨타임
+    float curSkill1Cooltime;
+    float curSkill2Cooltime;
+    float curSkill3Cooltime;
+    float curSkill4Cooltime;
+    // 스킬 쿨타임 수정 필요 !!
+    float swordSkill1Cooltime = 15f;
+    float swordSkill2Cooltime = 15f;
+    float swordSkill3Cooltime = 15f;
+    float swordSkill4Cooltime = 15f;
+
+    float mageSkill1Cooltime = 20f;
+    float mageSkill2Cooltime = 30f;
+    float mageSkill3Cooltime = 30f;
+    float mageSkill4Cooltime = 45f;
 
     int comboCount = 0;
 
@@ -101,6 +118,7 @@ public class PlayerMove : MonoBehaviour
     MageSkillManager mageSkillButton;
     JoyStick joystick;
     BlockController blockCon;
+    SkillCooltime skillCool;
 
     public Animator anim;
     public Animator[] anims;
@@ -116,12 +134,15 @@ public class PlayerMove : MonoBehaviour
         skillButton = FindObjectOfType<SkillManager>();
         mageSkillButton = FindObjectOfType<MageSkillManager>();
         joystick = FindObjectOfType<JoyStick>();
+        SaveManager.instance.Load();
+        PlayerType();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        //Die();
+        Die();
+        OutofMap();
         if (!isDie)
         {
             attackDelay += Time.deltaTime;
@@ -189,6 +210,24 @@ public class PlayerMove : MonoBehaviour
                 mageSkillUI.SetActive(true);
                 mageUseSkill.SetActive(true);
             }
+        }
+    }
+
+    void PlayerType() //로드된 플레이어 타입
+    {
+        if (isSword)
+        {
+            anim = anims[0];
+            isMage = false;
+            sword.SetActive(true);
+            mage.SetActive(false);
+        }
+        if (isMage)
+        {
+            anim = anims[1];
+            isSword = false;
+            sword.SetActive(false);
+            mage.SetActive(true);
         }
     }
 
@@ -262,6 +301,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (Input.GetKeyDown("space") && !isJump && !isDodge)
         {
+            SaveManager.instance.Save();
             isJump = true;
             myRigid.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             anim.SetBool("isJump", true);
@@ -288,7 +328,6 @@ public class PlayerMove : MonoBehaviour
             speed *= 2;
             anim.SetTrigger("doDodge");
             isDodge = true;
-
             Invoke("DodgeOut", 0.5f);
         }
     }
@@ -322,7 +361,7 @@ public class PlayerMove : MonoBehaviour
             if (isAttackReady && !isDodge && !isJump && !isCombo && !isDie)
             {
                 SoundManager.instance.PlayEffectSound("Slash_S");
-                equipWeapon.Use();
+                equipWeapon.Use(1);
                 isCombo = true;
                 isComboCount = true;
                 anim.SetTrigger("doAttack1");
@@ -336,7 +375,7 @@ public class PlayerMove : MonoBehaviour
                 if (comboCount == 1 && !isAttack2)
                 {
                     SoundManager.instance.PlayEffectSound("Slash_M");
-                    equipWeapon.Use();
+                    equipWeapon.Use(2);
                     isAttack2 = true;
                     isComboCount = true;
                     comboDelay = 0;
@@ -348,7 +387,7 @@ public class PlayerMove : MonoBehaviour
                 else if (comboCount == 2 && !isAttack3)
                 {
                     SoundManager.instance.PlayEffectSound("Slash_L");
-                    equipWeapon.Use();
+                    equipWeapon.Use(3);
                     isAttack3 = true;
                     isComboCount = true;
                     StopCoroutine("Effect3");
@@ -412,7 +451,6 @@ public class PlayerMove : MonoBehaviour
             mageAttack1Img.SetActive(false);
             mageAttack2Img.SetActive(true);
             GameObject instantMagic = Instantiate(iceMissile, magicAttack1Pos.position, magicAttack1Pos.rotation);
-            Rigidbody rigid = instantMagic.GetComponent<Rigidbody>();
             Destroy(instantMagic, 1f);
         }
         yield return new WaitForSeconds(0.3f);
@@ -436,9 +474,10 @@ public class PlayerMove : MonoBehaviour
         if (isMage)
         {
             mageAttack3Img.SetActive(true);
-            GameObject instantMagic = Instantiate(bubble, magicAttack2Pos.position, magicAttack2Pos.rotation);
-            Rigidbody rigid = instantMagic.GetComponent<Rigidbody>();
-            Destroy(instantMagic, 1f);
+            GameObject instantMagic1 = Instantiate(bubble, magicAttack1Pos.position, magicAttack1Pos.rotation);
+            Destroy(instantMagic1, 1f);
+            GameObject instantMagic2 = Instantiate(bubble, magicAttack2Pos.position, magicAttack2Pos.rotation);
+            Destroy(instantMagic2, 1f);
         }
         yield return new WaitForSeconds(0.5f);
         attackEffect2.SetActive(false);
@@ -461,9 +500,12 @@ public class PlayerMove : MonoBehaviour
         {
             mageAttack3Img.SetActive(false);
             mageAttack1Img.SetActive(true);
-            GameObject instantMagic = Instantiate(blood, magicAttack3Pos.position, magicAttack3Pos.rotation);
-            Rigidbody rigid = instantMagic.GetComponent<Rigidbody>();
-            Destroy(instantMagic, 1f);
+            GameObject instantMagic1 = Instantiate(blood, magicAttack1Pos.position, magicAttack1Pos.rotation);
+            Destroy(instantMagic1, 1f);
+            GameObject instantMagic2 = Instantiate(blood, magicAttack2Pos.position, magicAttack2Pos.rotation);
+            Destroy(instantMagic2, 1f);
+            GameObject instantMagic3 = Instantiate(blood, magicAttack3Pos.position, magicAttack3Pos.rotation);
+            Destroy(instantMagic3, 1f);
         }
         yield return new WaitForSeconds(0.5f);
         attackEffect3.SetActive(false);
@@ -720,39 +762,49 @@ public class PlayerMove : MonoBehaviour
 
         if (isSword)
         {
+            skillCool = _skillCoolImg[0].GetComponent<SkillCooltime>();
             if (skillButton.GetSkillButtonName(0).Equals("회전 베기"))
             {
+                skillCool.SetSkillCooltime(swordSkill1Cooltime, true);
                 Skill1();
             }
             else if (skillButton.GetSkillButtonName(0).Equals("회오리 베기"))
             {
+                skillCool.SetSkillCooltime(swordSkill2Cooltime, true);
                 Skill2();
             }
             else if (skillButton.GetSkillButtonName(0).Equals("블러드 슬래시"))
             {
+                skillCool.SetSkillCooltime(swordSkill3Cooltime, true);
                 Skill3();
             }
             else if (skillButton.GetSkillButtonName(0).Equals("옥타곤 슬래시"))
             {
+                skillCool.SetSkillCooltime(swordSkill4Cooltime, true);
                 Skill4();
             }
         }
         if (isMage)
         {
+            skillCool = _skillCoolImg[2].GetComponent<SkillCooltime>();
             if (mageSkillButton.GetSkillButtonName(0).Equals("썬더 볼트"))
             {
+                skillCool.SetSkillCooltime(mageSkill1Cooltime, true);
                 Skill1();
             }
             else if (mageSkillButton.GetSkillButtonName(0).Equals("아이스 레인"))
             {
+                skillCool.SetSkillCooltime(mageSkill2Cooltime, true);
                 Skill2();
             }
             else if (mageSkillButton.GetSkillButtonName(0).Equals("타이니 블랙홀"))
             {
+                skillCool.SetSkillCooltime(mageSkill3Cooltime, true);
                 Skill3();
             }
             else if (mageSkillButton.GetSkillButtonName(0).Equals("익스플로전"))
             {
+                skillCool.SetSkillCooltime(mageSkill4Cooltime, true);
                 Skill4();
             }
         }
@@ -764,39 +816,49 @@ public class PlayerMove : MonoBehaviour
 
         if (isSword)
         {
+            skillCool = _skillCoolImg[1].GetComponent<SkillCooltime>();
             if (skillButton.GetSkillButtonName(1).Equals("회전 베기"))
             {
+                skillCool.SetSkillCooltime(swordSkill1Cooltime, true);
                 Skill1();
             }
             else if (skillButton.GetSkillButtonName(1).Equals("회오리 베기"))
             {
+                skillCool.SetSkillCooltime(swordSkill2Cooltime, true);
                 Skill2();
             }
             else if (skillButton.GetSkillButtonName(1).Equals("블러드 슬래시"))
             {
+                skillCool.SetSkillCooltime(swordSkill2Cooltime, true);
                 Skill3();
             }
             else if (skillButton.GetSkillButtonName(1).Equals("옥타곤 슬래시"))
             {
+                skillCool.SetSkillCooltime(swordSkill4Cooltime, true);
                 Skill4();
             }
         }
         if (isMage)
         {
+            skillCool = _skillCoolImg[3].GetComponent<SkillCooltime>();
             if (mageSkillButton.GetSkillButtonName(1).Equals("썬더 볼트"))
             {
+                skillCool.SetSkillCooltime(mageSkill1Cooltime, true);
                 Skill1();
             }
             else if (mageSkillButton.GetSkillButtonName(1).Equals("아이스 레인"))
             {
+                skillCool.SetSkillCooltime(mageSkill2Cooltime, true);
                 Skill2();
             }
             else if (mageSkillButton.GetSkillButtonName(1).Equals("타이니 블랙홀"))
             {
+                skillCool.SetSkillCooltime(mageSkill3Cooltime, true);
                 Skill3();
             }
             else if (mageSkillButton.GetSkillButtonName(1).Equals("익스플로전"))
             {
+                skillCool.SetSkillCooltime(mageSkill4Cooltime, true);
                 Skill4();
             }
         }
@@ -806,80 +868,80 @@ public class PlayerMove : MonoBehaviour
     {
         if (isSkill1)
         {
-            skill1Cooldown += 1 * Time.deltaTime;
+            curSkill1Cooltime += Time.deltaTime;
             if (isSword)
             {
-                if (skill1Cooldown > 1)
+                if (curSkill1Cooltime > swordSkill1Cooltime)
                 {
-                    skill1Cooldown = 0;
+                    curSkill1Cooltime = 0;
                     isSkill1 = false;
                 }
             }
             if (isMage)
             {
-                if (skill1Cooldown > 1)
+                if (curSkill1Cooltime > mageSkill1Cooltime)
                 {
-                    skill1Cooldown = 0;
+                    curSkill1Cooltime = 0;
                     isSkill1 = false;
                 }
             }
         }
         if (isSkill2)
         {
-            skill2Cooldown += 1 * Time.deltaTime;
+            curSkill2Cooltime += Time.deltaTime;
             if (isSword)
             {
-                if (skill2Cooldown > 2)
+                if (curSkill2Cooltime > swordSkill2Cooltime)
                 {
-                    skill2Cooldown = 0;
+                    curSkill2Cooltime = 0;
                     isSkill2 = false;
                 }
             }
             if (isMage)
             {
-                if (skill2Cooldown > 3)
+                if (curSkill2Cooltime > mageSkill2Cooltime)
                 {
-                    skill2Cooldown = 0;
+                    curSkill2Cooltime = 0;
                     isSkill2 = false;
                 }
             }
         }
         if (isSkill3)
         {
-            skill3Cooldown += 1 * Time.deltaTime;
+            curSkill3Cooltime += Time.deltaTime;
             if (isSword)
             {
-                if (skill3Cooldown > 4)
+                if (curSkill3Cooltime > swordSkill3Cooltime)
                 {
-                    skill3Cooldown = 0;
+                    curSkill3Cooltime = 0;
                     isSkill3 = false;
                 }
             }
             if (isMage)
             {
-                if (skill3Cooldown > 4)
+                if (curSkill3Cooltime > mageSkill3Cooltime)
                 {
-                    skill3Cooldown = 0;
+                    curSkill3Cooltime = 0;
                     isSkill3 = false;
                 }
             }
         }
         if (isSkill4)
         {
-            skill4Cooldown += 1 * Time.deltaTime;
+            curSkill4Cooltime += Time.deltaTime;
             if (isSword)
             {
-                if (skill4Cooldown > 5)
+                if (curSkill4Cooltime > swordSkill4Cooltime)
                 {
-                    skill4Cooldown = 0;
+                    curSkill4Cooltime = 0;
                     isSkill4 = false;
                 }
             }
             if (isMage)
             {
-                if (skill4Cooldown > 5)
+                if (curSkill4Cooltime > mageSkill4Cooltime)
                 {
-                    skill4Cooldown = 0;
+                    curSkill4Cooltime = 0;
                     isSkill4 = false;
                 }
             }
@@ -891,7 +953,7 @@ public class PlayerMove : MonoBehaviour
         if (myStatus.GetCurrentHp() <= 0)
         {
             isDie = true;
-            resurrectionBtn.SetActive(true);
+            resurrectionUI.SetActive(true);
             blockCon.enabled = false;
             if (!isDieTrigger)
             {
@@ -901,19 +963,57 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    public void OutofMap() // 맵밖으로 낙사
+    {
+        if (transform.position.y < -50)
+        {
+            isDie = true;
+            resurrectionUI.SetActive(true);
+            blockCon.enabled = false;
+            if (!isDieTrigger)
+            {
+                isDieTrigger = true;
+                anim.SetTrigger("doDie");
+            }
+        }
+    }
+
+    public void ResurrectionToRespawn()
+    {
+        // 리스폰 지점에서 부활
+        SceneManager.LoadScene("GameScene");
+        StartCoroutine("ResurrectionEffect");
+    }
+
+    public void ResurrectionToTown()
+    {
+        // 마을에서 부활
+        SceneManager.LoadScene("GameScene");
+        StartCoroutine("ResurrectionEffect");
+    }
+
     public void Resurrection()
     {
-        resurrectionBtn.SetActive(false);
+        // 즉시부활(임시)
+        StartCoroutine("ResurrectionEffect");
+    }
+
+    IEnumerator ResurrectionEffect()
+    {
+        GameObject instantEffect = Instantiate(resurrectionEffect, transform.position, transform.rotation);
+        Destroy(instantEffect, 3.0f);
+        resurrectionUI.SetActive(false);
+        myStatus.SetCurrentHp(myStatus.GetMaxHp());
+        anim.SetTrigger("doIdle");
+        yield return new WaitForSeconds(2.5f);
         blockCon.enabled = true;
         isDie = false;
         isDieTrigger = false;
-        myStatus.SetCurrentHp(myStatus.GetMaxHp());
-        anim.SetTrigger("doIdle");
     }
 
     public void Swap()
     {
-        if (!isDie)
+        if (!isDie && (!isSkill1 && !isSkill2  && !isSkill3  && !isSkill4))
         {
             if (isSword)
             {
@@ -986,4 +1086,13 @@ public class PlayerMove : MonoBehaviour
             return 0;
         }
     }
+
+    public bool GetDodge() // get 대쉬값
+    {
+        return isDodge;
+    }
+    public bool GetIsSword() { return isSword; }
+    public bool GetIsMage() { return isMage; }
+    public void SetIsSword(bool _isSword) { isSword = _isSword; }
+    public void SetIsMage(bool _isMage) { isMage = _isMage; }
 }

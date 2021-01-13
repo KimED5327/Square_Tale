@@ -10,16 +10,24 @@ public class PlayerStatus : Status
 
     [Header("Level Up Info")]
     [SerializeField] int[] _levelUpExps = null;
-    [SerializeField] int _levelUpStr = 5;
-    [SerializeField] int _levelUpInt = 5;
+    [SerializeField] int _levelUpStr = 2;
+    [SerializeField] int _levelUpInt = 3;
     [SerializeField] int _levelUpHp = 10;
     [SerializeField] int _levelUpDef = 1;
+
+    //[SerializeField] int _levelUpSwordHp = 10;//임시 체력 증가량 (수정 필)
+    //[SerializeField] int _levelUpMageHp = 8;//임시 체력 증가량 (수정 필)
 
     int _curExp = 0;
 
     public int GetStr() { return _str; }
     public int GetInt() { return _int; }
     public int GetDef() { return _def; }
+    public int GetCurExp() { return _curExp; }
+    public void SetStr(int str) { _str = str; }
+    public void SetInt(int getInt) { _int = getInt; }
+    public void SetDef(int def) { _def = def; }
+    public void SetCurExp(int curExp) { _curExp = curExp; }
     public void AdjustInt(int num) { _int += num; }
     public void AdjustStr(int num) { _str += num; }
     public void AdjustDef(int num) { _def += num; }
@@ -48,9 +56,15 @@ public class PlayerStatus : Status
                 _curExp -= _levelUpExps[_level - 1];
                 _maxHp += _levelUpHp;
                 _curHp = _maxHp;
+                //_swordMaxHp += _levelUpSwordHp;
+                //_swordCurHp = _swordMaxHp;
+                //_mageMaxHp += _levelUpMageHp;
+                //_mageCurHp = _mageMaxHp;
                 _str += _levelUpStr;
                 _int += _levelUpInt;
                 _def += _levelUpDef;
+                //_swordDef += _levelUpDef;
+                //_mageDef += _levelUpDef;
                 _level++;
             }
         }
@@ -67,9 +81,15 @@ public class PlayerStatus : Status
                 _curExp -= _levelUpExps[_level];
                 _maxHp += _levelUpHp;
                 _curHp = _maxHp;
+                //_swordMaxHp += _levelUpSwordHp;
+                //_swordCurHp = _swordMaxHp;
+                //_mageMaxHp += _levelUpMageHp;
+                //_mageCurHp = _mageMaxHp;
                 _str += _levelUpStr;
                 _int += _levelUpInt;
                 _def += _levelUpDef;
+                //_swordDef += _levelUpDef;
+                //_mageDef += _levelUpDef;
                 _level++;
             }
         }

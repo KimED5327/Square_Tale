@@ -54,4 +54,6 @@ public class MageSkillSlot : MonoBehaviour
     public string GetSkillName() { return _skillName; }
 
     public Sprite GetSkillSprite() { return _imgIcon.sprite; }
+    public bool GetIsEquip() { return _isEquip; }
+    public void SetIsEquip(bool isEquip) { _isEquip = isEquip; }
 }

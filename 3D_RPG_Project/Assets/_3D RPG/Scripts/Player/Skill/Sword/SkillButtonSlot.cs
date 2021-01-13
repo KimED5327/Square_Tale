@@ -12,15 +12,12 @@ public class SkillButtonSlot : MonoBehaviour
 
     bool _isButtonSkill = false;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
         if (_buttonSkillName != "")
             _isButtonSkill = true;
     }
-
 
     public void PushButtonSlot(int id, string name, Sprite sprite)
     {

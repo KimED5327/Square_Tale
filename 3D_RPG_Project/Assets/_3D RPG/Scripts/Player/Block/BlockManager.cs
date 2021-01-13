@@ -10,6 +10,27 @@ public class BlockManager : MonoBehaviour
 
     static int[] _blockCount = null;
 
+    public void Save()
+    {
+        PlayerPrefs.SetInt("blockEquip1", _equipSlots[0].GetBlockID());
+        PlayerPrefs.SetInt("blockEquip2", _equipSlots[1].GetBlockID());
+
+        PlayerPrefs.SetString("blockCheck1", _slots[0].GetIsEquip().ToString());
+        PlayerPrefs.SetString("blockCheck2", _slots[1].GetIsEquip().ToString());
+        PlayerPrefs.SetString("blockCheck3", _slots[2].GetIsEquip().ToString());
+        PlayerPrefs.SetString("blockCheck4", _slots[3].GetIsEquip().ToString());
+    }
+
+    public void Load()
+    {
+        EquipBlock(PlayerPrefs.GetInt("blockEquip1"));
+        EquipBlock(PlayerPrefs.GetInt("blockEquip2"));
+
+        _slots[0].SetIsEquip(System.Convert.ToBoolean(PlayerPrefs.GetString("blockCheck1")));
+        _slots[1].SetIsEquip(System.Convert.ToBoolean(PlayerPrefs.GetString("blockCheck2")));
+        _slots[2].SetIsEquip(System.Convert.ToBoolean(PlayerPrefs.GetString("blockCheck3")));
+        _slots[3].SetIsEquip(System.Convert.ToBoolean(PlayerPrefs.GetString("blockCheck4")));
+    }
 
     public static void IncreaseBlockCount(int id, int count)
     {
@@ -37,17 +58,17 @@ public class BlockManager : MonoBehaviour
                 _blockCount[i] = PlayerPrefs.GetInt(StringManager.block + i);
             }
         }
-
+        
         // 임시 등록
-        int index = 0;
-        string name = _slots[index].GetBlockName();
-        Sprite sprite = _slots[index].GetBlockSprite();
-        _equipSlots[index].PushEquipSlot(index, name, sprite);
+        //int index = 0;
+        //string name = _slots[index].GetBlockName();
+        //Sprite sprite = _slots[index].GetBlockSprite();
+        //_equipSlots[index].PushEquipSlot(index, name, sprite);
 
-        index = 1;
-        name = _slots[index].GetBlockName();
-        sprite = _slots[index].GetBlockSprite();
-        _equipSlots[index].PushEquipSlot(index, name, sprite);
+        //index = 1;
+        //name = _slots[index].GetBlockName();
+        //sprite = _slots[index].GetBlockSprite();
+        //_equipSlots[index].PushEquipSlot(index, name, sprite);
     }
 
     public void Setting()

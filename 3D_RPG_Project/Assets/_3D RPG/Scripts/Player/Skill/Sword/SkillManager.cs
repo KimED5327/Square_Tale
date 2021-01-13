@@ -11,6 +11,33 @@ public class SkillManager : MonoBehaviour
 
     static int[] _SkillCount = null;
 
+    public void Save()
+    {
+        PlayerPrefs.SetInt("swordSkillEquip1", _equipSlots[0].GetSkillID());
+        PlayerPrefs.SetInt("swordSkillEquip2", _equipSlots[1].GetSkillID());
+
+        PlayerPrefs.SetString("swordSkillCheck1", _slots[0].GetIsEquip().ToString());
+        PlayerPrefs.SetString("swordSkillCheck2", _slots[1].GetIsEquip().ToString());
+        PlayerPrefs.SetString("swordSkillCheck3", _slots[2].GetIsEquip().ToString());
+        PlayerPrefs.SetString("swordSkillCheck4", _slots[3].GetIsEquip().ToString());
+    }
+
+    public void Load()
+    {
+        if (PlayerPrefs.GetInt("swordSkillEquip1") != -1)
+        {
+            EquipSkill(PlayerPrefs.GetInt("swordSkillEquip1"));
+        }
+        if (PlayerPrefs.GetInt("swordSkillEquip2") != -1)
+        {
+            EquipSkill(PlayerPrefs.GetInt("swordSkillEquip2"));
+        }
+
+        _slots[0].SetIsEquip(System.Convert.ToBoolean(PlayerPrefs.GetString("swordSkillCheck1")));
+        _slots[1].SetIsEquip(System.Convert.ToBoolean(PlayerPrefs.GetString("swordSkillCheck2")));
+        _slots[2].SetIsEquip(System.Convert.ToBoolean(PlayerPrefs.GetString("swordSkillCheck3")));
+        _slots[3].SetIsEquip(System.Convert.ToBoolean(PlayerPrefs.GetString("swordSkillCheck4")));
+    }
 
     public static void IncreaseSkillCount(int id, int count)
     {
@@ -40,17 +67,17 @@ public class SkillManager : MonoBehaviour
         }
 
         // 임시 등록
-        int index = 0;
-        string name = _slots[index].GetSkillName();
-        Sprite sprite = _slots[index].GetSkillSprite();
-        _equipSlots[index].PushEquipSlot(index, name, sprite);
-        _buttonSlots[index].PushButtonSlot(index, name, sprite);
+        //int index = 0;
+        //string name = _slots[index].GetSkillName();
+        //Sprite sprite = _slots[index].GetSkillSprite();
+        //_equipSlots[index].PushEquipSlot(index, name, sprite);
+        //_buttonSlots[index].PushButtonSlot(index, name, sprite);
 
-        index = 1;
-        name = _slots[index].GetSkillName();
-        sprite = _slots[index].GetSkillSprite();
-        _equipSlots[index].PushEquipSlot(index, name, sprite);
-        _buttonSlots[index].PushButtonSlot(index, name, sprite);
+        //index = 1;
+        //name = _slots[index].GetSkillName();
+        //sprite = _slots[index].GetSkillSprite();
+        //_equipSlots[index].PushEquipSlot(index, name, sprite);
+        //_buttonSlots[index].PushButtonSlot(index, name, sprite);
     }
 
     public void Setting()
@@ -89,16 +116,6 @@ public class SkillManager : MonoBehaviour
             string name = _slots[idx].GetSkillName();
             Sprite sprite = _slots[idx].GetSkillSprite();
             _equipSlots[i].PushEquipSlot(idx, name, sprite);
-            break;
-        }
-
-        for (int i = 0; i < _buttonSlots.Length; i++)
-        {
-            if (_buttonSlots[i].IsButtonSkillSlot()) continue;
-
-            _slots[idx].SetIndex(i);
-            string name = _slots[idx].GetSkillName();
-            Sprite sprite = _slots[idx].GetSkillSprite();
             _buttonSlots[i].PushButtonSlot(idx, name, sprite);
             break;
         }
@@ -128,53 +145,8 @@ public class SkillManager : MonoBehaviour
         return false;
     }
 
-
-    /// <summary>
-    /// 0 : 1번킷(가로) , 1 : 2번킷(세로)
-    /// </summary>
-    /// <param name="idx"></param>
-    /// <returns></returns>
-    public string GetSkillName(int idx)
-    {
-        int id = _equipSlots[idx].GetSkillID();
-
-        if (id < 0)
-        {
-            Notification.instance.ShowFloatingMessage(StringManager.msgEmptySkillSlot);
-            return "";
-        }
-        if (_SkillCount[id] <= 0)
-        {
-            //Notification.instance.ShowFloatingMessage(StringManager.msgNotEnoughBlock);
-            // return "";
-        }
-        else
-        {
-            DecreaseSkillCount(id, 1);
-        }
-
-        return _equipSlots[idx].GetSkillName();
-    }
-
     public string GetSkillButtonName(int idx)
     {
-        int id = _buttonSlots[idx].GetSkillID();
-
-        if (id < 0)
-        {
-            //Notification.instance.ShowFloatingMessage(StringManager.msgEmptySkillSlot);
-            return "";
-        }
-        if (_SkillCount[id] <= 0)
-        {
-            //Notification.instance.ShowFloatingMessage(StringManager.msgNotEnoughBlock);
-            // return "";
-        }
-        else
-        {
-            DecreaseSkillCount(id, 1);
-        }
-
         return _buttonSlots[idx].GetSkillName();
     }
 }

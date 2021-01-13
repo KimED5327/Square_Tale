@@ -69,6 +69,7 @@ public class Rooting : MonoBehaviour
 
     IEnumerator WaitCoroutine()
     {
+
         yield return new WaitForSeconds(0.15f);
         BtnExit();
     }

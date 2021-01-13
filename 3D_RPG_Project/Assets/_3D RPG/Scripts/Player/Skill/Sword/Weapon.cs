@@ -49,9 +49,9 @@ public class Weapon : MonoBehaviour
         attackArea.enabled = false;
 
         yield return _enableWait;
-        if (_combo == 2)
+        if (_combo == 3)
             yield return new WaitForSeconds(0.25f);
-        else
+        else if(_combo == 1)
             yield return new WaitForSeconds(0.05f);
 
         attackArea.enabled = true;

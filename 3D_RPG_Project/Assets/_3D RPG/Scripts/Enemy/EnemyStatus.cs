@@ -21,25 +21,22 @@ public class EnemyStatus : Status
 
     public override void Initialized()
     {
-        if (_curHp < 0)
-            _curHp = _maxHp;
-
-        _isDead = false;
+        base.Initialized();
+        curTime = 0f;
+        _isDropItem = false;
+        _dropItemList.Clear();
 
         // 스폰과 동시에 루팅 가능하도록 세팅된 Enemy (혹은 오브젝트)
         // 정화의 크리스탈을 부수면, 크리스탈 이펙트가 스폰됨. 
         // 이때, 그 이펙트를 즉시 die 처리해서 루팅할 수 있게 만드는 과정임.
         if (_isForceDead)
-        {
             Dead();
-        }
     }
 
     public void Update()
     {
         if(_dropItemList.Count < 1)
         {
-
             if (_isDead)
             {
                 curTime += Time.deltaTime;
@@ -64,8 +61,6 @@ public class EnemyStatus : Status
         base.Dead();
         DecideDropItem();
     }
-
-    
 
 
     // 죽으면 실행
@@ -117,12 +112,6 @@ public class EnemyStatus : Status
             _isDropItem = false;
         }
     }
-
-    //public void Initialized()
-    //{
-    //    _isDropItem = false;
-    //    _dropItemList.Clear();
-    //}
 
     public int GetID() { return id; }
 

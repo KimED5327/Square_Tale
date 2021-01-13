@@ -1023,7 +1023,7 @@ public class PlayerMove : MonoBehaviour
         resurrectionUI.SetActive(false);
         myStatus.SetCurrentHp(myStatus.GetMaxHp());
         anim.SetTrigger("doIdle");
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(0.5f);
         blockCon.enabled = true;
         isDie = false;
         isDieTrigger = false;

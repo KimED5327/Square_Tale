@@ -57,16 +57,33 @@ public class Enemy : MonoBehaviour
             return false;
     }
 
+    private void OnEnable()
+    {
+        Initialized();
+    }
+
+    private void Initialized()
+    {
+        enemyState = State.Idle;
+
+        if (agent != null)
+            agent.enabled = true;
+
+        transform.eulerAngles = new Vector3(0f, transform.eulerAngles.y, 0f);
+        startPoint = transform.position;
+
+        if(playerMove == null)
+            playerMove = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMove>();
+    }
 
     private void Start()
     {
-   
         enemyAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         status = GetComponent<EnemyStatus>();
         myColider = GetComponent<BoxCollider>();
         myRigid = GetComponent<Rigidbody>();
-        playerMove = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMove>();
+
     }
 
     public void LinkPlayer(Transform tfPlayer) { 
@@ -268,6 +285,7 @@ public class Enemy : MonoBehaviour
         {
             _isDie = true;
             enemyAnimator.SetTrigger("Die 0");
+            agent.ResetPath();
         }    
         myRigid.isKinematic = true;
         myColider.isTrigger = true;
@@ -331,17 +349,4 @@ public class Enemy : MonoBehaviour
     }
 
     public PlayerStatus GetPlayerStatus() { return player.GetComponent<PlayerStatus>(); }
-
-
-    private void OnEnable()
-    {
-        Initialized();
-        
-    }
-
-    private void Initialized()
-    {
-        enemyState = State.Idle;
-        startPoint = transform.position;
-    }
 }

@@ -47,7 +47,6 @@ public class SaveManager : MonoBehaviour
         _swordSkill.Save();
         _mageSkill.Save();
         _block.Save();
-        Debug.Log("save됨");
     }
 
     public void Load()

@@ -28,7 +28,7 @@ public class Weapon : MonoBehaviour
 
     public void Use(int idx)
     {
-        _combo = combo;
+        _combo = idx;
         StopAllCoroutines();
         switch(idx)
         {
@@ -82,7 +82,7 @@ public class Weapon : MonoBehaviour
             Status targetStatus = other.GetComponent<Status>();
             if (!targetStatus.IsDead())
             {
-                if(_combo != 2)
+                if(_combo != 3)
                     SoundManager.instance.PlayEffectSound("Slash1");
                 else
                     SoundManager.instance.PlayEffectSound("Slash2");

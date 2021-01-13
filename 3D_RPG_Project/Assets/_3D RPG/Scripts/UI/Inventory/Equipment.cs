@@ -62,7 +62,7 @@ public class Equipment : MonoBehaviour
         }
     }
 
-    void Awake()
+    void Start()
     {
         LoadEquip();
         SwapWeaponNum(0);

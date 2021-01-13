@@ -57,4 +57,6 @@ public class BlockSlot : MonoBehaviour
     public string GetBlockName() { return _blockName; }
 
     public Sprite GetBlockSprite() { return _imgIcon.sprite; }
+    public bool GetIsEquip() { return _isEquip; }
+    public void SetIsEquip(bool isEquip) { _isEquip = isEquip; }
 }

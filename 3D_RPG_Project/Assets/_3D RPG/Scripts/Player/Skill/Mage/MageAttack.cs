@@ -16,16 +16,9 @@ public class MageAttack : MonoBehaviour
     EnemyStatus states;
     Boss boss;
     PlayerStatus _status;
-
-    public void Pushinfo(Transform transform, EnemyStatus enemystatus, Boss bo)
-    {
-        player = transform;
-        states = enemystatus;
-        boss = bo;
-        _status = FindObjectOfType<PlayerStatus>();
-    }
     void Start()
     {
+        _status = FindObjectOfType<PlayerStatus>();
         rb = GetComponent<Rigidbody>();
         if (flash != null)
         {
@@ -42,7 +35,6 @@ public class MageAttack : MonoBehaviour
                 Destroy(flashInstance, flashPsParts.main.duration);
             }
         }
-        //Destroy(gameObject,5);
     }
 
     void FixedUpdate()
@@ -56,7 +48,7 @@ public class MageAttack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag(StringManager.enemyTag) || other.CompareTag(StringManager.blockTag))
         {
             Status targetStatus = other.GetComponent<Status>();
             if (!targetStatus.IsDead())

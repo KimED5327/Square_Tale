@@ -7,8 +7,8 @@ public class MyInfoMenu : MonoBehaviour
 {
     [SerializeField] GameObject goMyInfoMenu = null;
     [SerializeField] Text txtMyName = null;
-    [SerializeField] Text txtStr = null;
-    [SerializeField] Text txtInt = null;
+    [SerializeField] Text txtAtkType = null;
+    [SerializeField] Text txtAtkValue = null;
     [SerializeField] Text txtDef = null;
     [SerializeField] Text txtHp = null;
     [SerializeField] Image imgUser = null;
@@ -46,10 +46,24 @@ public class MyInfoMenu : MonoBehaviour
         else
             txtMyName.text = "LV " + thePlayerStatus.GetLevel() + $" - 닉네임";
 
-        txtStr.text = thePlayerStatus.GetStr().ToString();
-        txtInt.text = thePlayerStatus.GetInt().ToString();
-        txtDef.text = thePlayerStatus.GetDef().ToString();
+        if (sword.activeSelf)
+        {
+            txtAtkType.text = "STR";
+            txtAtkValue.text = thePlayerStatus.GetStr().ToString();
+            //txtDef.text = thePlayerStatus.GetSwordDef().ToString();
+            //txtHp.text = thePlayerStatus.GetSwordMaxHp().ToString();
+        }
+        if (mage.activeSelf)
+        {
+            txtAtkType.text = "INT";
+            txtAtkValue.text = thePlayerStatus.GetInt().ToString();
+            //txtDef.text = thePlayerStatus.GetMageDef().ToString();
+            //txtHp.text = thePlayerStatus.GetMageMaxHp().ToString();
+        }
         txtHp.text = thePlayerStatus.GetMaxHp().ToString();
+        txtDef.text = thePlayerStatus.GetDef().ToString();
+        
+        imgUser.sprite = null;
 
         float percent = Adventure.GetAdventureProgress();
         txtAdventure.text = percent + " %";
@@ -70,6 +84,7 @@ public class MyInfoMenu : MonoBehaviour
         player.anim = player.anims[0];
         sword.SetActive(true);
         mage.SetActive(false);
+        ShowMenu();
     }
 
     public void SwapMage()
@@ -78,5 +93,6 @@ public class MyInfoMenu : MonoBehaviour
         player.anim = player.anims[1];
         sword.SetActive(false);
         mage.SetActive(true);
+        ShowMenu();
     }
 }

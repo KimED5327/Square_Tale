@@ -26,11 +26,22 @@ public class Weapon : MonoBehaviour
         _disableWait = new WaitForSeconds(disableTime);
     }
 
-    public void Use(int combo)
+    public void Use(int idx)
     {
         _combo = combo;
         StopAllCoroutines();
-        StartCoroutine(Swing());
+        switch(idx)
+        {
+            case 1:
+                StartCoroutine(Swing());
+                break;
+            case 2:
+                StartCoroutine(Swing());
+                break;
+            case 3:
+                StartCoroutine(LastSwing());
+                break;
+        }
     }
 
     IEnumerator Swing()
@@ -47,6 +58,19 @@ public class Weapon : MonoBehaviour
 
         yield return _disableWait;
 
+        attackArea.enabled = false;
+    }
+
+    IEnumerator LastSwing()
+    {
+        attackArea.enabled = false;
+
+        //yield return _enableWait;
+        yield return new WaitForSeconds(0.5f);
+        attackArea.enabled = true;
+
+        yield return _disableWait;
+        //yield return new WaitForSeconds(0.1f);
         attackArea.enabled = false;
     }
 

@@ -14,37 +14,43 @@ public class Boss : MonoBehaviour
     public state bossState;
 
 
-    GameObject rangedWeapon;                    //몬스터 원거리 구체
-    GameObject skillObject;
-    public float attTime;                       //몬스터 공격속도
-    public float skillTime;                     //몬스터 스킬속도
-    public float dmgApplyTime;                  //실제 데미지 적용 시간.
-    public float timer;                         //공격속도 조절값
-    Vector3 startPoint;                         //최초 생성 값
-    Transform player;                           //공격 목표 (플레이어)
-    Transform AttackTransform;                  //공격 장소
+
+    public float attTime;                               //몬스터 공격속도
+    public float skillTime;                             //몬스터 스킬속도
+    public float dmgApplyTime;                          //실제 데미지 적용 시간.
+    public float timer;                                 //공격속도 조절값
+    Vector3 startPoint;                                 //최초 생성 값
+    Transform player;                                   //공격 목표 (플레이어)
+    Transform AttackTransform;                          //공격 장소
     public float speed;                    
 
-    public int maxFindRange;                    //보스 인식 범위
-    public int maxAttackRange;                  //보스 공격 범위
+    public int maxFindRange;                            //보스 인식 범위
+    public int maxAttackRange;                          //보스 공격 범위
 
-    Animator enemyAnimator;                     //몬스터 애니메이터
+    Animator enemyAnimator;                             //몬스터 애니메이터
     BoxCollider myColider;
     Rigidbody myRigid;
     EnemyStatus status;
 
-    public GameObject AttackLocation;           //공격 위치
-    public GameObject AttackEffect;             //몬스터 공격 이펙트
-    public GameObject SkillEffect;              //몬스터 스킬 이펙트
-    bool isAttack = false;                      //공격 한번
-    bool isSkillOne = false;
-    bool isSkillTwo = false;
+    public GameObject AttackLocation;                   //공격 위치
+    public GameObject AttackEffect;                     //보스 공격 이펙트
+    public GameObject SkillEffect;                      //토네이도 리프 이펙트
+    public GameObject SkillEffect2;                     //벚꽃 마안 이펙트
+    private bool isAttack = false;                      //공격 한번
+    private bool isSkillOne = false;                    //토네이도 리프 스킬!
+    private bool isSkillTwo = false;                    //벚꽃 마안 스킬!
     GameObject skill;
-    bool skillCount;
-    bool isDamage;                              //대미지 받는 변수
-    bool skillAttack = false;
-    float skillAttackTime = 0;
-    int skillUpcount = 0;                           //스킬 크기 조절 값
+    GameObject skill2;
+    private bool sktornado;                             //스킬 토네이도 실행 불값
+    private bool skCheerySome = false;                  //스킬 벚꽃 마안 실행 불값
+    private bool isDamage;                              //대미지 받는 변수
+    private bool skillAttack = false;
+    private float skillAttackTime = 0;
+    private int skillUpcount = 0;                       //스킬 증가 횟수
+    private int skillUseTornadoCount = 0;               //토네이도 리프 사용 횟수
+    private int skillUseCherryCount = 0;                //벚꽃 마안 사용 횟수
+
+
 
 
     public bool getIsDamage() { return isDamage; }
@@ -58,6 +64,7 @@ public class Boss : MonoBehaviour
         status = GetComponent<EnemyStatus>();
         myColider = GetComponent<BoxCollider>();
         myRigid = GetComponent<Rigidbody>();
+        status.SetCurrentHp(status.GetMaxHp());
     }
 
     private void Update()
@@ -98,13 +105,11 @@ public class Boss : MonoBehaviour
             skillAttackTime = 0;
             isDamage = true;
         }
-        Debug.Log(skillUpcount);
         if(skillUpcount > 20)
         {
             Destroy(skill);
             skillAttack = false;
             isSkillOne = false;
-            skillCount = false;
             skillAttackTime = 0;
             skillUpcount = 0;
         }
@@ -135,20 +140,6 @@ public class Boss : MonoBehaviour
         Vector3 dir = player.transform.position - transform.position;
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * speed);
 
-
-        //timer += Time.deltaTime;
-        //
-        //if(timer > attTime)
-        //{
-        //    Vector3 attackDir = player.position - AttackLocation.transform.position;
-        //
-        //    GameObject attack = Instantiate(AttackEffect, AttackLocation.transform.position, transform.rotation);
-        //    Rigidbody attackRigid = attack.GetComponent<Rigidbody>();
-        //    attack.transform.rotation = Quaternion.LookRotation(attackDir);
-        //    attackRigid.velocity = attackDir * 30;
-        //    timer = 0;
-        //}
-
         if (isAttack)
         {
             Vector3 attackDir = player.position - AttackLocation.transform.position;
@@ -165,46 +156,102 @@ public class Boss : MonoBehaviour
             bossState = state.idle;
         }
 
-        if ((status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.7f)
+        //1차 토네이도 리프
+        if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.8f && skillUseTornadoCount == 0)
+        {
+            Debug.Log("1차 토네이도 리프");
+            isSkillOne = true;
+            bossState = state.skill;
+            enemyAnimator.SetBool("Skill", true);
+            skillUseTornadoCount = 1;
+        }
+        //2차  토네이도 리프
+        else if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.6f && skillUseTornadoCount == 1)
+        {
+            Debug.Log("2차 토네이도 리프");
+            isSkillOne = true;
+            bossState = state.skill;
+            enemyAnimator.SetBool("Skill", true);
+            skillUseTornadoCount = 2;
+        }
+        //3차  토네이도 리프
+        else if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.4f && skillUseTornadoCount == 2)
+        {
+            Debug.Log("3차 토네이도 리프");
+            isSkillOne = true;
+            bossState = state.skill;
+            enemyAnimator.SetBool("Skill", true);
+            skillUseTornadoCount = 3;
+        }
+
+        if(((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.5f && skillUseCherryCount == 0)
+        {
+            Debug.Log("1차 벚꽃 마안");
+            isSkillTwo = true;
+            bossState = state.skill;
+            enemyAnimator.SetBool("Skill", true);
+            skillUseCherryCount = 1;
+        }
+        else if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.1f && skillUseCherryCount == 1)
+        {
+            Debug.Log("2차 벚꽃 마안");
+            isSkillTwo = true;
+            bossState = state.skill;
+            enemyAnimator.SetBool("Skill", true);
+            skillUseCherryCount = 2;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             isSkillOne = true;
             bossState = state.skill;
+            enemyAnimator.SetBool("Skill", true);
+            timer = 0;
         }
-        if ((status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.4f)
+        if (Input.GetKeyDown(KeyCode.X))
         {
             isSkillTwo = true;
             bossState = state.skill;
-        }
-
-        if(Input.GetKeyDown(KeyCode.Z))
-        {
-            isSkillOne = true;
-            bossState = state.skill;
+            enemyAnimator.SetBool("Skill", true);
             timer = 0;
         }
+
     }
     private void SkillUpdate()
     {
-
-        if (!skillCount)
+        if(isSkillOne)
         {
-
-            Vector3 dir = player.transform.position - transform.position;
-            skill = Instantiate(SkillEffect, new Vector3(player.transform.position.x, 1.2f, player.transform.position.z), player.transform.rotation);
-            skill.transform.rotation = Quaternion.LookRotation(dir);
-            skillCount = true;
-        }
-        else if(skillCount)
-        {
-            timer += Time.deltaTime;
-            if (timer > 1)
+            if (!sktornado) // 토네이도 스킬 업데이트 시작
             {
-                skillAttack = true;
-                timer = 0;
-                bossState = state.idle;
-                skill.transform.position = new Vector3(player.transform.position.x, 0.5f, player.transform.position.z);
+
+                Vector3 dir = player.transform.position - transform.position;
+                skill = Instantiate(SkillEffect, new Vector3(player.transform.position.x, player.transform.position.y + 1.2f, player.transform.position.z), player.transform.rotation);
+                skill.transform.rotation = Quaternion.LookRotation(dir);
+                sktornado = true;
             }
-            skill.transform.position = new Vector3(player.transform.position.x, 1.2f, player.transform.position.z);
+            else if (sktornado)
+            {
+                timer += Time.deltaTime;
+                if (timer > 1)
+                {
+                    skillAttack = true;
+                    timer = 0;
+                    bossState = state.idle;
+                    skill.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 0.5f, player.transform.position.z);
+                    enemyAnimator.SetBool("Skill", false);
+                    isSkillOne = !isSkillOne;
+                }
+                skill.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1.2f, player.transform.position.z);
+            } // 토네이도 스킬 업데이트 끝
+
+        }
+        if(isSkillTwo)
+        {
+            skill2 = Instantiate(SkillEffect2, new Vector3(transform.position.x, transform.position.y + 2.5f, transform.position.z), transform.rotation);
+            isSkillTwo = false;
+            enemyAnimator.SetBool("Skill", false);
+            bossState = state.idle;
         }
     }
    

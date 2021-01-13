@@ -10,7 +10,6 @@ public enum State
 
 public class Enemy : MonoBehaviour
 {
-    GameObject rangedWeapon;                    //몬스터 원거리 구체
     public int Id;                              //몬스터 idNumber;
     public float attTime;                       //몬스터 공격속도
     public float dmgApplyTime;                  //실제 데미지 적용 시간.
@@ -18,6 +17,7 @@ public class Enemy : MonoBehaviour
     public float reconTime;                     //정찰 시작 시간
     public float reconTimer;                    //정찰 체크 시간
     private float dieTime;                      //죽고 난 뒤 시간
+    public float motionTime;                   //공격 모션 시간
 
     Vector3 startPoint;                         //최초 생성 값
     Transform player;                           //공격 목표 (플레이어)
@@ -26,12 +26,10 @@ public class Enemy : MonoBehaviour
 
     public int maxFindRange;                    //몬스터 인식 범위
     public int maxMoveRange;                    //몬스터 추적 범위
-    public int maxAttackRange;                  //몬스터 근접 공격 범위
-    public bool isLongMonster;                  //원거리 몬스터인가?
-    public int maxLongAttackRange;              //몬스터 원거리 공격 범위
+    public float maxAttackRange;                  //몬스터 근접 공격 범위
     public int reconRange;                      //정찰 범위
 
-
+    private bool _isDie = false;
     private bool _canApplyDamage = true;
     private bool _isChasing = false;
     private bool jump;
@@ -39,7 +37,7 @@ public class Enemy : MonoBehaviour
     Animator enemyAnimator;                     //몬스터 애니메이터
     BoxCollider myColider;
     Rigidbody myRigid;
-
+    PlayerMove playerMove;
 
     EnemyStatus status;
     Vector3     _offset;
@@ -47,6 +45,8 @@ public class Enemy : MonoBehaviour
     Vector3     _rayPos2;
 
     public State enemyState;
+
+   
 
     bool IsPlaying(string stateName)
     {
@@ -60,13 +60,13 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        enemyState = State.Idle;
+   
         enemyAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        startPoint = transform.position;
         status = GetComponent<EnemyStatus>();
         myColider = GetComponent<BoxCollider>();
         myRigid = GetComponent<Rigidbody>();
+        playerMove = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMove>();
     }
 
     public void LinkPlayer(Transform tfPlayer) { 
@@ -74,6 +74,8 @@ public class Enemy : MonoBehaviour
     }
 
     //에너미 업데이트
+
+    
     private void Update()
     {
         if(!status.IsDead() && !jump)
@@ -132,13 +134,14 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
     private void UpdateSearch()
     {
         _offset = new Vector3(0f, transform.position.y + 1, 0f);
         Vector3 move = Vector3.forward;
 
-        float x = Random.Range((float)startPoint.x - maxMoveRange, (float)startPoint.x + maxMoveRange);
-        float z = Random.Range((float)startPoint.z - maxMoveRange, (float)startPoint.z + maxMoveRange);
+        float x = Random.Range((float)startPoint.x - maxFindRange, (float)startPoint.x + maxFindRange);
+        float z = Random.Range((float)startPoint.z - maxFindRange, (float)startPoint.z + maxFindRange);
         move = new Vector3(x, 0f, z);
 
         Debug.DrawRay(move + _offset, Vector3.down, Color.yellow, 100);
@@ -147,17 +150,11 @@ public class Enemy : MonoBehaviour
         {
             if (hit.transform.CompareTag("Floor"))
             {
-                _rayPos = hit.transform.position;
-
-                agent.SetDestination(_rayPos);
+                enemyAnimator.SetBool("Move", true);
+                _rayPos = hit.point;
                 reconTimer = 0;
-
-               
                 enemyState = State.Move;
-
-
-               
-     
+                agent.SetDestination(_rayPos);
 
             }
         }
@@ -180,9 +177,6 @@ public class Enemy : MonoBehaviour
     //무브 상태
     private void UpdateMove()
     {
-
-
-
         if (Vector3.SqrMagnitude(transform.position - startPoint) > Mathf.Pow(maxMoveRange,2))
         {
             enemyState = State.Return;
@@ -195,6 +189,7 @@ public class Enemy : MonoBehaviour
 
             _offset = new Vector3(0f, 0.3f, 0f);
             enemyAnimator.SetBool("Move", true);
+
             if (Physics.Raycast(transform.position + _offset, transform.forward, out RaycastHit hit, 1.5f))
             {
                 if (hit.transform.CompareTag("Floor") && !jump)
@@ -210,21 +205,17 @@ public class Enemy : MonoBehaviour
                 agent.SetDestination(player.transform.position);
 
             }
-
-            //enemyAnimator.SetInteger("animation", 2);
-
         }
 
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange, 2))
         {
-            // enemyAnimator.SetInteger("animation", 3);
             enemyState = State.Attack;
-            //enemyAnimator.SetBool("Attack", true);
         }
         if(!_isChasing)
         {
-            if (Vector3.SqrMagnitude(transform.position - agent.destination) < 0.25f)
+            if (Vector3.SqrMagnitude(transform.position - agent.destination) < 0.01f)
             {
+                enemyAnimator.SetBool("Move", false);
                 enemyState = State.Idle;
             }
         }
@@ -233,13 +224,18 @@ public class Enemy : MonoBehaviour
     //공격 상태
     private void UpdateAttack()
     {
-        enemyAnimator.SetTrigger("Attack 0");
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange,2))
         {
             agent.ResetPath();
             timer += Time.deltaTime;
+            motionTime += Time.deltaTime;
 
-            if(_canApplyDamage && enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= dmgApplyTime)
+            if (motionTime > attTime - 0.01f)
+            {
+                motionTime = 0.0f;
+                enemyAnimator.SetTrigger("Attack 0");
+            }
+            if (_canApplyDamage && enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= dmgApplyTime)
             {
                 ApplyDamage();
             }
@@ -253,11 +249,7 @@ public class Enemy : MonoBehaviour
 
         else
         {
-            //enemyAnimator.SetInteger("animation", 2);
-
-            enemyAnimator.SetBool("Attack", false);
             enemyState = State.Move;
-
             timer = 0.0f;
         }
     }
@@ -265,49 +257,45 @@ public class Enemy : MonoBehaviour
     void ApplyDamage()
     {
         _canApplyDamage = false;
+       
         player.GetComponent<Status>().Damage(GetComponent<Status>().GetAtk(), transform.position);
     }
 
     //사망 상태
     private void UpdateDie()
     {
-    
-       // enemyAnimator.SetInteger("animation", 5);
-
-        enemyAnimator.SetBool("Die", true);
+        if(!_isDie)
+        {
+            _isDie = true;
+            enemyAnimator.SetTrigger("Die 0");
+        }    
         myRigid.isKinematic = true;
         myColider.isTrigger = true;
         agent.enabled = false;
         dieTime += Time.deltaTime;
-
         if(dieTime >= 60)
         {
             string name = GetComponent<EnemyStatus>().GetName();
-
-            
             ObjectPooling.instance.PushObjectToPool(name,this.gameObject);
         }
-        
     }
 
    
     //복귀 상태
     private void UpdateReturn()
     {
-        if(Vector3.SqrMagnitude(transform.position - startPoint) > 0.01)
+        if(Vector3.SqrMagnitude(transform.position - startPoint) > 0.5f)
         {
             agent.SetDestination(startPoint);
         }
         else
         {
             //enemyAnimator.SetInteger("animation", 1);
-
             enemyAnimator.SetBool("Move", false);
             agent.ResetPath();
             _isChasing = false;
             transform.position = startPoint;
             enemyState = State.Idle;
-
         }
     }
     //피격 상태
@@ -327,20 +315,10 @@ public class Enemy : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //원거리 공격 가능 범위
-        if(isLongMonster)
-        {
-          Gizmos.color = Color.yellow;
-          Gizmos.DrawWireSphere(transform.position, maxLongAttackRange);
-        }
 
         //근접 공격 가능 범위
-        if(!isLongMonster)
-        {
-          Gizmos.color = Color.red;
-          Gizmos.DrawWireSphere(transform.position, maxAttackRange);
-        }
-
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, maxAttackRange);
         //인식 범위
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, maxFindRange);
@@ -353,4 +331,17 @@ public class Enemy : MonoBehaviour
     }
 
     public PlayerStatus GetPlayerStatus() { return player.GetComponent<PlayerStatus>(); }
+
+
+    private void OnEnable()
+    {
+        Initialized();
+        
+    }
+
+    private void Initialized()
+    {
+        enemyState = State.Idle;
+        startPoint = transform.position;
+    }
 }

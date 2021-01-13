@@ -157,6 +157,7 @@ public class PlayerMove : MonoBehaviour
             }
 
             Cooldown();
+            LevelUp();
 
             if (isCombo)
             {
@@ -240,8 +241,14 @@ public class PlayerMove : MonoBehaviour
 
         moveVec = new Vector3(hAxis, 0, vAxis).normalized;
 
-
-        realMoveVec = (moveVec.z * Camera.main.transform.forward + Camera.main.transform.right * moveVec.x);
+        if (isSword)
+        {
+            realMoveVec = (moveVec.z * Camera.main.transform.forward + Camera.main.transform.right * moveVec.x);
+        }
+        if (isMage)
+        {
+            realMoveVec = (moveVec.z * Camera.main.transform.forward + Camera.main.transform.right * moveVec.x) * 1.5f;
+        }
 
         realMoveVec.y = 0;
 
@@ -317,6 +324,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (!isJump && !isDodge)
         {
+            SaveManager.instance.Save();
             SoundManager.instance.PlayEffectSound("Jump");
             isJump = true;
             myRigid.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -1029,7 +1037,7 @@ public class PlayerMove : MonoBehaviour
         isDieTrigger = false;
     }
 
-    public void Swap()
+    public void Swap() // 버튼이 1개일떄 전환
     {
         if (!isDie && (!isSkill1 && !isSkill2  && !isSkill3  && !isSkill4))
         {
@@ -1045,6 +1053,10 @@ public class PlayerMove : MonoBehaviour
                 sword.SetActive(true);
                 mage.SetActive(false);
             }
+        }
+        else
+        {
+            Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSwap);
         }
     }
 
@@ -1105,6 +1117,15 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    void LevelUp()
+    {
+        if (myStatus.GetIsLevelUp())
+        {
+            ObjectPooling.instance.GetObjectFromPool("키워드 획득", transform.position);
+            myStatus.SetIsLevelUp(false);
+        }
+    }
+
     public bool GetDodge() // get 대쉬값
     {
         return isDodge;
@@ -1113,4 +1134,8 @@ public class PlayerMove : MonoBehaviour
     public bool GetIsMage() { return isMage; }
     public void SetIsSword(bool _isSword) { isSword = _isSword; }
     public void SetIsMage(bool _isMage) { isMage = _isMage; }
+    public bool GetIsSkill1() { return isSkill1; }
+    public bool GetIsSkill2() { return isSkill2; }
+    public bool GetIsSkill3() { return isSkill3; }
+    public bool GetIsSkill4() { return isSkill4; }
 }

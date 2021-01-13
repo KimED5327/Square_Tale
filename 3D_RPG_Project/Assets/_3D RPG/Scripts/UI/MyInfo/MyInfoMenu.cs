@@ -45,15 +45,15 @@ public class MyInfoMenu : MonoBehaviour
             txtMyName.text = "LV " + thePlayerStatus.GetLevel() +  $" - {PlayerPrefs.GetString("Nickname")}";
         else
             txtMyName.text = "LV " + thePlayerStatus.GetLevel() + $" - 닉네임";
-
-        if (sword.activeSelf)
+        
+        if (player.GetIsSword())
         {
             txtAtkType.text = "STR";
             txtAtkValue.text = thePlayerStatus.GetStr().ToString();
             //txtDef.text = thePlayerStatus.GetSwordDef().ToString();
             //txtHp.text = thePlayerStatus.GetSwordMaxHp().ToString();
         }
-        if (mage.activeSelf)
+        if (player.GetIsMage())
         {
             txtAtkType.text = "INT";
             txtAtkValue.text = thePlayerStatus.GetInt().ToString();
@@ -80,19 +80,37 @@ public class MyInfoMenu : MonoBehaviour
 
     public void SwapSword()
     {
-        SoundManager.instance.PlayEffectSound("Click");
-        player.anim = player.anims[0];
-        sword.SetActive(true);
-        mage.SetActive(false);
-        ShowMenu();
+        if (!player.GetIsSkill1() && !player.GetIsSkill2() && !player.GetIsSkill3() && !player.GetIsSkill4())
+        {
+            SoundManager.instance.PlayEffectSound("Click");
+            player.anim = player.anims[0];
+            sword.SetActive(true);
+            mage.SetActive(false);
+            player.SetIsSword(true);
+            player.SetIsMage(false);
+            ShowMenu();
+        }
+        else
+        {
+            Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSwap);
+        }
     }
 
     public void SwapMage()
     {
-        SoundManager.instance.PlayEffectSound("Click");
-        player.anim = player.anims[1];
-        sword.SetActive(false);
-        mage.SetActive(true);
-        ShowMenu();
+        if (!player.GetIsSkill1() && !player.GetIsSkill2() && !player.GetIsSkill3() && !player.GetIsSkill4())
+        {
+            SoundManager.instance.PlayEffectSound("Click");
+            player.anim = player.anims[1];
+            sword.SetActive(false);
+            mage.SetActive(true);
+            player.SetIsSword(false);
+            player.SetIsMage(true);
+            ShowMenu();
+        }
+        else
+        {
+            Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSwap);
+        }
     }
 }

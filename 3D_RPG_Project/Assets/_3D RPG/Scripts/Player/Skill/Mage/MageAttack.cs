@@ -6,15 +6,13 @@ public class MageAttack : MonoBehaviour
 {
     public float speed = 15f;
     public float hitOffset = 0f;
+    float gravity = 0.01f;
     public bool UseFirePointRotation;
     public Vector3 rotationOffset = new Vector3(0, 0, 0);
     public GameObject hit;
     public GameObject flash;
     private Rigidbody rb;
     public GameObject[] Detached;
-    Transform player;
-    EnemyStatus states;
-    Boss boss;
     PlayerStatus _status;
     void Start()
     {
@@ -41,8 +39,11 @@ public class MageAttack : MonoBehaviour
     {
         if (speed != 0)
         {
-
-            transform.position += transform.forward * (speed * Time.deltaTime);
+            Vector3 dir = transform.position;
+          
+            dir += transform.forward * (speed * Time.deltaTime);
+            dir.y -= gravity;
+            transform.position = dir;
         }
     }
 
@@ -54,7 +55,7 @@ public class MageAttack : MonoBehaviour
             if (!targetStatus.IsDead())
             {
                 //targetStatus.Damage(_status.GetAtk(), transform.position);
-                targetStatus.Damage((int)(_status.GetInt() * 0.5f), transform.position);
+                targetStatus.Damage((int)(_status.GetInt() * 1.0f), transform.position);
                 GameObject _hit = Instantiate(hit, other.transform.position, other.transform.rotation);
                 Rigidbody rigid = _hit.GetComponent<Rigidbody>();
                 Destroy(_hit, 0.5f);

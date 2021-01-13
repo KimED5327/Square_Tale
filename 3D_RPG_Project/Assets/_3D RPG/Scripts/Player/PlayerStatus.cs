@@ -7,7 +7,6 @@ public class PlayerStatus : Status
     [Header("Player Status")]
     [SerializeField] int _str = 0;
     [SerializeField] int _int = 0;
-    [SerializeField] Sprite _profile = null;
 
     [Header("Level Up Info")]
     [SerializeField] int[] _levelUpExps = null;
@@ -20,6 +19,7 @@ public class PlayerStatus : Status
     //[SerializeField] int _levelUpMageHp = 8;//임시 체력 증가량 (수정 필)
 
     int _curExp = 0;
+    bool _isLevelUp;
 
     public int GetStr() { return _str; }
     public int GetInt() { return _int; }
@@ -67,6 +67,7 @@ public class PlayerStatus : Status
                 //_swordDef += _levelUpDef;
                 //_mageDef += _levelUpDef;
                 _level++;
+                _isLevelUp = true;
             }
         }
     }
@@ -79,7 +80,7 @@ public class PlayerStatus : Status
             _curExp += 50;
             if (_levelUpExps[_level - 1] <= _curExp)
             {
-                _curExp -= _levelUpExps[_level];
+                _curExp -= _levelUpExps[_level - 1];
                 _maxHp += _levelUpHp;
                 _curHp = _maxHp;
                 //_swordMaxHp += _levelUpSwordHp;
@@ -92,6 +93,7 @@ public class PlayerStatus : Status
                 //_swordDef += _levelUpDef;
                 //_mageDef += _levelUpDef;
                 _level++;
+                _isLevelUp = true;
             }
         }
     }
@@ -111,6 +113,8 @@ public class PlayerStatus : Status
         return (float)_curHp / _maxHp;
     }
 
-    public Sprite GetProfileSprite() { return _profile; }
+    public bool GetIsLevelUp() { return _isLevelUp; }
+    public void SetIsLevelUp(bool isLevelUp) { _isLevelUp = isLevelUp; }
+
     public PlayerBuffManager GetBuffManager() { return _buffManager; }
 }

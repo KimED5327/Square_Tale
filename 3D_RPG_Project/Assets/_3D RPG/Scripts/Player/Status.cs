@@ -6,8 +6,8 @@ public abstract class Status : MonoBehaviour
 {
     [Header("Basic Status")]
     [SerializeField] protected string _name = "이름";
-    [SerializeField] protected int _maxHp = 100;
-    protected int _curHp = 100;
+    [SerializeField] protected int _maxHp = 150;
+    protected int _curHp = 150;
     [SerializeField] protected int _atk = 0;
     [SerializeField] protected int _def = 0;
     [SerializeField] protected int _level = 1;
@@ -19,7 +19,7 @@ public abstract class Status : MonoBehaviour
     //[SerializeField] protected int _swordDef = 10;
     ////전사
     //[SerializeField] protected int _mageMaxHp = 130;
-    //protected int _mageCurHp = 150;
+    //protected int _mageCurHp = 130;
     //[SerializeField] protected int _mageDef = 2;
     //법사
     protected bool _isDead = false;

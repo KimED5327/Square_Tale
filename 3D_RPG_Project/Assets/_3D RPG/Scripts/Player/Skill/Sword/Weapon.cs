@@ -88,8 +88,18 @@ public class Weapon : MonoBehaviour
                     SoundManager.instance.PlayEffectSound("Slash2");
 
                 ScreenEffect.instance.ExecuteSplash(_alpha);
-
-                other.GetComponent<Status>().Damage((int)(_status.GetStr() * 0.5f), transform.position);
+                switch(_combo)
+                {
+                    case 1:
+                        other.GetComponent<Status>().Damage((int)(_status.GetStr() * 1.0f), transform.position);
+                        break;
+                    case 2:
+                        other.GetComponent<Status>().Damage((int)(_status.GetStr() * 1.1f), transform.position);
+                        break;
+                    case 3:
+                        other.GetComponent<Status>().Damage((int)(_status.GetStr() * 1.2f), transform.position);
+                        break;
+                }
             }
         }
     }

@@ -11,6 +11,8 @@ public class MageSkillManager : MonoBehaviour
 
     static int[] _SkillCount = null;
 
+    PlayerMove _player;
+
     public void Save()
     {
         PlayerPrefs.SetInt("mageSkillEquip1", _equipSlots[0].GetSkillID());
@@ -51,6 +53,8 @@ public class MageSkillManager : MonoBehaviour
 
     private void Awake()
     {
+        _player = FindObjectOfType<PlayerMove>();
+
         _SkillCount = new int[_slots.Length];
 
         for (int i = 0; i < _slots.Length; i++)
@@ -90,13 +94,20 @@ public class MageSkillManager : MonoBehaviour
 
     public void BtnSlotTouch(int idx)
     {
-        bool isEquip = _slots[idx].TryEquip();
+        if (!_player.GetIsSkill1() && !_player.GetIsSkill2() && !_player.GetIsSkill3() && !_player.GetIsSkill4())
+        {
+            bool isEquip = _slots[idx].TryEquip();
 
-        // 스킬 장착
-        if (isEquip)
-            EquipSkill(idx);
+            // 스킬 장착
+            if (isEquip)
+                EquipSkill(idx);
+            else
+                UnEquipSkill(idx);
+        }
         else
-            UnEquipSkill(idx);
+        {
+            Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSwap);
+        }
     }
 
     void EquipSkill(int idx)

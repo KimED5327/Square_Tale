@@ -29,16 +29,16 @@ public class OverlapSkillArea : MonoBehaviour
                 switch (_player.getSkillNum())
                 {
                     case 1:
-                        targetStatus.Damage((int)(_status.GetStr() * 1f), transform.position, "overlap");
+                        targetStatus.Damage((int)(_status.GetStr() * (1.6f + (_status.GetLevel() / 10))), transform.position, "overlap");
                         break;
                     case 2:
-                        targetStatus.Damage((int)(_status.GetStr() * 0.6f), transform.position, "overlap");
+                        targetStatus.Damage((int)(_status.GetStr() * (1.8f + (_status.GetLevel() / 10))), transform.position, "overlap");
                         break;
                     case 3:
-                        targetStatus.Damage((int)(_status.GetStr() * 2f), transform.position, "overlap");
+                        targetStatus.Damage((int)(_status.GetStr() * (1.9f + (_status.GetLevel() / 10))), transform.position, "overlap");
                         break;
                     case 4:
-                        targetStatus.Damage((int)(_status.GetStr() * 1.8f), transform.position, "overlap");
+                        targetStatus.Damage((int)(_status.GetStr() * (2.2f + (_status.GetLevel() / 10))), transform.position, "overlap");
                         break;
                 }
             }

@@ -388,6 +388,7 @@ MonoBehaviour:
   timer: 0
   reconTime: 3
   reconTimer: 0
+  motionTime: 0
   maxFindRange: 2
   maxMoveRange: 5
   maxAttackRange: 0.8

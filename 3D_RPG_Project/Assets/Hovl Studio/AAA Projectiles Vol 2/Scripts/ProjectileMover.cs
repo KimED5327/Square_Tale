@@ -59,11 +59,12 @@ public class ProjectileMover : MonoBehaviour
         if (!collision.transform.CompareTag("Player"))
             return;
         if (collision.transform.CompareTag("Floor"))
-            return;
-        
+        {
+            Destroy(gameObject);
+        }
         if(boss.getIsDamage())
         {
-            collision.transform.GetComponent<Status>().Damage(states.GetAtk(), transform.position);
+            collision.transform.GetComponent<Status>().Damage(10, transform.position);
         }
         else if(!boss.getIsDamage())
         {
@@ -101,6 +102,6 @@ public class ProjectileMover : MonoBehaviour
                 detachedPrefab.transform.parent = null;
             }
         }
-        Destroy(gameObject);
+        
     }
 }

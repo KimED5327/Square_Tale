@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class SkillDamage : MonoBehaviour
 {
-    private void OnCollisionStay(Collision collision)
+
+    private void OnCollisionEnter(Collision collision)
     {
-        if(collision.transform.CompareTag("Face"))
+        if (collision.transform.CompareTag("Face"))
         {
 
 
 
-            Destroy(this);
+
         }
+
+        Destroy(gameObject);
     }
+
+
 }

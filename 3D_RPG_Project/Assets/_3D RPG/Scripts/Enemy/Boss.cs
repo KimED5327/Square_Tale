@@ -43,7 +43,7 @@ public class Boss : MonoBehaviour
     GameObject skill2;
     private bool sktornado;                             //스킬 토네이도 실행 불값
     private bool skCheerySome = false;                  //스킬 벚꽃 마안 실행 불값
-    private bool isDamage;                              //대미지 받는 변수
+    private bool isDamage = false;                      //대미지 받는 변수
     private bool skillAttack = false;
     private float skillAttackTime = 0;
     private int skillUpcount = 0;                       //스킬 증가 횟수
@@ -97,22 +97,26 @@ public class Boss : MonoBehaviour
     }
     private void SkillAttackUpdate()
     {
-        skillAttackTime += Time.deltaTime;
-        if(skillAttackTime > 1)
+        if(skillAttack)
         {
-            skill.transform.localScale += new Vector3(0.1f, 0, 0.1f);
-            skillUpcount++;
-            skillAttackTime = 0;
-            isDamage = true;
+            skillAttackTime += Time.deltaTime;
+            if (skillAttackTime > 1)
+            {
+                skill.transform.localScale += new Vector3(0.1f, 0, 0.1f);
+                skillUpcount++;
+                skillAttackTime = 0;
+                isDamage = true;
+            }
+            if (skillUpcount > 20)
+            {
+                Destroy(skill);
+                skillAttack = false;
+                isSkillOne = false;
+                skillAttackTime = 0;
+                skillUpcount = 0;
+            }
         }
-        if(skillUpcount > 20)
-        {
-            Destroy(skill);
-            skillAttack = false;
-            isSkillOne = false;
-            skillAttackTime = 0;
-            skillUpcount = 0;
-        }
+
     }
     private void IdleUpdate()
     {
@@ -239,6 +243,7 @@ public class Boss : MonoBehaviour
                     timer = 0;
                     bossState = state.idle;
                     skill.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 0.5f, player.transform.position.z);
+                    skill.GetComponent<ProjectileMover>().Pushinfo(player, status, this);
                     enemyAnimator.SetBool("Skill", false);
                     isSkillOne = !isSkillOne;
                 }

@@ -347,6 +347,7 @@ public class Inventory : MonoBehaviour
                 
             }
         }
+
         SerializeItem();
     }
 
@@ -377,9 +378,13 @@ public class Inventory : MonoBehaviour
                         _slots[originSlotIndex].ForceSetSlotCount(originCount);
                         return false;
                     }
-
                 }
 
+                // ※ 퀘스트 조건검사 
+                // 진행 중인 퀘스트 중 '아이템 전달' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 
+                QuestManager.instance.CheckDeliverItemQuest();
+                // 진행 중인 퀘스트 중 '아이템 소지' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 
+                QuestManager.instance.CheckCarryItemQuest();
                 return true;
             }
         }
@@ -394,6 +399,12 @@ public class Inventory : MonoBehaviour
             if (_slots[i].IsEmptySlot())
             {
                 _slots[i].PushSlot(item, count);
+
+                // ※ 퀘스트 조건검사
+                // 진행 중인 퀘스트 중 '아이템 전달' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 
+                QuestManager.instance.CheckDeliverItemQuest();
+                // 진행 중인 퀘스트 중 '아이템 소지' 퀘스트가 있다면 인벤토리에 해당 아이템이 있는지 달성 요건 확인 
+                QuestManager.instance.CheckCarryItemQuest();
                 return true;
             }
         }
@@ -430,9 +441,12 @@ public class Inventory : MonoBehaviour
         int total = 0;
         for(int i = 0; i < _slots.Length; i++)
         {
-            if(item.id == _slots[i].GetSlotItem().id)
+            if (!_slots[i].IsEmptySlot())
             {
-                total += _slots[i].GetSlotCount();
+                if (item.id == _slots[i].GetSlotItem().id)
+                {
+                    total += _slots[i].GetSlotCount();
+                }
             }
         }
         return count <= total;
@@ -442,19 +456,21 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < _slots.Length; i++)
         {
-            if (item.id == _slots[i].GetSlotItem().id)
+            if (!_slots[i].IsEmptySlot())
             {
-                return _slots[i].GetSlotCount();
+                if (item.id == _slots[i].GetSlotItem().id)
+                {
+                    return _slots[i].GetSlotCount();
+                }
             }
         }
-        
-        return -1;
+
+        return 0;
     }
 
     
     public Item GetSlotItem(int index) { return _slots[index].GetSlotItem(); }
     public Vector3 GetSlotLocalPos(int index) { return _slots[index].transform.localPosition; }
-
 
     public int GetGold() { return gold; }
     public int GetRuby() { return ruby; }

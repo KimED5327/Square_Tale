@@ -19,25 +19,32 @@ public class QuestLoader : MonoBehaviour
     [SerializeField] string deliverItemDBPath;
     [SerializeField] string collectLootDBPath;
     [SerializeField] string useItemDBPath;
-    [SerializeField] string acquireItemDBPath;
+    [SerializeField] string carryItemDBPath;
     [SerializeField] string operateObjectDBPath;
     [SerializeField] string killEnemyDBPath;
     [SerializeField] string talkWithNpcDBPath;
 
     private void Awake()
     {
-        if (instance == null) instance = this; 
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else Destroy(gameObject);
     }
 
     void Start()
     {
+        if (QuestDB.instance.GetMaxCount() > 0) return; 
+
         // 퀘스트 기본정보 파싱 
         ParsingQuestDB();
         //PrintQuestInfo();
 
         // 퀘스트 타입별 상세정보 파싱 
         ParsingQuestTypeDB();
-        //PrintQuestTypeInfo();
+        PrintQuestTypeInfo();
     }
 
     /// <summary>
@@ -45,25 +52,9 @@ public class QuestLoader : MonoBehaviour
     /// </summary>
     private void ParsingQuestDB()
     {
-
-
         string path = streamingAssetsPath + questDBPath;
-        string jsonString;
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            WWW reader = new WWW(path);
-            while (!reader.isDone)
-            {
+        JsonData jData = JsonManager.instance.GetJsonData(path);
 
-            }
-            jsonString = reader.text;
-        }
-        else
-        {
-            jsonString = File.ReadAllText(path);
-        }
-
-        JsonData jData = JsonMapper.ToObject(jsonString);
         // 모든 row 순회 
         for (int i = 0; i < jData.Count; i++)
         {
@@ -81,32 +72,35 @@ public class QuestLoader : MonoBehaviour
             QuestState state = (QuestState)int.Parse(jData[i][7].ToString());
             int exp = int.Parse(jData[i][8].ToString());
             int gold = int.Parse(jData[i][9].ToString());
+            int itemID = 0;
+            if (!JsonManager.instance.IsNullString(jData[i][10].ToString()))
+                itemID = int.Parse(jData[i][10].ToString());
 
             // 블럭 필드가 비어있지 않은 경우에만 값을 대입 
             // 블럭 필드가 배열(값이 2개 이상)인지 아닌지 확인하여 값을 대입 
             List<BlockUnit> blockList = new List<BlockUnit>();
-            if(!JsonManager.instance.IsNullString(jData[i][10].ToString()))
+            if(!JsonManager.instance.IsNullString(jData[i][11].ToString()))
             {
                 // 블럭 필드가 배열이 아닌 단일값인 경우 
-                if(!jData[i][10].IsArray)
+                if(!jData[i][11].IsArray)
                 {
                     BlockUnit block = new BlockUnit();
 
-                    block.SetBlockID(int.Parse(jData[i][10].ToString()));
-                    block.SetCount(int.Parse(jData[i][11].ToString()));
+                    block.SetBlockID(int.Parse(jData[i][11].ToString()));
+                    block.SetCount(int.Parse(jData[i][12].ToString()));
                     blockList.Add(block);
                 }
                 else
                 {
-                    for (int j = 0; j < jData[i][10].Count; j++)
+                    for (int j = 0; j < jData[i][11].Count; j++)
                     {
                         // 원소가 빈 문자열일 경우 for문 종료 
-                        if (JsonManager.instance.IsNullString(jData[i][10][j].ToString())) break;
+                        if (JsonManager.instance.IsNullString(jData[i][11][j].ToString())) break;
 
                         BlockUnit block = new BlockUnit();
 
-                        block.SetBlockID(int.Parse(jData[i][10][j].ToString()));
-                        block.SetCount(int.Parse(jData[i][11][j].ToString()));
+                        block.SetBlockID(int.Parse(jData[i][11][j].ToString()));
+                        block.SetCount(int.Parse(jData[i][12][j].ToString()));
                         blockList.Add(block);
                     }
                 }
@@ -115,21 +109,21 @@ public class QuestLoader : MonoBehaviour
             // 키워드 필드가 비어있지 않은 경우에만 값을 대입 
             // 키워드 필드가 배열(값이 2개 이상)인지 아닌지 확인하여 값을 대입 
             List<int> keywordList = new List<int>();
-            if(!JsonManager.instance.IsNullString(jData[i][12].ToString()))
+            if(!JsonManager.instance.IsNullString(jData[i][13].ToString()))
             {
                 // 키워드 필드가 배열이 아닌 단일값일 경우 
-                if (!jData[i][12].IsArray)
+                if (!jData[i][13].IsArray)
                 {
-                    keywordList.Add(int.Parse(jData[i][12].ToString()));
+                    keywordList.Add(int.Parse(jData[i][13].ToString()));
                 }
                 else
                 {
-                    for (int j = 0; j < jData[i][12].Count; j++)
+                    for (int j = 0; j < jData[i][13].Count; j++)
                     {
                         // 원소가 빈 문자열일 for문 종료 
-                        if (JsonManager.instance.IsNullString(jData[i][12][j].ToString())) break; 
+                        if (JsonManager.instance.IsNullString(jData[i][13][j].ToString())) break; 
 
-                        keywordList.Add(int.Parse(jData[i][12][j].ToString()));
+                        keywordList.Add(int.Parse(jData[i][13][j].ToString()));
                     }
                 }
             }
@@ -146,8 +140,9 @@ public class QuestLoader : MonoBehaviour
             quest.SetState(state);
             quest.SetExp(exp);
             quest.SetGold(gold);
-            quest.SetBlocks(blockList);
-            quest.SetKeywords(keywordList);
+            quest.SetItemID(itemID);
+            quest.SetBlockList(blockList);
+            quest.SetKeywordList(keywordList);
 
             QuestDB.instance.AddQuest(quest, questID);
             //Debug.Log(questID + "번째 퀘스트 추가");
@@ -159,12 +154,12 @@ public class QuestLoader : MonoBehaviour
     /// </summary>
     private void ParsingQuestTypeDB()
     {
-        //ParsingDeliverItemDB();
+        ParsingDeliverItemDB();
         //ParsingCollectLootDB();
         //ParsingUseItemDB();
-        //ParsingAcquireItemDB();
+        ParsingCarryItemDB();
         //ParsingOperateObjectDB();
-        //ParsingKillEnemyDB();
+        ParsingKillEnemyDB();
         ParsingTalkWithNpc();
     }
 
@@ -198,8 +193,8 @@ public class QuestLoader : MonoBehaviour
                 {
                     ItemUnit item = new ItemUnit();
 
-                    item.SetItemID(int.Parse(jData[i][1].ToString()));
-                    item.SetCount(int.Parse(jData[i][2].ToString()));
+                    item.SetItemID(int.Parse(jData[i][1][j].ToString()));
+                    item.SetCount(int.Parse(jData[i][2][j].ToString()));
                     deliverItem.AddItem(item);
                 }
             }
@@ -278,24 +273,24 @@ public class QuestLoader : MonoBehaviour
     }
 
     /// <summary>
-    /// type4. AcquireItem 타입 퀘스트 DB 파싱 
+    /// type4. CarryItem 타입 퀘스트 DB 파싱 
     /// </summary>
-    private void ParsingAcquireItemDB()
+    private void ParsingCarryItemDB()
     {
-        string path = streamingAssetsPath + acquireItemDBPath;
+        string path = streamingAssetsPath + carryItemDBPath;
         JsonData jData = JsonManager.instance.GetJsonData(path);
 
         for (int i = 0; i < jData.Count; i++)
         {
             Hashtable questInfo = new Hashtable();
-            AcquireItem acquireItem = new AcquireItem();
+            CarryItem carryItem = new CarryItem();
 
             int questID = int.Parse(jData[i][0].ToString());
-            acquireItem.GetItem().SetItemID(int.Parse(jData[i][1].ToString()));
-            acquireItem.GetItem().SetCount(int.Parse(jData[i][2].ToString()));
+            carryItem.GetItem().SetItemID(int.Parse(jData[i][1].ToString()));
+            carryItem.GetItem().SetCount(int.Parse(jData[i][2].ToString()));
 
-            acquireItem.SetQuestID(questID);
-            questInfo.Add(questInfoKey, acquireItem);
+            carryItem.SetQuestID(questID);
+            questInfo.Add(questInfoKey, carryItem);
             QuestDB.instance.GetQuest(questID).SetQuestInfo(questInfo);
         }
     }
@@ -394,11 +389,11 @@ public class QuestLoader : MonoBehaviour
         {
             Debug.Log((i + 1) + "번째 퀘스트 제목 : " + QuestDB.instance.GetQuest(i + 1).GetTitle());
 
-            for (int j = 0; j < QuestDB.instance.GetQuest(i + 1).GetBlocks().Count; j++)
+            for (int j = 0; j < QuestDB.instance.GetQuest(i + 1).GetBlockList().Count; j++)
             {
                 Debug.Log((j + 1) + "번째 블럭 번호와 수량 ( " +
-                    QuestDB.instance.GetQuest(i + 1).GetBlocks()[j].GetBlockID() + ", " +
-                    QuestDB.instance.GetQuest(i + 1).GetBlocks()[j].GetCount() + " )");
+                    QuestDB.instance.GetQuest(i + 1).GetBlockList()[j].GetBlockID() + ", " +
+                    QuestDB.instance.GetQuest(i + 1).GetBlockList()[j].GetCount() + " )");
             }
         }
     }
@@ -408,7 +403,7 @@ public class QuestLoader : MonoBehaviour
         //PrintDeliverItemInfo();
         //PrintCollectLootInfo();
         //PrintUseItemInfo();
-        //PrintAcquireItemInfo();
+        //PrintCarryItemInfo();
         //PrintKillEnemyInfo();
         //PrintTalkWithNpcInfo();
     }
@@ -465,13 +460,13 @@ public class QuestLoader : MonoBehaviour
         }
     }
 
-    void PrintAcquireItemInfo()
+    void PrintCarryItemInfo()
     {
         for (int i = 0; i < QuestDB.instance.GetMaxCount(); i++)
         {
-            if (QuestDB.instance.GetQuest(i + 1).GetQuestType() == QuestType.TYPE_ACQUIREITEM)
+            if (QuestDB.instance.GetQuest(i + 1).GetQuestType() == QuestType.TYPE_CARRYITEM)
             {
-                AcquireItem questInfo = QuestDB.instance.GetQuest(i + 1).GetQuestInfo()[questInfoKey] as AcquireItem;
+                CarryItem questInfo = QuestDB.instance.GetQuest(i + 1).GetQuestInfo()[questInfoKey] as CarryItem;
 
                 Debug.Log(questInfo.GetQuestID() + "번째 퀘스트 " +
                      questInfo.GetItem().GetItemID() + "번 아이템 " +

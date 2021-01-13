@@ -91,7 +91,6 @@ public class Rooting : MonoBehaviour
             Debug.Log("루팅 실패");
         else
             Resort(item.id);
-        
     }
 
     void Resort(int itemId)

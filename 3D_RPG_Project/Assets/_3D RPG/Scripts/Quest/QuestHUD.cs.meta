@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 3d68a120aaaa74a488d5fdc9aa7ca478
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _questListPanel: {instanceID: 0}
+  - _imgUpdate: {instanceID: 0}
+  - _btnQuest: {instanceID: 0}
+  - _imgBtnDefault: {fileID: 21300000, guid: 25052304823104c6b91d2a89a291c000, type: 3}
+  - _imgBtnSelected: {fileID: 21300000, guid: b26936e20b49f464084dcf2a6198b6ed, type: 3}
+  - _questTitle: {instanceID: 0}
+  - _questGoal1: {instanceID: 0}
+  - _questGoal2: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

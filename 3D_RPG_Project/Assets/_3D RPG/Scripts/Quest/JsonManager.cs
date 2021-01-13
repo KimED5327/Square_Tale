@@ -24,7 +24,6 @@ public class JsonManager : MonoBehaviour
     public JsonData GetJsonData(string path)
     {
         string jsonString = "";
-
         if (Application.platform == RuntimePlatform.Android)
         {
             WWW reader = new WWW(path);
@@ -38,8 +37,6 @@ public class JsonManager : MonoBehaviour
         {
             jsonString = File.ReadAllText(path);
         }
-
-
 
         return JsonMapper.ToObject(jsonString);
     }

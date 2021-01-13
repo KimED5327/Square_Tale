@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// <summary>
 /// 퀘스트 진행상태 분류 (0.미해금 1.진행가능 2.진행중 3.완료가능 4.완료)
@@ -54,9 +55,9 @@ public enum QuestType
     TYPE_USEITEM,
 
     /// <summary>
-    /// 퀘스트 NPC와 대화 후 특정 아이템을 획득하고 완수되는 퀘스트 타입
+    /// 아이템 소지여부를 확인하여 특정한 아이템을 소지중인 경우 완수되는 퀘스트 타입 
     /// </summary>
-    TYPE_ACQUIREITEM,
+    TYPE_CARRYITEM,
 
     /// <summary>
     /// 특정 오브젝트를 조작하여 완수하는 퀘스트 타입 (레버를 폭파시켜 다리를 생성하는 퀘스트)
@@ -89,8 +90,11 @@ public class Quest
 
     QuestType _type;                  // 퀘스트 타입 
     QuestState _state;                // 퀘스트 진행상태 
+    QuestNPC _questGiver;             // 퀘스트 부여자 참조값
+    QuestNPC _questFinisher = null;   // 퀘스트 완료자 참조값 
     int _exp;                         // 퀘스트 보상 경험치  
     int _gold;                        // 퀘스트 보상 골드 
+    int _itemID;                      // 퀘스트 보상 아이템 ID
     List<BlockUnit> _blockList;       // 퀘스트 보상 블럭 
     List<int> _keywordList;           // 퀘스트 보상 키워드 
     Hashtable _questInfo;             // 퀘스트 타입 상세정보 
@@ -105,10 +109,13 @@ public class Quest
 
     public QuestType GetQuestType() { return _type; }
     public QuestState GetState() { return _state; }
+    public QuestNPC GetQuestGiver() { return _questGiver; }
+    public QuestNPC GetQuestFinisher() { return _questFinisher; }
     public int GetExp() { return _exp; }
     public int GetGold() { return _gold; }
-    public List<BlockUnit> GetBlocks() { return _blockList; }
-    public List<int> GetKeywords() { return _keywordList; }
+    public int GetItemID() { return _itemID; }
+    public List<BlockUnit> GetBlockList() { return _blockList; }
+    public List<int> GetKeywordList() { return _keywordList; }
     public Hashtable GetQuestInfo() { return _questInfo; }
 
     //setter 
@@ -121,15 +128,62 @@ public class Quest
 
     public void SetQuestType(QuestType type) { _type = type; }
     public void SetState(QuestState state) { _state = state; }
+    public void SetQuestGiver(QuestNPC questGiver) { _questGiver = questGiver; }
+    public void SetQuestFinisher(QuestNPC questFinisher) { _questFinisher = questFinisher; }
     public void SetExp(int exp) { _exp = exp; }
     public void SetGold(int gold) { _gold = gold; }
-    public void SetBlocks(List<BlockUnit> blocks) { _blockList = blocks; }
-    public void SetKeywords(List<int> keywords) { _keywordList = keywords; }
+    public void SetItemID(int itemID) { _itemID = itemID; }
+    public void SetBlockList(List<BlockUnit> blocks) { _blockList = blocks; }
+    public void SetKeywordList(List<int> keywords) { _keywordList = keywords; }
     public void SetQuestInfo(Hashtable questInfo) { _questInfo = questInfo; }
+
+    /// <summary>
+    /// 새로운 객체를 할당하여 해당 객체를 'Deep Copy' 한 후 리턴 
+    /// </summary>
+    /// <returns></returns>
+    public Quest DeepCopy()
+    {
+        Quest newCopy = new Quest();
+
+        newCopy.SetQuestID(this.GetQuestID());
+        newCopy.SetNpcID(this.GetNpcID());
+        newCopy.SetPrecedentID(this.GetPrecedentID());
+        newCopy.SetTitle(this.GetTitle());
+        newCopy.SetDes(this.GetDes());
+        newCopy.SetGoal(this.GetGoal());
+
+        newCopy.SetQuestType(this.GetQuestType());
+        newCopy.SetState(this.GetState());
+        newCopy.SetQuestGiver(this.GetQuestGiver());
+        newCopy.SetQuestFinisher(this.GetQuestFinisher());
+
+        newCopy.SetExp(this.GetExp());
+        newCopy.SetGold(this.GetGold());
+
+        List<BlockUnit> blockListCopy = new List<BlockUnit>(this.GetBlockList());
+        newCopy.SetBlockList(blockListCopy);
+
+        List<int> keywordListCopy = new List<int>(this.GetKeywordList());
+        newCopy.SetKeywordList(keywordListCopy);
+
+        if (this.GetQuestType() == QuestType.TYPE_KILLENEMY)
+        {
+            Hashtable hashtableCopy = new Hashtable();
+            KillEnemy killEnemy = this.GetQuestInfo()["info"] as KillEnemy;
+            KillEnemy killEnemyCopy = killEnemy.DeepCopy();
+            hashtableCopy.Add("info", killEnemyCopy);
+            newCopy.SetQuestInfo(hashtableCopy);
+
+            return newCopy;
+        }
+
+        newCopy.SetQuestInfo(this.GetQuestInfo());
+        return newCopy;
+    }
 }
 
 /// <summary>
-/// AcquireItem 퀘스트를 통해 획득하는 아이템 클래스 (아이템 ID, 개수)
+/// CarryItem 퀘스트를 통해 획득하는 아이템 클래스 (아이템 ID, 개수)
 /// </summary>
 [System.Serializable]
 public class ItemUnit
@@ -262,16 +316,18 @@ public class UseItem
 }
 
 /// <summary>
-/// type4. 퀘스트 NPC와 대화 후 특정 아이템을 획득하고 완수되는 퀘스트 타입 
+/// type4. 아이템 소지여부를 확인하여 특정한 아이템을 소지중일 경우 완수되는 퀘스트 타입 
 /// </summary>
-public class AcquireItem
+public class CarryItem
 {
     int _questID;                     // 퀘스트 ID
-    ItemUnit _item = new ItemUnit();  // 획득하는 아이템 
+    ItemUnit _item = new ItemUnit();  // 소지해야 하는 아이템  
 
     //getter
     public int GetQuestID() { return _questID; }
     public ItemUnit GetItem() { return _item; }
+    public int GetItemID() { return _item.GetItemID(); }
+    public int GetItemCount() { return _item.GetCount(); }
 
     //setter
     public void SetQuestID(int questID) { _questID = questID; }
@@ -302,6 +358,31 @@ public class KillEnemy
 {
     int _questID;                                        // 퀘스트 ID
     List<EnemyUnit> _enemyList = new List<EnemyUnit>();  // 처치해야 하는 enemy 리스트 
+
+    /// <summary>
+    /// 새로운 객체를 할당하여 해당 객체를 'Deep Copy' 한 후 리턴 
+    /// </summary>
+    /// <returns></returns>
+    public KillEnemy DeepCopy()
+    {
+        KillEnemy newCopy = new KillEnemy();
+
+        newCopy.SetQuestID(this.GetQuestID());
+
+        List<EnemyUnit> enemyListCopy = new List<EnemyUnit>();
+
+        foreach(EnemyUnit enemy in this.GetEnemyList())
+        {
+            EnemyUnit enemyCopy = new EnemyUnit();
+            enemyCopy.SetEnemyID(enemy.GetEnemyID());
+            enemyCopy.SetCount(enemy.GetCount());
+            enemyListCopy.Add(enemyCopy);
+        }
+
+        newCopy.SetEnemyList(enemyListCopy);
+
+        return newCopy;
+    }
 
     //getter 
     public int GetQuestID() { return _questID; }

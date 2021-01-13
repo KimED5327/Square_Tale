@@ -196,7 +196,12 @@ public class ShopToolTip : MonoBehaviour
     {
         _inven.SetGold(_inven.GetGold() + _price);
         _inven.DecreaseItemCount(_touchItem, _count);
-        FinishProcess();
+        HideToolTip();
+        _shop.ReSetUI();
+
+        // 퀘스트 조건검사 
+        QuestManager.instance.CheckDeliverItemQuest();
+        QuestManager.instance.CheckCarryItemQuest();
     }
     
     // 구매 실행

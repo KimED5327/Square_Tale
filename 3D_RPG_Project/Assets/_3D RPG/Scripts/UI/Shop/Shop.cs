@@ -15,7 +15,6 @@ public class Shop : MonoBehaviour
     [SerializeField] GameObject _goShopPanel = null;
     [SerializeField] GameObject _goShopBuyUI = null;
 
-
     [Header("ShopSlot")]
     [SerializeField] GameObject _goSlotPrefab = null;
     [SerializeField] Transform _tfSlotParent = null;

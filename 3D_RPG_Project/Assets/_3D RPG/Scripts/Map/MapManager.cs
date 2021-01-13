@@ -56,7 +56,7 @@ public class MapManager : MonoBehaviour
         yield return new WaitUntil(() => ScreenEffect.instance._isFinished);
 
         // 로딩 후 ActiveMap 실행
-        LoadingScene.LoadScene("GameScene");
+        LoadingScene.LoadScene("GameScene_HJ");
     }
 
     public void ActiveMap()

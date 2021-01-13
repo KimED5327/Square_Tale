@@ -35,12 +35,14 @@ public class SlotToolTip : MonoBehaviour
     Item _touchItem;
 
     Inventory theInven;
-    Equipment theEquip; 
+    Equipment theEquip;
+    PlayerStatus thsPlayerStatus;
 
     void Awake()
     {
         theInven = FindObjectOfType<Inventory>();
         theEquip = FindObjectOfType<Equipment>();
+        thsPlayerStatus = FindObjectOfType<PlayerStatus>();
         instance = this;
     }
 
@@ -137,12 +139,14 @@ public class SlotToolTip : MonoBehaviour
 
             theInven.RemoveItem(_touchItem);
             Item returnEquipItem = theEquip.TryToEquipSlot(_touchItem);
+            ApplyStatus(_touchItem, true);
 
             // 기존 장착된 것이 있다면 교체
             if (returnEquipItem != null)
             {
                 theInven.TryToPushInventory(returnEquipItem);
                 theInven.ResortItem();
+                ApplyStatus(returnEquipItem, false);
             }
 
             theInven.SaveInventory();
@@ -161,9 +165,45 @@ public class SlotToolTip : MonoBehaviour
             if (returnEquipItem != null)
                 theInven.TryToPushInventory(returnEquipItem);
 
+            ApplyStatus(returnEquipItem, false);
             theInven.ResortItem();
             theInven.SaveInventory();
             HideToolTip();
+        }
+
+    }
+
+    /// <summary>
+    /// 장비 능력치 실제 스테이터스에 반영시킴. (장착이면 true, 탈착이면 false)
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="isEquip"></param>
+    void ApplyStatus(Item item, bool isEquip)
+    {
+        int apply = isEquip ? 1 : -1;
+
+        for (int i = 0; i < item.options.Count; i++)
+        {
+            switch (item.options[i].opType)
+            {
+                case OptionType.HP:
+                    thsPlayerStatus.AdjustHp((int)item.options[i].num * apply);
+                    break;
+                case OptionType.STR:
+                    thsPlayerStatus.AdjustStr((int)item.options[i].num * apply);
+                    break;
+                case OptionType.INT:
+                    thsPlayerStatus.AdjustInt((int)item.options[i].num * apply);
+                    break;
+                case OptionType.DEF:
+                    thsPlayerStatus.AdjustDef((int)item.options[i].num * apply);
+                    break;
+                case OptionType.SPEED:
+                    thsPlayerStatus.GetComponent<PlayerMove>().applySpeed += (int)item.options[i].num * apply;
+                    break;
+                default:
+                    break;
+            }
         }
 
     }

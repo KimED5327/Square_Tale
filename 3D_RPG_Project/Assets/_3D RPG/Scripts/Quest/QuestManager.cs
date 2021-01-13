@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// <summary>
 /// 진행, 완료된 퀘스트를 관리하고 퀘스트 타입별로 완료 조건 검사를 수행하는 매니져 
@@ -90,4 +91,11 @@ public class QuestManager : MonoBehaviour
         }
     }
 
+
+    public bool SearchCompleteQuestID(int id)
+    {
+        Quest completeQuest = _finishedQuests.Find(list => list.GetQuestID() == id);
+
+        return completeQuest != null;
+    }
 }

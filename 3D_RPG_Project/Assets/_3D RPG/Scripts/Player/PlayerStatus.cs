@@ -32,6 +32,7 @@ public class PlayerStatus : Status
     public void AdjustInt(int num) { _int += num; }
     public void AdjustStr(int num) { _str += num; }
     public void AdjustDef(int num) { _def += num; }
+    public void AdjustHp(int num) { _curHp += num; _maxHp += num; if (_curHp <= 0) _curHp = 1; }
 
     void Update()
     {

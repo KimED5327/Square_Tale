@@ -57,7 +57,7 @@ public class Rooting : MonoBehaviour
             {
                 _rootingSlots[i].gameObject.SetActive(true);
                 Item item = ItemDatabase.instance.GetItem(_rootingDropItem[i].itemID);
-                _rootingSlots[i].SetSlot(item, _rootingDropItem[i].itemCount, false);
+                _rootingSlots[i].SetSlot(item, _rootingDropItem[i].itemCount);
             }
             else
                 _rootingSlots[i].gameObject.SetActive(false);

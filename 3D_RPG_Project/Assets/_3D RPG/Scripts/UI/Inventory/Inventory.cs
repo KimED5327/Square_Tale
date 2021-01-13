@@ -86,7 +86,7 @@ public class Inventory : MonoBehaviour
         gold = PlayerPrefs.GetInt("Gold");
     }
 
-
+    // dkdlxp
     public void SaveInventory()
     {
         for (int i = 0; i < _slots.Length; i++)
@@ -267,6 +267,12 @@ public class Inventory : MonoBehaviour
     // true : 획득 성공, false : 획득 실패 (빈 슬롯 부족 등등)
     public bool TryToPushInventory(Item item, int count = 1)
     {
+
+        // id == 1 은 골드
+        if (item.id == 1)
+        {
+            gold += count;
+        }
 
         // 빈 슬롯이 있다면-
         if (CheckIsEmptySlot())

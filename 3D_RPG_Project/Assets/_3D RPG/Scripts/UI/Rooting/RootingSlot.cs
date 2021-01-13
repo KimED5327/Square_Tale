@@ -23,21 +23,27 @@ public class RootingSlot : MonoBehaviour, IPointerClickHandler
 
     public void SetLink(Rooting rooting) => _rootingUI = rooting;
 
-    public void SetSlot(Item item, int count, bool isGold)
+    public void SetSlot(Item item, int count)
     {
         _item = item;
         _count = count;
 
-        _txtName.text = _item.name;
-        _txtType.text = (_item.type == ItemType.WEAPON) ? "무기"
-                      : (_item.type == ItemType.ARMOR)  ? "방어구"
-                      : (_item.type == ItemType.ETC)    ? "재화"
-                                                        : "기타";
-
-        if(!isGold)
-            _txtCount.text = $"X {0}" + _count;
+        if(_item.id == 1)
+        {
+            _txtName.text = _item.name;
+            _txtType.text = "재화";
+            _txtCount.text = string.Format("{0:###,0}", _count) + " 골드";
+        }
         else
-            _txtCount.text = $"{0} Gold" + _count;
+        {
+            _txtName.text = _item.name;
+            _txtType.text = (_item.type == ItemType.WEAPON) ? "무기"
+                          : (_item.type == ItemType.ARMOR) ? "방어구"
+                          : (_item.type == ItemType.ETC) ? "재화"
+                                                            : "기타";
+            _txtCount.text = $"X {0}" + _count;
+        }
+
 
         //_ImgIcon.sprite = _item.sprite;
         _ImgIcon.sprite = SpriteManager.instance.GetItemSprite(_item.id);

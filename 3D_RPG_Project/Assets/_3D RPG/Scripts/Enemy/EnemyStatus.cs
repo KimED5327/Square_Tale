@@ -68,6 +68,13 @@ public class EnemyStatus : Status
     {
         _dropItemList.Clear();
 
+        if (!_isForceDead)
+        {
+            DropItem item = new DropItem { itemID = 1, itemCount = Random.Range(2, 10) };
+            _dropItemList.Add(item);
+        }
+
+
         // 각 아이템별 랜덤 드롭 확률에 걸리면 드롭 리스트에 추가
         for (int i = 0; i < _dropItemInfo.Length; i++)
         {

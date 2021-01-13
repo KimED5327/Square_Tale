@@ -703,6 +703,7 @@ MonoBehaviour:
   timer: 0
   reconTime: 3
   reconTimer: 0
+  motionTime: 0
   maxFindRange: 2
   maxMoveRange: 5
   maxAttackRange: 0.8
@@ -749,6 +750,7 @@ MonoBehaviour:
   _level: 3
   _giveExp: 21
   _knockBackForce: 0.1
+  _canKnockBack: 1
   _dropItemInfo:
   - itemID: 9
     itemCounts:

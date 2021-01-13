@@ -20,7 +20,7 @@ public class SpriteManager : MonoBehaviour
 
     public Sprite GetItemSprite(int itemId)
     {
-        return _spriteItem[itemId - 2];
+        return _spriteItem[itemId - 1];
     }
 
     public Sprite GetBuffSprite(int buffId)

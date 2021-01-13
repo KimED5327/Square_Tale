@@ -1006,8 +1006,7 @@ public class PlayerMove : MonoBehaviour
     public void ResurrectionToTown()
     {
         // 마을에서 부활
-        SceneManager.LoadScene("GameScene");
-        StartCoroutine("ResurrectionEffect");
+        MapManager.instance.ChangeMap("Town");
     }
 
     public void Resurrection()

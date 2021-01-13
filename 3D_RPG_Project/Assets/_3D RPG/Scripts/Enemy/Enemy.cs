@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public enum State
 {
-    Idle, Move, Die, Attack, Return, Damaged, Search
+    Idle, Move, Die, Attack, Return, Search
 }
 
 public class Enemy : MonoBehaviour
@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     public float reconTimer;                    //정찰 체크 시간
     private float dieTime;                      //죽고 난 뒤 시간
     public float motionTime;                   //공격 모션 시간
+    private bool searchCount = true;                    
 
     Vector3 startPoint;                         //최초 생성 값
     Transform player;                           //공격 목표 (플레이어)
@@ -30,7 +31,7 @@ public class Enemy : MonoBehaviour
     public int reconRange;                      //정찰 범위
 
     private bool _isDie = false;
-    private bool _canApplyDamage = true;
+    private bool _canApplyDamage = false;
     private bool _isChasing = false;
     private bool jump;
     private int jumpCount;
@@ -40,13 +41,13 @@ public class Enemy : MonoBehaviour
     PlayerMove playerMove;
 
     EnemyStatus status;
-    Vector3     _offset;
-    Vector3     _rayPos;
-    Vector3     _rayPos2;
+    Vector3 _offset;
+    Vector3 _rayPos;
+    Vector3 _rayPos2;
 
     public State enemyState;
 
-   
+
 
     bool IsPlaying(string stateName)
     {
@@ -65,6 +66,7 @@ public class Enemy : MonoBehaviour
     private void Initialized()
     {
         enemyState = State.Idle;
+        _isDie = false;
 
         if (agent != null)
             agent.enabled = true;
@@ -72,7 +74,7 @@ public class Enemy : MonoBehaviour
         transform.eulerAngles = new Vector3(0f, transform.eulerAngles.y, 0f);
         startPoint = transform.position;
 
-        if(playerMove == null)
+        if (playerMove == null)
             playerMove = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMove>();
     }
 
@@ -86,16 +88,17 @@ public class Enemy : MonoBehaviour
 
     }
 
-    public void LinkPlayer(Transform tfPlayer) { 
-        player = tfPlayer; 
+    public void LinkPlayer(Transform tfPlayer)
+    {
+        player = tfPlayer;
     }
 
     //에너미 업데이트
 
-    
+
     private void Update()
     {
-        if(!status.IsDead() && !jump)
+        if (!status.IsDead() && !jump)
         {
             switch (enemyState)
             {
@@ -111,25 +114,22 @@ public class Enemy : MonoBehaviour
                 case State.Return:
                     UpdateReturn();
                     break;
-                case State.Damaged:
-                    UpdateDamaged();
-                    break;
                 case State.Search:
                     UpdateSearch();
                     break;
             }
 
         }
-        else if(jump)
+        else if (jump)
         {
-            if(jumpCount == 0)
+            if (jumpCount == 0)
             {
                 agent.enabled = false;
                 myRigid.AddForce(Vector3.up * 6f, ForceMode.Impulse);
                 myRigid.AddForce(transform.forward * 2f, ForceMode.Impulse);
                 jumpCount++;
             }
-            if(myRigid.velocity.y < 0)
+            if (myRigid.velocity.y < 0)
             {
                 myColider.isTrigger = false;
             }
@@ -137,13 +137,13 @@ public class Enemy : MonoBehaviour
         else
         {
             UpdateDie();
-        }    
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.CompareTag("Floor"))
         {
-            if(jump)
+            if (jump)
             {
                 agent.enabled = true;
                 jump = false;
@@ -154,27 +154,45 @@ public class Enemy : MonoBehaviour
 
     private void UpdateSearch()
     {
-        _offset = new Vector3(0f, transform.position.y + 1, 0f);
-        Vector3 move = Vector3.forward;
+        if(searchCount)
+        {            Vector3 dir = player.transform.position - transform.position;
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 5);
+            _offset = new Vector3(0f, transform.position.y + 1, 0f);
+            Vector3 move = Vector3.forward;
 
-        float x = Random.Range((float)startPoint.x - maxFindRange, (float)startPoint.x + maxFindRange);
-        float z = Random.Range((float)startPoint.z - maxFindRange, (float)startPoint.z + maxFindRange);
-        move = new Vector3(x, 0f, z);
+            float x = Random.Range((float)startPoint.x - maxFindRange, (float)startPoint.x + maxFindRange);
+            float z = Random.Range((float)startPoint.z - maxFindRange, (float)startPoint.z + maxFindRange);
+            move = new Vector3(x, 0f, z);
 
-        Debug.DrawRay(move + _offset, Vector3.down, Color.yellow, 100);
+            Debug.DrawRay(move + _offset, Vector3.down, Color.yellow, 100);
+             if (Physics.Raycast(move + _offset, Vector3.down, out RaycastHit hit, 2f))
+             {
+                 if (hit.transform.CompareTag("Floor"))
+                {
+                   
+                    enemyAnimator.SetBool("Move", true);
+                     _rayPos = hit.point;
+                     agent.SetDestination(_rayPos);
+                    searchCount = false;
+                    Vector3 dir2 = transform.position - hit.point;
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir2), Time.deltaTime * 5);
+                }
+             }
 
-        if (Physics.Raycast(move + _offset, Vector3.down, out RaycastHit hit, 2f))
+               
+        }
+        if(!searchCount)
         {
-            if (hit.transform.CompareTag("Floor"))
+            if (Vector3.SqrMagnitude(transform.position - _rayPos) < 0.5f)
             {
-                enemyAnimator.SetBool("Move", true);
-                _rayPos = hit.point;
-                reconTimer = 0;
-                enemyState = State.Move;
-                agent.SetDestination(_rayPos);
+                enemyAnimator.SetBool("Move", false);
 
+                reconTimer = 0;
+                enemyState = State.Idle;
+                searchCount = true;
             }
         }
+
     }
 
     //기본 상태
@@ -184,23 +202,39 @@ public class Enemy : MonoBehaviour
         {
             enemyState = State.Move;
         }
-        reconTimer += Time.deltaTime;
-        if(reconTimer > reconTime)
+
+        if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange, 2))
         {
-            enemyState = State.Search;
+            timer = 0.0f;
+       
+            enemyAnimator.SetBool("Move", false);
+            enemyState = State.Attack;
         }
- 
+        else if (Vector3.SqrMagnitude(transform.position - player.position) > Mathf.Pow(maxAttackRange, 2))
+        {
+            reconTimer += Time.deltaTime;
+
+            if (reconTimer > reconTime)
+            {
+                enemyState = State.Search;
+            }
+        }
+        if (Vector3.SqrMagnitude(transform.position - startPoint) > Mathf.Pow(maxMoveRange, 2))
+        {
+            enemyState = State.Return;
+
+        }
     }
     //무브 상태
     private void UpdateMove()
     {
-        if (Vector3.SqrMagnitude(transform.position - startPoint) > Mathf.Pow(maxMoveRange,2))
+        if (Vector3.SqrMagnitude(transform.position - startPoint) > Mathf.Pow(maxMoveRange, 2))
         {
             enemyState = State.Return;
-          
+
         }
 
-        else if(Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange,2))
+        else if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
         {
 
 
@@ -211,7 +245,7 @@ public class Enemy : MonoBehaviour
             {
                 if (hit.transform.CompareTag("Floor") && !jump)
                 {
-                    
+
                     myColider.isTrigger = true;
                     jump = true;
                 }
@@ -220,15 +254,14 @@ public class Enemy : MonoBehaviour
             {
                 _isChasing = true;
                 agent.SetDestination(player.transform.position);
-
             }
         }
-
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange, 2))
         {
-            enemyState = State.Attack;
+            enemyAnimator.SetBool("Move", false);
+            enemyState = State.Idle;
         }
-        if(!_isChasing)
+        if (!_isChasing)
         {
             if (Vector3.SqrMagnitude(transform.position - agent.destination) < 0.01f)
             {
@@ -241,16 +274,19 @@ public class Enemy : MonoBehaviour
     //공격 상태
     private void UpdateAttack()
     {
-        if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange,2))
+        if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange, 2))
         {
+            Vector3 dir = player.transform.position - transform.position;
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 5);
+
             agent.ResetPath();
             timer += Time.deltaTime;
             motionTime += Time.deltaTime;
 
             if (motionTime > attTime - 0.01f)
             {
-                motionTime = 0.0f;
                 enemyAnimator.SetTrigger("Attack 0");
+                motionTime = 0.0f;
             }
             if (_canApplyDamage && enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= dmgApplyTime)
             {
@@ -266,43 +302,44 @@ public class Enemy : MonoBehaviour
 
         else
         {
-            enemyState = State.Move;
+            enemyState = State.Idle;
             timer = 0.0f;
         }
     }
-    
+
     void ApplyDamage()
     {
         _canApplyDamage = false;
-       
         player.GetComponent<Status>().Damage(GetComponent<Status>().GetAtk(), transform.position);
+        enemyState = State.Idle;
     }
 
     //사망 상태
     private void UpdateDie()
     {
-        if(!_isDie)
+        if (!_isDie)
         {
             _isDie = true;
             enemyAnimator.SetTrigger("Die 0");
             agent.ResetPath();
-        }    
+        }
         myRigid.isKinematic = true;
         myColider.isTrigger = true;
         agent.enabled = false;
+
         dieTime += Time.deltaTime;
-        if(dieTime >= 60)
+        if (dieTime >= 60)
         {
             string name = GetComponent<EnemyStatus>().GetName();
-            ObjectPooling.instance.PushObjectToPool(name,this.gameObject);
+            ObjectPooling.instance.PushObjectToPool(name, this.gameObject);
         }
     }
 
-   
+
     //복귀 상태
     private void UpdateReturn()
     {
-        if(Vector3.SqrMagnitude(transform.position - startPoint) > 0.5f)
+        if (Vector3.SqrMagnitude(transform.position - startPoint) > 0.1f)
         {
             agent.SetDestination(startPoint);
         }
@@ -316,20 +353,6 @@ public class Enemy : MonoBehaviour
             enemyState = State.Idle;
         }
     }
-    //피격 상태
-    private void UpdateDamaged()
-    {
-        StartCoroutine(DamageProc()); //대미지 처리용 코루틴
-    }
-
-    IEnumerator DamageProc()
-    {
-        yield return new WaitForSeconds(1.0f);
-
-        enemyState = State.Move;
-    }
-
-
 
     private void OnDrawGizmos()
     {

@@ -983,12 +983,13 @@ public class PlayerMove : MonoBehaviour
     {
         if (myStatus.GetCurrentHp() <= 0)
         {
-            GameHudMenu.instance.HideMenu();
+
             isDie = true;
             resurrectionUI.SetActive(true);
             blockCon.enabled = false;
             if (!isDieTrigger)
             {
+                GameHudMenu.instance.HideMenu();
                 isDieTrigger = true;
                 anim.SetTrigger("doDie");
             }
@@ -997,14 +998,16 @@ public class PlayerMove : MonoBehaviour
 
     public void OutofMap() // 맵밖으로 낙사
     {
-        GameHudMenu.instance.HideMenu();
+
         if (transform.position.y < -50)
         {
+
             isDie = true;
             resurrectionUI.SetActive(true);
             blockCon.enabled = false;
             if (!isDieTrigger)
             {
+                GameHudMenu.instance.HideMenu();
                 isDieTrigger = true;
                 anim.SetTrigger("doDie");
             }

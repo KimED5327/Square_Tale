@@ -15,7 +15,7 @@ public class EnemyDB : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _enemyDB.Add(2, "이너비");
+        _enemyDB.Add(2, "이노비");
         _enemyDB.Add(3, "트리져");
         _enemyDB.Add(6, "릴리");
     }

@@ -248,14 +248,14 @@ public class QuestNPC : MonoBehaviour
                 if (quest.GetNpcID() == _npcID)
                 {
                     if (quest.GetQuestFinisher().GetNpcID() == _npcID)
-                        QuestManager.instance.GetOngoingQuest().SetQuestFinisher(this);
+                        QuestManager.instance.GetOngoingQuestByID().SetQuestFinisher(this);
 
                     SetNpcOngoingState(quest);
-                    QuestManager.instance.GetOngoingQuest().SetQuestGiver(this);
+                    QuestManager.instance.GetOngoingQuestByID().SetQuestGiver(this);
                     break;
                 }
 
-                QuestManager.instance.GetOngoingQuest().SetQuestFinisher(this);
+                QuestManager.instance.GetOngoingQuestByID().SetQuestFinisher(this);
                 break;
 
             case QuestState.QUEST_COMPLETABLE:
@@ -263,18 +263,18 @@ public class QuestNPC : MonoBehaviour
                 if (quest.GetNpcID() == _npcID)
                 {
                     SetNpcOngoingState(quest);
-                    QuestManager.instance.GetOngoingQuest().SetQuestGiver(this);
+                    QuestManager.instance.GetOngoingQuestByID().SetQuestGiver(this);
 
                     if (quest.GetQuestFinisher().GetNpcID() == _npcID)
                     {
                         SetNpcCompletableState(quest);
-                        QuestManager.instance.GetOngoingQuest().SetQuestFinisher(this);
+                        QuestManager.instance.GetOngoingQuestByID().SetQuestFinisher(this);
                     }
                     break;
                 }
 
                 SetNpcCompletableState(quest);
-                QuestManager.instance.GetOngoingQuest().SetQuestFinisher(this);
+                QuestManager.instance.GetOngoingQuestByID().SetQuestFinisher(this);
                 break;
         }
 

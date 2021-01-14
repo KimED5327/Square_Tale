@@ -18,6 +18,7 @@ public class QuestManager : MonoBehaviour
 
     Inventory _inventory;               // 인벤토리 참조자 
     QuestHUD _questHUD;                 // QuestHUD 참조자 
+    QuestMenu _questMenu;               // QuestMenu 참조자 
     bool _isHudOpen = false;            // QuestHUD 창 오픈여부 확인 변수 
     bool _isCompletableIconOn = false;  // QuestHUD 완료가능 아이콘 on/off 변수 
     string _questInfoKey = "info";      // 퀘스트 타입 해시테이블 키 
@@ -566,6 +567,83 @@ public class QuestManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 퀘스트 타입에 맞는 퀘스트 목표를 string 타입으로 리턴 
+    /// </summary>
+    /// <param name="quest"></param>
+    /// <returns></returns>
+    public string GetQuestGoal(Quest quest)
+    {
+        string goal;
+
+        switch (quest.GetQuestType())
+        {
+            case QuestType.TYPE_DELIVERITEM:
+                goal = GetDeliverItemGoal(quest);
+                break;
+
+            case QuestType.TYPE_KILLENEMY:
+                goal = GetKillEnemyGoal(quest);
+                break;
+
+            default:
+                goal = quest.GetGoal();
+                break;
+        }
+
+        return goal;
+    }
+
+    /// <summary>
+    /// '아이템 전달' 타입 퀘스트의 목표 string 타입으로 리턴  
+    /// </summary>
+    /// <param name="quest"></param>
+    /// <returns></returns>
+    public string GetDeliverItemGoal(Quest quest)
+    {
+        DeliverItem deliverItem = quest.GetQuestInfo()[_questInfoKey] as DeliverItem;
+
+        string goal = "";
+
+        for (int i = 0; i < deliverItem.GetItemList().Count; i++)
+        {
+            Item item = ItemDatabase.instance.GetItem(deliverItem.GetItem(i).GetItemID());
+
+            // 소지중인 개수가 목표 개수보다 클 경우 목표 개수로 표시 
+            int carryCount = (_inventory.GetItemCount(item) > deliverItem.GetItem(i).GetCount()) ?
+                deliverItem.GetItem(i).GetCount() : _inventory.GetItemCount(item);
+
+            goal += (item.name + " (" + carryCount + "/" + deliverItem.GetItem(i).GetCount() + ")\n");            
+        }
+
+        return goal;
+    }
+
+    /// <summary>
+    /// '몬스터 처치' 타입 퀘스트의 목표 string 타입으로 리턴 
+    /// </summary>
+    /// <param name="quest"></param>
+    /// <returns></returns>
+    public string GetKillEnemyGoal(Quest quest)
+    {
+        KillEnemy killEnemy = quest.GetQuestInfo()[_questInfoKey] as KillEnemy;
+        KillEnemy originDB = QuestDB.instance.GetQuest(quest.GetQuestID()).GetQuestInfo()[_questInfoKey] as KillEnemy;
+
+        string goal = "";
+
+        for (int i = 0; i < killEnemy.GetEnemyList().Count; i++)
+        {
+            // 오리지널 DB로부터 받아온 처치해야 하는 몬스터 수 
+            int countToKill = originDB.GetEnemy(i).GetCount();
+
+            // (처치해야 하는 몬스터 수 - 진행중인 퀘스트 데이터의 몬스터 수(처치할 때마다 --))로 처치한 몬스터 수 표기
+            goal = EnemyDB.instance.GetName(killEnemy.GetEnemy(i).GetEnemyID()) + " 처치 (" +
+                (countToKill - killEnemy.GetEnemy(i).GetCount()) + "/" + countToKill + ")\n";
+        }
+
+        return goal;
+    }
+
+    /// <summary>
     /// '몬스터 처치' 타입 퀘스트의 목표 값 세팅 
     /// </summary>
     /// <param name="quest"></param>
@@ -594,12 +672,28 @@ public class QuestManager : MonoBehaviour
     public void InitializeLink()
     {
         _questHUD = FindObjectOfType<QuestHUD>();
+        _questMenu = FindObjectOfType<QuestMenu>();
         _inventory = FindObjectOfType<Inventory>();
     }
 
-    public Quest GetOngoingQuest()
+    public Quest GetOngoingQuestByID()
     {
         return _ongoingQuests[0];
+    }
+
+    public List<Quest> GetOngoingQuestList()
+    {
+        return _ongoingQuests;
+    }
+
+    /// <summary>
+    /// 현재 진행중인 퀘스트 리스트에서 index번째 값을 리턴 
+    /// </summary>
+    /// <param name="idx"></param>
+    /// <returns></returns>
+    public Quest GetOngoingQuestByIdx(int idx)
+    {
+        return _ongoingQuests[idx];
     }
 
     /// <summary>
@@ -607,7 +701,7 @@ public class QuestManager : MonoBehaviour
     /// </summary>
     /// <param name="questID"></param>
     /// <returns></returns>
-    public Quest GetOngoingQuest(int questID)
+    public Quest GetOngoingQuestByID(int questID)
     {
         foreach(Quest quest in _ongoingQuests)
         {

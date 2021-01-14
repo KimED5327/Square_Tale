@@ -1,18 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class QuestSlot : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] Text _txtTitle;    // 슬롯란의 퀘스트 제목 
+    Quest _quest;                       // 퀘스트 참조값 
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //getter 
+    public Text GetTitle() { return _txtTitle; }
+    public Quest GetQuest() { return _quest; }
+
+    //setter 
+    public void SetTitle(string title) { _txtTitle.text = title; }
+    public void SetQuest(Quest quest) { _quest = quest; }
 }

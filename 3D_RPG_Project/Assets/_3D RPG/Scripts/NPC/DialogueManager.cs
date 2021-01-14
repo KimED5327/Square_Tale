@@ -186,7 +186,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         // 완료된 퀘스트를 퀘스트 매니져의 완료된 퀘스트 리스트에 추가 
-        Quest questCompleted = QuestManager.instance.GetOngoingQuest(_questID).DeepCopy();
+        Quest questCompleted = QuestManager.instance.GetOngoingQuestByID(_questID).DeepCopy();
         QuestManager.instance.AddFinishedQuest(questCompleted);
 
         // 완료된 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에서 삭제

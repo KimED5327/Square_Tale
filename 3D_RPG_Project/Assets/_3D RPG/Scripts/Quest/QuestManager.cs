@@ -40,19 +40,6 @@ public class QuestManager : MonoBehaviour
             DontDestroyOnLoad(this);
         }
         else Destroy(gameObject);
-
-        _questHUD = FindObjectOfType<QuestHUD>();
-        _inventory = FindObjectOfType<Inventory>();
-    }
-
-    private void Start()
-    {
-        _inventory = FindObjectOfType<Inventory>();
-        _questHUD = FindObjectOfType<QuestHUD>();
-
-        SetCompleteQuestHUD();
-
-        Debug.Log(PlayerPrefs.GetString("Nickname"));
     }
 
     private void Update()
@@ -116,7 +103,7 @@ public class QuestManager : MonoBehaviour
         OpenQuest(finishedQuest.GetQuestID());
 
         // 퀘스트 HUD 값 세팅 
-        SetCompleteQuestHUD();
+        DisableQuestHUD();
     }
 
     /// <summary>
@@ -466,8 +453,6 @@ public class QuestManager : MonoBehaviour
     /// <param name="quest"></param>
     public void SetOngoingQuestHUD(Quest quest)
     {
-        if (_questHUD == null) Debug.Log("퀘스트 허드 missing");
-
         _questHUD.OpenQuestList();
         _questHUD.GetQuestBtn().enabled = true;
 
@@ -475,15 +460,14 @@ public class QuestManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 퀘스트가 완료되어 퀘스트 HUD 비활성화 
+    /// 퀘스트 HUD 비활성화 
     /// </summary>
-    public void SetCompleteQuestHUD()
+    public void DisableQuestHUD()
     {
         _questHUD.CloseQuestList();
         _questHUD.GetQuestBtn().enabled = false;
         _questHUD.TurnOffCompletableIcon();
-        _isCompletableIconOn = false; 
-        
+        _isCompletableIconOn = false;       
     }
 
     /// <summary>
@@ -515,13 +499,15 @@ public class QuestManager : MonoBehaviour
     /// </summary>
     public void UpdateQuestHudOnStart()
     {
-        Debug.Log("씬 시작 시에 퀘스트 HUD 업데이트");
+        if (_ongoingQuests.Count <= 0)
+        {
+            DisableQuestHUD();
+            return;
+        }
 
         // 퀘스트 매니져에 퀘스트 HUD 메뉴, 완료가능 아이콘 on/off 여부 저장해놓고 UI에 적용
         if (_isHudOpen) _questHUD.OpenQuestList();
         if(_isCompletableIconOn) _questHUD.TurnOnCompletableIcon();
-
-        if (_ongoingQuests.Count <= 0) return;
 
         _questHUD.SetQuestTitle(_ongoingQuests[0].GetTitle());
         _questHUD.SetQuestGoal2("");
@@ -548,7 +534,7 @@ public class QuestManager : MonoBehaviour
     /// </summary>
     public void SyncWithNpcOnStart()
     {
-        if (_ongoingQuests.Count < 1) return;
+        if (_ongoingQuests.Count <= 0) return;
 
         foreach (Quest quest in _ongoingQuests)
         {
@@ -602,6 +588,9 @@ public class QuestManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 씬이 시작될 때마다 상호작용하는 객체들을 링크 
+    /// </summary>
     public void InitializeLink()
     {
         _questHUD = FindObjectOfType<QuestHUD>();
@@ -613,6 +602,11 @@ public class QuestManager : MonoBehaviour
         return _ongoingQuests[0];
     }
 
+    /// <summary>
+    /// 현재 진행중인 퀘스트 중 파라미터의 ID 값을 가진 퀘스트를 찾아서 리턴 (없을 경우 null 리턴)
+    /// </summary>
+    /// <param name="questID"></param>
+    /// <returns></returns>
     public Quest GetOngoingQuest(int questID)
     {
         foreach(Quest quest in _ongoingQuests)
@@ -623,13 +617,13 @@ public class QuestManager : MonoBehaviour
         return null;
     }
 
-
     public bool SearchCompleteQuestID(int id)
     {
         Quest completeQuest = _finishedQuests.Find(list => list.GetQuestID() == id);
 
         return completeQuest != null;
     }
+
     public bool GetIsHudOpen() { return _isHudOpen; }
     public void SetIsHudOpen(bool value) { _isHudOpen = value; }
 

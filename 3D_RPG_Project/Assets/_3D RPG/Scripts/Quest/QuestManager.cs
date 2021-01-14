@@ -51,7 +51,8 @@ public class QuestManager : MonoBehaviour
         _questHUD = FindObjectOfType<QuestHUD>();
 
         SetCompleteQuestHUD();
-        Debug.Log("Start 함수가 실행되었습니다.");
+
+        Debug.Log(PlayerPrefs.GetString("Nickname"));
     }
 
     private void Update()

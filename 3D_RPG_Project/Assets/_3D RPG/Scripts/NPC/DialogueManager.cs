@@ -46,12 +46,10 @@ public class DialogueManager : MonoBehaviour
     [Header("Quest Dialogue UI")]
     [Tooltip("퀘스트 다이얼로그 Panel 내 퀘스트 Title")]
     [SerializeField] Text _txtQuestTitle;
-    [Tooltip("퀘스트 다이얼로그 Panel 내 NPC 이름 Text")]
-    [SerializeField] Text _npcName;
-    [Tooltip("퀘스트 다이얼로그 Panel 내 NPC 대사 Text")]
-    [SerializeField] Text _npcLines;
-    [Tooltip("퀘스트 다이얼로그 Panel 내 Player 대사 Text")]
-    [SerializeField] Text _playerLines;
+    [Tooltip("퀘스트 다이얼로그 Panel 내 화자 이름")]
+    [SerializeField] Text _txtName;
+    [Tooltip("퀘스트 다이얼로그 Panel 내 대사")]
+    [SerializeField] Text _txtLines;
 
     private void Awake()
     {
@@ -128,6 +126,7 @@ public class DialogueManager : MonoBehaviour
     {
         LineUnit lineUnit = QuestDialogueDB.instance.GetDialogue(questID).GetLineUnit(_state, _lineIdx);
 
+        // 다음 대사가 없을 경우 대사인덱스 초기화 및 대화 종료 
         if (lineUnit == null)
         {
             _isTalking = false;
@@ -137,22 +136,20 @@ public class DialogueManager : MonoBehaviour
 
         string line = lineUnit.GetLine();
 
+        // 대사의 화자(유저/NPC)에 맞게 이름 설정 
         if (lineUnit.GetNpcID() == 0)
         {
-            _npcName.gameObject.SetActive(false);
-            _npcLines.gameObject.SetActive(false);
-            _playerLines.gameObject.SetActive(true);
-            _playerLines.text = line;
+            string name = PlayerPrefs.GetString("Nickname");
+
+            if (!JsonManager.instance.IsNullString(name)) _txtName.text = name;
+            else _txtName.text = "플레이어";
         }
         else
         {
-            _npcName.gameObject.SetActive(true);
-            _npcLines.gameObject.SetActive(true);
-            _playerLines.gameObject.SetActive(false);
-            _npcName.text = NpcDB.instance.GetNPC(lineUnit.GetNpcID()).GetName();
-            _npcLines.text = line;
+            _txtName.text = NpcDB.instance.GetNPC(lineUnit.GetNpcID()).GetName();
         }
 
+        _txtLines.text = line;
         _isTalking = true;
         _lineIdx++;
     }
@@ -169,7 +166,6 @@ public class DialogueManager : MonoBehaviour
 
         // 수락한 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에 추가 
         Quest questAccepted = QuestDB.instance.GetQuest(_questID).DeepCopy();
-        //questAccepted = QuestDB.instance.GetQuest(_questID);
         QuestManager.instance.AddOngoingQuest(questAccepted);
     }
 
@@ -191,7 +187,6 @@ public class DialogueManager : MonoBehaviour
 
         // 완료된 퀘스트를 퀘스트 매니져의 완료된 퀘스트 리스트에 추가 
         Quest questCompleted = QuestManager.instance.GetOngoingQuest(_questID).DeepCopy();
-        //questCompleted = QuestDB.instance.GetQuest(_questID);
         QuestManager.instance.AddFinishedQuest(questCompleted);
 
         // 완료된 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에서 삭제

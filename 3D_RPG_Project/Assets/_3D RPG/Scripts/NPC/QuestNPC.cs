@@ -61,6 +61,7 @@ public class QuestNPC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _isParsingDone = false; 
         _questState = QuestState.QUEST_VEILED;
 
         // 다이얼로그 UI 값 세팅 
@@ -69,8 +70,6 @@ public class QuestNPC : MonoBehaviour
         _questDialoguePanel = dialogueUI.GetQuestPanel();
         _txtNpcName = dialogueUI.GetNpcName();
         _txtNpcLines = dialogueUI.GetLines();
-
-        Debug.Log("퀘스트 3번 상태 : " + QuestDB.instance.GetQuest(3).GetState());
     }
 
     // Update is called once per frame
@@ -92,16 +91,18 @@ public class QuestNPC : MonoBehaviour
     /// </summary>
     private void ParsingData()
     {
-        if (NPCLoader.instance.ParsingCompleted() && !_isParsingDone)
+        if (_isParsingDone) return; 
+
+        if (NPCLoader.instance.ParsingCompleted() == true)
         {
             // NpcDB의 데이터를 'Deep Copy' 를 통해 할당 
+            _isParsingDone = true;
             _npc = NpcDB.instance.GetNPC(_npcID).DeepCopy();
             UpdateQuestState();
             SetNameTag();
             SetQuestMark();
-            _isParsingDone = true;
 
-            Debug.Log("파싱함수 호출");
+            Debug.Log("데이터 파싱함수 호출");
             QuestManager.instance.SyncWithNpcOnStart();
         }
     }

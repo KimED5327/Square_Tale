@@ -21,33 +21,15 @@ public class NPCLoader : MonoBehaviour
 
     void Start()
     {
+        _isParsingDone = false;
         ParsingNpcDB();
         //PrintNpcDB();
-
-        _isParsingDone = true; 
     }
 
     private void ParsingNpcDB()
     {
-
-
         string path = streamingAssetsPath + npcDBPath;
-        string jsonString;
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            WWW reader = new WWW(path);
-            while (!reader.isDone)
-            {
-
-            }
-            jsonString = reader.text;
-        }
-        else
-        {
-            jsonString = File.ReadAllText(path);
-        }
-
-        JsonData jData = JsonMapper.ToObject(jsonString);
+        JsonData jData = JsonManager.instance.GetJsonData(path);
 
         for (int i = 0; i < jData.Count; i++)
         {
@@ -80,6 +62,8 @@ public class NPCLoader : MonoBehaviour
 
             NpcDB.instance.AddNPC(npcID, npc);
         }
+
+        _isParsingDone = true;
     }
 
     private void PrintNpcDB()

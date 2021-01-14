@@ -10,6 +10,8 @@ public class DropTrap : MonoBehaviour
     {
         if (other.CompareTag(StringManager.playerTag))
         {
+            return;
+
             GetComponent<Rigidbody>().useGravity = true;
             _tfTarget = other.transform;
             StartCoroutine(TrapActive());

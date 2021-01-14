@@ -14,6 +14,9 @@ public class SandTrap : MonoBehaviour
     {
         if (other.CompareTag(StringManager.playerTag))
         {
+
+            return;
+
             if (_isActivate) return;
 
             _isActivate = true;
@@ -37,10 +40,12 @@ public class SandTrap : MonoBehaviour
             yield return null;
         }
 
-        _tfTarget.GetComponent<PlayerStatus>().Damage(1000, transform.position);
+        _tfTarget.GetComponent<Rigidbody>().useGravity = true;
+
+        yield return new WaitForSeconds(0.5f);
         _tfTarget.GetComponent<PlayerMove>().enabled = true;
         _tfTarget.GetComponent<BoxCollider>().enabled = true;
-        _tfTarget.GetComponent<Rigidbody>().useGravity = true;
+
 
         _isActivate = false;
     }

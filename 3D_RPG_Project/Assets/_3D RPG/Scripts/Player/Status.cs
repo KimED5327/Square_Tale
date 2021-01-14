@@ -78,10 +78,8 @@ public abstract class Status : MonoBehaviour
                 QuestManager.instance.CheckKillEnemyQuest(6);
             }
 
-            GetComponent<Enemy>().GetPlayerStatus().IncreaseExp(_giveExp);
-
-            // 현재 '몬스터 처치' 퀘스트를 진행 중이라면, 퀘스트 달성 조건 검사 
-            QuestManager.instance.CheckKillEnemyQuest(GetComponent<Enemy>().Id);
+            if(_giveExp != 0)
+                GetComponent<Enemy>().GetPlayerStatus().IncreaseExp(_giveExp);
         }
 
         _curHp = 0;

@@ -8,6 +8,7 @@ public enum RewardType
     ALLBLOCK,
     BLOCK,
     TRAP,
+    ITEM,
 }
 
 [System.Serializable]

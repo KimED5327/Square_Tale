@@ -14,8 +14,14 @@ public class BlockHealing : Block
 
         if (cols.Length == 0) return;
 
-        Status targetStatus = cols[0].transform.GetComponent<Status>();
-        int heal = (int)(targetStatus.GetMaxHp() * _healRatio);
-        targetStatus.IncreaseHp(heal);
+        for(int i = 0; i < cols.Length; i++)
+        {
+            Status targetStatus = cols[0].transform.GetComponent<Status>();
+
+            if (targetStatus == null) continue;
+
+            int heal = (int)(targetStatus.GetMaxHp() * _healRatio);
+            targetStatus.IncreaseHp(heal);
+        }
     }
 }

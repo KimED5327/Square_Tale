@@ -83,6 +83,7 @@ public class Trigger : MonoBehaviour
                     {
                         _isEvent = false;
                         _isBack = false;
+                        PlayerMove.s_canMove = true;
                         theCameraController.SetCanMove(true);
                         GameHudMenu.instance.ShowMenu();
                         InteractionManager._isOpen = false;
@@ -102,6 +103,7 @@ public class Trigger : MonoBehaviour
     // 트리거 내용 실행
     protected IEnumerator ActiveCoroutine()
     {
+        PlayerMove.s_canMove = false;
         InteractionManager._isOpen = true;
         _isActivated = true;
         PlayerPrefs.SetInt(StringManager.GetEventKey(_eventID), PLAY);

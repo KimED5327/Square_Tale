@@ -950,8 +950,7 @@ MonoBehaviour:
   _def: 0
   _level: 1
   _giveExp: 0
-  _destroyEffectName: "\uC815\uD654\uC758 \uD06C\uB9AC\uC2A4\uD0C8 \uC0AC\uD6C4\uCC98\uB9AC
-    \uC774\uD399\uD2B8"
+  _destroyEffectName: 
   _destroySoundName: Explosion
   _hitEffectName: 
   _destroyTime: 10
@@ -1444,6 +1443,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534520362290568978, guid: 167d8554b70e3bd4ea48e1ffe19aa442,
+        type: 3}
+      propertyPath: _dropItemInfo.Array.data[0].itemDropRate
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7176138942685419602, guid: 167d8554b70e3bd4ea48e1ffe19aa442,
         type: 3}

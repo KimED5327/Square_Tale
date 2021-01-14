@@ -623,7 +623,12 @@ MonoBehaviour:
   _giveExp: 50
   _knockBackForce: 0.1
   _canKnockBack: 1
-  _dropItemInfo: []
+  _dropItemInfo:
+  - itemID: 2
+    itemCounts:
+      min: 1
+      max: 1
+    itemDropRate: 0.5
   _isForceDead: 0
 --- !u!54 &8918327452065700650
 Rigidbody:

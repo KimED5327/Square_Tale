@@ -432,8 +432,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Id: 12
-  attTime: 0
-  dmgApplyTime: 0
+  attTime: 3
+  dmgApplyTime: 0.4
   timer: 0
   reconTime: 3
   reconTimer: 0

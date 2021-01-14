@@ -59,6 +59,11 @@ public class EnemyStatus : Status
     protected override void Dead()
     {
         base.Dead();
+
+        // 현재 '몬스터 처치' 퀘스트를 진행 중이라면, 퀘스트 달성 조건 검사 
+        if(!_isForceDead)
+            QuestManager.instance.CheckKillEnemyQuest(GetComponent<Enemy>().Id);
+
         DecideDropItem();
     }
 

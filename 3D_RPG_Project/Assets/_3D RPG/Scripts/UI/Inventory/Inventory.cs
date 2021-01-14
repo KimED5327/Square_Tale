@@ -42,14 +42,19 @@ public class Inventory : MonoBehaviour
         if (!PlayerPrefs.HasKey("InvenSlotItemId" + 0))
         {
             TryToPushInventory(ItemDatabase.instance.GetItem(3));
-            TryToPushInventory(ItemDatabase.instance.GetItem(5));
-            TryToPushInventory(ItemDatabase.instance.GetItem(6));
+            TryToPushInventory(ItemDatabase.instance.GetItem(3));
             TryToPushInventory(ItemDatabase.instance.GetItem(3));
             TryToPushInventory(ItemDatabase.instance.GetItem(5));
             TryToPushInventory(ItemDatabase.instance.GetItem(6));
             TryToPushInventory(ItemDatabase.instance.GetItem(3));
-            TryToPushInventory(ItemDatabase.instance.GetItem(5));
-            TryToPushInventory(ItemDatabase.instance.GetItem(6));
+            TryToPushInventory(ItemDatabase.instance.GetItem(3));
+            TryToPushInventory(ItemDatabase.instance.GetItem(3));
+            TryToPushInventory(ItemDatabase.instance.GetItem(3));
+            TryToPushInventory(ItemDatabase.instance.GetItem(2));
+            TryToPushInventory(ItemDatabase.instance.GetItem(2));
+            TryToPushInventory(ItemDatabase.instance.GetItem(2));
+            TryToPushInventory(ItemDatabase.instance.GetItem(2));
+            TryToPushInventory(ItemDatabase.instance.GetItem(2));
         }
         // 기본값 - 무기 우선 정렬 
         OnTouchTab(0);
@@ -135,6 +140,8 @@ public class Inventory : MonoBehaviour
     // 열기
     public void ShowInven(bool isShopOpen = false)
     {
+        SoundManager.instance.PlayEffectSound("PopUp");
+
         GameHudMenu.instance.HideMenu(); // 기본 HUD 가림
 
         // 상점에서 연 경우, 위치 이동 + 탭 숨김.
@@ -153,6 +160,7 @@ public class Inventory : MonoBehaviour
         if (hideMenu)
         {
             GameHudMenu.instance.ShowMenu();
+            SoundManager.instance.PlayEffectSound("PopDown");
         }
         SlotToolTip.instance.HideToolTip();
         _goInventory.SetActive(false);
@@ -272,6 +280,7 @@ public class Inventory : MonoBehaviour
         if (item.id == 1)
         {
             gold += count;
+            return true;
         }
 
         // 빈 슬롯이 있다면-

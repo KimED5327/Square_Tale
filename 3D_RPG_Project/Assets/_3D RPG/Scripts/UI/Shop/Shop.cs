@@ -61,6 +61,8 @@ public class Shop : MonoBehaviour
 
     void ShowMenu()
     {
+
+        SoundManager.instance.PlayEffectSound("PopUp");
         BtnBuyWindow();
         GameHudMenu.instance.HideMenu();
         _goShopPanel.SetActive(true);
@@ -70,8 +72,10 @@ public class Shop : MonoBehaviour
 
     public void HideMenu()
     {
+        SoundManager.instance.PlayEffectSound("PopDown");
+
         GameHudMenu.instance.ShowMenu();
-        
+
         // 인벤이 열려있다면 같이 닫는다.
         if (!_isBuy)
         {

@@ -107,6 +107,8 @@ public class PlayerMove : MonoBehaviour
     bool isMage;
     bool isCasting;
 
+    public static bool s_canMove = true;
+
     Vector3 moveVec;
     Vector3 dodgeVec;
     Vector3 realMoveVec;
@@ -150,10 +152,13 @@ public class PlayerMove : MonoBehaviour
 
             if (!isVictory)
             {
-                Move();
-                MMove();
-                Jump();
-                Dodge();
+                if (s_canMove)
+                {
+                    Move();
+                    MMove();
+                    Jump();
+                    Dodge();
+                }
             }
 
             Cooldown();
@@ -978,6 +983,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (myStatus.GetCurrentHp() <= 0)
         {
+            GameHudMenu.instance.HideMenu();
             isDie = true;
             resurrectionUI.SetActive(true);
             blockCon.enabled = false;
@@ -991,6 +997,7 @@ public class PlayerMove : MonoBehaviour
 
     public void OutofMap() // 맵밖으로 낙사
     {
+        GameHudMenu.instance.HideMenu();
         if (transform.position.y < -50)
         {
             isDie = true;
@@ -1007,6 +1014,9 @@ public class PlayerMove : MonoBehaviour
     public void ResurrectionToRespawn()
     {
         // 리스폰 지점에서 부활
+
+        GameHudMenu.instance.ShowMenu();
+        myStatus.Initialized();
         SceneManager.LoadScene("GameScene");
         StartCoroutine("ResurrectionEffect");
     }
@@ -1014,6 +1024,7 @@ public class PlayerMove : MonoBehaviour
     public void ResurrectionToTown()
     {
         // 마을에서 부활
+        myStatus.Initialized();
         MapManager.instance.ChangeMap("Town");
     }
 

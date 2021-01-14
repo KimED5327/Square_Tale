@@ -80,7 +80,7 @@ public class Rooting : MonoBehaviour
         _rootingEnemy.SetDropItem(_rootingDropItem);
         _rootingEnemy = null;
         _rootingDropItem = null;
-
+        _inven.SaveInventory();
         InteractionManager._isOpen = false;
         _goRootingUI.SetActive(false);
     }

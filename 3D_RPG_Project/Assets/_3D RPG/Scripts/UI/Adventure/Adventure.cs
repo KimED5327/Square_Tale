@@ -34,6 +34,7 @@ public class Adventure : MonoBehaviour
     // 모험담 메뉴출력
     public void ShowUI()
     {
+        SoundManager.instance.PlayEffectSound("PopUp");
         GameHudMenu.instance.HideMenu();
 
         _txtProgress.text = _adventureProgress + " %";
@@ -48,6 +49,7 @@ public class Adventure : MonoBehaviour
 
     public void HideUI()
     {
+        SoundManager.instance.PlayEffectSound("PopDown");
         GameHudMenu.instance.ShowMenu();
 
         _goUI.SetActive(false);
@@ -95,7 +97,7 @@ public class Adventure : MonoBehaviour
     {
         SoundManager.instance.PlayEffectSound("Click");
 
-        if (index == 1)
+        if (index == 0)
         {
             _curChapter = index;
             _curPage = 0;

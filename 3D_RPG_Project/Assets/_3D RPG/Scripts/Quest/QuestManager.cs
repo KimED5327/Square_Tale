@@ -16,9 +16,9 @@ public class QuestManager : MonoBehaviour
     public delegate void SyncHandler(Quest quest);
     public static event SyncHandler SyncWithQuestOnStart;
 
-    Inventory _inventory;               // 인벤토리 참조자 
-    QuestHUD _questHUD;                 // QuestHUD 참조자 
-    QuestMenu _questMenu;               // QuestMenu 참조자 
+    public Inventory _inventory;               // 인벤토리 참조자 
+    public QuestHUD _questHUD;                 // QuestHUD 참조자 
+    public QuestMenu _questMenu;               // QuestMenu 참조자 
     bool _isHudOpen = false;            // QuestHUD 창 오픈여부 확인 변수 
     bool _isCompletableIconOn = false;  // QuestHUD 완료가능 아이콘 on/off 변수 
     string _questInfoKey = "info";      // 퀘스트 타입 해시테이블 키 
@@ -77,6 +77,10 @@ public class QuestManager : MonoBehaviour
         // 퀘스트 수락에 따른 퀘스트 타입별 상호작용 
         AcceptInterationPerType(ongoingQuest);
 
+        // 퀘스트 메뉴에 진행 퀘스트 슬롯 추가 
+        if (_questMenu == null) Debug.Log("QuestMenu Missing");
+        _questMenu.AddOngoingSlot(ongoingQuest);
+
         // 퀘스트 HUD 값 세팅 
         SetOngoingQuestHUD(ongoingQuest);
     }
@@ -102,6 +106,10 @@ public class QuestManager : MonoBehaviour
 
         // 퀘스트 완료로 해금된 퀘스트가 있다면 오픈 
         OpenQuest(finishedQuest.GetQuestID());
+
+        // 퀘스트 메뉴에 완료한 퀘스트를 진행 슬롯에서 삭제 및 완료 슬롯에 추가 
+        _questMenu.DeleteOngoingSlotAsFinished(finishedQuest.GetQuestID());
+        _questMenu.AddFinishedSlot(finishedQuest);
 
         // 퀘스트 HUD 값 세팅 
         DisableQuestHUD();
@@ -671,9 +679,11 @@ public class QuestManager : MonoBehaviour
     /// </summary>
     public void InitializeLink()
     {
+        Debug.Log("InitializeLink 실행");
+
         _questHUD = FindObjectOfType<QuestHUD>();
-        _questMenu = FindObjectOfType<QuestMenu>();
         _inventory = FindObjectOfType<Inventory>();
+        _questMenu = FindObjectOfType<QuestMenu>();
     }
 
     public Quest GetOngoingQuestByID()

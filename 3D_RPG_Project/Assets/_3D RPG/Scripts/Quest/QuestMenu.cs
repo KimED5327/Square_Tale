@@ -18,22 +18,29 @@ public class QuestMenu : MonoBehaviour
     }
 
     [Tooltip("퀘스트 메뉴 Panel")]
-    [SerializeField] GameObject _questMenuPanel = null;
+    [SerializeField] GameObject _menuPanel;         // 퀘스트 메뉴 패널 
+    [SerializeField] GameObject _infoPanel;         // 퀘스트 정보 패널 
 
     [Header("퀘스트 정보 UI")]
-    [SerializeField] Text _txtTitle;    // 정보란의 퀘스트 제목 
-    [SerializeField] Text _txtNpcName;      // NPC 이름  
-    [SerializeField] Text _txtDes;          // 퀘스트 내용  
-    [SerializeField] Text _txtGoal;         // 퀘스트 목표 
+    [SerializeField] Text _txtTitle;                // 퀘스트 제목 
+    [SerializeField] Text _txtNpcName;              // NPC 이름  
+    [SerializeField] Text _txtDes;                  // 퀘스트 내용  
+    [SerializeField] Text _txtGoal;                 // 퀘스트 목표 
+    [SerializeField] Text _txtNoSolotMsg;           // 슬롯 메시지 
 
-    [SerializeField] GameObject _questBtnPrefab = null;
-    [SerializeField] Transform _content = null;
+    [SerializeField] GameObject _questBtnPrefab;    // 퀘스트 버튼 프리팹 
+    [SerializeField] Transform _ongoingContent;     // 진행 슬롯 컨텐트
+    [SerializeField] Transform _finishedContent;    // 완료 슬롯 컨텐트 
 
-    QuestSort _questSort;
-    QuestSlot _slot = new QuestSlot();
+    QuestSort _questSort;                           // 퀘스트 분류(진행/완료)
+
+    List<QuestSlot> _ongoingSlots = new List<QuestSlot>();      // 진행 퀘스트 슬롯 리스트 
+    List<QuestSlot> _finishedSlots = new List<QuestSlot>();     // 완료 퀘스트 슬롯 리스트 
 
     void Start()
     {
+        SetMenuOnStart();
+
         //_inven = FindObjectOfType<Inventory>();
 
         //_slots = new ShopSlot[_slotMaxCount];
@@ -50,7 +57,7 @@ public class QuestMenu : MonoBehaviour
     {
         InteractionManager._isOpen = true; 
         GameHudMenu.instance.HideMenu();
-        _questMenuPanel.SetActive(true);
+        _menuPanel.SetActive(true);
         _questSort = QuestSort.ONGOING;
 
         // 메뉴 초기화 
@@ -61,7 +68,37 @@ public class QuestMenu : MonoBehaviour
     {
         InteractionManager._isOpen = false; 
         GameHudMenu.instance.ShowMenu();
-        _questMenuPanel.SetActive(false);
+        _menuPanel.SetActive(false);
+    }
+
+    void SetMenuOnStart()
+    {
+        DeleteAllSlots();
+
+        for (int i = 0; i < QuestManager.instance.GetOngoingQuestList().Count; i++)
+        {
+            QuestSlot slot = Instantiate(_questBtnPrefab, _ongoingContent).GetComponent<QuestSlot>();
+
+            Quest quest = QuestManager.instance.GetOngoingQuestByIdx(i);
+
+            slot.SetQuest(quest);
+            slot.SetTitle(quest.GetTitle());
+            _ongoingSlots.Add(slot);
+
+            // 리스트에 진행 중인 퀘스트가 있을 경우 가장 상단에 위치한 슬롯의 퀘스트 정보 세팅 
+            if (i == 0)
+            {
+                _infoPanel.SetActive(true);
+                _txtNoSolotMsg.enabled = false; 
+                SetQuestInfo(quest);
+            }
+            else
+            {
+                _infoPanel.SetActive(false);
+                _txtNoSolotMsg.enabled = true;
+                _txtNoSolotMsg.text = "진행 중인 퀘스트가 없습니다.";
+            }
+        }
     }
 
     /// <summary>
@@ -81,32 +118,85 @@ public class QuestMenu : MonoBehaviour
         }
     }
 
-    void ShowOngoingQuest()
+    public void ShowOngoingQuest()
     {
-        // 모든 퀘스트 슬롯 삭제 
-        DeleteAllSlots();
+        _ongoingContent.gameObject.SetActive(true);
+        _finishedContent.gameObject.SetActive(false);
 
-        for (int i = 0; i < QuestManager.instance.GetOngoingQuestList().Count; i++)
+        // 진행 중인 퀘스트가 있을 경우 정보 출력 
+        if (_ongoingSlots.Count > 0)
         {
-            QuestSlot slot = Instantiate(_questBtnPrefab, _content).GetComponent<QuestSlot>();
-
-            slot.SetQuest(QuestManager.instance.GetOngoingQuestByIdx(i));
-            slot.SetTitle(slot.GetQuest().GetTitle());
-
-            if (i == 0) SetQuestInfo(slot.GetQuest());
+            _infoPanel.SetActive(true);
+            _txtNoSolotMsg.enabled = false;
+            SetQuestInfo(_ongoingSlots[0].GetQuest());
         }
-
-        //_slots = new ShopSlot[_slotMaxCount];
-        //for (int i = 0; i < _slotMaxCount; i++)
-        //{
-        //    ShopSlot slot = Instantiate(_goSlotPrefab, _tfSlotParent).GetComponent<ShopSlot>();
-        //    _slots[i] = slot;
-        //}
+        else // 진행 중인 퀘스트가 없을 경우 메시지 출력 
+        {
+            _infoPanel.SetActive(false);
+            _txtNoSolotMsg.enabled = true;
+            _txtNoSolotMsg.text = "진행 중인 퀘스트가 없습니다.";
+        }
     }
 
-    void ShowFinishedQuest()
+    public void ShowFinishedQuest()
     {
-        
+        _finishedContent.gameObject.SetActive(true);
+        _ongoingContent.gameObject.SetActive(false);
+
+        // 진행 중인 퀘스트가 있을 경우 정보 출력 
+        if (_finishedSlots.Count > 0)
+        {
+            _infoPanel.SetActive(true);
+            _txtNoSolotMsg.enabled = false;
+            SetQuestInfo(_finishedSlots[0].GetQuest());
+        }
+        else // 진행 중인 퀘스트가 없을 경우 메시지 출력 
+        {
+            _infoPanel.SetActive(false);
+            _txtNoSolotMsg.enabled = true;
+            _txtNoSolotMsg.text = "완료된 퀘스트가 없습니다.";
+        }
+    }
+
+    /// <summary>
+    /// 진행 슬롯에 현재 진행중인 퀘스트를 추가 
+    /// </summary>
+    /// <param name="quest"></param>
+    public void AddOngoingSlot(Quest quest)
+    {
+        QuestSlot slot = Instantiate(_questBtnPrefab, _ongoingContent).GetComponent<QuestSlot>();
+
+        slot.SetQuest(quest);
+        slot.SetTitle(quest.GetTitle());
+        _ongoingSlots.Add(slot);
+    }
+
+    /// <summary>
+    /// 진행 슬롯에서 완료한 퀘스트 삭제 
+    /// </summary>
+    /// <param name="quest"></param>
+    public void DeleteOngoingSlotAsFinished(int questID)
+    {
+        for (int i = 0; i < _ongoingSlots.Count; i++)
+        {
+            if (_ongoingSlots[i].GetQuest().GetQuestID() != questID) continue; 
+
+            _ongoingSlots.RemoveAt(i);
+            DeleteOngoingSlotByID(questID);
+        }
+    }
+
+    /// <summary>
+    /// 완료 슬롯에 완료한 퀘스트를 추가 
+    /// </summary>
+    /// <param name="quest"></param>
+    public void AddFinishedSlot(Quest quest)
+    {
+        QuestSlot slot = Instantiate(_questBtnPrefab, _finishedContent).GetComponent<QuestSlot>();
+
+        slot.SetQuest(quest);
+        slot.SetTitle(quest.GetTitle());
+        _finishedSlots.Add(slot);
     }
 
     /// <summary>
@@ -118,9 +208,6 @@ public class QuestMenu : MonoBehaviour
         _txtNpcName.text = NpcDB.instance.GetNPC(quest.GetNpcID()).GetName();
         _txtDes.text = quest.GetDes();
         _txtGoal.text = QuestManager.instance.GetQuestGoal(quest);
-
-        //if (quest.GetQuestType() == QuestType.TYPE_DELIVERITEM)
-        //    _txtGoal.text = QuestManager.instance.GetDeliverItemGoal(quest);
     }
 
     /// <summary>
@@ -128,8 +215,22 @@ public class QuestMenu : MonoBehaviour
     /// </summary>
     void DeleteAllSlots()
     {
-        foreach(Transform child in _content.transform)
+        foreach(Transform child in _ongoingContent.transform)
         {
+            Destroy(child.gameObject);
+        }
+    }
+
+    /// <summary>
+    /// 진행 슬롯 Content에서 파라미터로 받은 ID와 같은 퀘스트 ID를 가진 자식객체를 삭제 
+    /// </summary>
+    /// <param name="questID"></param>
+    void DeleteOngoingSlotByID(int questID)
+    {
+        foreach (Transform child in _ongoingContent.transform)
+        {
+            if (child.GetComponent<QuestSlot>().GetQuest().GetQuestID() != questID) continue;
+
             Destroy(child.gameObject);
         }
     }

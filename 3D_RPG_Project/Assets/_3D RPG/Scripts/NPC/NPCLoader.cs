@@ -19,11 +19,10 @@ public class NPCLoader : MonoBehaviour
         if (instance == null) instance = this; 
     }
 
-    void Start()
+    private void OnEnable()
     {
         _isParsingDone = false;
         ParsingNpcDB();
-        //PrintNpcDB();
     }
 
     private void ParsingNpcDB()

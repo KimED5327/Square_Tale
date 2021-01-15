@@ -28,9 +28,10 @@ public class QuestMenu : MonoBehaviour
     [SerializeField] Text _txtGoal;                 // 퀘스트 목표 
     [SerializeField] Text _txtNoSolotMsg;           // 슬롯 메시지 
 
-    [SerializeField] GameObject _questBtnPrefab;    // 퀘스트 버튼 프리팹 
-    [SerializeField] Transform _ongoingContent;     // 진행 슬롯 컨텐트
-    [SerializeField] Transform _finishedContent;    // 완료 슬롯 컨텐트 
+    [SerializeField] GameObject _ongoingSlotPrefab;     // 진행 퀘스트 슬롯 프리팹 
+    [SerializeField] GameObject _finishedSlotPrefab;    // 완료 퀘스트 슬롯 프리팹 
+    [SerializeField] Transform _ongoingContent;         // 진행 슬롯 컨텐트
+    [SerializeField] Transform _finishedContent;        // 완료 슬롯 컨텐트 
 
     QuestSort _questSort;                           // 퀘스트 분류(진행/완료)
 
@@ -70,7 +71,7 @@ public class QuestMenu : MonoBehaviour
         // 진행중인 퀘스트를 슬롯에 추가 
         for (int i = 0; i < QuestManager.instance.GetOngoingQuestList().Count; i++)
         {
-            QuestSlot slot = Instantiate(_questBtnPrefab, _ongoingContent).GetComponent<QuestSlot>();
+            QuestSlot slot = Instantiate(_ongoingSlotPrefab, _ongoingContent).GetComponent<QuestSlot>();
 
             Quest quest = QuestManager.instance.GetOngoingQuestByIdx(i);
 
@@ -82,12 +83,15 @@ public class QuestMenu : MonoBehaviour
         // 완료된 퀘스트를 슬롯에 추가 
         for (int i = 0; i < QuestManager.instance.GetFinishedQuestList().Count; i++)
         {
-            QuestSlot slot = Instantiate(_questBtnPrefab, _finishedContent).GetComponent<QuestSlot>();
+            QuestSlot slot = Instantiate(_finishedSlotPrefab, _finishedContent).GetComponent<QuestSlot>();
 
             Quest quest = QuestManager.instance.GetFinishedQuestByIdx(i);
 
+            // 완료한 퀘스트는 마크 대신 퀘스트 ID + 제목으로 표기 
+            string title = quest.GetQuestID() + ". " + quest.GetTitle();
+
             slot.SetQuest(quest);
-            slot.SetTitle(quest.GetTitle());
+            slot.SetTitle(title);
             _finishedSlots.Add(slot);
         }
     }
@@ -146,6 +150,13 @@ public class QuestMenu : MonoBehaviour
             _infoPanel.SetActive(true);
             _txtNoSolotMsg.enabled = false;
             SetQuestInfo(_finishedSlots[0].GetQuest());
+
+            // 슬롯이 2개 이상일 경우 선택/비선택 슬롯의 색상을 나누어 설정 
+            if(_finishedSlots.Count > 1)
+            {
+                SetFinishedSlotsToGray();
+                _finishedSlots[0].TurnOnColor();
+            }
         }
         else // 진행 중인 퀘스트가 없을 경우 메시지 출력 
         {
@@ -161,7 +172,7 @@ public class QuestMenu : MonoBehaviour
     /// <param name="quest"></param>
     public void AddOngoingSlot(Quest quest)
     {
-        QuestSlot slot = Instantiate(_questBtnPrefab, _ongoingContent).GetComponent<QuestSlot>();
+        QuestSlot slot = Instantiate(_ongoingSlotPrefab, _ongoingContent).GetComponent<QuestSlot>();
 
         slot.SetQuest(quest);
         slot.SetTitle(quest.GetTitle());
@@ -189,10 +200,13 @@ public class QuestMenu : MonoBehaviour
     /// <param name="quest"></param>
     public void AddFinishedSlot(Quest quest)
     {
-        QuestSlot slot = Instantiate(_questBtnPrefab, _finishedContent).GetComponent<QuestSlot>();
+        QuestSlot slot = Instantiate(_finishedSlotPrefab, _finishedContent).GetComponent<QuestSlot>();
+
+        // 완료한 퀘스트는 마크 대신 퀘스트 ID + 제목으로 표기 
+        string title = quest.GetQuestID() + ". " + quest.GetTitle();
 
         slot.SetQuest(quest);
-        slot.SetTitle(quest.GetTitle());
+        slot.SetTitle(title);
         _finishedSlots.Add(slot);
     }
 
@@ -205,6 +219,17 @@ public class QuestMenu : MonoBehaviour
         _txtNpcName.text = NpcDB.instance.GetNPC(quest.GetNpcID()).GetName();
         _txtDes.text = quest.GetDes();
         _txtGoal.text = QuestManager.instance.GetQuestGoal(quest);
+    }
+
+    /// <summary>
+    /// 모든 완료 슬롯에 회색 마스크 이미지 씌우기
+    /// </summary>
+    public void SetFinishedSlotsToGray()
+    {
+        for (int i = 0; i < _finishedSlots.Count; i++)
+        {
+            _finishedSlots[i].TurnOffColor();
+        }
     }
 
     /// <summary>

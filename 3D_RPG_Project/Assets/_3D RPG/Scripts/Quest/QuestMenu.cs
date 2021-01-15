@@ -40,17 +40,6 @@ public class QuestMenu : MonoBehaviour
     void Start()
     {
         SetMenuOnStart();
-
-        //_inven = FindObjectOfType<Inventory>();
-
-        //_slots = new ShopSlot[_slotMaxCount];
-        //for (int i = 0; i < _slotMaxCount; i++)
-        //{
-        //    ShopSlot slot = Instantiate(_questSlotPrefab, _tfSlotParent).GetComponent<ShopSlot>();
-        //    _slots[i] = slot;
-        //}
-
-        //TouchTabBtn(0);
     }
 
     public void OpenMenu()
@@ -71,10 +60,14 @@ public class QuestMenu : MonoBehaviour
         _menuPanel.SetActive(false);
     }
 
+    /// <summary>
+    /// 퀘스트 매니져의 진행/완료 퀘스트 데이터를 받아와 슬롯 세팅 
+    /// </summary>
     void SetMenuOnStart()
     {
         DeleteAllSlots();
 
+        // 진행중인 퀘스트를 슬롯에 추가 
         for (int i = 0; i < QuestManager.instance.GetOngoingQuestList().Count; i++)
         {
             QuestSlot slot = Instantiate(_questBtnPrefab, _ongoingContent).GetComponent<QuestSlot>();
@@ -84,20 +77,18 @@ public class QuestMenu : MonoBehaviour
             slot.SetQuest(quest);
             slot.SetTitle(quest.GetTitle());
             _ongoingSlots.Add(slot);
+        }
 
-            // 리스트에 진행 중인 퀘스트가 있을 경우 가장 상단에 위치한 슬롯의 퀘스트 정보 세팅 
-            if (i == 0)
-            {
-                _infoPanel.SetActive(true);
-                _txtNoSolotMsg.enabled = false; 
-                SetQuestInfo(quest);
-            }
-            else
-            {
-                _infoPanel.SetActive(false);
-                _txtNoSolotMsg.enabled = true;
-                _txtNoSolotMsg.text = "진행 중인 퀘스트가 없습니다.";
-            }
+        // 완료된 퀘스트를 슬롯에 추가 
+        for (int i = 0; i < QuestManager.instance.GetFinishedQuestList().Count; i++)
+        {
+            QuestSlot slot = Instantiate(_questBtnPrefab, _finishedContent).GetComponent<QuestSlot>();
+
+            Quest quest = QuestManager.instance.GetFinishedQuestByIdx(i);
+
+            slot.SetQuest(quest);
+            slot.SetTitle(quest.GetTitle());
+            _finishedSlots.Add(slot);
         }
     }
 
@@ -118,6 +109,9 @@ public class QuestMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 진행 퀘스트 메뉴 출력 
+    /// </summary>
     public void ShowOngoingQuest()
     {
         _ongoingContent.gameObject.SetActive(true);
@@ -138,6 +132,9 @@ public class QuestMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 완료 퀘스트 메뉴 출력 
+    /// </summary>
     public void ShowFinishedQuest()
     {
         _finishedContent.gameObject.SetActive(true);
@@ -202,7 +199,7 @@ public class QuestMenu : MonoBehaviour
     /// <summary>
     /// 퀘스트 정보란 데이터 값 설정 
     /// </summary>
-    void SetQuestInfo(Quest quest)
+    public void SetQuestInfo(Quest quest)
     {
         _txtTitle.text = quest.GetTitle();
         _txtNpcName.text = NpcDB.instance.GetNPC(quest.GetNpcID()).GetName();

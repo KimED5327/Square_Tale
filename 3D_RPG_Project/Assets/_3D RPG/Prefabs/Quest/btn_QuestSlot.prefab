@@ -120,7 +120,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5380536337034525840}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -4218738361436317247}
+        m_MethodName: SelectSlot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &-4218738361436317247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,10 +145,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _txtTitle: {fileID: 5380536338643404478}
-  _txtInfoTitle: {fileID: 0}
-  _txtNpcName: {fileID: 0}
-  _txtDes: {fileID: 0}
-  _txtGoal: {fileID: 0}
 --- !u!1 &5380536337766395744
 GameObject:
   m_ObjectHideFlags: 0

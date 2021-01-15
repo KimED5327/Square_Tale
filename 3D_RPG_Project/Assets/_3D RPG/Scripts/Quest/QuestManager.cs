@@ -92,6 +92,7 @@ public class QuestManager : MonoBehaviour
     public void AddFinishedQuest(Quest finishedQuest)
     {
         Debug.Log(finishedQuest.GetQuestID() + "번 퀘스트 완료");
+        finishedQuest.SetState(QuestState.QUEST_COMPLETED);
         _finishedQuests.Add(finishedQuest);
 
         // 퀘스트 완료자의 상태값을 퀘스트 완료로 변경 
@@ -581,8 +582,12 @@ public class QuestManager : MonoBehaviour
     /// <returns></returns>
     public string GetQuestGoal(Quest quest)
     {
+        // 완료된 퀘스트일 경우 퀘스트 목표를 그대로 리턴 
+        if (quest.GetState() == QuestState.QUEST_COMPLETED) return quest.GetGoal();
+
         string goal;
 
+        // 진행중일 경우 타입에 맞게 변환하여 리턴 
         switch (quest.GetQuestType())
         {
             case QuestType.TYPE_DELIVERITEM:
@@ -686,26 +691,6 @@ public class QuestManager : MonoBehaviour
         _questMenu = FindObjectOfType<QuestMenu>();
     }
 
-    public Quest GetOngoingQuestByID()
-    {
-        return _ongoingQuests[0];
-    }
-
-    public List<Quest> GetOngoingQuestList()
-    {
-        return _ongoingQuests;
-    }
-
-    /// <summary>
-    /// 현재 진행중인 퀘스트 리스트에서 index번째 값을 리턴 
-    /// </summary>
-    /// <param name="idx"></param>
-    /// <returns></returns>
-    public Quest GetOngoingQuestByIdx(int idx)
-    {
-        return _ongoingQuests[idx];
-    }
-
     /// <summary>
     /// 현재 진행중인 퀘스트 중 파라미터의 ID 값을 가진 퀘스트를 찾아서 리턴 (없을 경우 null 리턴)
     /// </summary>
@@ -728,7 +713,15 @@ public class QuestManager : MonoBehaviour
         return completeQuest != null;
     }
 
+    //getter
     public bool GetIsHudOpen() { return _isHudOpen; }
+    public List<Quest> GetOngoingQuestList() { return _ongoingQuests; }
+    public List<Quest> GetFinishedQuestList() { return _finishedQuests; }
+    public Quest GetOngoingQuestByIdx(int idx) { return _ongoingQuests[idx]; }
+    public Quest GetFinishedQuestByIdx(int idx) { return _finishedQuests[idx]; }
+    public Quest GetOngoingQuestByID() { return _ongoingQuests[0]; }
+
+    //setter
     public void SetIsHudOpen(bool value) { _isHudOpen = value; }
 
 }

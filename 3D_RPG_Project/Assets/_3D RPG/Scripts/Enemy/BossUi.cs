@@ -31,6 +31,6 @@ public class BossUi : MonoBehaviour
         }
 
 
-        hpBar.value = _BossStatus.GetCurrentHp() / (float)_BossStatus.GetMaxHp();
+        hpBar.value = (float)_BossStatus.GetCurrentHp() / (float)_BossStatus.GetMaxHp();
     }
 }

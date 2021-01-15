@@ -440,7 +440,7 @@ MonoBehaviour:
   motionTime: 0
   maxFindRange: 2
   maxMoveRange: 5
-  maxAttackRange: 0.8
+  maxAttackRange: 1
   reconRange: 0
   enemyState: 0
 --- !u!114 &5261965071184060301

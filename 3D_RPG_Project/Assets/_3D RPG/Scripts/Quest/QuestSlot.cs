@@ -20,7 +20,7 @@ public class QuestSlot : MonoBehaviour
     {
         // 나머지 버튼들은 어두운 색상으로 변경하고, 선택된 버튼만 원색상으로 설정 
         _questMenu.SetFinishedSlotsToGray();
-        TurnOnColor();
+        TurnOffColor();
         _questMenu.SetQuestInfo(_quest);
     }
 

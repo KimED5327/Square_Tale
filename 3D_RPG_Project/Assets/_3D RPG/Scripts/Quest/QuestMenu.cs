@@ -17,21 +17,27 @@ public class QuestMenu : MonoBehaviour
         FINISHED,
     }
 
-    [Tooltip("퀘스트 메뉴 Panel")]
+    [Header("퀘스트 메뉴 Panel")]
     [SerializeField] GameObject _menuPanel;         // 퀘스트 메뉴 패널 
     [SerializeField] GameObject _infoPanel;         // 퀘스트 정보 패널 
 
-    [Header("퀘스트 정보 UI")]
+    [Header("스크롤 UI")]
+    [SerializeField] GameObject _ongoingSlotPrefab;     // 진행 퀘스트 슬롯 프리팹 
+    [SerializeField] GameObject _finishedSlotPrefab;    // 완료 퀘스트 슬롯 프리팹 
+    [SerializeField] ScrollRect _scrollRect;            // 스크롤 랙트(컨텐트 교체용)
+    [SerializeField] Transform _ongoingContent;         // 진행 슬롯 컨텐트
+    [SerializeField] Transform _finishedContent;        // 완료 슬롯 컨텐트 
+
+    [Header("퀘스트 메뉴 UI")]
+    [SerializeField] Image _imgOngoing;             // 진행 버튼 이미지  
+    [SerializeField] Image _imgFinished;            // 완료 버튼 이미지 
+    [SerializeField] Sprite _imgHighlightBtn;       // 밝은 버튼 이미지 
+    [SerializeField] Sprite _imgDefaultBtn;         // 기본 버튼 이미지 
     [SerializeField] Text _txtTitle;                // 퀘스트 제목 
     [SerializeField] Text _txtNpcName;              // NPC 이름  
     [SerializeField] Text _txtDes;                  // 퀘스트 내용  
     [SerializeField] Text _txtGoal;                 // 퀘스트 목표 
     [SerializeField] Text _txtNoSolotMsg;           // 슬롯 메시지 
-
-    [SerializeField] GameObject _ongoingSlotPrefab;     // 진행 퀘스트 슬롯 프리팹 
-    [SerializeField] GameObject _finishedSlotPrefab;    // 완료 퀘스트 슬롯 프리팹 
-    [SerializeField] Transform _ongoingContent;         // 진행 슬롯 컨텐트
-    [SerializeField] Transform _finishedContent;        // 완료 슬롯 컨텐트 
 
     QuestSort _questSort;                           // 퀘스트 분류(진행/완료)
 
@@ -118,8 +124,12 @@ public class QuestMenu : MonoBehaviour
     /// </summary>
     public void ShowOngoingQuest()
     {
+        _scrollRect.content = _ongoingContent.GetComponent<RectTransform>();
         _ongoingContent.gameObject.SetActive(true);
         _finishedContent.gameObject.SetActive(false);
+
+        _imgOngoing.sprite = _imgDefaultBtn;
+        _imgFinished.sprite = _imgHighlightBtn;
 
         // 진행 중인 퀘스트가 있을 경우 정보 출력 
         if (_ongoingSlots.Count > 0)
@@ -141,8 +151,12 @@ public class QuestMenu : MonoBehaviour
     /// </summary>
     public void ShowFinishedQuest()
     {
+        _scrollRect.content = _finishedContent.GetComponent<RectTransform>();
         _finishedContent.gameObject.SetActive(true);
         _ongoingContent.gameObject.SetActive(false);
+
+        _imgOngoing.sprite = _imgHighlightBtn;
+        _imgFinished.sprite = _imgDefaultBtn;
 
         // 진행 중인 퀘스트가 있을 경우 정보 출력 
         if (_finishedSlots.Count > 0)
@@ -155,7 +169,7 @@ public class QuestMenu : MonoBehaviour
             if(_finishedSlots.Count > 1)
             {
                 SetFinishedSlotsToGray();
-                _finishedSlots[0].TurnOnColor();
+                _finishedSlots[0].TurnOffColor();
             }
         }
         else // 진행 중인 퀘스트가 없을 경우 메시지 출력 
@@ -228,7 +242,7 @@ public class QuestMenu : MonoBehaviour
     {
         for (int i = 0; i < _finishedSlots.Count; i++)
         {
-            _finishedSlots[i].TurnOffColor();
+            _finishedSlots[i].TurnOnColor();
         }
     }
 

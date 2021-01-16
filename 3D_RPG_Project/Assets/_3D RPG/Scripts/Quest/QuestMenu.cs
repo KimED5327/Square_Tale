@@ -72,14 +72,13 @@ public class QuestMenu : MonoBehaviour
     /// </summary>
     void SetMenuOnStart()
     {
-        DeleteAllSlots();
-
         // 진행중인 퀘스트를 슬롯에 추가 
         for (int i = 0; i < QuestManager.instance.GetOngoingQuestList().Count; i++)
         {
             QuestSlot slot = Instantiate(_ongoingSlotPrefab, _ongoingContent).GetComponent<QuestSlot>();
 
             Quest quest = QuestManager.instance.GetOngoingQuestByIdx(i);
+            if (quest.GetState() == QuestState.QUEST_COMPLETABLE) slot.TurnOnCompletableIcon();
 
             slot.SetQuest(quest);
             slot.SetTitle(quest.GetTitle());
@@ -124,6 +123,8 @@ public class QuestMenu : MonoBehaviour
     /// </summary>
     public void ShowOngoingQuest()
     {
+        _questSort = QuestSort.ONGOING;
+
         _scrollRect.content = _ongoingContent.GetComponent<RectTransform>();
         _ongoingContent.gameObject.SetActive(true);
         _finishedContent.gameObject.SetActive(false);
@@ -151,6 +152,8 @@ public class QuestMenu : MonoBehaviour
     /// </summary>
     public void ShowFinishedQuest()
     {
+        _questSort = QuestSort.FINISHED;
+
         _scrollRect.content = _finishedContent.GetComponent<RectTransform>();
         _finishedContent.gameObject.SetActive(true);
         _ongoingContent.gameObject.SetActive(false);
@@ -168,7 +171,7 @@ public class QuestMenu : MonoBehaviour
             // 슬롯이 2개 이상일 경우 선택/비선택 슬롯의 색상을 나누어 설정 
             if(_finishedSlots.Count > 1)
             {
-                SetFinishedSlotsToGray();
+                SetFinishedSlotsDefault();
                 _finishedSlots[0].TurnOffColor();
             }
         }
@@ -236,13 +239,74 @@ public class QuestMenu : MonoBehaviour
     }
 
     /// <summary>
-    /// 모든 완료 슬롯에 회색 마스크 이미지 씌우기
+    /// 모든 완료 슬롯을 기본 이미지 색상으로 설정 
     /// </summary>
-    public void SetFinishedSlotsToGray()
+    public void SetFinishedSlotsDefault()
     {
-        for (int i = 0; i < _finishedSlots.Count; i++)
+        switch (_questSort)
         {
-            _finishedSlots[i].TurnOnColor();
+            case QuestSort.ONGOING:
+                //for (int i = 0; i < _ongoingSlots.Count; i++)
+                //{
+                //    _ongoingSlots[i].TurnOnColor();
+                //}
+                break;
+
+            case QuestSort.FINISHED:
+                for (int i = 0; i < _finishedSlots.Count; i++)
+                {
+                    _finishedSlots[i].TurnOnColor();
+                }
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 현재 분류에 맞는 퀘스트 슬롯의 개수를 반환 
+    /// </summary>
+    public int CheckSlotsCount()
+    {
+        int count = 0;
+
+        switch (_questSort)
+        {
+            case QuestSort.ONGOING:
+                count = _ongoingSlots.Count;
+                break;
+
+            case QuestSort.FINISHED:
+                count = _finishedSlots.Count;
+                break;
+        }
+
+        return count;
+    }
+
+    /// <summary>
+    /// 완료 가능한 퀘스트 슬롯에 완료 가능 아이콘 활성화 
+    /// </summary>
+    /// <param name="quest"></param>
+    public void TurnOnCompletableIcon(int questID)
+    {
+        for (int i = 0; i < _ongoingSlots.Count; i++)
+        {
+            if (_ongoingSlots[i].GetQuest().GetQuestID() != questID) continue;
+
+            _ongoingSlots[i].TurnOnCompletableIcon();
+        }
+    }
+
+    /// <summary>
+    /// 퀘스트 완료 조건 미충족 시 퀘스트 슬롯에 완료 가능 아이콘 비활성화 
+    /// </summary>
+    /// <param name="questID"></param>
+    public void TurnOffCompletableIcon(int questID)
+    {
+        for (int i = 0; i < _ongoingSlots.Count; i++)
+        {
+            if (_ongoingSlots[i].GetQuest().GetQuestID() != questID) continue;
+
+            _ongoingSlots[i].TurnOffCompletableIcon();
         }
     }
 

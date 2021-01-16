@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &970341188
 RectTransform:
   m_ObjectHideFlags: 0
@@ -222,6 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _txtTitle: {fileID: 5380536338643404478}
   _imgQuestMark: {fileID: 5380536337766395746}
+  _iconCompletable: {fileID: 970341187}
   _imgGray: {fileID: 9121087822031463094}
 --- !u!1 &5380536337766395744
 GameObject:

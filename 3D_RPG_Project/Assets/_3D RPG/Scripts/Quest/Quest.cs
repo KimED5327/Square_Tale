@@ -115,6 +115,7 @@ public class Quest
     public int GetGold() { return _gold; }
     public int GetItemID() { return _itemID; }
     public List<BlockUnit> GetBlockList() { return _blockList; }
+    public BlockUnit GetBlock(int index) { return _blockList[index]; }
     public List<int> GetKeywordList() { return _keywordList; }
     public Hashtable GetQuestInfo() { return _questInfo; }
 

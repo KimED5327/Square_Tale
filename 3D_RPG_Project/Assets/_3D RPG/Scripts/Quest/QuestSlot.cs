@@ -14,15 +14,20 @@ public class QuestSlot : MonoBehaviour
     [SerializeField] GameObject _imgGray;           // 버튼 선택용 마스크 이미지 
     QuestMenu _questMenu;                           // 퀘스트 메뉴 참조값 
     Quest _quest;                                   // 퀘스트 참조값 
+    QuestReward[] _questRewards;                    // 퀘스트 보상 참조값 
 
     private void Start()
     {
         _questMenu = FindObjectOfType<QuestMenu>();
     }
 
+    /// <summary>
+    /// 퀘스트 슬롯을 선택했을 때, 버튼 색상 변경 및 해당 퀘스트에 대응하는 정보 출력 
+    /// </summary>
     public void SelectSlot()
     {
         _questMenu.SetQuestInfo(_quest);
+        _questMenu.ShowQuestRewards(_quest);
 
         // 나머지 버튼들은 원색상으로 변경하고, 선택된 버튼만 회색 마스크 이미지를 활성화  
         _questMenu.SetFinishedSlotsDefault();

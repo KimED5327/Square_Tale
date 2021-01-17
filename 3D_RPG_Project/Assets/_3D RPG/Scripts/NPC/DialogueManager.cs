@@ -10,12 +10,13 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager instance;
 
-    int _questID = 0;               // 현재 퀘스트 다이얼로그가 진행되는 퀘스트 ID
-    int _lineIdx = 0;               // 대화 상자에 출력되는 대사의 index 값 
-    bool _isTalking = false;        // 현재 대화중인지 확인하는 변수 
-    public QuestState _state;       // 현재 퀘스트 다이얼로그가 진행되는 퀘스트의 진행상태 
-    QuestNPC _questNPC;             // 현재 대화상대인 NPC 참조값 
-    string _questTitle;             // 퀘스트 제목 
+    int _questID = 0;                   // 현재 퀘스트 다이얼로그가 진행되는 퀘스트 ID
+    int _lineIdx = 0;                   // 대화 상자에 출력되는 대사의 index 값 
+    bool _isTalking = false;            // 현재 대화중인지 확인하는 변수 
+    public QuestState _state;           // 현재 퀘스트 다이얼로그가 진행되는 퀘스트의 진행상태 
+    string _questTitle;                 // 퀘스트 제목 
+    QuestNPC _questNPC;                 // 현재 대화상대인 NPC 참조값 
+    QuestCompleteUI _questCompleteUI;   // 퀘스트 완료 팝업 UI 참조값 
 
     string _keywordEffectName = "키워드 획득";
 
@@ -32,16 +33,10 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject _questDialoguePanel;
     [Tooltip("퀘스트 수락 Panel")]
     [SerializeField] GameObject _questAcceptedPanel;
-    [Tooltip("퀘스트 완료 Panel")]
-    [SerializeField] GameObject _questCompletedPanel;
 
     [Header("Quest Accept UI")]
     [Tooltip("퀘스트 수락 Panel 내 퀘스트 Title")]
     [SerializeField] Text _questAcceptedTitle;
-
-    [Header("Quest Complete UI")]
-    [Tooltip("퀘스트 완료 Panel 내 퀘스트 Title")]
-    [SerializeField] Text _questCompletedTitle;
 
     [Header("Quest Dialogue UI")]
     [Tooltip("퀘스트 다이얼로그 Panel 내 퀘스트 Title")]
@@ -56,9 +51,14 @@ public class DialogueManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            _player = FindObjectOfType<PlayerMove>().transform;
-            _hudCanvas = FindObjectOfType<GameHudMenu>().gameObject;
         } 
+    }
+
+    private void OnEnable()
+    {
+        _player = FindObjectOfType<PlayerMove>().transform;
+        _hudCanvas = FindObjectOfType<GameHudMenu>().gameObject;
+        _questCompleteUI = FindObjectOfType<QuestCompleteUI>();
     }
 
     /// <summary>
@@ -174,11 +174,6 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     void CompleteQuest()
     {
-        // 퀘스트 완료 팝업메뉴 실행 
-        SetQuestCompletePanel();
-        _questCompletedPanel.SetActive(true);
-        CloseQuestDialoguePanel();
-
         // 키워드 보상이 있는 경우 일정 딜레이 후 키워드 획득 
         if (QuestDB.instance.GetQuest(_questID).GetKeywordList().Count > 0)
         {
@@ -191,6 +186,10 @@ public class DialogueManager : MonoBehaviour
 
         // 완료된 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에서 삭제
         QuestManager.instance.DeleteOngoingQuest();
+
+        // 퀘스트 완료 팝업메뉴 실행 
+        _questCompleteUI.OpenQuestCompletePanel(questCompleted);
+        CloseQuestDialoguePanel();
     }
 
     /// <summary>
@@ -199,14 +198,6 @@ public class DialogueManager : MonoBehaviour
     public void SetQuestAcceptPanel()
     {
         _questAcceptedTitle.text = "'" + _questTitle + "'";
-    }
-
-    /// <summary>
-    /// 퀘스트 완료 Panel의 UI 데이터 값 설정 
-    /// </summary>
-    public void SetQuestCompletePanel()
-    {
-        _questCompletedTitle.text = "'" + _questTitle + "'";
     }
 
     /// <summary>

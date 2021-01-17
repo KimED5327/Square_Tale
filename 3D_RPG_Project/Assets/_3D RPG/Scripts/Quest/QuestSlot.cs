@@ -14,7 +14,6 @@ public class QuestSlot : MonoBehaviour
     [SerializeField] GameObject _imgGray;           // 버튼 선택용 마스크 이미지 
     QuestMenu _questMenu;                           // 퀘스트 메뉴 참조값 
     Quest _quest;                                   // 퀘스트 참조값 
-    QuestReward[] _questRewards;                    // 퀘스트 보상 참조값 
 
     private void Start()
     {

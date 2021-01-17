@@ -170,6 +170,23 @@ public class QuestManager : MonoBehaviour
         }
     }
 
+    void GetRewards(Quest quest)
+    {
+        // 골드 추가 
+
+        // 경험치 추가 
+
+        // 아이템 보상이 있을 경우 인벤토리에 추가 
+        if (quest.GetItemID() != 0)
+            _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(quest.GetItemID()));
+
+        // 블록 보상이 있을 경우 블록 추가 
+        if (quest.GetBlockList().Count > 0)
+        {
+
+        }
+    }
+
     /// <summary>
     /// 선행 퀘스트가 완료된 퀘스트의 진행상태를 미해금 상태에서 진행가능 상태로 변경 
     /// </summary>

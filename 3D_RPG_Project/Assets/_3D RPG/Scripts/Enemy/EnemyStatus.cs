@@ -102,7 +102,6 @@ public class EnemyStatus : Status
         {
             _isDropItem = true;
         }
-
     }
 
     public List<DropItem> GetDropItem()

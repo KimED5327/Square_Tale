@@ -23,7 +23,7 @@ public class DialogueManager : MonoBehaviour
     // UI 관련 변수 
     Transform _npcTransform;
     Transform _player;
-    float _delayBeforeGettingKeyword = 1.7f;    // 퀘스트 완료 시 키워드 보상 획득 딜레이 
+    public float _delayBeforeGettingKeyword = 2f;    // 퀘스트 완료 시 키워드 보상 획득 딜레이 
 
     [Header("Panel UI")]
     GameObject _hudCanvas;

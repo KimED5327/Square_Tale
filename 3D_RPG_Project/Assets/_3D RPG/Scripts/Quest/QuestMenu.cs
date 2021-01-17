@@ -266,7 +266,7 @@ public class QuestMenu : MonoBehaviour
         if (quest.GetBlockList().Count > 0) AddBlockReward(quest);
 
         // 키워드 보상이 존재하는 경우 보상 추가 
-        if (quest.GetKeywordList().Count > 0) AddKeywordReward();
+        if (quest.GetKeywordList().Count > 0) AddKeywordReward(quest);
     }
 
     /// <summary>
@@ -287,6 +287,7 @@ public class QuestMenu : MonoBehaviour
 
         reward.SetImg(_imgGold);
         reward.SetCount(quest.GetGold());
+        reward.SetName("골드");
     }
 
     // 경험치 보상을 리워드 패널에 추가 
@@ -296,25 +297,17 @@ public class QuestMenu : MonoBehaviour
 
         reward.SetImg(_imgExp);
         reward.SetCount(quest.GetExp());
+        reward.SetName("경험치");
     }
 
     // 아이템 보상을 리워드 패널에 추가 
     void AddItemReward(Quest quest)
     {
-        //QuestReward reward = Instantiate(_rewardPrefab, _rewardPanel).GetComponent<QuestReward>();
-
-        //reward.SetImg(SpriteManager.instance.GetItemSprite(quest.GetItemID()));
-        //reward.SetCount(1);
-
         QuestReward reward = Instantiate(_rewardPrefab, _rewardPanel).GetComponent<QuestReward>();
 
-        reward.SetImg(SpriteManager.instance.GetItemSprite(8));
+        reward.SetImg(SpriteManager.instance.GetItemSprite(quest.GetItemID()));
         reward.SetCount(1);
-
-        QuestReward reward1 = Instantiate(_rewardPrefab, _rewardPanel).GetComponent<QuestReward>();
-
-        reward1.SetImg(SpriteManager.instance.GetItemSprite(10));
-        reward1.SetCount(1);
+        reward.SetName(ItemDatabase.instance.GetItem(quest.GetItemID()).name);
     }
 
     // 블록 보상을 리워드 패널에 추가 
@@ -331,12 +324,17 @@ public class QuestMenu : MonoBehaviour
     }
 
     // 키워드 보상을 리워드 패널에 추가 
-    void AddKeywordReward()
+    void AddKeywordReward(Quest quest)
     {
         QuestReward reward = Instantiate(_rewardPrefab, _rewardPanel).GetComponent<QuestReward>();
 
         reward.SetImg(_imgKeyword);
         reward.TurnOffCount();
+
+        string name = "키워드 (";
+        name += (KeywordData.instance.GetKeyword(quest.GetKeywordList()[0]).keyword + ")");
+
+        reward.SetName(name);
     }
 
     /// <summary>

@@ -13,6 +13,7 @@ TagManager:
   - Block
   - Trigger
   - Water
+  - DropItem
   layers:
   - Default
   - TransparentFX

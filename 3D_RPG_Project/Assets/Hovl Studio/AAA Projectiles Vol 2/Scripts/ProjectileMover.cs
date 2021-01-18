@@ -50,6 +50,12 @@ public class ProjectileMover : MonoBehaviour
             
             transform.position += transform.forward * (speed * Time.deltaTime);         
         }
+
+        if(boss.getIsAttackStart())
+        {
+            transform.position= new Vector3(transform.position.x, 0.5f, transform.position.z);
+        }
+
 	}
 
     //https ://docs.unity3d.com/ScriptReference/Rigidbody.OnCollisionEnter.html

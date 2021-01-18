@@ -14,9 +14,6 @@ public class SandTrap : MonoBehaviour
     {
         if (other.CompareTag(StringManager.playerTag))
         {
-
-            return;
-
             if (_isActivate) return;
 
             _isActivate = true;
@@ -28,23 +25,34 @@ public class SandTrap : MonoBehaviour
 
     IEnumerator SandTrapActive()
     {
-        _tfTarget.GetComponent<PlayerMove>().enabled = false;
-        _tfTarget.GetComponent<BoxCollider>().enabled = false;
-        _tfTarget.GetComponent<Rigidbody>().useGravity = false;
+        PlayerMove player = _tfTarget.GetComponent<PlayerMove>();
+        BoxCollider colFace = player.GetFaceCol();
+        BoxCollider colMyBody = player.GetComponent<BoxCollider>();
+        Rigidbody rigidPlayer = player.GetComponent<Rigidbody>();
+
+        player.enabled = false;
+        colFace.enabled = false;
+        colMyBody.enabled = false;
+        rigidPlayer.useGravity = false;
 
         while (true)
         {
-            if (Vector3.SqrMagnitude(_tfTarget.position - _destPos) <= 0.1f)
+            if (Vector3.SqrMagnitude(_tfTarget.position - _destPos) <= 1f)
                 break;
+
             _tfTarget.position = Vector3.MoveTowards(_tfTarget.position, _destPos, _downSpeed * Time.deltaTime);
             yield return null;
         }
 
-        _tfTarget.GetComponent<Rigidbody>().useGravity = true;
+
+        rigidPlayer.useGravity = true;
 
         yield return new WaitForSeconds(0.5f);
-        _tfTarget.GetComponent<PlayerMove>().enabled = true;
-        _tfTarget.GetComponent<BoxCollider>().enabled = true;
+
+
+        player.enabled = true;
+        colFace.enabled = true;
+        colMyBody.enabled = true;
 
 
         _isActivate = false;

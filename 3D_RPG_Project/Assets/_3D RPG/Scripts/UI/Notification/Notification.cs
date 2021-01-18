@@ -48,6 +48,14 @@ public class Notification : MonoBehaviour
     }
 
 
+    public void ShowItemGoldText(int count)
+    {
+        string message = $"{count} 골드 획득!!";
+        _txtKeyword.text = message;
+        ScreenEffect.instance.ExecuteSplash(0.5f);
+        _anim.SetTrigger(_aniKeyword);
+    }
+
 
     public void ShowFloatingMessage(string msg)
     {

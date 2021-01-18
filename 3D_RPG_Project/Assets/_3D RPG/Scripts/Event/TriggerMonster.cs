@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class TriggerMonster : Trigger
 {
-    [SerializeField] GameObject _goTarget = null;
+    EnemyStatus _target = null;
+
     WaitForSeconds waitTime = new WaitForSeconds(1f);
 
-    private void Start()
+    public void SetTargetLink(EnemyStatus target)
     {
+        _target = target;
         StartCoroutine(CheckTriggerActive());
     }
 
-
     IEnumerator CheckTriggerActive()
     {
-
         while (true)
         {
             yield return waitTime;
-            if (!_goTarget.activeSelf)
+            if (_target.IsDead())
             {
                 ActiveTrigger();
                 break;

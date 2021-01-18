@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] GameObject _goRequestion = null;
     [SerializeField] Image _imgSelectChapter = null;
     [SerializeField] Text _txtSelectChapter = null;
+    [SerializeField] Text _txtNickname = null;
 
     [Header("Slot")]
     [SerializeField] ChapterSlot[] _slots = null;
@@ -27,6 +28,11 @@ public class MainMenu : MonoBehaviour
     {
         for (int i = 1; i < _slots.Length; i++)
             _slots[i].LockSlot(_lockImage);
+
+        if (PlayerPrefs.HasKey(StringManager.nickname))
+        {
+            _txtNickname.text = PlayerPrefs.GetString(StringManager.nickname);
+        }
     }
 
     void Update()

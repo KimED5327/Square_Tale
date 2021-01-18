@@ -18,6 +18,7 @@ public class Trigger : MonoBehaviour
     [SerializeField] protected int _eventID = 0;
     [SerializeField] protected CameraEventMoving[] _eventMove;
     [SerializeField] protected float _speed = 0.035f;
+    [SerializeField] protected bool _canTouchActive = false; 
 
     Transform _nextLoc;
     Vector3 _camOriginPos;
@@ -141,4 +142,7 @@ public class Trigger : MonoBehaviour
         }
         _isBack = true; 
     }
+
+
+    public bool CanTouchActive() { return _canTouchActive; }
 }

@@ -9,9 +9,7 @@ public class DropTrap : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(StringManager.playerTag))
-        {
-            return;
-
+        { 
             GetComponent<Rigidbody>().useGravity = true;
             _tfTarget = other.transform;
             StartCoroutine(TrapActive());
@@ -22,12 +20,19 @@ public class DropTrap : MonoBehaviour
 
     IEnumerator TrapActive()
     {
-        _tfTarget.GetComponent<PlayerMove>().enabled = false;
-        _tfTarget.GetComponent<Collider>().enabled = false;
-        yield return new WaitForSeconds(1f);
-        _tfTarget.GetComponent<PlayerMove>().enabled = true;
-        _tfTarget.GetComponent<Collider>().enabled = true;
+        PlayerMove player = _tfTarget.GetComponent<PlayerMove>();
+        BoxCollider colFace = player.GetFaceCol();
+        BoxCollider colMyBody = player.GetComponent<BoxCollider>();
 
+        player.enabled = false;
+        colFace.enabled = false;
+        colMyBody.enabled = false;
+
+        yield return new WaitForSeconds(1f);
+
+        player.enabled = true;
+        colFace.enabled = true;
+        colMyBody.enabled = true;
     }
 }
 

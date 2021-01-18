@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerBuffManager : MonoBehaviour
 {
     [SerializeField] BuffSlot[] _slots = null;
+    int _buffActiveCount = 0;
 
     PlayerStatus _playerStatus;
 
@@ -19,24 +20,26 @@ public class PlayerBuffManager : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// 버프 id값을 적용시킴
+    /// </summary>
+    /// <param name="id"></param>
     public void ApplyPlayerBuff(int id)
-    {
-        // 버프 중첩 시도
-        if (!PushSameBuffSlot(id))
-        {
-            // 빈 슬롯에 버프 푸시
-            if (!PushAnyEmptySlot(id))
-            {
-                // 빈 슬롯이 없는 경우
-                Debug.Log("버프가 가득찬 경우, 어떻게 처리할지 여부 필요");
-            }
-        }
+    { 
+        // 버프 푸시
+        bool isSuccess = TryPushBuff(id);
+
+        if (!isSuccess)
+            Debug.Log("버프가 가득찬 경우, 어떻게 처리할지 여부 필요");
     }
 
-    bool PushSameBuffSlot(int id)
+
+    // 버프 적용 시도
+    bool TryPushBuff(int id)
     {
         for (int i = 0; i < _slots.Length; i++)
         {
+            // 같은 ID의 버프가 있다면 중첩 적용시킴
             if (_slots[i].gameObject.activeSelf)
             {
                 if (_slots[i].GetBuffID() == id)
@@ -45,15 +48,8 @@ public class PlayerBuffManager : MonoBehaviour
                     return true;
                 }
             }
-        }
-        return false;
-    }
-
-    bool PushAnyEmptySlot(int id)
-    {
-        for (int i = 0; i < _slots.Length; i++)
-        {
-            if (!_slots[i].gameObject.activeSelf)
+            // 빈슬롯을 만나면 버프 등록
+            else
             {
                 PushSlot(i, id, false);
                 return true;
@@ -62,24 +58,32 @@ public class PlayerBuffManager : MonoBehaviour
         return false;
     }
 
+    // 슬롯에 버프 푸시
     void PushSlot(int index, int id, bool isDuplicate)
     {
         Buff buff = BuffData.instance.GetBuff(id);
         Color color = buff.isBuff ? Color.blue : Color.red;
         _slots[index].PushBuffSlot(id, buff.durationtime, color, buff.isTick);
-        if (!isDuplicate)
+
+        // 중첩이 아닐 경우에만 버프 능력치 반영
+        if (!isDuplicate) 
             BuffApply(buff, true);
+
+        // 최초 등록이면 버프 카운트 증가
+        else
+            _buffActiveCount++;
     }
 
     // Update is called once per frame
     void Update()
     {
-        for(int i = 0; i < _slots.Length; i++)
+        // 적용중인 버프 카운트만큼 반복
+        for(int i = 0; i < _buffActiveCount; i++)
         {
-            // 버프가 끝났고 활성화된 슬롯이라면-
-            if (!_slots[i].IsActive() && _slots[i].gameObject.activeSelf)
+            // 버프가 끝난 슬롯이면 버프 제거
+            if (!_slots[i].IsActive())
             {
-                // 버프 제거 
+                _buffActiveCount--;
                 _slots[i].DeActive();
                 BuffApply(BuffData.instance.GetBuff(_slots[i].GetBuffID()), false);
             }
@@ -91,28 +95,6 @@ public class PlayerBuffManager : MonoBehaviour
                 _slots[i].ResetTick();
             }
         }
-
-        // 테스트
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            ApplyPlayerBuff(1);
-        }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            ApplyPlayerBuff(2);
-        }
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            ApplyPlayerBuff(3);
-        }
-        if (Input.GetKeyDown(KeyCode.Comma))
-        {
-            ApplyPlayerBuff(4);
-        }
-        if (Input.GetKeyDown(KeyCode.Slash))
-        {
-            ApplyPlayerBuff(5);
-        }
     }
 
 
@@ -120,16 +102,22 @@ public class PlayerBuffManager : MonoBehaviour
     {
         for(int i = 0; i < buff.buffOption.Count; i++)
         {
-            // 버프 적용 시에는 더해주고, 취소시에는 빼준다.
+            // 버프 적용 = 증가 , 버프 해제 = 감소
             float applyBuffRate = (isApply) ? buff.buffOption[i].applyBuffRate
                                             : -buff.buffOption[i].applyBuffRate;
 
+            // 디버프는 반대로
+            if (!buff.isBuff)
+                applyBuffRate *= -1f;
+
+
+            // 버프 유형에 따라 적용
             switch (buff.buffOption[i].buffType)
             {
                 case BuffType.HP:
-                    // 디버프인 경우 틱 데미지 적용
+                    // 디버프는 틱데미지 적용
                     if(!buff.isBuff)
-                        _playerStatus.Damage((int)(_playerStatus.GetMaxHp() * applyBuffRate), Vector3.zero);
+                        _playerStatus.Damage((int)(_playerStatus.GetMaxHp() * Mathf.Abs(applyBuffRate)), Vector3.zero);
                     break;
                 case BuffType.INT:
                     _playerStatus.AdjustInt((int)(_playerStatus.GetInt() * applyBuffRate));
@@ -141,11 +129,7 @@ public class PlayerBuffManager : MonoBehaviour
                     _playerStatus.AdjustDef((int)(_playerStatus.GetDef() * applyBuffRate));
                     break;
                 case BuffType.SPEED:
-                    // 디버프인 경우, 다시 반대로.
-                    if (!buff.isBuff)
-                        _playerStatus.GetComponent<PlayerMove>().applySpeed -= applyBuffRate;
-                    else
-                        _playerStatus.GetComponent<PlayerMove>().applySpeed += applyBuffRate;
+                    _playerStatus.GetComponent<PlayerMove>().applySpeed += applyBuffRate;
                     break;
 
             }

@@ -37,7 +37,7 @@ public class TitleMenu : MonoBehaviour
         }
 
 
-        PlayerPrefs.SetString("Nickname", _inNickname.text);
+        PlayerPrefs.SetString(StringManager.nickname, _inNickname.text);
 
         LoadingScene.LoadScene("LobbyScene");
     }

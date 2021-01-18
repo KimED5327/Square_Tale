@@ -24,6 +24,7 @@ public abstract class Status : MonoBehaviour
     //법사
     protected bool _isDead = false;
     string _skillType = "normal";
+    int _damage;
 
     private void OnEnable()
     {
@@ -41,25 +42,42 @@ public abstract class Status : MonoBehaviour
     public virtual void Damage(int num, Vector3 targetPos, string skillType = "normal")
     {
         //if (skillType.Equals("overlap")) return;
-        if (_skillType.Equals("overlap")) return;
+        if (_skillType.Equals("overlap") || _skillType.Equals("overlap2")) return;
         _skillType = skillType;
-        _curHp -= num;
+
+        _damage = num - _def;
+
+        if (_damage < 1)
+        {
+            _curHp--;
+            _damage = 1;
+        }
+        else
+        {
+            _curHp -= _damage;
+        }
 
         SoundManager.instance.PlayEffectSound("Damage");
         ObjectPooling.instance.GetObjectFromPool("피격 이펙트", transform.position + Vector3.up * 0.5f);
         GameObject goFloating = ObjectPooling.instance.GetObjectFromPool("플로팅 텍스트", transform.position + Vector3.up * 0.75f);
-        goFloating.GetComponent<FloatingText>().SetText(num, transform.CompareTag(StringManager.playerTag));
+        goFloating.GetComponent<FloatingText>().SetText(_damage, transform.CompareTag(StringManager.playerTag));
         Debug.Log("맞은 유닛 : " + transform.name);
 
-
-        Invoke("ChangeSkillType", 0.5f);
+        if (_skillType.Equals("overlap"))
+        {
+            Invoke("ChangeSkillType", 0.5f);
+        }
+        if (_skillType.Equals("overlap2"))
+        {
+            Invoke("ChangeSkillType", 0.3f);
+        }
         if(_curHp <= 0)
         {
             Dead();
         }
         else
         {
-            HurtReaction(targetPos);
+            if (!_skillType.Equals("overlap2")) HurtReaction(targetPos);
         }
     }
 

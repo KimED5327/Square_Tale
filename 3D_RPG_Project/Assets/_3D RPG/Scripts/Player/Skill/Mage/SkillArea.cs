@@ -26,10 +26,10 @@ public class SkillArea : MonoBehaviour
                     switch (_player.getSkillNum())
                     {
                         case 1:
-                            targetStatus.Damage((int)(_status.GetInt() * 1.7f), transform.position);
+                            targetStatus.Damage((int)(_status.GetInt() * 1.7f), transform.position, "overlap");
                             break;
                         case 4:
-                            targetStatus.Damage((int)(_status.GetInt() * 1.9f), transform.position);
+                            targetStatus.Damage((int)(_status.GetInt() * 1.4f), transform.position);
                             break;
                     }
                 }
@@ -50,10 +50,10 @@ public class SkillArea : MonoBehaviour
                     switch (_player.getSkillNum())
                     {
                         case 2:
-                               targetStatus.Damage((int)(_status.GetInt() * 0.3f), transform.position, "overlap");
+                               targetStatus.Damage((int)(_status.GetInt() * 0.2f), transform.position, "overlap2");
                             break;
                         case 3:
-                               targetStatus.Damage((int)(_status.GetInt() * 0.8f), transform.position, "overlap");
+                               targetStatus.Damage((int)(_status.GetInt() * 0.4f), transform.position, "overlap");
                             break;
                     }
                 }

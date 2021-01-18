@@ -71,15 +71,17 @@ public class PlayerMove : MonoBehaviour
     float curSkill3Cooltime;
     float curSkill4Cooltime;
     // 스킬 쿨타임 수정 필요 !!
-    float swordSkill1Cooltime = 15f;
-    float swordSkill2Cooltime = 15f;
-    float swordSkill3Cooltime = 15f;
-    float swordSkill4Cooltime = 15f;
+    float swordSkill1Cooltime = 1f; //15
+    float swordSkill2Cooltime = 2f; //20
+    float swordSkill3Cooltime = 1f; //15
+    float swordSkill4Cooltime = 3f; //30
 
-    float mageSkill1Cooltime = 20f;
-    float mageSkill2Cooltime = 30f;
-    float mageSkill3Cooltime = 30f;
-    float mageSkill4Cooltime = 45f;
+    float mageSkill1Cooltime = 2f; //20
+    float mageSkill2Cooltime = 3f; //30
+    float mageSkill3Cooltime = 3f; //30
+    float mageSkill4Cooltime = 4f; //45
+
+    float dodgeCooltime = 1.0f;
 
     int comboCount = 0;
 
@@ -87,6 +89,7 @@ public class PlayerMove : MonoBehaviour
 
     bool isJump;
     bool isDodge;
+    bool isDodgeCooltime;
     bool isAttackReady = true;
     bool isCombo;
     bool isComboCount;
@@ -106,6 +109,7 @@ public class PlayerMove : MonoBehaviour
     bool isSword;
     bool isMage;
     bool isCasting;
+    bool isBorder; // 벽 감지하는 변수
 
     public static bool s_canMove = true;
 
@@ -117,7 +121,8 @@ public class PlayerMove : MonoBehaviour
 
 
     Rigidbody myRigid;
-    Weapon equipWeapon;
+    Weapon equipWeapon; // 검사 평타
+    MageAttack mageAttack; // 법사 평타
     PlayerStatus myStatus;
     SkillManager skillButton;
     MageSkillManager mageSkillButton;
@@ -161,6 +166,7 @@ public class PlayerMove : MonoBehaviour
                     MMove();
                     Jump();
                     Dodge();
+                    StopWall();
                 }
             }
 
@@ -255,7 +261,7 @@ public class PlayerMove : MonoBehaviour
         }
         if (isMage)
         {
-            realMoveVec = (moveVec.z * Camera.main.transform.forward + Camera.main.transform.right * moveVec.x) * 1.5f;
+            realMoveVec = (moveVec.z * Camera.main.transform.forward + Camera.main.transform.right * moveVec.x) * 1.2f;
         }
 
         realMoveVec.y = 0;
@@ -275,7 +281,7 @@ public class PlayerMove : MonoBehaviour
             }
         }
 
-        transform.position += realMoveVec * (speed * (1 + applySpeed)) * Time.deltaTime;
+        if (!isBorder) transform.position += realMoveVec * speed * Time.deltaTime;
 
         transform.LookAt(transform.position + realMoveVec);
 
@@ -288,7 +294,14 @@ public class PlayerMove : MonoBehaviour
         {
             moveVec = joystick.moveVec;
 
-            realMoveVec = (moveVec.z * Camera.main.transform.forward + Camera.main.transform.right * moveVec.x);
+            if (isSword)
+            {
+                realMoveVec = (moveVec.z * Camera.main.transform.forward + Camera.main.transform.right * moveVec.x);
+            }
+            if (isMage)
+            {
+                realMoveVec = (moveVec.z * Camera.main.transform.forward + Camera.main.transform.right * moveVec.x) * 1.2f;
+            }
 
             realMoveVec.y = 0;
 
@@ -307,12 +320,17 @@ public class PlayerMove : MonoBehaviour
                 }
             }
 
-            transform.position += realMoveVec * (speed * (1 + applySpeed)) * Time.deltaTime;
+            if (!isBorder) transform.position += realMoveVec * speed * Time.deltaTime;
 
             transform.LookAt(transform.position + realMoveVec);
 
             anim.SetBool("isRun", realMoveVec != Vector3.zero);
         }
+    }
+
+    void StopWall()
+    {
+        isBorder = Physics.Raycast(transform.position, transform.forward, 0.5f, LayerMask.GetMask("Floor"));
     }
 
     void Jump()
@@ -345,12 +363,22 @@ public class PlayerMove : MonoBehaviour
     {
         if (Input.GetKeyDown("left shift") && !isJump && moveVec != Vector3.zero && !isDodge)
         {
-            SoundManager.instance.PlayEffectSound("Shout2");
-            dodgeVec = realMoveVec;
-            speed *= 2;
-            anim.SetTrigger("doDodge");
-            isDodge = true;
-            Invoke("DodgeOut", 0.5f);
+            if (!isDodgeCooltime)
+            {
+                isDodgeCooltime = true;
+                SoundManager.instance.PlayEffectSound("Shout2");
+                dodgeVec = realMoveVec;
+                speed *= 1.5f;
+                anim.SetTrigger("doDodge");
+                isDodge = true;
+                Invoke("DodgeOut", 0.3f);
+                Invoke("DodgeCooltime", dodgeCooltime);
+                DodgeCooltimeImg();
+            }
+            else
+            {
+                Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSkill);
+            }
         }
     }
 
@@ -358,20 +386,55 @@ public class PlayerMove : MonoBehaviour
     {
         if (!isJump && moveVec != Vector3.zero && !isDodge)
         {
-            SoundManager.instance.PlayEffectSound("Shout2");
-            dodgeVec = realMoveVec;
-            speed *= 2;
-            anim.SetTrigger("doDodge");
-            isDodge = true;
-
-            Invoke("DodgeOut", 0.5f);
+            if (!isDodgeCooltime)
+            {
+                isDodgeCooltime = true;
+                SoundManager.instance.PlayEffectSound("Shout2");
+                dodgeVec = realMoveVec;
+                speed *= 1.5f;
+                anim.SetTrigger("doDodge");
+                isDodge = true;
+                Invoke("DodgeOut", 0.3f);
+                Invoke("DodgeCooltime", dodgeCooltime);
+                DodgeCooltimeImg();
+            }
+            else
+            {
+                Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSkill);
+            }
         }
     }
 
     void DodgeOut()
     {
-        speed *= 0.5f;
+        speed = 3;
         isDodge = false;
+    }
+
+    void DodgeCooltime()
+    {
+        isDodgeCooltime = false;
+    }
+
+    void DodgeCooltimeImg()
+    {
+        if (isSword)
+        {
+            skillCool = _skillCoolImg[4].GetComponent<SkillCooltime>();
+            skillCool.SetSkillCooltime(dodgeCooltime, true);
+        }
+        if (isMage)
+        {
+            skillCool = _skillCoolImg[5].GetComponent<SkillCooltime>();
+            skillCool.SetSkillCooltime(dodgeCooltime, true);
+        }
+    }
+
+    void MageFire(string name, Vector3 dir, int combo)
+    {
+        MageAttack mageAttack = ObjectPooling.instance.GetObjectFromPool(name, dir).GetComponent<MageAttack>();
+        mageAttack.SetDir(transform.forward);
+        mageAttack.setCombo(combo);
     }
 
     public void Attack()
@@ -479,8 +542,7 @@ public class PlayerMove : MonoBehaviour
         {
             mageAttack1Img.SetActive(false);
             mageAttack2Img.SetActive(true);
-            GameObject instantMagic = Instantiate(iceMissile, magicAttack1Pos.position, magicAttack1Pos.rotation);
-            Destroy(instantMagic, 1f);
+            MageFire("아이스 미사일", magicAttack3Pos.position, 1);
         }
         yield return new WaitForSeconds(0.3f);
         attackEffect1.SetActive(false);
@@ -503,10 +565,8 @@ public class PlayerMove : MonoBehaviour
         if (isMage)
         {
             mageAttack3Img.SetActive(true);
-            GameObject instantMagic1 = Instantiate(bubble, magicAttack1Pos.position, magicAttack1Pos.rotation);
-            Destroy(instantMagic1, 1f);
-            GameObject instantMagic2 = Instantiate(bubble, magicAttack2Pos.position, magicAttack2Pos.rotation);
-            Destroy(instantMagic2, 1f);
+            MageFire("버블", magicAttack1Pos.position, 2);
+            MageFire("버블", magicAttack2Pos.position, 2);
         }
         yield return new WaitForSeconds(0.5f);
         attackEffect2.SetActive(false);
@@ -534,12 +594,9 @@ public class PlayerMove : MonoBehaviour
             SoundManager.instance.PlayEffectSound("MageAttack3");
             mageAttack3Img.SetActive(false);
             mageAttack1Img.SetActive(true);
-            GameObject instantMagic1 = Instantiate(blood, magicAttack1Pos.position, magicAttack1Pos.rotation);
-            Destroy(instantMagic1, 1f);
-            GameObject instantMagic2 = Instantiate(blood, magicAttack2Pos.position, magicAttack2Pos.rotation);
-            Destroy(instantMagic2, 1f);
-            GameObject instantMagic3 = Instantiate(blood, magicAttack3Pos.position, magicAttack3Pos.rotation);
-            Destroy(instantMagic3, 1f);
+            MageFire("블러드", magicAttack1Pos.position, 3);
+            MageFire("블러드", magicAttack2Pos.position, 3);
+            MageFire("블러드", magicAttack3Pos.position, 3);
         }
         yield return new WaitForSeconds(0.5f);
         attackEffect3.SetActive(false);
@@ -561,12 +618,12 @@ public class PlayerMove : MonoBehaviour
             anim.SetTrigger("doSkill1");
             StopCoroutine("Skill1Effect");
             StartCoroutine("Skill1Effect");
+            startLightning.SetActive(true);
         }
     }
 
     IEnumerator Skill1Effect()
     {
-        startLightning.SetActive(true);
         yield return new WaitForSeconds(0.3f);
         if (isSword)
         {
@@ -590,8 +647,7 @@ public class PlayerMove : MonoBehaviour
 
             for (int i = 0; i < enemyPos.Count; i++)
             {
-                GameObject instantMagic = Instantiate(lightning, enemyPos[i].position, enemyPos[i].rotation);
-                Destroy(instantMagic, 0.5f);
+                ObjectPooling.instance.GetObjectFromPool("라이트닝", enemyPos[i].position);
             }
         }
         yield return new WaitForSeconds(0.5f);
@@ -705,24 +761,23 @@ public class PlayerMove : MonoBehaviour
         {
             float elapseTime = 0f;
             float finishTime = 4f;
-            GameObject instantMagic = Instantiate(blackhole, blackholePos.position, blackholePos.rotation);
+            ObjectPooling.instance.GetObjectFromPool("블랙홀", blackholePos.position);
             List<Transform> enemyPos = new List<Transform>();
             Collider[] checkColliders = Physics.OverlapSphere(blackholePos.position, 5, LayerMask.GetMask("Enemy"));
-            Vector3 blackholePoint = blackholePos.position;
+            Vector3 blackholePoint = blackholePos.position + Vector3.up * 1.3f;
             for (int i = 0; i < checkColliders.Length; i++)
             {
                 enemyPos.Add(checkColliders[i].transform);
             }
 
             isMove = false;
-            Destroy(instantMagic, 4.0f);
 
             while (elapseTime <= finishTime)
             {
                 yield return null;
                 for (int i = 0; i < enemyPos.Count; i++)
                 {
-                    enemyPos[i].position = Vector3.MoveTowards(enemyPos[i].position, blackholePoint, 10f * Time.deltaTime);
+                    enemyPos[i].position = Vector3.MoveTowards(enemyPos[i].position, blackholePoint, 5f * Time.deltaTime);
                 }
                 elapseTime += Time.deltaTime;
             }
@@ -777,13 +832,12 @@ public class PlayerMove : MonoBehaviour
             List<Vector3> meteoPos = new List<Vector3>();
             for (int i = 0; i < 6; i++)
             {
-                meteoPos.Add(transform.position + new Vector3(Random.Range(-2, 2), 0f, Random.Range(-2, 2)));
+                meteoPos.Add(transform.position + new Vector3(Random.Range(-3, 3), 0f, Random.Range(-3, 3)));
             }
             isMove = false;
             for (int i = 0; i < meteoPos.Count; i++)
             {
-                GameObject instantMagic = Instantiate(meteo, meteoPos[i], Quaternion.identity);
-                Destroy(instantMagic, 1.5f);
+                ObjectPooling.instance.GetObjectFromPool("익스플로전", meteoPos[i]);
                 yield return new WaitForSeconds(0.2f);
             }
             useSkill4 = false;
@@ -996,6 +1050,7 @@ public class PlayerMove : MonoBehaviour
                 isDieTrigger = true;
                 anim.SetTrigger("doDie");
             }
+            PlayerPrefs.SetInt("curHp", myStatus.GetMaxHp());
         }
     }
 
@@ -1004,7 +1059,6 @@ public class PlayerMove : MonoBehaviour
 
         if (transform.position.y < -50)
         {
-
             isDie = true;
             resurrectionUI.SetActive(true);
             blockCon.enabled = false;
@@ -1014,6 +1068,7 @@ public class PlayerMove : MonoBehaviour
                 isDieTrigger = true;
                 anim.SetTrigger("doDie");
             }
+            PlayerPrefs.SetInt("curHp", myStatus.GetMaxHp());
         }
     }
 
@@ -1022,7 +1077,7 @@ public class PlayerMove : MonoBehaviour
         // 리스폰 지점에서 부활
 
         GameHudMenu.instance.ShowMenu();
-        myStatus.Initialized();
+        //myStatus.Initialized();
         SceneManager.LoadScene("GameScene");
         StartCoroutine("ResurrectionEffect");
     }
@@ -1030,7 +1085,7 @@ public class PlayerMove : MonoBehaviour
     public void ResurrectionToTown()
     {
         // 마을에서 부활
-        myStatus.Initialized();
+       // myStatus.Initialized();
         MapManager.instance.ChangeMap("Town");
     }
 

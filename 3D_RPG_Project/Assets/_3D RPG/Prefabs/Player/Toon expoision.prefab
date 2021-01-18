@@ -43371,6 +43371,7 @@ GameObject:
   - component: {fileID: 6130184091253453429}
   - component: {fileID: -8002905137397163593}
   - component: {fileID: 4762272233998713430}
+  - component: {fileID: 5889372240520888962}
   m_Layer: 0
   m_Name: Toon expoision
   m_TagString: Untagged
@@ -48217,6 +48218,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 5, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5889372240520888962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6328208808774445815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d817271ae792b2c4c9302c0a8fb07e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\uC775\uC2A4\uD50C\uB85C\uC804"
+  _destoryTime: 1.5
 --- !u!1 &6328223823907819441
 GameObject:
   m_ObjectHideFlags: 0

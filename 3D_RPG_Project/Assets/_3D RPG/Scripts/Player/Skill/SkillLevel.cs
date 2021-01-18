@@ -19,22 +19,22 @@ public class SkillLevel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_player.GetLevel() >= 2)
+        if (_player.GetLevel() >= 3)
         {
             _isSwordSkill[0].SetActive(false);
             _txtLevel[0].color = Color.black;
         }
-        if (_player.GetLevel() >= 3)
+        if (_player.GetLevel() >= 5)
         {
             _isSwordSkill[1].SetActive(false);
             _txtLevel[1].color = Color.black;
         }
-        if (_player.GetLevel() >= 4)
+        if (_player.GetLevel() >= 7)
         {
             _isSwordSkill[2].SetActive(false);
             _txtLevel[2].color = Color.black;
         }
-        if (_player.GetLevel() >= 5)
+        if (_player.GetLevel() >= 9)
         {
             _isSwordSkill[3].SetActive(false);
             _txtLevel[3].color = Color.black;

@@ -104,18 +104,18 @@ public class Boss : MonoBehaviour
         if(skillAttack)
         {
             skillAttackTime += Time.deltaTime;
-            if (skillAttackTime > 1)
+            if (skillAttackTime > 0.5)
             {
                 skill.transform.localScale += new Vector3(0.1f, 0, 0.1f);
                 skillUpcount++;
                 skillAttackTime = 0;
+                isSkillOne = false;
                 isDamage = true;
             }
             if (skillUpcount > 20)
             {
                 Destroy(skill);
                 skillAttack = false;
-                isSkillOne = false;
                 skillAttackTime = 0;
                 skillUpcount = 0;
                 isDamage = false;
@@ -171,7 +171,7 @@ public class Boss : MonoBehaviour
             Debug.Log("1차 토네이도 리프");
             isSkillOne = true;
             bossState = state.skill;
-            enemyAnimator.SetBool("Skill", true);
+            enemyAnimator.SetTrigger("Skill 0");
             skillUseTornadoCount = 1;
         }
         //2차  토네이도 리프
@@ -180,7 +180,7 @@ public class Boss : MonoBehaviour
             Debug.Log("2차 토네이도 리프");
             isSkillOne = true;
             bossState = state.skill;
-            enemyAnimator.SetBool("Skill", true);
+            enemyAnimator.SetTrigger("Skill 0");
             skillUseTornadoCount = 2;
         }
         //3차  토네이도 리프
@@ -189,7 +189,7 @@ public class Boss : MonoBehaviour
             Debug.Log("3차 토네이도 리프");
             isSkillOne = true;
             bossState = state.skill;
-            enemyAnimator.SetBool("Skill", true);
+            enemyAnimator.SetTrigger("Skill 0");
             skillUseTornadoCount = 3;
         }
 
@@ -198,7 +198,7 @@ public class Boss : MonoBehaviour
             Debug.Log("1차 벚꽃 마안");
             isSkillTwo = true;
             bossState = state.skill;
-            enemyAnimator.SetBool("Skill", true);
+            enemyAnimator.SetTrigger("Skill 0");
             skillUseCherryCount = 1;
         }
         else if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.1f && skillUseCherryCount == 1)
@@ -206,7 +206,7 @@ public class Boss : MonoBehaviour
             Debug.Log("2차 벚꽃 마안");
             isSkillTwo = true;
             bossState = state.skill;
-            enemyAnimator.SetBool("Skill", true);
+            enemyAnimator.SetTrigger("Skill 0");
             skillUseCherryCount = 2;
         }
 
@@ -241,7 +241,7 @@ public class Boss : MonoBehaviour
             else if (sktornado)
             {
                 timer += Time.deltaTime;
-                if (timer > 1)
+                if (timer > 3)
                 {
                     skillAttack = true;
                     timer = 0;

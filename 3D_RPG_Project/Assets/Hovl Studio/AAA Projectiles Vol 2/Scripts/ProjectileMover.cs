@@ -57,7 +57,6 @@ public class ProjectileMover : MonoBehaviour
 
     private void Update()
     {
-        if (boss == null) return;
         if (transform.CompareTag("BossSkill") && boss.getIsDamage() && !isSkiil)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
@@ -72,8 +71,7 @@ public class ProjectileMover : MonoBehaviour
     //https ://docs.unity3d.com/ScriptReference/Rigidbody.OnCollisionEnter.html
     void OnCollisionEnter(Collision collision)
     {
-        if (boss == null) return;
-
+        
         //Lock all axes movement and rotation
         if(boss.getIsDamage() && transform.CompareTag("BossSkill"))
         {

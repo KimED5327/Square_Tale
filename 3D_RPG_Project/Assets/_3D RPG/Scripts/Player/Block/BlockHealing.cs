@@ -8,6 +8,7 @@ public class BlockHealing : Block
     [SerializeField] float _radius = 3f;
     [SerializeField] LayerMask _layerMask = 0;
 
+
     protected override void BlockEffect()
     {
         Debug.Log("호출됨");

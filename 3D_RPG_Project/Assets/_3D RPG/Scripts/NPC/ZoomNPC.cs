@@ -114,6 +114,22 @@ public class ZoomNPC : MonoBehaviour
                 Vector3 smoothPos = Vector3.Lerp(_cam.transform.position, desiredPos, _smoothSpeed);
                 _cam.transform.position = smoothPos;
                 _cam.transform.LookAt(_target);
+
+                //Vector3 desiredPos = _target.position + _targetOffset;
+
+                //if (Vector3.Distance(_cam.transform.position, desiredPos) <= 0.1f)
+                //{
+                //    _zoomingIn = false;
+                //    _zoomedInToggle = false;
+                //    transform.GetComponent<QuestNPC>().ClickNPC();
+                //}
+
+                //Vector3 smoothPos = Vector3.Lerp(_cam.transform.position, desiredPos, _smoothSpeed);
+                //_cam.transform.position = smoothPos;
+                //_cam.transform.LookAt(_cam.transform.position);
+
+                //transform.LookAt(transform.position + cam.forward);
+
                 break;
         }
     }

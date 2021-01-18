@@ -7,18 +7,6 @@ using UnityEngine.UI;
 //X 아이콘을 클릭하면 줌아웃 
 public class ZoomNPC : MonoBehaviour
 {
-    /// <summary>
-    /// 줌인 시 대상의 위치(좌측, 정면, 우측) 설정 스테이트 
-    /// </summary>
-    enum ZoomState  
-    {
-        ZOOM_LEFT,
-        ZOOM_RIGHT,
-        ZOOM_CENTER
-    };
-
-    [SerializeField] ZoomState _zoomState = ZoomState.ZOOM_CENTER;    // 줌인 상태(좌측, 정면, 우측)
-    [SerializeField] Vector3 _targetOffset;                           // 줌인 시 오프셋 값  
     [SerializeField] float _smoothSpeed = 0.125f;                     // 줌인 시 속도 
     [SerializeField] bool _zoomedInToggle = false;                    // 줌인 토글(on/off 설정)
     [SerializeField] bool _zoomingIn = false;                         // 줌인 실행중인지 확인하는 bool값 
@@ -30,6 +18,7 @@ public class ZoomNPC : MonoBehaviour
     Transform _target;              // 타겟 NPC
     float _minDistance = 2.0f;      // 줌인 발동 최소거리 
     Vector3 _prePos;                // 줌인 시 카메라 이동 전 위치값 
+    Vector3 _preRot;                // 줌인 시 카메라 이동 전 각도값 
 
     private void Awake()
     {
@@ -38,9 +27,6 @@ public class ZoomNPC : MonoBehaviour
         _hudCanvas = FindObjectOfType<GameHudMenu>().gameObject;
         _target = transform;
         _zoomedInToggle = false;
-
-        // 카메라 오프셋값 설정 
-        _targetOffset = new Vector3(-1.1f, -0.1f, 0.01f);
     }
 
     private void FixedUpdate()
@@ -66,15 +52,22 @@ public class ZoomNPC : MonoBehaviour
         {
             _zoomedInToggle = true;
             _zoomingIn = true;
-            _prePos = _cam.transform.position;
 
-            //카메라 컨트롤러 끄기 
+            // 줌아웃 시 되돌아갈 이전 카메라 위치 
+            _prePos = _cam.transform.position;
+            _preRot = _cam.transform.rotation.eulerAngles;
+
+            // 카메라 컨트롤러 끄기 
             _player.GetComponent<CameraController>().enabled = false;
+
+            // 카메라 Light 키기 
+            _cam.GetComponent<Light>().enabled = true;
+
+            // 플레이어 비활성화 
+            _player.gameObject.SetActive(false);
 
             // HUD 캔버스 비활성화 
             _hudCanvas.SetActive(false);
-
-            Debug.Log("zoomin working");
         }
     }
 
@@ -86,65 +79,52 @@ public class ZoomNPC : MonoBehaviour
             _zoomedInToggle = false;
             _zoomingOut = true;
 
-            //카메라 컨트롤러 켜기 
-            _player.GetComponent<CameraController>().enabled = true;
+            // 카메라 Light 끄기 
+            _cam.GetComponent<Light>().enabled = false;
+
+            // 플레이어 활성화 
+            _player.gameObject.SetActive(true);
+
+            // HUD 캔버스 활성화 
+            _hudCanvas.SetActive(true);
         }
     }
 
     public void ZoomedIn()
     {
-        switch (_zoomState)
+        Vector3 desiredPos = _target.position + _target.forward;
+        desiredPos = new Vector3(desiredPos.x, desiredPos.y + 0.5f, desiredPos.z);
+
+        Vector3 desiredRot = Quaternion.LookRotation(_target.position - desiredPos, Vector3.up).eulerAngles;
+        desiredRot = new Vector3(10f, desiredRot.y, 0f);
+
+        // 목표지점까지 이동하였다면 줌인 중지 
+        if (Vector3.Distance(_cam.transform.position, desiredPos) <= 0.1f)
         {
-            case ZoomState.ZOOM_LEFT:
-                break;
-
-            case ZoomState.ZOOM_RIGHT:
-                break;
-
-            case ZoomState.ZOOM_CENTER:
-                Vector3 desiredPos = _target.position + _targetOffset;
-
-                if (Vector3.Distance(_cam.transform.position, desiredPos) <= 0.1f)
-                {
-                    _zoomingIn = false;
-                    _zoomedInToggle = false;
-                    transform.GetComponent<QuestNPC>().ClickNPC();
-                }
-
-                Vector3 smoothPos = Vector3.Lerp(_cam.transform.position, desiredPos, _smoothSpeed);
-                _cam.transform.position = smoothPos;
-                _cam.transform.LookAt(_target);
-
-                //Vector3 desiredPos = _target.position + _targetOffset;
-
-                //if (Vector3.Distance(_cam.transform.position, desiredPos) <= 0.1f)
-                //{
-                //    _zoomingIn = false;
-                //    _zoomedInToggle = false;
-                //    transform.GetComponent<QuestNPC>().ClickNPC();
-                //}
-
-                //Vector3 smoothPos = Vector3.Lerp(_cam.transform.position, desiredPos, _smoothSpeed);
-                //_cam.transform.position = smoothPos;
-                //_cam.transform.LookAt(_cam.transform.position);
-
-                //transform.LookAt(transform.position + cam.forward);
-
-                break;
+            _zoomingIn = false;
+            transform.GetComponent<QuestNPC>().ClickNPC();
         }
+
+        _cam.transform.position = Vector3.Lerp(_cam.transform.position, desiredPos, _smoothSpeed);
+        _cam.transform.rotation = Quaternion.Slerp(_cam.transform.rotation, Quaternion.Euler(desiredRot), _smoothSpeed);
     }
 
     public void ZoomedOut()
     {
+        // 목표지점까지 이동하였다면 줌아웃 중지 
         if (Vector3.Distance(_cam.transform.position, _prePos) <= 0.1f)
         {
             _zoomingOut = false;
 
             //카메라 컨트롤러 켜기 
-            //_player.GetComponent<CameraController>().enabled = true;
+            _player.GetComponent<CameraController>().enabled = true;
+
+            // 플레이어 활성화 
+            _player.gameObject.SetActive(true);
         }
 
-        Vector3 smoothPos = Vector3.Lerp(_cam.transform.position, _prePos, _smoothSpeed);
-        _cam.transform.position = smoothPos;
+        // 줌인 이전의 카메라 위치로 이동 
+        _cam.transform.position = Vector3.Lerp(_cam.transform.position, _prePos, _smoothSpeed);
+        _cam.transform.rotation = Quaternion.Slerp(_cam.transform.rotation, Quaternion.Euler(_preRot), _smoothSpeed);
     }
 }

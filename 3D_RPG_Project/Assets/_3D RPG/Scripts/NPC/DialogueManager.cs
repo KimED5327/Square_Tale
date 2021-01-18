@@ -93,11 +93,10 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     public void CloseDialoguePanel()
     {
-        _player.GetComponent<CameraController>().enabled = true;
         _dialoguePanel.SetActive(false);
-        _hudCanvas.SetActive(true);
-        _questNPC.TurnOnNameTag();
+        _questNPC.GetComponent<ZoomNPC>().ZoomOutNPC();
         _questNPC.GetComponent<Transform>().tag = "QuestNPC";
+        _questNPC.TurnOnNameTag();
     }
 
     /// <summary>
@@ -105,9 +104,8 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     public void CloseQuestDialoguePanel()
     {
-        _player.GetComponent<CameraController>().enabled = true;
         _questDialoguePanel.SetActive(false);
-        _hudCanvas.SetActive(true);
+        _questNPC.GetComponent<ZoomNPC>().ZoomOutNPC();
         _questNPC.TurnOnNameTag();
 
         // 바로 tag를 QuestNPC로 바꾸면 중복터치 문제가 생기므로 

@@ -446,6 +446,12 @@ public class QuestManager : MonoBehaviour
 
         Debug.Log(quest.GetQuestID() + "번 퀘스트 완료가능");
 
+        if(quest.GetQuestFinisher() == null)
+        {
+            Debug.Log("퀘스트 완료자가 다른 맵에 있음.");
+            return; 
+        }
+
         quest.GetQuestFinisher().SetOngoingQuestID(quest.GetQuestID());
         quest.GetQuestFinisher().SetQuestState(QuestState.QUEST_COMPLETABLE);
         quest.GetQuestFinisher().SetQuestMark();

@@ -10,12 +10,18 @@ public class BlockHealing : Block
 
     protected override void BlockEffect()
     {
+        Debug.Log("호출됨");
+
         Collider[] cols = Physics.OverlapSphere(transform.position, _radius, _layerMask);
+
 
         if (cols.Length == 0) return;
 
-        for(int i = 0; i < cols.Length; i++)
+        Debug.Log(cols[0].transform.name);
+
+        for (int i = 0; i < cols.Length; i++)
         {
+
             Status targetStatus = cols[0].transform.GetComponent<Status>();
 
             if (targetStatus == null) continue;

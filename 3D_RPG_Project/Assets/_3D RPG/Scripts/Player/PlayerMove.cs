@@ -1210,5 +1210,6 @@ public class PlayerMove : MonoBehaviour
     public bool GetIsSkill3() { return isSkill3; }
     public bool GetIsSkill4() { return isSkill4; }
 
-    public BoxCollider GetFaceCol() { return _colFace; }
+    public BoxCollider GetFaceCol() { return _colFace; } 
+    public bool GetIsDie() { return isDie; }
 }

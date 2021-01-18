@@ -61,7 +61,7 @@ public class Map : MonoBehaviour
     }
 
     // 맵 활성화되면 몬스터들 스폰.
-    void OnEnable()
+    void Start()
     {
         // 스폰 정보가 있으면 실행
         if(_monsterSpawnPoint != null && _monsterSpawnPoint.Length > 0)

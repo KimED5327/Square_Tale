@@ -272,9 +272,62 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    // true : 획득 성공, false : 획득 실패 (빈 슬롯 부족 등등)
+    /// <summary>
+    /// 아이템을 인벤에 넣는 시도를 함. true면 성공, false는 실패
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="count"></param>
+    /// <returns></returns>
     public bool TryToPushInventory(Item item, int count = 1)
     {
+
+        // id == 1 은 골드
+        if (item.id == 1)
+        {
+            gold += count;
+            return true;
+        }
+
+        // 빈 슬롯이 있다면-
+        if (CheckIsEmptySlot())
+        {
+            // 중첩 가능한 아이템-
+            if (item.stackable)
+            {
+                // 소유한 아이템 -> 해당 슬롯의 개수 증가 else 빈 슬롯에 푸시
+                if (TryToPushSameSlot(item, count))
+                    return true;
+                else
+                {
+                    if (TryToPushEmptySlot(item, count))
+                        return true;
+                }
+
+            }
+            // 중첩 불가능한-
+            else
+            {
+                count = 1;
+                // 빈 인벤토리 슬롯에 푸시.
+                if (TryToPushEmptySlot(item, count))
+                    return true;
+            }
+        }
+
+        Notification.instance.ShowFloatingMessage(StringManager.msgNotEnoughInventory);
+
+        return false;
+    }
+
+    /// <summary>
+    /// Item ID로 Push 시도 가능
+    /// </summary>
+    /// <param name="itemID"></param>
+    /// <param name="count"></param>
+    /// <returns></returns>
+    public bool TryToPushInventory(int itemID, int count = 1)
+    {
+        Item item = ItemDatabase.instance.GetItem(itemID);
 
         // id == 1 은 골드
         if (item.id == 1)
@@ -317,7 +370,7 @@ public class Inventory : MonoBehaviour
 
 
     // 해당 인덱스 아이템 슬롯 제거
-    public void RemoveItem(int index)
+    public void RemoveItemIndex(int index)
     {
         if (_slots[index].IsEmptySlot())
             Debug.Log("빈 슬롯입니다.");
@@ -328,7 +381,10 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    // 해당 아이템 슬롯 제거
+    /// <summary>
+    /// 해당 아이템 슬롯 제거
+    /// </summary>
+    /// <param name="item"></param>
     public void RemoveItem(Item item)
     {
         for(int i = 0; i < _slots.Length; i++)
@@ -340,9 +396,31 @@ public class Inventory : MonoBehaviour
                 return;
             }
         }
+    }
+    /// <summary>
+    /// Item ID로 슬롯 제거 시도
+    /// </summary>
+    /// <param name="item"></param>
+    public void RemoveItem(int itemID)
+    {
+        Item item = ItemDatabase.instance.GetItem(itemID);
 
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            if (_slots[i].IsSameItem(item))
+            {
+                _slots[i].ClearSlot();
+                SerializeItem();
+                return;
+            }
+        }
     }
 
+    /// <summary>
+    /// 아이템 감소
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="count"></param>
     public void DecreaseItemCount(Item item, int count)
     {
 
@@ -353,7 +431,25 @@ public class Inventory : MonoBehaviour
                 count = _slots[i].DecreaseCount(count);
                 if (count <= 0)
                     break;
-                
+
+            }
+        }
+
+        SerializeItem();
+    }
+
+    public void DecreaseItemCount(int itemID, int count)
+    {
+        Item item = ItemDatabase.instance.GetItem(itemID);
+
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            if (_slots[i].IsSameItem(item))
+            {
+                count = _slots[i].DecreaseCount(count);
+                if (count <= 0)
+                    break;
+
             }
         }
 
@@ -476,8 +572,30 @@ public class Inventory : MonoBehaviour
 
         return 0;
     }
+    /// <summary>
+    /// item ID 로 개수 카운트
+    /// </summary>
+    /// <param name="itemID"></param>
+    /// <returns></returns>
+    public int GetItemCount(int itemID)
+    {
+        Item item = ItemDatabase.instance.GetItem(itemID);
 
-    
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            if (!_slots[i].IsEmptySlot())
+            {
+                if (item.id == _slots[i].GetSlotItem().id)
+                {
+                    return _slots[i].GetSlotCount();
+                }
+            }
+        }
+
+        return 0;
+    }
+
+
     public Item GetSlotItem(int index) { return _slots[index].GetSlotItem(); }
     public Vector3 GetSlotLocalPos(int index) { return _slots[index].transform.localPosition; }
 

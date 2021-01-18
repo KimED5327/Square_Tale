@@ -9,6 +9,7 @@ public enum RewardType
     BLOCK,
     TRAP,
     ITEM,
+    GOLD,
 }
 
 [System.Serializable]

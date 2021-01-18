@@ -24,8 +24,7 @@ public class ShopToolTip : MonoBehaviour
     [Header("Requestion")]
     [SerializeField] GameObject _goRequestionUI = null;
     [SerializeField] Text _txtRequestion = null;
-    string _buyMessage = "해당 아이템을 구매하시겠습니까?";
-    string _sellMessage = "해당 아이템을 판매하시겠습니까?";
+
 
     Item _touchItem;
     int _count;
@@ -77,10 +76,10 @@ public class ShopToolTip : MonoBehaviour
                 _txtOption.text += StringManager.ItemTypeToString(item.options[i].opType) + " " + item.options[i].num + " ";
         }
 
-        _txtTitle.text = (_isBuy) ? "상품 구매" : "상품 판매";
-        _txtButton.text = (_isBuy) ? "구매" : "판매";
-        _txtRequestion.text = (_isBuy) ? _buyMessage
-                                       : _sellMessage;
+        _txtTitle.text = (_isBuy) ? StringManager.shopObjectBuy : StringManager.shopObjectSell;
+        _txtButton.text = (_isBuy) ? StringManager.shopBuy : StringManager.shopSell;
+        _txtRequestion.text = (_isBuy) ? StringManager.shopBuyMessage
+                                       : StringManager.shopSellMessage;
 
         _goToolTip.SetActive(true);
     }
@@ -99,7 +98,16 @@ public class ShopToolTip : MonoBehaviour
         // 팔때 가격 살때 가격 구분 필요
         if (_count < 99)
         {
-            _count += 1;
+            // 장비류는 살때와 팔때 모두 1개씩만 가능
+            if (_touchItem.category != ItemCategory.ETC) 
+                return;
+
+            // 판매할 때는 소유한 개수까지만 개수 증가 가능.            
+            if (!_isBuy && _inven.GetItemCount(_touchItem) <= _count)
+                return;
+            
+            _count++;    
+
             if (_isBuy)
                 _price += _touchItem.priceBuy;
             else
@@ -124,6 +132,11 @@ public class ShopToolTip : MonoBehaviour
     public void BtnMaxCount()
     {
         SoundManager.instance.PlayEffectSound("Click");
+
+        // 장비류는 살때와 팔때 모두 1개씩만 가능
+        if (_touchItem.category != ItemCategory.ETC)
+            return;
+
         if (_count < 99)
         {
             if (_isBuy)
@@ -143,8 +156,8 @@ public class ShopToolTip : MonoBehaviour
     public void BtnMinCount()
     {
         SoundManager.instance.PlayEffectSound("Click");
-        _count = 1;
 
+        _count = 1;
         _price = (_isBuy) ? _touchItem.priceBuy : _touchItem.priceSell;
 
         ShowPriceAndCount();
@@ -172,7 +185,13 @@ public class ShopToolTip : MonoBehaviour
                 Notification.instance.ShowFloatingMessage(StringManager.msgNotEnoughGold);
         }
         else
-            _goRequestionUI.SetActive(true);
+        {
+            if (_inven.GetItemCount(_touchItem) < _count)
+                Notification.instance.ShowFloatingMessage(StringManager.msgNotEnoughItemCount);
+            else
+               _goRequestionUI.SetActive(true);
+        }
+
     }
 
     // 승인
@@ -196,8 +215,7 @@ public class ShopToolTip : MonoBehaviour
     {
         _inven.SetGold(_inven.GetGold() + _price);
         _inven.DecreaseItemCount(_touchItem, _count);
-        HideToolTip();
-        _shop.ReSetUI();
+        FinishProcess();
 
         // 퀘스트 조건검사 
         QuestManager.instance.CheckDeliverItemQuest();

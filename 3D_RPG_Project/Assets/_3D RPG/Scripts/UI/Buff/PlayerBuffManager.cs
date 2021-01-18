@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerBuffManager : MonoBehaviour
 {
     [SerializeField] BuffSlot[] _slots = null;
-    int _buffActiveCount = 0;
 
     PlayerStatus _playerStatus;
 
@@ -66,35 +65,55 @@ public class PlayerBuffManager : MonoBehaviour
         _slots[index].PushBuffSlot(id, buff.durationtime, color, buff.isTick);
 
         // 중첩이 아닐 경우에만 버프 능력치 반영
-        if (!isDuplicate) 
+        if (!isDuplicate)
+        {
             BuffApply(buff, true);
-
-        // 최초 등록이면 버프 카운트 증가
-        else
-            _buffActiveCount++;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         // 적용중인 버프 카운트만큼 반복
-        for(int i = 0; i < _buffActiveCount; i++)
+        for(int i = 0; i < _slots.Length; i++)
         {
-            // 버프가 끝난 슬롯이면 버프 제거
-            if (!_slots[i].IsActive())
+            if (_slots[i].gameObject.activeSelf)
             {
-                _buffActiveCount--;
-                _slots[i].DeActive();
-                BuffApply(BuffData.instance.GetBuff(_slots[i].GetBuffID()), false);
-            }
-
-            // 버프 중에 Tick 호출이 있다면 (ex 매초마다 적용)
-            if (_slots[i].IsActive() && _slots[i].GetTickApply())
-            {
-                BuffApply(BuffData.instance.GetBuff(_slots[i].GetBuffID()), true);
-                _slots[i].ResetTick();
+                // 버프 중이라면-
+                if (!_slots[i].IsActive())
+                {
+                    // 버프 제거
+                    _slots[i].DeActive();
+                    BuffApply(BuffData.instance.GetBuff(_slots[i].GetBuffID()), false);
+                }
+                // 버프 지속중...
+                else
+                {
+                    // Tick 호출이 있다면 (ex 매초마다 적용)
+                    if (_slots[i].GetTickApply())
+                    {
+                        BuffApply(BuffData.instance.GetBuff(_slots[i].GetBuffID()), true);
+                        _slots[i].ResetTick();
+                    }
+                }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            TryPushBuff(6);
+
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            TryPushBuff(7);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Comma))
+        {
+            TryPushBuff(8);
+        }
+
     }
 
 

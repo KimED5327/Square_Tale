@@ -67,9 +67,9 @@ public class BuffSlot : MonoBehaviour
                     _isTickApply = true;
                 }
             }
-
-            if (_buffOrigintime <= _buffLeftTime)
-                _imgCooltime.fillAmount = 1f;
+            // 15초 // 17초
+            if (_buffLeftTime - _curTime > _buffOrigintime)
+                _imgCooltime.fillAmount = 0f;
             else
                 _imgCooltime.fillAmount = _curTime / _buffLeftTime;
 

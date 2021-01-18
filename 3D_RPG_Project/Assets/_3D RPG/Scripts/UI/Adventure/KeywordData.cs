@@ -35,7 +35,6 @@ public class KeywordData : MonoBehaviour
 
     List<Keyword> _cp1KeywordList = new List<Keyword>();
     List<Keyword> _cp2KeywordList = new List<Keyword>();
-    
 
     [SerializeField] Synopsis[] _chapterSynopsis = null;
 
@@ -48,6 +47,7 @@ public class KeywordData : MonoBehaviour
 
         Keyword keyword = new Keyword(1, "릴리", "__", 10f);
         _cp1KeywordList.Add(keyword);
+
         keyword = new Keyword(2, "시간", "__", 10f);
         _cp1KeywordList.Add(keyword);
 

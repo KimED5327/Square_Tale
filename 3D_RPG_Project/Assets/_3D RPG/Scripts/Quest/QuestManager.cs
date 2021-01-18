@@ -19,6 +19,7 @@ public class QuestManager : MonoBehaviour
     public Inventory _inventory;               // 인벤토리 참조자 
     public QuestHUD _questHUD;                 // QuestHUD 참조자 
     public QuestMenu _questMenu;               // QuestMenu 참조자 
+    public PlayerStatus _playerStatus;         // PlayerStatus 참조자 
     bool _isHudOpen = false;            // QuestHUD 창 오픈여부 확인 변수 
     bool _isCompletableIconOn = false;  // QuestHUD 완료가능 아이콘 on/off 변수 
     string _questInfoKey = "info";      // 퀘스트 타입 해시테이블 키 
@@ -93,6 +94,9 @@ public class QuestManager : MonoBehaviour
         Debug.Log(finishedQuest.GetQuestID() + "번 퀘스트 완료");
         finishedQuest.SetState(QuestState.QUEST_COMPLETED);
         _finishedQuests.Add(finishedQuest);
+
+        // 보상 지급 
+        AcquireRewards(finishedQuest);
 
         // 퀘스트 완료자의 상태값을 퀘스트 완료로 변경 
         SetQuestFinisherToCompleteState(finishedQuest);
@@ -170,11 +174,17 @@ public class QuestManager : MonoBehaviour
         }
     }
 
-    void GetRewards(Quest quest)
+    /// <summary>
+    /// 퀘스트 보상 획득하기 
+    /// </summary>
+    /// <param name="quest"></param>
+    void AcquireRewards(Quest quest)
     {
         // 골드 추가 
+        _inventory.SetGold(_inventory.GetGold() + quest.GetGold());
 
         // 경험치 추가 
+        _playerStatus.IncreaseExp(quest.GetExp());
 
         // 아이템 보상이 있을 경우 인벤토리에 추가 
         if (quest.GetItemID() != 0)
@@ -183,7 +193,10 @@ public class QuestManager : MonoBehaviour
         // 블록 보상이 있을 경우 블록 추가 
         if (quest.GetBlockList().Count > 0)
         {
-
+            for (int i = 0; i < quest.GetBlockList().Count; i++)
+            {
+                BlockManager.IncreaseBlockCount(quest.GetBlock(i).GetBlockID(), quest.GetBlock(i).GetCount());
+            }
         }
     }
 
@@ -250,7 +263,7 @@ public class QuestManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Type1. '아이템 전달' 퀘스트의 달성 요건 확인 후, 요건 충족 여부를 bool 값으로 리턴   
+    /// '아이템 전달' 퀘스트의 달성 요건 확인 후, 요건 충족 여부를 bool 값으로 리턴   
     /// </summary>
     public bool CheckItemsToDeliver(Quest quest)
     {
@@ -273,7 +286,7 @@ public class QuestManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Type1. '아이템 전달' 퀘스트 완료 후 전달된 아이템을 인벤토리에서 제거 
+    /// '아이템 전달' 퀘스트 완료 후 전달된 아이템을 인벤토리에서 제거 
     /// </summary>
     /// <param name="quest"></param>
     public void DeleteItemsDelivered(Quest quest)
@@ -291,7 +304,7 @@ public class QuestManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Type4. 진행 중인 퀘스트 중 '아이템 소지' 타입의 퀘스트가 있다면, 퀘스트 달성 요건 확인 
+    /// 진행 중인 퀘스트 중 '아이템 소지' 타입의 퀘스트가 있다면, 퀘스트 달성 요건 확인 
     /// </summary>
     public void CheckCarryItemQuest()
     {
@@ -312,7 +325,7 @@ public class QuestManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Type4. '아이템 소지' 퀘스트의 달성 요건 확인 후, 요건 충족 여부를 bool 값으로 리턴 
+    /// '아이템 소지' 퀘스트의 달성 요건 확인 후, 요건 충족 여부를 bool 값으로 리턴 
     /// </summary>
     /// <param name="quest"></param>
     public bool CheckItemsToCarry(Quest quest)
@@ -551,9 +564,10 @@ public class QuestManager : MonoBehaviour
     {
         Debug.Log("InitializeLink 실행");
 
-        _questHUD = FindObjectOfType<QuestHUD>();
         _inventory = FindObjectOfType<Inventory>();
+        _questHUD = FindObjectOfType<QuestHUD>();
         _questMenu = FindObjectOfType<QuestMenu>();
+        _playerStatus = FindObjectOfType<PlayerStatus>();
 
         if (_isHudOpen) _questHUD.SetIsHudOpen(true);
         if (_isCompletableIconOn) _questHUD.SetIsCompletableIconOn(true);

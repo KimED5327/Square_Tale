@@ -18,7 +18,7 @@ public class GameHudMenu : MonoBehaviour
     Inventory _inven;
     PlayerStatus _playerStatus;
 
-    private void Awake()
+    private void Start()
     {
         _inven = FindObjectOfType<Inventory>();
         _playerStatus = FindObjectOfType<PlayerStatus>();
@@ -27,13 +27,30 @@ public class GameHudMenu : MonoBehaviour
 
         instance = this;
 
-        StartCoroutine(UpdateHud());
+        //StartCoroutine(UpdateHud());
+    }
+
+    void Update()
+    {
+        if (_playerStatus != null)
+        {
+
+            _txtGold.text = string.Format("{0:#,##0}", _inven.GetGold());
+            _txtLevel.text = $"{_playerStatus.GetLevel()}";
+            _imgExp.fillAmount = _playerStatus.GetExpPercent();
+            _imgHp.fillAmount = _playerStatus.GetHpPercent();
+            
+            //_txtHP.text = $"{_playerStatus.GetCurrentHp()} / {_playerStatus.GetMaxHp()}";
+            //_txtMP.text = $"{_playerStatus.GetCurMp()} / {_playerStatus.GetMaxMp()}";
+        }
+
     }
 
     IEnumerator UpdateHud()
     {
         while (_playerStatus != null)
         {
+            
             yield return waitTime;
             _txtGold.text = string.Format("{0:#,##0}", _inven.GetGold());
             _txtLevel.text = $"{_playerStatus.GetLevel()}";

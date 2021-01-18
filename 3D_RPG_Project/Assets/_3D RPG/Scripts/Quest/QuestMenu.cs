@@ -46,14 +46,17 @@ public class QuestMenu : MonoBehaviour
     [SerializeField] Sprite _imgExp;                // 경험치 보상 이미지 
     [SerializeField] Sprite _imgKeyword;            // 키워드 보상 이미지 
 
+    BlockManager _blockManager;
     QuestSort _questSort;                           // 퀘스트 분류(진행/완료)
 
     List<QuestSlot> _ongoingSlots = new List<QuestSlot>();      // 진행 퀘스트 슬롯 리스트 
     List<QuestSlot> _finishedSlots = new List<QuestSlot>();     // 완료 퀘스트 슬롯 리스트 
 
+
     void Start()
     {
         SetMenuOnStart();
+        _blockManager = FindObjectOfType<BlockManager>();
     }
 
     public void OpenMenu()
@@ -320,6 +323,7 @@ public class QuestMenu : MonoBehaviour
             reward.SetImg(SpriteManager.instance.GetBlockSprite(quest.GetBlock(i).GetBlockID()));
             reward.GetImg().GetComponent<RectTransform>().sizeDelta = new Vector2(100f, 100f);
             reward.SetCount(quest.GetBlock(i).GetCount());
+            reward.SetName(_blockManager.GetBlockNameID(quest.GetBlock(i).GetBlockID()));
         }
     }
 
@@ -333,7 +337,6 @@ public class QuestMenu : MonoBehaviour
 
         string name = "키워드 (";
         name += (KeywordData.instance.GetKeyword(quest.GetKeywordList()[0]).keyword + ")");
-
         reward.SetName(name);
     }
 

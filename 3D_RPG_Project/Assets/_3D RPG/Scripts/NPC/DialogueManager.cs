@@ -124,6 +124,8 @@ public class DialogueManager : MonoBehaviour
     /// <param name="questID"></param>
     void GetLine(int questID)
     {
+        //line.Substring(0,MinMaxCount++)
+
         LineUnit lineUnit = QuestDialogueDB.instance.GetDialogue(questID).GetLineUnit(_state, _lineIdx);
 
         // 다음 대사가 없을 경우 대사인덱스 초기화 및 대화 종료 

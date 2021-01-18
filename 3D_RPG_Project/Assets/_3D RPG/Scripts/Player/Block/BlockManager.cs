@@ -163,4 +163,9 @@ public class BlockManager : MonoBehaviour
 
         return _equipSlots[idx].GetBlockName();
     }
+
+    public string GetBlockNameID(int blockID)
+    {
+        return _slots[blockID].GetBlockName();
+    }
 }

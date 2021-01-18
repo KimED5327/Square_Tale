@@ -15,11 +15,13 @@ public class ProjectileMover : MonoBehaviour
     Transform player;
     EnemyStatus states;
     Boss boss;
+    bool isSkiil = false;
 
     public void Pushinfo(Transform transform, EnemyStatus enemystatus, Boss bo)
     {
         player = transform;
         states = enemystatus;
+        Debug.Log(bo);
         boss = bo;
     }
     void Start()
@@ -27,6 +29,7 @@ public class ProjectileMover : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         if (flash != null)
         {
+            
             var flashInstance = Instantiate(flash, transform.position, Quaternion.identity);
             flashInstance.transform.forward = gameObject.transform.forward;
             var flashPs = flashInstance.GetComponent<ParticleSystem>();
@@ -47,34 +50,45 @@ public class ProjectileMover : MonoBehaviour
     {
 		if (speed != 0)
         {
-            
             transform.position += transform.forward * (speed * Time.deltaTime);         
         }
-
-        if(boss.getIsAttackStart())
-        {
-            transform.position= new Vector3(transform.position.x, 0.5f, transform.position.z);
-        }
-
+    
 	}
+
+    private void Update()
+    {
+        if (boss == null) return;
+        if (transform.CompareTag("BossSkill") && boss.getIsDamage() && !isSkiil)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+            isSkiil = true;
+        }
+        else
+        {
+
+        }
+    }
 
     //https ://docs.unity3d.com/ScriptReference/Rigidbody.OnCollisionEnter.html
     void OnCollisionEnter(Collision collision)
     {
+        if (boss == null) return;
+
         //Lock all axes movement and rotation
-        if (!collision.transform.CompareTag("Player"))
-            return;
-        if (collision.transform.CompareTag("Floor"))
+        if(boss.getIsDamage() && transform.CompareTag("BossSkill"))
         {
+            if(collision.transform.CompareTag("Player"))
+            { 
+                collision.transform.GetComponent<Status>().Damage(10, transform.position);
+            }
+        }
+        if(transform.CompareTag("BossAttack"))
+        {
+           if(collision.transform.CompareTag("Player"))
+            {
+                collision.transform.GetComponent<Status>().Damage(states.GetAtk(), transform.position);
+            }
             Destroy(gameObject);
-        }
-        if(boss.getIsDamage())
-        {
-            collision.transform.GetComponent<Status>().Damage(10, transform.position);
-        }
-        else if(!boss.getIsDamage())
-        {
-           collision.transform.GetComponent<Status>().Damage(states.GetAtk(), transform.position);
         }
         rb.constraints = RigidbodyConstraints.FreezeAll;
         speed = 0;

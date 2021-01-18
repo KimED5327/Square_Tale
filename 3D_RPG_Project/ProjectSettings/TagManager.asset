@@ -13,6 +13,9 @@ TagManager:
   - Block
   - Trigger
   - Water
+  - BossAttack
+  - BossSkill
+  - BossSkill2
   layers:
   - Default
   - TransparentFX

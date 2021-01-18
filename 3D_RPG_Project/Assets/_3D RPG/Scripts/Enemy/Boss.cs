@@ -66,10 +66,13 @@ public class Boss : MonoBehaviour
         myColider = GetComponent<BoxCollider>();
         myRigid = GetComponent<Rigidbody>();
         status.SetCurrentHp(status.GetMaxHp());
+       
     }
 
     private void Update()
     {
+        
+        Debug.Log(status.GetCurrentHp());
         if (skillAttack)
         {
             SkillAttackUpdate();
@@ -115,6 +118,7 @@ public class Boss : MonoBehaviour
                 isSkillOne = false;
                 skillAttackTime = 0;
                 skillUpcount = 0;
+                isDamage = false;
             }
         }
 
@@ -211,14 +215,13 @@ public class Boss : MonoBehaviour
         {
             isSkillOne = true;
             bossState = state.skill;
-            enemyAnimator.SetBool("Skill", true);
+            enemyAnimator.SetTrigger("Skill 0");
             timer = 0;
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
             isSkillTwo = true;
             bossState = state.skill;
-            enemyAnimator.SetBool("Skill", true);
             timer = 0;
         }
 
@@ -245,9 +248,10 @@ public class Boss : MonoBehaviour
                     bossState = state.idle;
                     skill.GetComponent<ProjectileMover>().Pushinfo(player, status, this);
                     enemyAnimator.SetBool("Skill", false);
-                    isSkillOne = !isSkillOne;
+                    isSkillOne = false;
+                    sktornado = false;
                 }
-                skill.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1.2f, player.transform.position.z);
+                skill.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1.5f, player.transform.position.z);
             } // 토네이도 스킬 업데이트 끝
 
         }

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class BossUi : MonoBehaviour
 {
 
-    public GameObject _boss;
+    Boss _boss;
     EnemyStatus _BossStatus;
     public Slider hpBar;
     public Text _Ui;
@@ -15,22 +15,13 @@ public class BossUi : MonoBehaviour
 
     void Start()
     {
-
-        _BossStatus = _boss.GetComponent<EnemyStatus>();
-        hpBar = GetComponentInChildren<Slider>();
+        _boss = GetComponentInParent<Boss>();
+        _BossStatus = GetComponentInParent<EnemyStatus>();
     }
 
     void Update()
     {
-
         hpPercent = (_BossStatus.GetCurrentHp() / (float)_BossStatus.GetMaxHp()) * 100;
-
-        if (hpBar == null)
-        {
-            hpBar = GetComponentInChildren<Slider>();
-        }
-
-
         hpBar.value = (float)_BossStatus.GetCurrentHp() / (float)_BossStatus.GetMaxHp();
     }
 }

@@ -85,6 +85,7 @@ public class Enemy : MonoBehaviour
         status = GetComponent<EnemyStatus>();
         myColider = GetComponent<BoxCollider>();
         myRigid = GetComponent<Rigidbody>();
+        status.SetCurrentHp(status.GetMaxHp());
 
     }
 
@@ -253,9 +254,11 @@ public class Enemy : MonoBehaviour
             else
             {
                 _isChasing = true;
+                
                 agent.SetDestination(player.transform.position);
             }
         }
+
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange, 2))
         {
             enemyAnimator.SetBool("Move", false);
@@ -274,16 +277,16 @@ public class Enemy : MonoBehaviour
     //공격 상태
     private void UpdateAttack()
     {
+        
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange, 2))
         {
             Vector3 dir = player.transform.position - transform.position;
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 5);
 
-            agent.ResetPath();
             timer += Time.deltaTime;
             motionTime += Time.deltaTime;
 
-            if (motionTime > attTime - 0.01f)
+            if (motionTime > attTime - 0.1f)
             {
                 enemyAnimator.SetTrigger("Attack 0");
                 motionTime = 0.0f;
@@ -321,7 +324,6 @@ public class Enemy : MonoBehaviour
         {
             _isDie = true;
             enemyAnimator.SetTrigger("Die 0");
-            agent.ResetPath();
         }
         myRigid.isKinematic = true;
         myColider.isTrigger = true;
@@ -345,6 +347,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
+            status.SetCurrentHp(status.GetMaxHp());
             //enemyAnimator.SetInteger("animation", 1);
             enemyAnimator.SetBool("Move", false);
             agent.ResetPath();

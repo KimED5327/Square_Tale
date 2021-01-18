@@ -14,11 +14,13 @@ public class InteractionManager : MonoBehaviour
 
     Shop _shop;
     Rooting _rootingSystem;
+    Inventory _inven;
     Transform _playerPos;
 
     // Start is called before the first frame update
     void Start()
     {
+        _inven = FindObjectOfType<Inventory>();
         _rootingSystem = FindObjectOfType<Rooting>();
         _shop = FindObjectOfType<Shop>();
         _playerPos = FindObjectOfType<PlayerMove>().transform;
@@ -80,7 +82,9 @@ public class InteractionManager : MonoBehaviour
                     // 트리거 상호작용 액티브.
                     else if (target.CompareTag(StringManager.TriggerTag))
                     {
-                        target.GetComponent<Trigger>().ActiveTrigger();
+                        Trigger trigger = target.GetComponent<Trigger>();
+                        if(trigger.CanTouchActive())
+                            trigger.ActiveTrigger();
                     }
 
                     // 거리가 너무 멀 때
@@ -142,12 +146,23 @@ public class InteractionManager : MonoBehaviour
                 // 데미지 함정
                 case RewardType.TRAP:
                     Status playerStatus = _playerPos.GetComponent<Status>();
-                    int damage = playerStatus.GetMaxHp() * (reward.count / 100);
-                    int playerHp = playerStatus.GetCurrentHp() - damage;
-                    if (playerHp <= 0)
-                        playerHp = 1;
-                    playerStatus.SetCurrentHp(playerHp);
+
+                    int playerHp = playerStatus.GetMaxHp();
+                    float dmgRate = (reward.count / (float)100);
+                    int damage = (int)(playerHp * dmgRate);
+
+                    playerStatus.Damage(damage, Vector3.zero);
                     break;
+
+
+                // 골드 획득
+                case RewardType.GOLD:
+                    Item item = ItemDatabase.instance.GetItem(reward.id);
+                    int gold = reward.count;
+                    _inven.TryToPushInventory(item, gold);
+                    Notification.instance.ShowItemGoldText(gold);
+                    break;
+
 
                 // 미처리
                 default:

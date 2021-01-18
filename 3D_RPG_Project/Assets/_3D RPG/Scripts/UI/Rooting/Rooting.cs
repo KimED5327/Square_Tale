@@ -108,5 +108,4 @@ public class Rooting : MonoBehaviour
         // 다시 정렬
         PushRootingSlot();
     }
-
 }

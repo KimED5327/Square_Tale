@@ -17,7 +17,7 @@ public class CrystalTrap : MonoBehaviour
     float _curDelayTime = 0f;
     float _curBackTime = 0f;
 
-    float _damageCoolTime = 0.25f;
+    float _damageCoolTime = 1.25f;
     float _curDamageCoolTime = 0f;
     bool _canDamaged = true;
 
@@ -104,7 +104,7 @@ public class CrystalTrap : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (_canDamaged)
         {
@@ -116,6 +116,10 @@ public class CrystalTrap : MonoBehaviour
                 _canDamaged = false;
             }
         }
+    }
 
+    private void OnTriggerExit(Collider other)
+    {
+        _canDamaged = true;
     }
 }

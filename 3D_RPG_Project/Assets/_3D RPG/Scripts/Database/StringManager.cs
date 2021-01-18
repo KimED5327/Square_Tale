@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class StringManager : MonoBehaviour
 {
+    public static string nickname = "Nickname";
+
     public static string playerTag = "Player";
     public static string enemyTag = "Enemy";
     public static string shopNpcTag = "Npc";
@@ -19,6 +21,7 @@ public class StringManager : MonoBehaviour
     public static string msgCanNotEquipItem = "장착이 불가능합니다.";
     public static string msgCooltime = "사용할 수 없습니다.";
     public static string msgNotEnoughGold = "골드가 부족합니다.";
+    public static string msgNotEnoughItemCount = "판매량이 소유량보다 많습니다.";
     public static string msgNoTarget = "대상이 없습니다.";
     public static string msgGetKeword = "키워드 'keyword' 획득";
     public static string msgCanNotBlockEquip = "등록 불가합니다.";
@@ -33,6 +36,12 @@ public class StringManager : MonoBehaviour
     public static string msgAlreadyActivateTrigger = "이미 작동시킨 장치입니다.";
     public static string msgCanNotSwap = "스킬 쿨타임 일때 변경 할 수 없습니다.";
 
+    public static string shopBuyMessage = "해당 아이템을 구매하시겠습니까?";
+    public static string shopSellMessage = "해당 아이템을 판매하시겠습니까?";
+    public static string shopObjectBuy = "상품 구매";
+    public static string shopObjectSell = "상품 판매";
+    public static string shopBuy = "구매";
+    public static string shopSell = "판매";
 
     public static string block = "Block";
     public static string skill = "Skill";
@@ -57,6 +66,11 @@ public class StringManager : MonoBehaviour
         return eventKey + id;
     }
 
+    public static string keywordKey = "Keyword";
+    public static string GetKeywordKey(int id)
+    {
+        return keywordKey + id;
+    }
 
     public static string mapNameVegonia = "Vegonia";
     public static string mapNameTown = "Town";

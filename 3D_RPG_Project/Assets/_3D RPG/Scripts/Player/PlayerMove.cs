@@ -113,6 +113,9 @@ public class PlayerMove : MonoBehaviour
     Vector3 dodgeVec;
     Vector3 realMoveVec;
 
+    [SerializeField] BoxCollider _colFace = null;
+
+
     Rigidbody myRigid;
     Weapon equipWeapon;
     PlayerStatus myStatus;
@@ -1151,4 +1154,6 @@ public class PlayerMove : MonoBehaviour
     public bool GetIsSkill2() { return isSkill2; }
     public bool GetIsSkill3() { return isSkill3; }
     public bool GetIsSkill4() { return isSkill4; }
+
+    public BoxCollider GetFaceCol() { return _colFace; }
 }

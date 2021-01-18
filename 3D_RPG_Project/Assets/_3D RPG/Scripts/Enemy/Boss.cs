@@ -49,10 +49,11 @@ public class Boss : MonoBehaviour
     private int skillUpcount = 0;                       //스킬 증가 횟수
     private int skillUseTornadoCount = 0;               //토네이도 리프 사용 횟수
     private int skillUseCherryCount = 0;                //벚꽃 마안 사용 횟수
+   
 
 
-
-
+    public bool getIsAttackStart() { return skillAttack; }
+    public void setIsAttackStart(bool attack) { skillAttack = attack; }
     public bool getIsDamage() { return isDamage; }
 
 
@@ -242,7 +243,6 @@ public class Boss : MonoBehaviour
                     skillAttack = true;
                     timer = 0;
                     bossState = state.idle;
-                    skill.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 0.5f, player.transform.position.z);
                     skill.GetComponent<ProjectileMover>().Pushinfo(player, status, this);
                     enemyAnimator.SetBool("Skill", false);
                     isSkillOne = !isSkillOne;

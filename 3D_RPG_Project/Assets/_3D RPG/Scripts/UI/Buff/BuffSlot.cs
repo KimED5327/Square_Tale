@@ -11,7 +11,8 @@ public class BuffSlot : MonoBehaviour
 
     int _buffID = 0;
 
-    float _BuffLeftTime = 0f;
+    float _buffOrigintime = 0f;
+    float _buffLeftTime = 0f;
     float _curTime = 0f;
     float _tickTime = 0f;
         
@@ -21,8 +22,11 @@ public class BuffSlot : MonoBehaviour
 
     public void PushBuffSlot(int id, float leftTime, Color color, bool isTick)
     {
+        if (!_isApplying)
+            _buffOrigintime = leftTime;
+
         _buffID = id;
-        _BuffLeftTime = leftTime;
+        _buffLeftTime = leftTime;
         _curTime = 0f;
 
         _isTick = isTick;
@@ -38,10 +42,11 @@ public class BuffSlot : MonoBehaviour
 
     public void RemoveBuff()
     {
+        _buffOrigintime = 0f;
         _tickTime = 0f;
         _isTickApply = false;
         _isApplying = false;
-        _BuffLeftTime = 0;
+        _buffLeftTime = 0;
         _curTime = 0f;
     }
 
@@ -62,10 +67,13 @@ public class BuffSlot : MonoBehaviour
                     _isTickApply = true;
                 }
             }
-              
+            // 15초 // 17초
+            if (_buffLeftTime - _curTime > _buffOrigintime)
+                _imgCooltime.fillAmount = 0f;
+            else
+                _imgCooltime.fillAmount = _curTime / _buffLeftTime;
 
-            _imgCooltime.fillAmount = _curTime / _BuffLeftTime;
-            if (_curTime >= _BuffLeftTime)
+            if (_curTime >= _buffLeftTime)
             {
                 RemoveBuff();
             }

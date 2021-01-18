@@ -461,7 +461,7 @@ Transform:
   m_GameObject: {fileID: 6069856617124653097}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6069856617124557835}
   - {fileID: 6069856617124557843}
@@ -538,7 +538,7 @@ MonoBehaviour:
   motionTime: 0
   maxFindRange: 2
   maxMoveRange: 5
-  maxAttackRange: 0.8
+  maxAttackRange: 1
   reconRange: 0
   enemyState: 0
 --- !u!114 &8951833758637400826

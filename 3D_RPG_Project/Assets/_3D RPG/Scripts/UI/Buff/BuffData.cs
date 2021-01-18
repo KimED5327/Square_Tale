@@ -79,6 +79,27 @@ public class BuffData : MonoBehaviour
 
         buff = new Buff { id = 5, name = "속박", isBuff = false, isTick = false, durationtime = 3f, buffOption = optionList };
         _buffDictionary.Add(buff.id, buff);
+
+        option = new BuffOption { buffType = BuffType.SPEED, applyBuffRate = 0.5f };
+        optionList = new List<BuffOption>();
+        optionList.Add(option);
+
+        buff = new Buff { id = 6, name = "과중력", isBuff = false, isTick = false, durationtime = 7f, buffOption = optionList };
+        _buffDictionary.Add(buff.id, buff);
+
+        option = new BuffOption { buffType = BuffType.HP, applyBuffRate = 0.015f };
+        optionList = new List<BuffOption>();
+        optionList.Add(option);
+
+        buff = new Buff { id = 7, name = "풀 베기", isBuff = false, isTick = true, durationtime = 12f, buffOption = optionList };
+        _buffDictionary.Add(buff.id, buff);
+
+        option = new BuffOption { buffType = BuffType.DEF, applyBuffRate = 0.2f };
+        optionList = new List<BuffOption>();
+        optionList.Add(option);
+
+        buff = new Buff { id = 8, name = "약점 포착", isBuff = false, isTick = false, durationtime = 16f, buffOption = optionList };
+        _buffDictionary.Add(buff.id, buff);
     }
 
 

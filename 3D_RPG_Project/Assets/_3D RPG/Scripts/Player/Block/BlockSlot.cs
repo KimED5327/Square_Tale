@@ -26,7 +26,7 @@ public class BlockSlot : MonoBehaviour
 
     public void SettingSlot(int count, int slotIndex)
     {
-        _txtCount.text = string.Format("{0:0,000}", count);
+        _txtCount.text = string.Format("{0:#,##0}", count);
         _imgIcon.sprite = SpriteManager.instance.GetBlockSprite(slotIndex);
         ReUI();
     }

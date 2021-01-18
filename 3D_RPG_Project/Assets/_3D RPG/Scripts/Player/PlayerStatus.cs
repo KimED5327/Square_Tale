@@ -50,25 +50,29 @@ public class PlayerStatus : Status
 
     public void IncreaseExp(int num)
     {
+        if (_level == 15) return;
         if (_level < _levelUpExps.Length)
         {
             _curExp += num;
-            if (_levelUpExps[_level - 1] <= _curExp)
+            while (_curExp > _levelUpExps[_level - 1])
             {
-                _curExp -= _levelUpExps[_level - 1];
-                _maxHp += _levelUpHp;
-                _curHp = _maxHp;
-                //_swordMaxHp += _levelUpSwordHp;
-                //_swordCurHp = _swordMaxHp;
-                //_mageMaxHp += _levelUpMageHp;
-                //_mageCurHp = _mageMaxHp;
-                _str += _levelUpStr;
-                _int += _levelUpInt;
-                _def += _levelUpDef;
-                //_swordDef += _levelUpDef;
-                //_mageDef += _levelUpDef;
-                _level++;
-                _isLevelUp = true;
+                if (_levelUpExps[_level - 1] <= _curExp)
+                {
+                    _curExp -= _levelUpExps[_level - 1];
+                    _maxHp += _levelUpHp;
+                    _curHp = _maxHp;
+                    //_swordMaxHp += _levelUpSwordHp;
+                    //_swordCurHp = _swordMaxHp;
+                    //_mageMaxHp += _levelUpMageHp;
+                    //_mageCurHp = _mageMaxHp;
+                    _str += _levelUpStr;
+                    _int += _levelUpInt;
+                    _def += _levelUpDef;
+                    //_swordDef += _levelUpDef;
+                    //_mageDef += _levelUpDef;
+                    _level++;
+                    _isLevelUp = true;
+                }
             }
         }
     }
@@ -78,23 +82,27 @@ public class PlayerStatus : Status
         //if (Input.GetKeyDown("l") && _level < _levelUpExps.Length)
         if (Input.GetKeyDown("l"))
         {
-            _curExp += 50;
-            if (_levelUpExps[_level - 1] <= _curExp)
+            if (_level == 15) return;
+            _curExp += 500;
+            while (_curExp > _levelUpExps[_level - 1])
             {
-                _curExp -= _levelUpExps[_level - 1];
-                _maxHp += _levelUpHp;
-                _curHp = _maxHp;
-                //_swordMaxHp += _levelUpSwordHp;
-                //_swordCurHp = _swordMaxHp;
-                //_mageMaxHp += _levelUpMageHp;
-                //_mageCurHp = _mageMaxHp;
-                _str += _levelUpStr;
-                _int += _levelUpInt;
-                _def += _levelUpDef;
-                //_swordDef += _levelUpDef;
-                //_mageDef += _levelUpDef;
-                _level++;
-                _isLevelUp = true;
+                if (_levelUpExps[_level - 1] <= _curExp)
+                {
+                    _curExp -= _levelUpExps[_level - 1];
+                    _maxHp += _levelUpHp;
+                    _curHp = _maxHp;
+                    //_swordMaxHp += _levelUpSwordHp;
+                    //_swordCurHp = _swordMaxHp;
+                    //_mageMaxHp += _levelUpMageHp;
+                    //_mageCurHp = _mageMaxHp;
+                    _str += _levelUpStr;
+                    _int += _levelUpInt;
+                    _def += _levelUpDef;
+                    //_swordDef += _levelUpDef;
+                    //_mageDef += _levelUpDef;
+                    _level++;
+                    _isLevelUp = true;
+                }
             }
         }
     }

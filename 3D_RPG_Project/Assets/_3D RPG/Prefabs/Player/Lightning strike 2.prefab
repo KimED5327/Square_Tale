@@ -24181,6 +24181,7 @@ GameObject:
   - component: {fileID: 6239705527768398887}
   - component: {fileID: 2624517267478423504}
   - component: {fileID: 4147628537470174258}
+  - component: {fileID: -1654539525737983662}
   m_Layer: 0
   m_Name: Lightning strike 2
   m_TagString: Untagged
@@ -24233,7 +24234,7 @@ ParticleSystem:
   cullingMode: 1
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -25158,7 +25159,7 @@ ParticleSystem:
     m_BurstCount: 1
     m_Bursts:
     - serializedVersion: 2
-      time: 0.1
+      time: 0.05
       countCurve:
         serializedVersion: 2
         minMaxState: 0
@@ -29029,7 +29030,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!114 &4147628537470174258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29042,6 +29043,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd6d4a38d816f148bad12858ae14779, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-1654539525737983662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6076837923482879097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d817271ae792b2c4c9302c0a8fb07e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\uB77C\uC774\uD2B8\uB2DD"
+  _destoryTime: 0.5
 --- !u!1 &6076867578416700237
 GameObject:
   m_ObjectHideFlags: 0

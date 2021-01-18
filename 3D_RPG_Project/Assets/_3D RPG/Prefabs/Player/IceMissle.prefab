@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1272138389596458317}
   - component: {fileID: 1223537239728808917}
   - component: {fileID: 1057402572810286603}
+  - component: {fileID: -7097111008394623142}
   m_Layer: 0
   m_Name: IceMissle
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 1232830356199950701}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 1231722468376852385}
   - {fileID: 7961607516977777728}
@@ -4906,7 +4907,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1057402572810286603
 MonoBehaviour:
@@ -4922,11 +4923,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   hitOffset: 0
+  gravity: 0.01
   UseFirePointRotation: 0
   rotationOffset: {x: 0, y: 0, z: 0}
   hit: {fileID: 1486957119801806, guid: cab6c62da7f9f2840be63f9dd3c34637, type: 3}
   flash: {fileID: 1177731487666324, guid: b60b851266323fb4b9becb9f63f748c9, type: 3}
   Detached: []
+--- !u!114 &-7097111008394623142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232830356199950701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d817271ae792b2c4c9302c0a8fb07e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\uC544\uC774\uC2A4 \uBBF8\uC0AC\uC77C"
+  _destoryTime: 1
 --- !u!1 &1232965692745144627
 GameObject:
   m_ObjectHideFlags: 0

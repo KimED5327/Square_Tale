@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3970604394128532038}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 6101594551262082763}
   - component: {fileID: 3149149102454703527}
   - component: {fileID: 4693594940652851322}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Cube
   m_TagString: Floor
   m_Icon: {fileID: 0}

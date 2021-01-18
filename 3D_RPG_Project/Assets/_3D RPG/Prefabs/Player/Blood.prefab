@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4971466022063469838}
   - component: {fileID: 5034195726886709680}
   - component: {fileID: -7339933830968659383}
+  - component: {fileID: 2652872118965632324}
   m_Layer: 0
   m_Name: Blood
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 4916725854129562300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4913065250505758532}
   - {fileID: 5714280254170211467}
@@ -4906,7 +4907,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.01
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-7339933830968659383
 MonoBehaviour:
@@ -4922,11 +4923,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   hitOffset: 0
+  gravity: 0.01
   UseFirePointRotation: 0
   rotationOffset: {x: 0, y: 0, z: 0}
   hit: {fileID: 1059669524233346, guid: 7bb551564a4a9a1498e0624fd34ce7d3, type: 3}
   flash: {fileID: 1224217824244948, guid: 291223895b5952f488a6f94886872e78, type: 3}
   Detached: []
+--- !u!114 &2652872118965632324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4916725854129562300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d817271ae792b2c4c9302c0a8fb07e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\uBE14\uB7EC\uB4DC"
+  _destoryTime: 1
 --- !u!1 &4916765524278077818
 GameObject:
   m_ObjectHideFlags: 0

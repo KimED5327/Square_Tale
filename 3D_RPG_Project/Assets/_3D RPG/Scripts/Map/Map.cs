@@ -18,7 +18,6 @@ public class MonsterSpawnPoint
     public float spawnRange;
 }
 
-
 public class SpawnMonster
 {
     public EnemyStatus enemyStatus;
@@ -69,6 +68,11 @@ public class Map : MonoBehaviour
             SpawnMonster();
             StartCoroutine(NeedRespawnMonster());
         }
+    }
+
+    private void Update()
+    {
+        
     }
 
     // 맵 비활성화되면 스폰된 몬스터 전부 클리어

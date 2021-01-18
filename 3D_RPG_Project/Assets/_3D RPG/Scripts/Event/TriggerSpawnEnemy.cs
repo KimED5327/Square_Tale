@@ -9,7 +9,7 @@ public class TriggerSpawnEnemy : MonoBehaviour
     TriggerMonster _trigger;
 
     [SerializeField] bool _isEvent = true;
-
+    [SerializeField] bool _isBoss = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +17,12 @@ public class TriggerSpawnEnemy : MonoBehaviour
 
         _enemy = ObjectPooling.instance.GetObjectFromPool(_monsterName, transform.position);
         _enemy.transform.rotation = transform.rotation;
-        _enemy.GetComponent<Enemy>().LinkPlayer(tfPlayer);
+
+        if(!_isBoss)
+        {
+            _enemy.GetComponent<Enemy>().LinkPlayer(tfPlayer);
+        }
+            
 
         if (_isEvent)
         {

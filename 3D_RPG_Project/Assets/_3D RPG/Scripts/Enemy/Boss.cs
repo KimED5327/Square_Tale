@@ -87,7 +87,8 @@ public class Boss : MonoBehaviour
 
         skillAttack = false;
         isAttack = false;
-
+        if (status == null) status = GetComponent<EnemyStatus>();
+        if (status.GetCurrentHp() != status.GetMaxHp()) status.SetCurrentHp(status.GetMaxHp());
     }
     private void Update()
     {
@@ -268,7 +269,7 @@ public class Boss : MonoBehaviour
     {
         if (!isDie)
         {
-            enemyAnimator.SetBool("Die", true);
+            enemyAnimator.SetTrigger("Die 0");
             isDie = true;
         }
     }

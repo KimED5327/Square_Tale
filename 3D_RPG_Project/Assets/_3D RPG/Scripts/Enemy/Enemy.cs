@@ -47,6 +47,7 @@ public class Enemy : MonoBehaviour
 
     public State enemyState;
 
+    public bool getIsDie() { return _isDie; }
 
 
     bool IsPlaying(string stateName)
@@ -101,6 +102,7 @@ public class Enemy : MonoBehaviour
     {
         if (!status.IsDead() && !jump)
         {
+            
             switch (enemyState)
             {
                 case State.Idle:

@@ -46,20 +46,20 @@ public class QuestManager : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.O))
-        //{
-        //    //Debug.Log("3번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(3)));
-        //    //Debug.Log("4번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(4)));
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            //Debug.Log("3번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(3)));
+            //Debug.Log("4번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(4)));
 
-        //    _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(3));
-        //    Debug.Log("3번 아이템 획득");
+            //_inventory.TryToPushInventory(ItemDatabase.instance.GetItem(3));
+            //Debug.Log("3번 아이템 획득");
 
-        //    _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(7));
-        //    Debug.Log("7번 아이템 획득");
+            _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(7));
+            Debug.Log("7번 아이템 획득");
 
-        //    _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(9));
-        //    Debug.Log("9번 아이템 소지개수 : " + _inventory.GetItemCount(ItemDatabase.instance.GetItem(9)));
-        //}
+            //_inventory.TryToPushInventory(ItemDatabase.instance.GetItem(9));
+            //Debug.Log("9번 아이템 소지개수 : " + _inventory.GetItemCount(ItemDatabase.instance.GetItem(9)));
+        }
     }
 
     /// <summary>
@@ -188,7 +188,9 @@ public class QuestManager : MonoBehaviour
 
         // 아이템 보상이 있을 경우 인벤토리에 추가 
         if (quest.GetItemID() != 0)
+        {
             _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(quest.GetItemID()));
+        }
 
         // 블록 보상이 있을 경우 블록 추가 
         if (quest.GetBlockList().Count > 0)

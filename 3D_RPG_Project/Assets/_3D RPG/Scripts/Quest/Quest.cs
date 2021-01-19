@@ -160,6 +160,7 @@ public class Quest
 
         newCopy.SetExp(this.GetExp());
         newCopy.SetGold(this.GetGold());
+        newCopy.SetItemID(this.GetItemID());
 
         List<BlockUnit> blockListCopy = new List<BlockUnit>(this.GetBlockList());
         newCopy.SetBlockList(blockListCopy);

@@ -163,6 +163,7 @@ public class DialogueManager : MonoBehaviour
         SetQuestAcceptPanel();
         _questAcceptedPanel.SetActive(true);
         CloseQuestDialoguePanel();
+        SoundManager.instance.PlayEffectSound("Quest_Accept", 1f);
 
         // 수락한 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에 추가 
         Quest questAccepted = QuestDB.instance.GetQuest(_questID).DeepCopy();
@@ -190,6 +191,7 @@ public class DialogueManager : MonoBehaviour
         // 퀘스트 완료 팝업메뉴 실행 
         _questCompleteUI.OpenQuestCompletePanel(questCompleted);
         CloseQuestDialoguePanel();
+        SoundManager.instance.PlayEffectSound("Quest_Complete", 0.4f);
     }
 
     /// <summary>

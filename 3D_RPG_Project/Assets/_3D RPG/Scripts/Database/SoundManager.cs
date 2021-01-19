@@ -62,6 +62,7 @@ public class SoundManager : MonoBehaviour
     {
         bgmPlayer.UnPause();
     }
+
     public void PlayEffectSound(string p_name)
     {
         for(int i = 0; i < effectSounds.Length;i++)
@@ -73,6 +74,28 @@ public class SoundManager : MonoBehaviour
                     if(!effectPlayer[j].isPlaying)
                     {
                         effectPlayer[j].clip = effectSounds[i].clip;
+                        effectPlayer[j].Play();
+                        return;
+                    }
+                }
+                Debug.Log("모든 효과음 플레이어가 사용중입니다.");
+                return;
+            }
+        }
+    }
+
+    public void PlayEffectSound(string p_name, float volume)
+    {
+        for (int i = 0; i < effectSounds.Length; i++)
+        {
+            if (p_name == effectSounds[i].name)
+            {
+                for (int j = 0; j < effectPlayer.Length; j++)
+                {
+                    if (!effectPlayer[j].isPlaying)
+                    {
+                        effectPlayer[j].clip = effectSounds[i].clip;
+                        effectPlayer[j].volume = volume;
                         effectPlayer[j].Play();
                         return;
                     }

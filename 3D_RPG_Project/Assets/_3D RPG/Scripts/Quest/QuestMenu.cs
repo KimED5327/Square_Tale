@@ -264,6 +264,7 @@ public class QuestMenu : MonoBehaviour
 
         // 아이템 보상이 존재하는 경우 보상 추가 
         if (quest.GetItemID() != 0) AddItemReward(quest);
+        else Debug.Log("퀘스트의 아이템 ID가 0이다.");
 
         // 블록 보상이 존재하는 경우 보상 추가 
         if (quest.GetBlockList().Count > 0) AddBlockReward(quest);
@@ -306,6 +307,8 @@ public class QuestMenu : MonoBehaviour
     // 아이템 보상을 리워드 패널에 추가 
     void AddItemReward(Quest quest)
     {
+        Debug.Log(quest.GetItemID() + "번 아이템. AddItemReward 함수 실행");
+
         QuestReward reward = Instantiate(_rewardPrefab, _rewardPanel).GetComponent<QuestReward>();
 
         reward.SetImg(SpriteManager.instance.GetItemSprite(quest.GetItemID()));

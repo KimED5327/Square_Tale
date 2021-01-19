@@ -17,6 +17,8 @@ public class SkillDamage : MonoBehaviour
     {
         if (collision.transform.CompareTag("Face"))
         {
+
+            Debug.Log("맞았냐?");
             _pbm.ApplyPlayerBuff(0);
         }
     }

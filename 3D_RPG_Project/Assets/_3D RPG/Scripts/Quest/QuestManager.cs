@@ -20,8 +20,8 @@ public class QuestManager : MonoBehaviour
     public QuestHUD _questHUD;                 // QuestHUD 참조자 
     public QuestMenu _questMenu;               // QuestMenu 참조자 
     public PlayerStatus _playerStatus;         // PlayerStatus 참조자 
-    bool _isHudOpen = false;            // QuestHUD 창 오픈여부 확인 변수 
-    bool _isCompletableIconOn = false;  // QuestHUD 완료가능 아이콘 on/off 변수 
+    public bool _isHudOpen = false;            // QuestHUD 창 오픈여부 확인 변수 
+    public bool _isCompletableIconOn = false;  // QuestHUD 완료가능 아이콘 on/off 변수 
     string _questInfoKey = "info";      // 퀘스트 타입 해시테이블 키 
 
     /// <summary>
@@ -603,6 +603,7 @@ public class QuestManager : MonoBehaviour
 
     //getter
     public bool GetIsHudOpen() { return _isHudOpen; }
+    public bool GetIsCompletableIconOn() { return _isCompletableIconOn; }
     public List<Quest> GetOngoingQuestList() { return _ongoingQuests; }
     public List<Quest> GetFinishedQuestList() { return _finishedQuests; }
     public Quest GetOngoingQuestByIdx(int idx) { return _ongoingQuests[idx]; }
@@ -611,5 +612,5 @@ public class QuestManager : MonoBehaviour
 
     //setter
     public void SetIsHudOpen(bool value) { _isHudOpen = value; }
-
+    public void SetIsCompletableIconOn(bool value) { _isCompletableIconOn = value; }
 }

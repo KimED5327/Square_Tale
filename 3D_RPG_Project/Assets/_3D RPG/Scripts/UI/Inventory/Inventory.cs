@@ -436,6 +436,7 @@ public class Inventory : MonoBehaviour
         }
 
         SerializeItem();
+        SaveInventory();
     }
 
     public void DecreaseItemCount(int itemID, int count)

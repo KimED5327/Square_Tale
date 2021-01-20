@@ -91,13 +91,13 @@ public class Weapon : MonoBehaviour
                 switch(_combo)
                 {
                     case 1:
-                        other.GetComponent<Status>().Damage((int)(_status.GetStr() * 1.0f), transform.position);
+                        other.GetComponent<Status>().Damage((int)(_status.GetStr() * 1.0f), transform.position, "overlap2");
                         break;
                     case 2:
-                        other.GetComponent<Status>().Damage((int)(_status.GetStr() * 1.1f), transform.position);
+                        other.GetComponent<Status>().Damage((int)(_status.GetStr() * 1.1f), transform.position, "overlap2");
                         break;
                     case 3:
-                        other.GetComponent<Status>().Damage((int)(_status.GetStr() * 1.2f), transform.position);
+                        other.GetComponent<Status>().Damage((int)(_status.GetStr() * 1.2f), transform.position, "overlap2");
                         break;
                 }
             }

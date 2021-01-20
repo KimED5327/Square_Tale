@@ -6,6 +6,7 @@ public class SkillArea : MonoBehaviour
 {
     PlayerStatus _status;
     PlayerMove _player;
+    int skillNum;
 
     // Start is called before the first frame update
     void Start()
@@ -16,22 +17,19 @@ public class SkillArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_player.getSkillNum() == 1 || _player.getSkillNum() == 4)
+        if (other.CompareTag("Enemy"))
         {
-            if (other.CompareTag("Enemy"))
+            Status targetStatus = other.GetComponent<Status>();
+            if (!targetStatus.IsDead())
             {
-                Status targetStatus = other.GetComponent<Status>();
-                if (!targetStatus.IsDead())
+                switch (skillNum)
                 {
-                    switch (_player.getSkillNum())
-                    {
-                        case 1:
-                            targetStatus.Damage((int)(_status.GetInt() * 1.7f), transform.position, "overlap");
-                            break;
-                        case 4:
-                            targetStatus.Damage((int)(_status.GetInt() * 1.4f), transform.position);
-                            break;
-                    }
+                    case 1:
+                        targetStatus.Damage((int)(_status.GetInt() * 1.7f), transform.position, "overlap");
+                        break;
+                    case 4:
+                        targetStatus.Damage((int)(_status.GetInt() * 1.4f), transform.position);
+                        break;
                 }
             }
         }
@@ -39,25 +37,24 @@ public class SkillArea : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (_player.getSkillNum() == 2 || _player.getSkillNum() == 3)
+        if (other.CompareTag("Enemy"))
         {
-            if (other.CompareTag("Enemy"))
+            Status targetStatus = other.GetComponent<Status>();
+            if (!targetStatus.IsDead())
             {
-                Status targetStatus = other.GetComponent<Status>();
-                if (!targetStatus.IsDead())
+                //isHit = true;
+                switch (skillNum)
                 {
-                    //isHit = true;
-                    switch (_player.getSkillNum())
-                    {
-                        case 2:
-                               targetStatus.Damage((int)(_status.GetInt() * 0.2f), transform.position, "overlap2");
-                            break;
-                        case 3:
-                               targetStatus.Damage((int)(_status.GetInt() * 0.4f), transform.position, "overlap");
-                            break;
-                    }
+                    case 2:
+                        targetStatus.Damage((int)(_status.GetInt() * 0.2f), transform.position, "overlap2");
+                        break;
+                    case 3:
+                        targetStatus.Damage((int)(_status.GetInt() * 0.4f), transform.position, "overlap");
+                        break;
                 }
             }
         }
     }
+
+    public void SetSkillNum(int num) { skillNum = num; }
 }

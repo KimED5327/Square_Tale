@@ -43494,7 +43494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uBE14\uB799\uD640"
-  _destoryTime: 4
+  _destoryTime: 3.9
 --- !u!1 &986972252335777520
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,6 +21,7 @@ public class Boss : MonoBehaviour
     public float timer;                                 //공격속도 조절값
     Vector3 startPoint;                                 //최초 생성 값
     Transform player;                                   //공격 목표 (플레이어)
+    PlayerMove playerMove;
     Transform AttackTransform;                          //공격 장소
     public float speed;                    
 
@@ -49,18 +50,17 @@ public class Boss : MonoBehaviour
     private int skillUpcount = 0;                       //스킬 증가 횟수
     private int skillUseTornadoCount = 0;               //토네이도 리프 사용 횟수
     private int skillUseCherryCount = 0;                //벚꽃 마안 사용 횟수
-   
+    private bool isDie = false;
 
 
     public bool getIsAttackStart() { return skillAttack; }
     public void setIsAttackStart(bool attack) { skillAttack = attack; }
     public bool getIsDamage() { return isDamage; }
+    public bool getIsDie() { return isDie; }
 
 
     private void Start()
     {
-        bossState = state.idle;
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         enemyAnimator = GetComponent<Animator>();
         status = GetComponent<EnemyStatus>();
         myColider = GetComponent<BoxCollider>();
@@ -68,10 +68,30 @@ public class Boss : MonoBehaviour
         status.SetCurrentHp(status.GetMaxHp());
     }
 
+    private void OnEnable()
+    {
+        Initialized();
+        
+    }
+
+    private void Initialized()
+    {
+        bossState = state.idle;
+        isDie = false;
+
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        if (playerMove == null)
+            playerMove = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMove>();
+
+        skillAttack = false;
+        isAttack = false;
+        if (status == null) status = GetComponent<EnemyStatus>();
+        if (status.GetCurrentHp() != status.GetMaxHp()) status.SetCurrentHp(status.GetMaxHp());
+    }
     private void Update()
     {
-        
-        Debug.Log(status.GetCurrentHp());
+        if(playerMove.GetIsDie()) return;
         if (skillAttack)
         {
             SkillAttackUpdate();
@@ -91,7 +111,7 @@ public class Boss : MonoBehaviour
                 DieUpdate();
                 break;
         }
-        if(status.GetCurrentHp() < 0)
+        if(status.GetCurrentHp() <= 0)
         {
             bossState = state.die;
         }
@@ -105,13 +125,12 @@ public class Boss : MonoBehaviour
             skillAttackTime += Time.deltaTime;
             if (skillAttackTime > 0.5)
             {
-                skill.transform.localScale += new Vector3(0.1f, 0, 0.1f);
+                skill.transform.localScale += new Vector3(0.2f, 0, 0.2f);
                 skillUpcount++;
                 skillAttackTime = 0;
-                isSkillOne = false;
                 isDamage = true;
             }
-            if (skillUpcount > 20)
+            if (skillUpcount > 15)
             {
                 Destroy(skill);
                 skillAttack = false;
@@ -150,6 +169,7 @@ public class Boss : MonoBehaviour
 
         if (isAttack)
         {
+            SoundManager.instance.PlayEffectSound("BossAttack");
             Vector3 attackDir = player.position - AttackLocation.transform.position;
         
             GameObject attack = Instantiate(AttackEffect, AttackLocation.transform.position, transform.rotation);
@@ -165,7 +185,7 @@ public class Boss : MonoBehaviour
         }
 
         //1차 토네이도 리프
-        if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.8f && skillUseTornadoCount == 0)
+        if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.9f && skillUseTornadoCount == 0)
         {
             Debug.Log("1차 토네이도 리프");
             isSkillOne = true;
@@ -183,7 +203,7 @@ public class Boss : MonoBehaviour
             skillUseTornadoCount = 2;
         }
         //3차  토네이도 리프
-        else if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.4f && skillUseTornadoCount == 2)
+        else if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.3f && skillUseTornadoCount == 2)
         {
             Debug.Log("3차 토네이도 리프");
             isSkillOne = true;
@@ -208,22 +228,6 @@ public class Boss : MonoBehaviour
             enemyAnimator.SetTrigger("Skill 0");
             skillUseCherryCount = 2;
         }
-
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            isSkillOne = true;
-            bossState = state.skill;
-            enemyAnimator.SetTrigger("Skill 0");
-            timer = 0;
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            isSkillTwo = true;
-            bossState = state.skill;
-            timer = 0;
-        }
-
     }
     private void SkillUpdate()
     {
@@ -246,7 +250,6 @@ public class Boss : MonoBehaviour
                     timer = 0;
                     bossState = state.idle;
                     skill.GetComponent<ProjectileMover>().Pushinfo(player, status, this);
-                    enemyAnimator.SetBool("Skill", false);
                     isSkillOne = false;
                     sktornado = false;
                 }
@@ -258,14 +261,17 @@ public class Boss : MonoBehaviour
         {
             skill2 = Instantiate(SkillEffect2, new Vector3(transform.position.x, transform.position.y + 2.5f, transform.position.z), transform.rotation);
             isSkillTwo = false;
-            enemyAnimator.SetBool("Skill", false);
             bossState = state.idle;
         }
     }
    
     private void DieUpdate()
     {
-        enemyAnimator.SetBool("Die", true);
+        if (!isDie)
+        {
+            enemyAnimator.SetTrigger("Die 0");
+            isDie = true;
+        }
     }
 
 }

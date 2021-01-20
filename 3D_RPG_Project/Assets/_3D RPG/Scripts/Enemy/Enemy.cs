@@ -47,6 +47,7 @@ public class Enemy : MonoBehaviour
 
     public State enemyState;
 
+    public bool getIsDie() { return _isDie; }
 
 
     bool IsPlaying(string stateName)

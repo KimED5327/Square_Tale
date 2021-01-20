@@ -17,11 +17,13 @@ public class ProjectileMover : MonoBehaviour
     Boss boss;
     bool isSkiil = false;
 
+    float _curTime = 0f;
+    float _termTime = 0.15f;
+
     public void Pushinfo(Transform transform, EnemyStatus enemystatus, Boss bo)
     {
         player = transform;
         states = enemystatus;
-        Debug.Log(bo);
         boss = bo;
     }
     void Start()
@@ -57,29 +59,47 @@ public class ProjectileMover : MonoBehaviour
 
     private void Update()
     {
+        if (boss == null) return;
         if (transform.CompareTag("BossSkill") && boss.getIsDamage() && !isSkiil)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
             isSkiil = true;
         }
-        else
+        if (!boss.getIsDamage())
         {
-
+            isSkiil = false;
         }
     }
 
     //https ://docs.unity3d.com/ScriptReference/Rigidbody.OnCollisionEnter.html
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.CompareTag("Player"))
+        {
+            _curTime -= Time.deltaTime;
+            if(_curTime <= 0)
+            {
+                other.transform.GetComponent<Status>().Damage(10, transform.position);
+                _curTime = _termTime;
+            }
+            
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        _curTime = 0f;
+    }
+
     void OnCollisionEnter(Collision collision)
     {
-        
+
         //Lock all axes movement and rotation
-        if(boss.getIsDamage() && transform.CompareTag("BossSkill"))
-        {
-            if(collision.transform.CompareTag("Player"))
-            { 
-                collision.transform.GetComponent<Status>().Damage(10, transform.position);
-            }
-        }
+
+        if (collision.transform.CompareTag("Enemy")) return;
+       
+
         if(transform.CompareTag("BossAttack"))
         {
            if(collision.transform.CompareTag("Player"))

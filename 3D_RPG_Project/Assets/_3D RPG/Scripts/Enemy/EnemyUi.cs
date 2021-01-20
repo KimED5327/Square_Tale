@@ -27,23 +27,26 @@ public class EnemyUi : MonoBehaviour
 
     void Update()
     {
-
-        transform.LookAt(transform.position + cam.forward);
-
-        hpPercent = (_enemyStatus.GetCurrentHp() / (float)_enemyStatus.GetMaxHp()) * 100;
-
-        if(hpBar == null)
+        if(!_enemy.getIsDie())
         {
-            hpBar = GetComponentInChildren<Slider>();
+            transform.LookAt(transform.position + cam.forward);
+
+            hpPercent = (_enemyStatus.GetCurrentHp() / (float)_enemyStatus.GetMaxHp()) * 100;
+
+            if (hpBar == null)
+            {
+                hpBar = GetComponentInChildren<Slider>();
+            }
+
+            if (_enemy.enemyState == State.Attack)
+                hpBar.gameObject.SetActive(true);
+            else
+                hpBar.gameObject.SetActive(false);
+
+
+            hpBar.value = _enemyStatus.GetCurrentHp() / (float)_enemyStatus.GetMaxHp();
+            _Ui.text = "Lv " + _enemyStatus.GetLevel() + " " + _enemyStatus.GetName() + " " + hpPercent + "%";
         }
-
-        if (_enemy.enemyState == State.Attack)
-            hpBar.gameObject.SetActive(true);
-        else
-            hpBar.gameObject.SetActive(false);
-        
-
-        hpBar.value = _enemyStatus.GetCurrentHp() / (float)_enemyStatus.GetMaxHp();
-        _Ui.text = "Lv " + _enemyStatus.GetLevel() + " " + _enemyStatus.GetName() + " " + (int)hpPercent + "%";
+      
     }
 }

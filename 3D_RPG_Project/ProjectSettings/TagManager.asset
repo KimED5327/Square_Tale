@@ -17,6 +17,7 @@ TagManager:
   - BossAttack
   - BossSkill
   - BossSkill2
+  - BossClear
   layers:
   - Default
   - TransparentFX

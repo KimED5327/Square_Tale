@@ -1706,6 +1706,7 @@ MonoBehaviour:
     type: 3}
   SkillEffect2: {fileID: 3620588356073284319, guid: 0182ad8cf15fbcd4ca441e04271575cb,
     type: 3}
+  myParticle: {fileID: 0}
 --- !u!54 &-7410316327382903213
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1720,7 +1721,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!65 &6244726827305711708
 BoxCollider:

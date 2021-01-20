@@ -51,12 +51,12 @@ public class Boss : MonoBehaviour
     private int skillUseTornadoCount = 0;               //토네이도 리프 사용 횟수
     private int skillUseCherryCount = 0;                //벚꽃 마안 사용 횟수
     private bool isDie = false;
-    
 
 
     public bool getIsAttackStart() { return skillAttack; }
     public void setIsAttackStart(bool attack) { skillAttack = attack; }
     public bool getIsDamage() { return isDamage; }
+    public bool getIsDie() { return isDie; }
 
 
     private void Start()
@@ -79,7 +79,7 @@ public class Boss : MonoBehaviour
     {
         bossState = state.idle;
         isDie = false;
-       
+
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         if (playerMove == null)
@@ -170,6 +170,7 @@ public class Boss : MonoBehaviour
 
         if (isAttack)
         {
+            SoundManager.instance.PlayEffectSound("BossAttack");
             Vector3 attackDir = player.position - AttackLocation.transform.position;
         
             GameObject attack = Instantiate(AttackEffect, AttackLocation.transform.position, transform.rotation);

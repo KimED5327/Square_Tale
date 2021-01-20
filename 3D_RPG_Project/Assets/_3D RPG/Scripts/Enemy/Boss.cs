@@ -66,7 +66,6 @@ public class Boss : MonoBehaviour
         myColider = GetComponent<BoxCollider>();
         myRigid = GetComponent<Rigidbody>();
         status.SetCurrentHp(status.GetMaxHp());
-       
     }
 
     private void Update()

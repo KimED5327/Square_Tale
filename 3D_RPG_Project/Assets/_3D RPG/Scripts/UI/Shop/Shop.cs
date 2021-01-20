@@ -35,11 +35,18 @@ public class Shop : MonoBehaviour
     public static bool _isShow = false;
     bool _isBuy = true;
 
+    // 필요한 컴포넌트
     Inventory _inven;
+    Tutorial _tutorial;
+
+    void Awake()
+    {
+        _inven = FindObjectOfType<Inventory>();
+        _tutorial = FindObjectOfType<Tutorial>();
+    }
 
     void Start()
     {
-        _inven = FindObjectOfType<Inventory>();
 
         _slots = new ShopSlot[_slotMaxCount];
         for(int i = 0; i < _slotMaxCount; i++)
@@ -61,6 +68,7 @@ public class Shop : MonoBehaviour
 
     void ShowMenu()
     {
+        _tutorial.CallTutorial(TutorialType.SHOP);
 
         SoundManager.instance.PlayEffectSound("PopUp");
         BtnBuyWindow();

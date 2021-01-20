@@ -10,6 +10,7 @@ public enum RewardType
     TRAP,
     ITEM,
     GOLD,
+    All,
 }
 
 [System.Serializable]
@@ -29,8 +30,12 @@ public class Chest : MonoBehaviour
     [SerializeField] int _treasureID = 0;
     [SerializeField] Reward _reward = null;
 
+    GameObject _goChild;
+
     void Awake()
     {
+        _goChild = transform.GetChild(0).gameObject;
+
         if (!PlayerPrefs.HasKey(StringManager.GetTresureKey(_treasureID)))
             PlayerPrefs.SetInt(StringManager.GetTresureKey(_treasureID), NOT_ACQUIRE_REWARD);
         else
@@ -41,16 +46,42 @@ public class Chest : MonoBehaviour
         }
     }
 
-    public Reward GetReward() { return _reward; }
+    public Reward GetReward() {
+        _goChild.SetActive(false);
+        SoundManager.instance.PlayEffectSound("ChestOpen");
+        return _reward;
+    }
 
     public void RemoveChest()
     {
-        if(_reward.soundName != "")
+        PlayerPrefs.SetInt(StringManager.GetTresureKey(_treasureID), ACQUIRE_REWARD);
+        StartCoroutine(WaitDisappear());
+    }
+
+    IEnumerator WaitDisappear()
+    {
+        // 연출
+        if(_reward.rewardType == RewardType.GOLD)
+        {
+            GameObject go = ObjectPooling.instance.GetObjectFromPool("보물 이펙트", transform.position);
+            go.GetComponent<TreasureEffect>().SetColor(false);
+        }
+        else if(_reward.rewardType != RewardType.TRAP)
+        {
+            GameObject go = ObjectPooling.instance.GetObjectFromPool("보물 이펙트", transform.position);
+            go.GetComponent<TreasureEffect>().SetColor(true);
+        }
+
+        if (_reward.soundName != "")
             SoundManager.instance.PlayEffectSound(_reward.soundName);
-        if(_reward.effectName != "")
+        if (_reward.effectName != "")
             ObjectPooling.instance.GetObjectFromPool(_reward.effectName, transform.position);
 
-        PlayerPrefs.SetInt(StringManager.GetTresureKey(_treasureID), ACQUIRE_REWARD);
+        yield return new WaitForSeconds(3f);
+
+        ObjectPooling.instance.GetObjectFromPool("발판 블록 파괴 이펙트", transform.position + Vector3.up * 0.3f);
+
+
         gameObject.SetActive(false);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public TouchBoard tb;
+    TouchBoard tb;
     static float cameraAngleX;
     public float cameraSpeed = 0.2f;
     [SerializeField] Vector3 _offset = Vector3.zero;
@@ -14,8 +14,10 @@ public class CameraController : MonoBehaviour
 
     bool _canMove = true;
 
-    void Start()
+    void Awake()
     {
+        cameraAngleX = 90;
+        tb = FindObjectOfType<TouchBoard>();
         _tfCam = Camera.main.transform;
     }
 

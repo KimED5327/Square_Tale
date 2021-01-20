@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class GameHudMenu : MonoBehaviour
 {
     public static GameHudMenu instance;
-    
+
+    public static bool s_isMenuOpen = false;
+
     [SerializeField] GameObject[] goHuds = null;
     [SerializeField] Text _txtGold = null;
     [SerializeField] Text _txtLevel = null;
@@ -46,24 +48,9 @@ public class GameHudMenu : MonoBehaviour
 
     }
 
-    IEnumerator UpdateHud()
-    {
-        while (_playerStatus != null)
-        {
-            
-            yield return waitTime;
-            _txtGold.text = string.Format("{0:#,##0}", _inven.GetGold());
-            _txtLevel.text = $"{_playerStatus.GetLevel()}";
-            _imgExp.fillAmount = _playerStatus.GetExpPercent();
-            _imgHp.fillAmount = _playerStatus.GetHpPercent();
-            //_txtHP.text = $"{_playerStatus.GetCurrentHp()} / {_playerStatus.GetMaxHp()}";
-            //_txtMP.text = $"{_playerStatus.GetCurMp()} / {_playerStatus.GetMaxMp()}";
-        }
-
-    }
-
     public void HideMenu()
     {
+        s_isMenuOpen = true;
         for (int i = 0; i < goHuds.Length; i++)
         {
             goHuds[i].SetActive(false);
@@ -72,6 +59,8 @@ public class GameHudMenu : MonoBehaviour
 
     public void ShowMenu()
     {
+
+        s_isMenuOpen = false;
         for (int i = 0; i < goHuds.Length; i++)
         {
             goHuds[i].SetActive(true);

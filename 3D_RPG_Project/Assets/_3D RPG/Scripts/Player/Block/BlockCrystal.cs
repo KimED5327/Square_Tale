@@ -51,7 +51,6 @@ public class BlockCrystal : Block
     void CreateCrystalEffect()
     {
 
-
         Renderer[] rend = GetComponentsInChildren<Renderer>();
         foreach(Renderer r in rend)
         {

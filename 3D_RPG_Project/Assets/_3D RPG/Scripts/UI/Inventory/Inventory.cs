@@ -35,32 +35,19 @@ public class Inventory : MonoBehaviour
     Vector3 _shopPos;
 
 
+    Tutorial _tutorial;
+
+
     #region Test
     // 테스트용 인벤 채우기
     void Start()
-    {
-        if (!PlayerPrefs.HasKey("InvenSlotItemId" + 0))
-        {
-            TryToPushInventory(ItemDatabase.instance.GetItem(3));
-            TryToPushInventory(ItemDatabase.instance.GetItem(3));
-            TryToPushInventory(ItemDatabase.instance.GetItem(3));
-            TryToPushInventory(ItemDatabase.instance.GetItem(5));
-            TryToPushInventory(ItemDatabase.instance.GetItem(6));
-            TryToPushInventory(ItemDatabase.instance.GetItem(3));
-            TryToPushInventory(ItemDatabase.instance.GetItem(3));
-            TryToPushInventory(ItemDatabase.instance.GetItem(3));
-            TryToPushInventory(ItemDatabase.instance.GetItem(3));
-            TryToPushInventory(ItemDatabase.instance.GetItem(2));
-            TryToPushInventory(ItemDatabase.instance.GetItem(2));
-            TryToPushInventory(ItemDatabase.instance.GetItem(2));
-            TryToPushInventory(ItemDatabase.instance.GetItem(2));
-            TryToPushInventory(ItemDatabase.instance.GetItem(2));
-        }
+    { 
         // 기본값 - 무기 우선 정렬 
         OnTouchTab(0);
 
 
         LoadInventory();
+
     }
     #endregion
 
@@ -114,6 +101,8 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
+        _tutorial = FindObjectOfType<Tutorial>();
+
         _originPos = _goInventory.transform.localPosition;
         _shopPos = _tfOffset.localPosition + new Vector3(_offsetX, 0, 0); 
 
@@ -150,6 +139,11 @@ public class Inventory : MonoBehaviour
         _goEquip.SetActive(!isShopOpen);
         _goBackButton.SetActive(!isShopOpen);
         _goBackground.SetActive(!isShopOpen);
+
+        // 튜토리얼 호출
+        if (!isShopOpen)
+            _tutorial.CallTutorial(TutorialType.INVENTORY);
+
 
         _goInventory.SetActive(true);
     }

@@ -14,6 +14,7 @@ public class StringManager : MonoBehaviour
     public static string questNPCTag = "QuestNPC";
     public static string blockTag = "Block";
     public static string TriggerTag = "Trigger";
+    public static string fieldItemTag = "DropItem";
 
     public static string msgLongDistance = "거리가 너무 멉니다.";
     public static string msgNotEnoughInventory = "인벤토리 공간이 부족합니다.";
@@ -35,6 +36,8 @@ public class StringManager : MonoBehaviour
     public static string msgNotAccessChapter = "해금되지 않은 챕터입니다.";
     public static string msgAlreadyActivateTrigger = "이미 작동시킨 장치입니다.";
     public static string msgCanNotSwap = "스킬 쿨타임 일때 변경 할 수 없습니다.";
+    public static string msgGetPureItem = "정화의 조각 획득!!";
+    public static string msgNeedKey = "상자에 맞는 열쇠가 필요합니다.";
 
     public static string shopBuyMessage = "해당 아이템을 구매하시겠습니까?";
     public static string shopSellMessage = "해당 아이템을 판매하시겠습니까?";

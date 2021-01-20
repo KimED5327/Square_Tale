@@ -54,7 +54,6 @@ public class SkillManager : MonoBehaviour
     private void Awake()
     {
         _player = FindObjectOfType<PlayerMove>();
-
         _SkillCount = new int[_slots.Length];
 
         for (int i = 0; i < _slots.Length; i++)

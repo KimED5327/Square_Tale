@@ -10,6 +10,24 @@ public class BlockManager : MonoBehaviour
 
     static int[] _blockCount = null;
 
+    public static void SaveBlockCount()
+    {
+        for (int i = 0; i < _blockCount.Length; i++)
+        {
+            PlayerPrefs.SetInt("block" + i, _blockCount[i]);
+        }
+    }
+    public static void LoadBlockCount()
+    {
+        if (PlayerPrefs.HasKey("block0"))
+        {
+            for (int i = 0; i < _blockCount.Length; i++)
+                _blockCount[i] = PlayerPrefs.GetInt("block" + i);
+        }
+        else
+            SaveBlockCount();
+    }
+
     public void Save()
     {
         PlayerPrefs.SetInt("blockEquip1", _equipSlots[0].GetBlockID());
@@ -35,6 +53,7 @@ public class BlockManager : MonoBehaviour
     public static void IncreaseBlockCount(int id, int count)
     {
         _blockCount[id] += count;
+        SaveBlockCount();
     }
 
     public static void AllIncreaseBlockCount(int count)
@@ -43,11 +62,13 @@ public class BlockManager : MonoBehaviour
         {
             _blockCount[i] += count;
         }
+        SaveBlockCount();
     }
 
     public static void DecreaseBlockCount(int id, int count)
     {
         _blockCount[id] -= count;
+        SaveBlockCount();
     }
 
     private void Awake()
@@ -66,17 +87,8 @@ public class BlockManager : MonoBehaviour
                 _blockCount[i] = PlayerPrefs.GetInt(StringManager.block + i);
             }
         }
-        
-        // 임시 등록
-        //int index = 0;
-        //string name = _slots[index].GetBlockName();
-        //Sprite sprite = _slots[index].GetBlockSprite();
-        //_equipSlots[index].PushEquipSlot(index, name, sprite);
 
-        //index = 1;
-        //name = _slots[index].GetBlockName();
-        //sprite = _slots[index].GetBlockSprite();
-        //_equipSlots[index].PushEquipSlot(index, name, sprite);
+        LoadBlockCount();
     }
 
     public void Setting()
@@ -154,7 +166,7 @@ public class BlockManager : MonoBehaviour
         if(_blockCount[id] <= 0)
         {
             Notification.instance.ShowFloatingMessage(StringManager.msgNotEnoughBlock);
-            // return "";
+            return "";
         }
         else
         {
@@ -166,6 +178,7 @@ public class BlockManager : MonoBehaviour
 
     public string GetBlockNameID(int blockID)
     {
+        blockID--;
         return _slots[blockID].GetBlockName();
     }
 }

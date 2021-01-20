@@ -60,6 +60,9 @@ public class PlayerMove : MonoBehaviour
 
     public GameObject[] _skillCoolImg = null; // 스킬 쿨타임 이미지 받는곳
 
+    [SerializeField] float _footStepTime = 0.265f;
+    float _curfootTime = 0f;
+
     float hAxis;
     float vAxis;
     float attackDelay;
@@ -130,12 +133,14 @@ public class PlayerMove : MonoBehaviour
     BlockController blockCon;
     SkillCooltime skillCool;
 
+    AudioSource _audio;
     public Animator anim;
     public Animator[] anims;
 
     // Start is called before the first frame update
     void Start()
     {
+        _audio = GetComponent<AudioSource>();
         myRigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         equipWeapon = GetComponentInChildren<Weapon>();
@@ -280,6 +285,19 @@ public class PlayerMove : MonoBehaviour
                 isAttackReady = true;
             }
         }
+
+        // 초간단 발자국 사운드 재생
+        if (!isJump && realMoveVec != Vector3.zero && Mathf.Abs(myRigid.velocity.y) <= 0.06f)
+        {
+            _curfootTime += Time.deltaTime;
+            if (_curfootTime >= _footStepTime)
+            {
+                _audio.Play();
+                _curfootTime = 0f;
+            }
+        }
+        else
+            _curfootTime = _footStepTime;
 
         if (!isBorder) transform.position += realMoveVec * speed * Time.deltaTime;
 
@@ -1078,14 +1096,15 @@ public class PlayerMove : MonoBehaviour
 
         GameHudMenu.instance.ShowMenu();
         //myStatus.Initialized();
-        SceneManager.LoadScene("GameScene");
+        MapManager.instance.ReLoadCurrentMap();
         StartCoroutine("ResurrectionEffect");
     }
 
     public void ResurrectionToTown()
     {
         // 마을에서 부활
-       // myStatus.Initialized();
+        // myStatus.Initialized();
+        GameHudMenu.instance.ShowMenu();
         MapManager.instance.ChangeMap("Town");
     }
 

@@ -9,7 +9,10 @@ public class SlotToolTip : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] GameObject goToolTip = null;
+    [SerializeField] GameObject goButtonHolder = null;
     [SerializeField] GameObject goEquipButton = null;
+    [SerializeField] GameObject goOpenButton = null;
+
     [SerializeField] Text txtName = null;
     [SerializeField] Text txtType = null;
     [SerializeField] Image imgIcon = null;
@@ -85,7 +88,9 @@ public class SlotToolTip : MonoBehaviour
         // 장비템이면 장착 해제 버튼 출력
         if (item.category != ItemCategory.ETC)
         {
+            goButtonHolder.SetActive(true);
             goEquipButton.SetActive(true);
+            goOpenButton.SetActive(false);
 
             // 장착 가능
             if (isEquipSlot)
@@ -106,10 +111,14 @@ public class SlotToolTip : MonoBehaviour
         }
         else
         {
+            bool isBox = (item.id == 9);
+
+            goButtonHolder.SetActive(isBox);
+            goOpenButton.SetActive(isBox);
+            goEquipButton.SetActive(false);
+
             _canUnEquip = false;
             _canEquip = false;
-
-            goEquipButton.SetActive(false);
         }
     }
 
@@ -120,6 +129,28 @@ public class SlotToolTip : MonoBehaviour
         goToolTip.SetActive(false);
     }
 
+
+
+    public void BtnBoxOpen()
+    {
+        SoundManager.instance.PlayEffectSound("Click");
+
+        if (theInven.GetItemCount(10) >= 1)
+        {
+            SoundManager.instance.PlayEffectSound("ChestOpen");
+            SoundManager.instance.PlayEffectSound("Acquire");
+            theInven.DecreaseItemCount(10, 1);
+            theInven.DecreaseItemCount(9, 1);
+            theInven.TryToPushInventory(7, 1);
+            Notification.instance.ShowMsg(StringManager.msgGetPureItem);
+            goToolTip.SetActive(false);
+        }
+        else
+        {
+            Notification.instance.ShowFloatingMessage(StringManager.msgNeedKey);
+            goToolTip.SetActive(false);
+        }
+    }
 
     // 장착
     public void EquipItem()

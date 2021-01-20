@@ -22,12 +22,14 @@ public class SkillAndBlockMenu : MonoBehaviour
     BlockManager _blockManager;
     SkillManager _skillManager;
     MageSkillManager _mageSkillManager;
+    Tutorial _tutorial;
 
     private void Awake()
     {
         _blockManager = FindObjectOfType<BlockManager>();
         _skillManager = FindObjectOfType<SkillManager>();
         _mageSkillManager = FindObjectOfType<MageSkillManager>();
+        _tutorial = FindObjectOfType<Tutorial>();
     }
 
     public void BtnMenuOpen()
@@ -61,6 +63,7 @@ public class SkillAndBlockMenu : MonoBehaviour
 
             _skillManager.Setting();
             _mageSkillManager.Setting();
+            _tutorial.CallTutorial(TutorialType.SKILL);
         }
         else
         {
@@ -74,6 +77,7 @@ public class SkillAndBlockMenu : MonoBehaviour
             _imgSkillBtn.color = Color.gray;
 
             _blockManager.Setting();
+            _tutorial.CallTutorial(TutorialType.BLOCK);
         }
     }
 }

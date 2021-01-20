@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using UnityEngine.EventSystems;
+using UnityEngine.EventSystems;
 
 public class InteractionManager : MonoBehaviour
 {
@@ -38,16 +38,18 @@ public class InteractionManager : MonoBehaviour
             // 터치 상호작용 시도
             if (Physics.Raycast(ray, out RaycastHit hit, 1000, _layerMask))
             {
+                // UI에 부딪친 경우 취소
+                if (EventSystem.current.IsPointerOverGameObject() == true) return;
+
                 Transform target = hit.transform;
-                //if (EventSystem.current.IsPointerOverGameObject() == true) return;
 
                 // 1.5블록 이내일 경우
                 if (Vector3.SqrMagnitude(_playerPos.position - target.position) < Mathf.Pow(_interactionRange, 2))
                 {
                     // Enemy - 루팅
-                    if (target.CompareTag(StringManager.enemyTag))
+                    if (target.CompareTag(StringManager.fieldItemTag))
                     {
-                        _isOpen = _rootingSystem.TryRooting(target.GetComponent<EnemyStatus>());
+                        _isOpen = _rootingSystem.TryRooting(target.GetComponent<FieldItem>());
                     }
 
                     // Shop NPC - 상점 호출
@@ -60,7 +62,7 @@ public class InteractionManager : MonoBehaviour
                     // Treasure - 상자 오픈
                     else if (target.CompareTag(StringManager.keywordTag))
                     {
-                        CheckTreausreChest(target.GetComponent<Chest>());
+                        StartCoroutine(CheckTreausreChest(target.GetComponent<Chest>()));
                     }
 
 
@@ -115,9 +117,11 @@ public class InteractionManager : MonoBehaviour
         }
 
         // 보물 상자 체크
-        void CheckTreausreChest(Chest chest)
+        IEnumerator CheckTreausreChest(Chest chest)
         {
             Reward reward = chest.GetReward();
+
+            yield return new WaitForSeconds(1.25f);
 
             switch (reward.rewardType)
             {
@@ -155,14 +159,22 @@ public class InteractionManager : MonoBehaviour
                     break;
 
 
-                // 골드 획득
+                // 골드 획득 (안쓰임)
                 case RewardType.GOLD:
                     Item item = ItemDatabase.instance.GetItem(reward.id);
                     int gold = reward.count;
                     _inven.TryToPushInventory(item, gold);
-                    Notification.instance.ShowItemGoldText(gold);
+                    Notification.instance.ShowAllItemNotice(gold);
                     break;
 
+                // 뒤늦게 추가된 부분이라 귀찮아서 하드코딩
+                case RewardType.All:
+                    _inven.TryToPushInventory(1, 600); // 600 골드
+                    PlayerStatus ps = _playerPos.GetComponent<PlayerStatus>();
+                    ps.IncreaseExp(50); // 50 경험치
+                    BlockManager.AllIncreaseBlockCount(10); // 10 All 블록 추가
+                    Notification.instance.ShowAllItemNotice(0);
+                    break;
 
                 // 미처리
                 default:

@@ -48,6 +48,11 @@ public class MapManager : MonoBehaviour
         StartCoroutine(MapLoading());
     }
 
+    public void ReLoadCurrentMap()
+    {
+        StartCoroutine(MapLoading());
+    }
+
     IEnumerator MapLoading()
     {
         ScreenEffect.instance._isFinished = false;

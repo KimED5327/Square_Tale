@@ -25,6 +25,13 @@ public class Adventure : MonoBehaviour
 
     static float _adventureProgress = 0f;
 
+    Tutorial _tutorial;
+
+    private void Awake()
+    {
+        _tutorial = FindObjectOfType<Tutorial>();
+    }
+
     public static void IncreaseAdventureProgress(float num)
     {
         _adventureProgress += num;
@@ -34,6 +41,8 @@ public class Adventure : MonoBehaviour
     // 모험담 메뉴출력
     public void ShowUI()
     {
+        _tutorial.CallTutorial(TutorialType.ADVENTURE);
+
         SoundManager.instance.PlayEffectSound("PopUp");
         GameHudMenu.instance.HideMenu();
 

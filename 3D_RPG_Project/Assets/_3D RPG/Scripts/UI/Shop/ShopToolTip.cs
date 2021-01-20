@@ -233,6 +233,7 @@ public class ShopToolTip : MonoBehaviour
     // 마무리
     void FinishProcess()
     {
+        SoundManager.instance.PlayEffectSound("Coin");
         HideToolTip();
         _shop.ReSetUI();
         _inven.SaveInventory();

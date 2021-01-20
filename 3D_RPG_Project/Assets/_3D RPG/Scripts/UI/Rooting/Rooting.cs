@@ -15,7 +15,7 @@ public class Rooting : MonoBehaviour
 
     // Component
     Inventory _inven;
-    EnemyStatus _rootingEnemy;
+    FieldItem _rootingItem;
     
     void Awake()
     {
@@ -25,15 +25,12 @@ public class Rooting : MonoBehaviour
             _rootingSlots[i].SetLink(this);
     }
 
-    public bool TryRooting(EnemyStatus enemyStatus)
+    public bool TryRooting(FieldItem fieldItem)
     {
-        _rootingEnemy = enemyStatus;
-
-        // Enemy가 죽은 경우에만 시도 
-        if (!_rootingEnemy.IsDead()) return false;
+        _rootingItem = fieldItem;
 
         // 드롭 아이템 정보 Get
-        _rootingDropItem = _rootingEnemy.GetDropItem();
+        _rootingDropItem = _rootingItem.GetDropItem();
 
         if (_rootingDropItem != null && _rootingDropItem.Count > 0)
         {
@@ -43,7 +40,7 @@ public class Rooting : MonoBehaviour
         }
         else
         { 
-            _rootingEnemy = null;
+            _rootingItem = null;
             return false;
         }
     }
@@ -77,8 +74,8 @@ public class Rooting : MonoBehaviour
     public void BtnExit()
     {
         // 남은 루팅 아이템, 다시 Enemy에게 넘겨줌.
-        _rootingEnemy.SetDropItem(_rootingDropItem);
-        _rootingEnemy = null;
+        _rootingItem.SetDropItem(_rootingDropItem);
+        _rootingItem = null;
         _rootingDropItem = null;
         _inven.SaveInventory();
         InteractionManager._isOpen = false;

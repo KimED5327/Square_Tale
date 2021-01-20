@@ -52,15 +52,19 @@ public class QuestMenu : MonoBehaviour
     List<QuestSlot> _ongoingSlots = new List<QuestSlot>();      // 진행 퀘스트 슬롯 리스트 
     List<QuestSlot> _finishedSlots = new List<QuestSlot>();     // 완료 퀘스트 슬롯 리스트 
 
+    Tutorial _tutorial;
 
     void Start()
     {
         SetMenuOnStart();
+        _tutorial = FindObjectOfType<Tutorial>();
         _blockManager = FindObjectOfType<BlockManager>();
     }
 
     public void OpenMenu()
     {
+        _tutorial.CallTutorial(TutorialType.QUEST);
+
         InteractionManager._isOpen = true; 
         GameHudMenu.instance.HideMenu();
         _menuPanel.SetActive(true);

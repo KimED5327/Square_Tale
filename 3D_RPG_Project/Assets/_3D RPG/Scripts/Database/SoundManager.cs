@@ -34,6 +34,20 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public void SetBgmVolumn(float rate)
+    {
+        bgmPlayer.volume = rate;
+    }
+
+
+    public void SetSfxVolumn(float rate)
+    {
+        for(int i = 0; i < effectPlayer.Length; i++)
+        {
+            effectPlayer[i].volume = rate;
+        }
+    }
+
     public void PlayBGM(string p_name)
     {
         for(int i = 0;i < bgmSound.Length; i++)

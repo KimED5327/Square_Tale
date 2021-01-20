@@ -23,14 +23,12 @@ public class QuestHUD : MonoBehaviour
     bool _isHudOpen = false;
     bool _isCompletableIconOn = false; 
 
-    private void Awake()
-    {
-        // 객체가 활성화될 때마다 퀘스트 매니져와 링크 
-        QuestManager.instance.InitializeLink();
-    }
 
     private void Start()
-    {
+    {        
+        // 객체가 활성화될 때마다 퀘스트 매니져와 링크 
+        QuestManager.instance.InitializeLink();
+
         // 객체가 활성화될 때마다 HUD 데이터값 업데이트 (씬이 변경되기 전의 데이터와 싱크 맞추기)
         UpdateHudOnStart();
     }

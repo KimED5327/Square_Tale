@@ -50,6 +50,23 @@ public class SoundManager : MonoBehaviour
 
     }
 
+    public void PlayBGM(string p_name, float volume)
+    {
+        for (int i = 0; i < bgmSound.Length; i++)
+        {
+            if (p_name == bgmSound[i].name)
+            {
+                bgmPlayer.clip = bgmSound[i].clip;
+                bgmPlayer.volume = volume;
+                bgmPlayer.Play();
+                return;
+            }
+        }
+
+        Debug.LogError(p_name + "에 해당되는 BGM이 없습니다");
+
+    }
+
     public void StopBGM()
     {
         bgmPlayer.Stop();

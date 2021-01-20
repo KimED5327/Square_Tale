@@ -17,10 +17,7 @@ public class QuestLoader : MonoBehaviour
 
     // 퀘스트 타입별 DB 경로 
     [SerializeField] string deliverItemDBPath;
-    [SerializeField] string collectLootDBPath;
-    [SerializeField] string useItemDBPath;
     [SerializeField] string carryItemDBPath;
-    [SerializeField] string operateObjectDBPath;
     [SerializeField] string killEnemyDBPath;
     [SerializeField] string talkWithNpcDBPath;
 
@@ -155,10 +152,7 @@ public class QuestLoader : MonoBehaviour
     private void ParsingQuestTypeDB()
     {
         ParsingDeliverItemDB();
-        //ParsingCollectLootDB();
-        //ParsingUseItemDB();
         ParsingCarryItemDB();
-        //ParsingOperateObjectDB();
         ParsingKillEnemyDB();
         ParsingTalkWithNpc();
     }
@@ -206,73 +200,6 @@ public class QuestLoader : MonoBehaviour
     }
 
     /// <summary>
-    /// type2. CollectLoot 타입 퀘스트 DB 파싱 
-    /// </summary>
-    private void ParsingCollectLootDB()
-    {
-        string path = streamingAssetsPath + collectLootDBPath;
-        JsonData jData = JsonManager.instance.GetJsonData(path);
-
-        for (int i = 0; i < jData.Count; i++)
-        {
-            Hashtable questInfo = new Hashtable();
-            CollectLoot collectLoot = new CollectLoot();
-
-            int questID = int.Parse(jData[i][0].ToString());
-
-            // 단일 변수일 경우 
-            if(!jData[i][1].IsArray)
-            {
-                EnemyUnit enemy = new EnemyUnit();
-
-                enemy.SetEnemyID(int.Parse(jData[i][1].ToString()));
-                enemy.SetItemID(int.Parse(jData[i][2].ToString()));
-                enemy.SetCount(int.Parse(jData[i][3].ToString()));
-                collectLoot.GetLootList().Add(enemy);
-            }
-            else
-            {
-                for (int j = 0; j < jData[i][1].Count; j++)
-                {
-                    EnemyUnit enemy = new EnemyUnit();
-
-                    enemy.SetEnemyID(int.Parse(jData[i][1][j].ToString()));
-                    enemy.SetItemID(int.Parse(jData[i][2][j].ToString()));
-                    enemy.SetCount(int.Parse(jData[i][3][j].ToString()));
-                    collectLoot.GetLootList().Add(enemy);
-                }
-            }
-
-            collectLoot.SetQuestID(questID);
-            questInfo.Add(questInfoKey, collectLoot);
-            QuestDB.instance.GetQuest(questID).SetQuestInfo(questInfo);
-        }
-    }
-
-    /// <summary>
-    /// type3. UseItem 타입 퀘스트 DB 파싱 
-    /// </summary>
-    private void ParsingUseItemDB()
-    {
-        string path = streamingAssetsPath + useItemDBPath;
-        JsonData jData = JsonManager.instance.GetJsonData(path);
-
-        for (int i = 0; i < jData.Count; i++)
-        {
-            Hashtable questInfo = new Hashtable();
-            UseItem useItem = new UseItem();
-
-            int questID = int.Parse(jData[i][0].ToString());
-            useItem.GetItem().SetItemID(int.Parse(jData[i][1].ToString()));
-            useItem.GetItem().SetCount(int.Parse(jData[i][2].ToString()));
-
-            useItem.SetQuestID(questID);
-            questInfo.Add(questInfoKey, useItem);
-            QuestDB.instance.GetQuest(questID).SetQuestInfo(questInfo);
-        }
-    }
-
-    /// <summary>
     /// type4. CarryItem 타입 퀘스트 DB 파싱 
     /// </summary>
     private void ParsingCarryItemDB()
@@ -291,28 +218,6 @@ public class QuestLoader : MonoBehaviour
 
             carryItem.SetQuestID(questID);
             questInfo.Add(questInfoKey, carryItem);
-            QuestDB.instance.GetQuest(questID).SetQuestInfo(questInfo);
-        }
-    }
-
-    /// <summary>
-    /// type5. OperateObject 타입 퀘스트 DB 파싱 
-    /// </summary>
-    private void ParsingOperateObjectDB()
-    {
-        string path = streamingAssetsPath + operateObjectDBPath;
-        JsonData jData = JsonManager.instance.GetJsonData(path);
-
-        for (int i = 0; i < jData.Count; i++)
-        {
-            Hashtable questInfo = new Hashtable();
-            OperateObject operateObject = new OperateObject();
-
-            int questID = int.Parse(jData[i][0].ToString());
-
-            operateObject.SetQuestID(questID);
-            operateObject.SetObjectID(int.Parse(jData[i][1].ToString()));
-            questInfo.Add(questInfoKey, operateObject);
             QuestDB.instance.GetQuest(questID).SetQuestInfo(questInfo);
         }
     }
@@ -422,40 +327,6 @@ public class QuestLoader : MonoBehaviour
                         deliverItem.GetItem(j).GetItemID() + "번 아이템 " +
                         deliverItem.GetItem(j).GetCount() + "개");
                 }
-            }
-        }
-    }
-
-    void PrintCollectLootInfo()
-    {
-        for (int i = 0; i < QuestDB.instance.GetMaxCount(); i++)
-        {
-            if (QuestDB.instance.GetQuest(i + 1).GetQuestType() == QuestType.TYPE_COLLECTLOOT)
-            {
-                CollectLoot questInfo = QuestDB.instance.GetQuest(i + 1).GetQuestInfo()["info"] as CollectLoot;
-
-                for (int j = 0; j < questInfo.GetLootList().Count; j++)
-                {
-                    Debug.Log(questInfo.GetQuestID() + "번째 퀘스트 " +
-                        questInfo.GetLoot(j).GetEnemyID() + "번 몬스터 " +
-                        questInfo.GetLoot(j).GetItemID() + "번 아이템 " +
-                        questInfo.GetLoot(j).GetCount() + "개");
-                }
-            }
-        }
-    }
-
-    void PrintUseItemInfo()
-    {
-        for (int i = 0; i < QuestDB.instance.GetMaxCount(); i++)
-        {
-            if (QuestDB.instance.GetQuest(i + 1).GetQuestType() == QuestType.TYPE_USEITEM)
-            {
-                UseItem questInfo = QuestDB.instance.GetQuest(i + 1).GetQuestInfo()[questInfoKey] as UseItem;
-
-                Debug.Log(questInfo.GetQuestID() + "번째 퀘스트 " +
-                     questInfo.GetItem().GetItemID() + "번 아이템 " +
-                     questInfo.GetItem().GetCount() + "개");
             }
         }
     }

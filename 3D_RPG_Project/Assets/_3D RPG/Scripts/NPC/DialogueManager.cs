@@ -17,6 +17,7 @@ public class DialogueManager : MonoBehaviour
     string _questTitle;                 // 퀘스트 제목 
     QuestNPC _questNPC;                 // 현재 대화상대인 NPC 참조값 
     QuestCompleteUI _questCompleteUI;   // 퀘스트 완료 팝업 UI 참조값 
+    Tutorial _tutorial;                 // 튜토리얼 진행을 위한 튜토리얼 캐싱.
 
     string _keywordEffectName = "키워드 획득";
 
@@ -33,7 +34,6 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject _questDialoguePanel;
     [Tooltip("퀘스트 수락 Panel")]
     [SerializeField] GameObject _questAcceptedPanel;
-    [SerializeField] GameObject _tutorialPanel;
 
     [Header("Quest Accept UI")]
     [Tooltip("퀘스트 수락 Panel 내 퀘스트 Title")]
@@ -59,6 +59,7 @@ public class DialogueManager : MonoBehaviour
     {
         _player = FindObjectOfType<PlayerMove>().transform;
         _hudCanvas = FindObjectOfType<GameHudMenu>().gameObject;
+        _tutorial = FindObjectOfType<Tutorial>();
         _questCompleteUI = FindObjectOfType<QuestCompleteUI>();
     }
 
@@ -171,8 +172,7 @@ public class DialogueManager : MonoBehaviour
             CloseQuestDialoguePanel();
 
             // 튜토리얼 시작하기 
-            // CallTutorial(TutorialType.HUD);
-            _tutorialPanel.SetActive(true);
+            StartCoroutine(TutorialDelayCall());
             return;
         }
 
@@ -181,6 +181,14 @@ public class DialogueManager : MonoBehaviour
         _questAcceptedPanel.SetActive(true);
         CloseQuestDialoguePanel();
         SoundManager.instance.PlayEffectSound("Quest_Accept", 1f);
+    }
+
+    // 1초 대기 후 튜토리얼 등장하게 코루틴 추가
+    IEnumerator TutorialDelayCall()
+    {
+        yield return new WaitForSeconds(1f);
+
+        _tutorial.CallTutorial(TutorialType.HUD);
     }
 
     /// <summary>
@@ -204,7 +212,6 @@ public class DialogueManager : MonoBehaviour
         // 퀘스트 완료 팝업메뉴 실행 
         _questCompleteUI.OpenQuestCompletePanel(questCompleted);
         if (_questDialoguePanel.activeInHierarchy) CloseQuestDialoguePanel();
-        if (_tutorialPanel.activeInHierarchy) _tutorialPanel.SetActive(false);
         SoundManager.instance.PlayEffectSound("Quest_Complete", 0.9f);
     }
 

@@ -79,19 +79,6 @@ public class Tutorial : MonoBehaviour
         _buttonOriginColor = _imgLeftBtn.color;
 
         LoadTutorial();
-
-        // HUD 튜토리얼을 아직 안 봤으면 코루틴 실행
-        if (!_isLookTutorial[HUD_START_INDEX])
-            StartCoroutine(CheckQuestNum1());
-    }
-
-    // 퀘스트1 완료 체크 후 튜토리얼 진행
-    IEnumerator CheckQuestNum1()
-    {
-        // 퀘스트 1번. 완료될 때까지 대기
-        yield return new WaitUntil(() => _quest.CheckIfQuestIsCompleted(TUTORIAL_QUEST_ID));
-
-        CallTutorial(TutorialType.HUD);
     }
 
     /// <summary>
@@ -251,10 +238,8 @@ public class Tutorial : MonoBehaviour
     {
         // HUD 튜토리얼일 경우
         if(_curTutorial == TutorialType.HUD && !_isForce)
-        {
-            // 퀘스트 완료 조건 추가 필요
-            ;
-        }
+            DialogueManager.instance.CompleteQuest();
+        
         _canExit = true;
         SaveTutorial();
         QuestTutorialUI(false);

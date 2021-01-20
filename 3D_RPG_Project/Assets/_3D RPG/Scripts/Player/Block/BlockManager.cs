@@ -178,7 +178,6 @@ public class BlockManager : MonoBehaviour
 
     public string GetBlockNameID(int blockID)
     {
-        blockID--;
         return _slots[blockID].GetBlockName();
     }
 }

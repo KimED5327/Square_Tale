@@ -74,9 +74,4 @@ public class MapManager : MonoBehaviour
     }
 
     public string GetCurrentMapName() { return _currentMap.GetMapName(); }
-
-    public void ReLoadCurrentMap()
-    {
-        StartCoroutine(MapLoading());
-    }
 }

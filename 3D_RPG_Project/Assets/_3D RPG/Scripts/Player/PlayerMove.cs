@@ -137,7 +137,6 @@ public class PlayerMove : MonoBehaviour
     void Start()
     {
         _audio = GetComponent<AudioSource>();
-        Resurrection();
         myRigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         equipWeapon = GetComponentInChildren<Weapon>();
@@ -148,6 +147,7 @@ public class PlayerMove : MonoBehaviour
         joystick = FindObjectOfType<JoyStick>();
         SaveManager.instance.Load();
         PlayerType();
+        Resurrection();
     }
 
     // Update is called once per frame
@@ -1102,7 +1102,6 @@ public class PlayerMove : MonoBehaviour
         GameHudMenu.instance.ShowMenu();
         //myStatus.Initialized();
         MapManager.instance.ReLoadCurrentMap();
-        StartCoroutine("ResurrectionEffect");
     }
 
     public void ResurrectionToTown()

@@ -33,6 +33,8 @@ public class InteractionManager : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            TouchBoard.isPress = false; // 카메라 드래그 취소
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             // 터치 상호작용 시도

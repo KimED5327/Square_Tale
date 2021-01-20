@@ -8,7 +8,7 @@ public class TouchBoard : MonoBehaviour
     public Vector2 touchDis; //거리
     public Vector2 pointerOld; //처음 터치한곳
 
-    public bool isPress; //눌렀냐?
+    public static bool isPress; //눌렀냐?
 
     // Update is called once per frame
     void Update()

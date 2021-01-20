@@ -54,8 +54,6 @@ public class Shop : MonoBehaviour
             ShopSlot slot = Instantiate(_goSlotPrefab, _tfSlotParent).GetComponent<ShopSlot>();
             _slots[i] = slot;
         }
-
-        TouchTabBtn(0);
     }
 
     public void CallMenu()
@@ -69,6 +67,8 @@ public class Shop : MonoBehaviour
     void ShowMenu()
     {
         _tutorial.CallTutorial(TutorialType.SHOP);
+
+        TouchTabBtn(0);
 
         SoundManager.instance.PlayEffectSound("PopUp");
         BtnBuyWindow();

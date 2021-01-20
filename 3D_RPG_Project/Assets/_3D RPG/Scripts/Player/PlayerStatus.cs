@@ -73,6 +73,11 @@ public class PlayerStatus : Status
                     _level++;
                     _isLevelUp = true;
                 }
+                if (_level == 15)
+                {
+                    _curExp = 0;
+                    break;
+                }
             }
         }
     }
@@ -103,6 +108,11 @@ public class PlayerStatus : Status
                     _level++;
                     _isLevelUp = true;
                 }
+                if (_level == 15)
+                {
+                    _curExp = 0;
+                    break;
+                }
             }
         }
     }
@@ -115,6 +125,7 @@ public class PlayerStatus : Status
 
     public float GetExpPercent()
     {
+        if (_level == 15) return 0;
         return (float)_curExp / _levelUpExps[_level - 1];
     }
     public float GetHpPercent()

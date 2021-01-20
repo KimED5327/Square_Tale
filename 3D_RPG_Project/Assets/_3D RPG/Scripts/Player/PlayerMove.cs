@@ -102,10 +102,6 @@ public class PlayerMove : MonoBehaviour
     bool isSkill2;
     bool isSkill3;
     bool isSkill4;
-    bool useSkill1;
-    bool useSkill2;
-    bool useSkill3;
-    bool useSkill4;
     bool isMove;
     bool isDie;
     bool isDieTrigger;
@@ -141,6 +137,7 @@ public class PlayerMove : MonoBehaviour
     void Start()
     {
         _audio = GetComponent<AudioSource>();
+        Resurrection();
         myRigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         equipWeapon = GetComponentInChildren<Weapon>();
@@ -632,7 +629,6 @@ public class PlayerMove : MonoBehaviour
         {
             isMove = true;
             isSkill1 = true;
-            useSkill1 = true;
             anim.SetTrigger("doSkill1");
             StopCoroutine("Skill1Effect");
             StartCoroutine("Skill1Effect");
@@ -649,6 +645,8 @@ public class PlayerMove : MonoBehaviour
             Rigidbody rigid = instantEffect.GetComponent<Rigidbody>();
             Destroy(instantEffect, 0.5f);
             SoundManager.instance.PlayEffectSound("Skill1");
+            OverlapSkillArea area = FindObjectOfType<OverlapSkillArea>();
+            area.SetSkillNum(1);
             skill1Effect.SetActive(true);
         }
         if (isMage)
@@ -665,14 +663,14 @@ public class PlayerMove : MonoBehaviour
 
             for (int i = 0; i < enemyPos.Count; i++)
             {
-                ObjectPooling.instance.GetObjectFromPool("라이트닝", enemyPos[i].position);
+                SkillArea area = ObjectPooling.instance.GetObjectFromPool("라이트닝", enemyPos[i].position).GetComponent<SkillArea>();
+                area.SetSkillNum(1);
             }
         }
         yield return new WaitForSeconds(0.5f);
         skill1Effect.SetActive(false);
         startLightning.SetActive(false);
         isMove = false;
-        useSkill1 = false;
     }
 
     public void Skill2()
@@ -694,7 +692,6 @@ public class PlayerMove : MonoBehaviour
                 isJump = true;
                 isCasting = true;
             }
-            useSkill2 = true;
             isMove = true;
             isSkill2 = true;
             StopCoroutine("Skill2Effect");
@@ -719,11 +716,12 @@ public class PlayerMove : MonoBehaviour
 
                 Destroy(instantEffect, 0.5f);
             }
+            OverlapSkillArea area = FindObjectOfType<OverlapSkillArea>();
+            area.SetSkillNum(2);
             skill2Effect.SetActive(true);
             yield return new WaitForSeconds(0.5f);
             skill2Effect.SetActive(false);
             isMove = false;
-            useSkill2 = false;
         }
         if (isMage)
         {
@@ -735,9 +733,11 @@ public class PlayerMove : MonoBehaviour
             startRain.SetActive(false);
             rain.SetActive(true);
             isMove = false;
+            SkillArea area = FindObjectOfType<SkillArea>();
+            area.SetSkillNum(2);
+            SoundManager.instance.PlayEffectSound("IceRain");
             yield return new WaitForSeconds(3.0f);
             rain.SetActive(false);
-            useSkill2 = false;
         }
     }
 
@@ -751,7 +751,6 @@ public class PlayerMove : MonoBehaviour
         }
         if (!isSkill3 && !isDie && !isCasting)
         {
-            useSkill3 = true;
             isMove = true;
             isSkill3 = true;
             anim.SetTrigger("doSkill1");
@@ -768,18 +767,20 @@ public class PlayerMove : MonoBehaviour
             GameObject instantEffect = Instantiate(effect3, transform.position, transform.rotation);
             Rigidbody rigid = instantEffect.GetComponent<Rigidbody>();
             rigid.velocity = transform.forward * 10;
+            OverlapSkillArea area = FindObjectOfType<OverlapSkillArea>();
+            area.SetSkillNum(3);
             skill3Effect.SetActive(true);
             yield return new WaitForSeconds(0.5f);
             Destroy(instantEffect);
             skill3Effect.SetActive(false);
             isMove = false;
-            useSkill3 = false;
         }
         if (isMage)
         {
             float elapseTime = 0f;
             float finishTime = 4f;
-            ObjectPooling.instance.GetObjectFromPool("블랙홀", blackholePos.position);
+            SkillArea area = ObjectPooling.instance.GetObjectFromPool("블랙홀", blackholePos.position).GetComponent<SkillArea>();
+            area.SetSkillNum(3);
             List<Transform> enemyPos = new List<Transform>();
             Collider[] checkColliders = Physics.OverlapSphere(blackholePos.position, 5, LayerMask.GetMask("Enemy"));
             Vector3 blackholePoint = blackholePos.position + Vector3.up * 1.3f;
@@ -787,7 +788,7 @@ public class PlayerMove : MonoBehaviour
             {
                 enemyPos.Add(checkColliders[i].transform);
             }
-
+            SoundManager.instance.PlayEffectSound("BlackHole");
             isMove = false;
 
             while (elapseTime <= finishTime)
@@ -795,12 +796,12 @@ public class PlayerMove : MonoBehaviour
                 yield return null;
                 for (int i = 0; i < enemyPos.Count; i++)
                 {
+                    if (checkColliders[i].transform.name.Equals("릴리(Clone)")) continue;
                     enemyPos[i].position = Vector3.MoveTowards(enemyPos[i].position, blackholePoint, 5f * Time.deltaTime);
                 }
                 elapseTime += Time.deltaTime;
             }
             enemyPos.Clear();
-            useSkill3 = false;
         }
     }
 
@@ -814,7 +815,6 @@ public class PlayerMove : MonoBehaviour
         }
         if (!isSkill4 && !isDie && !isCasting)
         {
-            useSkill4 = true;
             isMove = true;
             isSkill4 = true;
             anim.SetTrigger("doAttack2");
@@ -838,11 +838,12 @@ public class PlayerMove : MonoBehaviour
 
                 Destroy(instantEffect, 0.3f);
             }
+            OverlapSkillArea area = FindObjectOfType<OverlapSkillArea>();
+            area.SetSkillNum(4);
             skill4Effect.SetActive(true);
             yield return new WaitForSeconds(0.3f);
             skill4Effect.SetActive(false);
             isMove = false;
-            useSkill4 = false;
         }
         if (isMage)
         {
@@ -855,10 +856,11 @@ public class PlayerMove : MonoBehaviour
             isMove = false;
             for (int i = 0; i < meteoPos.Count; i++)
             {
-                ObjectPooling.instance.GetObjectFromPool("익스플로전", meteoPos[i]);
+                SkillArea area = ObjectPooling.instance.GetObjectFromPool("익스플로전", meteoPos[i]).GetComponent<SkillArea>();
+                area.SetSkillNum(4);
+                SoundManager.instance.PlayEffectSound("Explosion");
                 yield return new WaitForSeconds(0.2f);
             }
-            useSkill4 = false;
         }
     }
 
@@ -1058,7 +1060,8 @@ public class PlayerMove : MonoBehaviour
     {
         if (myStatus.GetCurrentHp() <= 0)
         {
-
+            SaveManager.instance.Save();
+            GameManager._isDie = true;
             isDie = true;
             resurrectionUI.SetActive(true);
             blockCon.enabled = false;
@@ -1077,6 +1080,8 @@ public class PlayerMove : MonoBehaviour
 
         if (transform.position.y < -50)
         {
+            SaveManager.instance.Save();
+            GameManager._isDie = true;
             isDie = true;
             resurrectionUI.SetActive(true);
             blockCon.enabled = false;
@@ -1110,8 +1115,11 @@ public class PlayerMove : MonoBehaviour
 
     public void Resurrection()
     {
-        // 즉시부활(임시)
-        StartCoroutine("ResurrectionEffect");
+        if (GameManager._isDie)
+        {
+            StartCoroutine("ResurrectionEffect");
+            GameManager._isDie = false;
+        }
     }
 
     IEnumerator ResurrectionEffect()
@@ -1130,6 +1138,29 @@ public class PlayerMove : MonoBehaviour
     public void Swap() // 버튼이 1개일떄 전환
     {
         if (!isDie && (!isSkill1 && !isSkill2  && !isSkill3  && !isSkill4))
+        {
+            if (isSword)
+            {
+                anim = anims[1];
+                sword.SetActive(false);
+                mage.SetActive(true);
+            }
+            if (isMage)
+            {
+                anim = anims[0];
+                sword.SetActive(true);
+                mage.SetActive(false);
+            }
+        }
+        else
+        {
+            Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSwap);
+        }
+    }
+
+    public void SkillSwap() // 버튼이 1개일떄 전환
+    {
+        if (!isDie && (!isSkill1 && !isSkill2 && !isSkill3 && !isSkill4))
         {
             if (isSword)
             {
@@ -1181,30 +1212,6 @@ public class PlayerMove : MonoBehaviour
         anim.SetBool("isJump", false);
         isJump = false;
         isVictory = false;
-    }
-
-    public int getSkillNum()
-    {
-        if (useSkill1)
-        {
-            return 1;
-        }
-        else if (useSkill2)
-        {
-            return 2;
-        }
-        else if (useSkill3)
-        {
-            return 3;
-        }
-        else if (useSkill4)
-        {
-            return 4;
-        }
-        else
-        {
-            return 0;
-        }
     }
 
     void LevelUp()

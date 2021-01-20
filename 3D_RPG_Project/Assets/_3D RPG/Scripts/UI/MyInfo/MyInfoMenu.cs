@@ -12,7 +12,7 @@ public class MyInfoMenu : MonoBehaviour
     [SerializeField] Text txtDef = null;
     [SerializeField] Text txtHp = null;
     [SerializeField] Image imgUser = null;
-
+    [SerializeField] Sprite[] _profile = null;
     [SerializeField] Text txtAdventure = null;
     [SerializeField] Image imgAdventureGauge = null;
 
@@ -32,7 +32,7 @@ public class MyInfoMenu : MonoBehaviour
     public void OnTouchMenu()
     {
         isOpen = !isOpen;
-
+        SaveManager.instance.Save();
         if (isOpen) ShowMenu();
         else HideMenu();
     }
@@ -48,22 +48,18 @@ public class MyInfoMenu : MonoBehaviour
         
         if (player.GetIsSword())
         {
+            imgUser.sprite = _profile[0];
             txtAtkType.text = "STR";
             txtAtkValue.text = thePlayerStatus.GetStr().ToString();
-            //txtDef.text = thePlayerStatus.GetSwordDef().ToString();
-            //txtHp.text = thePlayerStatus.GetSwordMaxHp().ToString();
         }
         if (player.GetIsMage())
         {
+            imgUser.sprite = _profile[1];
             txtAtkType.text = "INT";
             txtAtkValue.text = thePlayerStatus.GetInt().ToString();
-            //txtDef.text = thePlayerStatus.GetMageDef().ToString();
-            //txtHp.text = thePlayerStatus.GetMageMaxHp().ToString();
         }
         txtHp.text = thePlayerStatus.GetMaxHp().ToString();
         txtDef.text = thePlayerStatus.GetDef().ToString();
-        
-        imgUser.sprite = null;
 
         float percent = Adventure.GetAdventureProgress();
         txtAdventure.text = percent + " %";
@@ -80,37 +76,17 @@ public class MyInfoMenu : MonoBehaviour
 
     public void SwapSword()
     {
-        if (!player.GetIsSkill1() && !player.GetIsSkill2() && !player.GetIsSkill3() && !player.GetIsSkill4())
-        {
-            SoundManager.instance.PlayEffectSound("Click");
-            player.anim = player.anims[0];
-            sword.SetActive(true);
-            mage.SetActive(false);
-            player.SetIsSword(true);
-            player.SetIsMage(false);
-            ShowMenu();
-        }
-        else
-        {
-            Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSwap);
-        }
+        txtAtkType.text = "STR";
+        txtAtkValue.text = thePlayerStatus.GetStr().ToString();
+        imgUser.sprite = _profile[0];
+        SoundManager.instance.PlayEffectSound("Click");
     }
 
     public void SwapMage()
     {
-        if (!player.GetIsSkill1() && !player.GetIsSkill2() && !player.GetIsSkill3() && !player.GetIsSkill4())
-        {
-            SoundManager.instance.PlayEffectSound("Click");
-            player.anim = player.anims[1];
-            sword.SetActive(false);
-            mage.SetActive(true);
-            player.SetIsSword(false);
-            player.SetIsMage(true);
-            ShowMenu();
-        }
-        else
-        {
-            Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSwap);
-        }
+        txtAtkType.text = "INT";
+        txtAtkValue.text = thePlayerStatus.GetInt().ToString();
+        imgUser.sprite = _profile[1];
+        SoundManager.instance.PlayEffectSound("Click");
     }
 }

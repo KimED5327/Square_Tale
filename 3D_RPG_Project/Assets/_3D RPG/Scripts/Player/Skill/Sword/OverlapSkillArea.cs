@@ -7,6 +7,8 @@ public class OverlapSkillArea : MonoBehaviour
     PlayerStatus _status;
     PlayerMove _player;
 
+    int skillNum;
+
     bool isHit;
 
     float hitCount;
@@ -25,8 +27,7 @@ public class OverlapSkillArea : MonoBehaviour
             Status targetStatus = other.GetComponent<Status>();
             if (!targetStatus.IsDead())
             {
-                //targetStatus.Damage(_status.GetAtk(), transform.position);
-                switch (_player.getSkillNum())
+                switch (skillNum)
                 {
                     case 1:
                         targetStatus.Damage((int)(_status.GetStr() * 1.7f), transform.position, "overlap");
@@ -44,4 +45,6 @@ public class OverlapSkillArea : MonoBehaviour
             }
         }
     }
+
+    public void SetSkillNum(int num) { skillNum = num; }
 }

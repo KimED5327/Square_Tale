@@ -54,9 +54,16 @@ public class NPCLoader : MonoBehaviour
                 }
             }
 
-            for (int j = 0; j < jData[i][3].Count; j++)
+            if (!jData[i][3].IsArray)
             {
-                npc.AddLine(jData[i][3][j].ToString());
+                npc.AddLine(jData[i][3].ToString());
+            }
+            else
+            {
+                for (int j = 0; j < jData[i][3].Count; j++)
+                {
+                    npc.AddLine(jData[i][3][j].ToString());
+                }
             }
 
             NpcDB.instance.AddNPC(npcID, npc);

@@ -196,12 +196,6 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     public void CompleteQuest()
     {
-        // 키워드 보상이 있는 경우 일정 딜레이 후 키워드 획득 
-        if (QuestDB.instance.GetQuest(_questID).GetKeywordList().Count > 0)
-        {
-            StartCoroutine("GetKeyword");
-        }
-
         // 완료된 퀘스트를 퀘스트 매니져의 완료된 퀘스트 리스트에 추가 
         Quest questCompleted = QuestManager.instance.GetOngoingQuestByID(_questID).DeepCopy();
         QuestManager.instance.AddFinishedQuest(questCompleted);
@@ -211,8 +205,14 @@ public class DialogueManager : MonoBehaviour
 
         // 퀘스트 완료 팝업메뉴 실행 
         _questCompleteUI.OpenQuestCompletePanel(questCompleted);
-        if (_questDialoguePanel.activeInHierarchy) CloseQuestDialoguePanel();
+        CloseQuestDialoguePanel();
         SoundManager.instance.PlayEffectSound("Quest_Complete", 0.9f);
+
+        // 키워드 보상이 있는 경우 일정 딜레이 후 키워드 획득 
+        if (QuestDB.instance.GetQuest(_questID).GetKeywordList().Count > 0)
+        {
+            StartCoroutine("GetKeyword");
+        }
     }
 
     /// <summary>

@@ -1671,7 +1671,7 @@ MonoBehaviour:
   _level: 5
   _giveExp: 42
   _knockBackForce: 0.1
-  _canKnockBack: 1
+  _canKnockBack: 0
   _dropItemInfo:
   - itemID: 3
     itemCounts:
@@ -1679,6 +1679,8 @@ MonoBehaviour:
       max: 0
     itemDropRate: 70
   _isForceDead: 0
+  _removeTime: 5
+  _respawnTime: 20
 --- !u!114 &4860459568502794618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1706,7 +1708,6 @@ MonoBehaviour:
     type: 3}
   SkillEffect2: {fileID: 3620588356073284319, guid: 0182ad8cf15fbcd4ca441e04271575cb,
     type: 3}
-  myParticle: {fileID: 0}
 --- !u!54 &-7410316327382903213
 Rigidbody:
   m_ObjectHideFlags: 0

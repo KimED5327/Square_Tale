@@ -90,14 +90,16 @@ public abstract class Status : MonoBehaviour
     {
         if (transform.CompareTag(StringManager.enemyTag))
         {
-            if(GetComponent<Status>().GetName() == "릴리")
+            if (GetComponent<Status>().GetName() == "릴리")
             {
                 // 마지막 보스 잡기 퀘스트 
                 QuestManager.instance.CheckKillEnemyQuest(6);
             }
-
-            if(_giveExp != 0)
-                GetComponent<Enemy>().GetPlayerStatus().IncreaseExp(_giveExp);
+            else
+            {
+                if (_giveExp != 0)
+                    GetComponent<Enemy>().GetPlayerStatus().IncreaseExp(_giveExp);
+            }
         }
 
         _curHp = 0;

@@ -230,15 +230,18 @@ public class QuestNPC : MonoBehaviour
     /// <param name="quest"></param>
     public void SyncWithOngoingQuest(Quest quest)
     {
+        // 진행 중인 퀘스트의 싱크를 맞출 NPC가 맵에 존재하지 않는다면 실행되지 않음. 
         bool isOngoing = false; 
 
         // NPC의 퀘스트 목록 내 진행중인 퀘스트와 같은 ID를 가진 퀘스트가 있다면 싱크 실행 
-        foreach(int questID in _npc.GetQuestList())
+        for (int i = 0; i < _npc.GetQuestList().Count; i++)
         {
-            if (questID == quest.GetQuestID()) isOngoing = true; 
+            if (quest.GetQuestID() == _npc.GetQuestID(i)) isOngoing = true; 
         }
 
         if (!isOngoing) return;
+
+        Debug.Log(quest.GetQuestID() + "번 퀘스트 " + quest.GetState() + " 싱크 진행");
 
         // 퀘스트의 진행 상태에 따라 싱크 실행 
         switch (quest.GetState())
@@ -439,7 +442,7 @@ public class QuestNPC : MonoBehaviour
     public void SetNpcID(int npcID) { _npcID = npcID; }
 
     public int GetOngoingQuestID() { return _ongoingQuestID; }
-    public void SetOngoingQuestID(int questID) { Debug.Log("현재 진행중인 퀘스트 " + questID + "번으로 설정");  _ongoingQuestID = questID; }
+    public void SetOngoingQuestID(int questID) { _ongoingQuestID = questID; }
 
     public QuestState GetQuestState() { return _questState; }
     public void SetQuestState(QuestState state) { _questState = state; }

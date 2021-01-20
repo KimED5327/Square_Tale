@@ -33,6 +33,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject _questDialoguePanel;
     [Tooltip("퀘스트 수락 Panel")]
     [SerializeField] GameObject _questAcceptedPanel;
+    [SerializeField] GameObject _tutorialPanel;
 
     [Header("Quest Accept UI")]
     [Tooltip("퀘스트 수락 Panel 내 퀘스트 Title")]
@@ -69,6 +70,7 @@ public class DialogueManager : MonoBehaviour
     {
         GetLine(_questID);
         _questDialoguePanel.SetActive(_isTalking);
+        SoundManager.instance.PlayEffectSound("Click", 1f);
 
         // 대화가 완료된 시점에서 퀘스트 진행상태에 맞게 동작 수행 
         if (!_isTalking)
@@ -93,11 +95,10 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     public void CloseDialoguePanel()
     {
-        _player.GetComponent<CameraController>().enabled = true;
         _dialoguePanel.SetActive(false);
-        _hudCanvas.SetActive(true);
-        _questNPC.TurnOnNameTag();
+        _questNPC.GetComponent<ZoomNPC>().ZoomOutNPC();
         _questNPC.GetComponent<Transform>().tag = "QuestNPC";
+        _questNPC.TurnOnNameTag();
     }
 
     /// <summary>
@@ -105,9 +106,8 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     public void CloseQuestDialoguePanel()
     {
-        _player.GetComponent<CameraController>().enabled = true;
         _questDialoguePanel.SetActive(false);
-        _hudCanvas.SetActive(true);
+        _questNPC.GetComponent<ZoomNPC>().ZoomOutNPC();
         _questNPC.TurnOnNameTag();
 
         // 바로 tag를 QuestNPC로 바꾸면 중복터치 문제가 생기므로 
@@ -161,20 +161,32 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     void AcceptQuest()
     {
+        // 수락한 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에 추가 
+        Quest questAccepted = QuestDB.instance.GetQuest(_questID).DeepCopy();
+        QuestManager.instance.AddOngoingQuest(questAccepted);
+
+        // 튜토리얼 퀘스트일 경우 대화창만 비활성화 
+        if (questAccepted.GetQuestType() == QuestType.TYPE_TUTORIAL)
+        {
+            CloseQuestDialoguePanel();
+
+            // 튜토리얼 시작하기 
+            // CallTutorial(TutorialType.HUD);
+            _tutorialPanel.SetActive(true);
+            return;
+        }
+
         // 퀘스트 수락 팝업메뉴 실행 
         SetQuestAcceptPanel();
         _questAcceptedPanel.SetActive(true);
         CloseQuestDialoguePanel();
-
-        // 수락한 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에 추가 
-        Quest questAccepted = QuestDB.instance.GetQuest(_questID).DeepCopy();
-        QuestManager.instance.AddOngoingQuest(questAccepted);
+        SoundManager.instance.PlayEffectSound("Quest_Accept", 1f);
     }
 
     /// <summary>
     /// 퀘스트 완료에 따라 팝업메뉴을 실행하고, 퀘스트 매니져에 완료된 퀘스트 추가 및 NPC 상태값 변경
     /// </summary>
-    void CompleteQuest()
+    public void CompleteQuest()
     {
         // 키워드 보상이 있는 경우 일정 딜레이 후 키워드 획득 
         if (QuestDB.instance.GetQuest(_questID).GetKeywordList().Count > 0)
@@ -191,7 +203,9 @@ public class DialogueManager : MonoBehaviour
 
         // 퀘스트 완료 팝업메뉴 실행 
         _questCompleteUI.OpenQuestCompletePanel(questCompleted);
-        CloseQuestDialoguePanel();
+        if (_questDialoguePanel.activeInHierarchy) CloseQuestDialoguePanel();
+        if (_tutorialPanel.activeInHierarchy) _tutorialPanel.SetActive(false);
+        SoundManager.instance.PlayEffectSound("Quest_Complete", 0.9f);
     }
 
     /// <summary>

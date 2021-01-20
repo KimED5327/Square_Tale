@@ -20,8 +20,8 @@ public class QuestManager : MonoBehaviour
     public QuestHUD _questHUD;                 // QuestHUD 참조자 
     public QuestMenu _questMenu;               // QuestMenu 참조자 
     public PlayerStatus _playerStatus;         // PlayerStatus 참조자 
-    bool _isHudOpen = false;            // QuestHUD 창 오픈여부 확인 변수 
-    bool _isCompletableIconOn = false;  // QuestHUD 완료가능 아이콘 on/off 변수 
+    public bool _isHudOpen = false;            // QuestHUD 창 오픈여부 확인 변수 
+    public bool _isCompletableIconOn = false;  // QuestHUD 완료가능 아이콘 on/off 변수 
     string _questInfoKey = "info";      // 퀘스트 타입 해시테이블 키 
 
     /// <summary>
@@ -46,20 +46,20 @@ public class QuestManager : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.O))
-        //{
-        //    //Debug.Log("3번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(3)));
-        //    //Debug.Log("4번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(4)));
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            //Debug.Log("3번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(3)));
+            //Debug.Log("4번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(4)));
 
-        //    _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(3));
-        //    Debug.Log("3번 아이템 획득");
+            //_inventory.TryToPushInventory(ItemDatabase.instance.GetItem(3));
+            //Debug.Log("3번 아이템 획득");
 
-        //    _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(7));
-        //    Debug.Log("7번 아이템 획득");
+            _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(7));
+            Debug.Log("7번 아이템 획득");
 
-        //    _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(9));
-        //    Debug.Log("9번 아이템 소지개수 : " + _inventory.GetItemCount(ItemDatabase.instance.GetItem(9)));
-        //}
+            //_inventory.TryToPushInventory(ItemDatabase.instance.GetItem(9));
+            //Debug.Log("9번 아이템 소지개수 : " + _inventory.GetItemCount(ItemDatabase.instance.GetItem(9)));
+        }
     }
 
     /// <summary>
@@ -188,7 +188,9 @@ public class QuestManager : MonoBehaviour
 
         // 아이템 보상이 있을 경우 인벤토리에 추가 
         if (quest.GetItemID() != 0)
+        {
             _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(quest.GetItemID()));
+        }
 
         // 블록 보상이 있을 경우 블록 추가 
         if (quest.GetBlockList().Count > 0)
@@ -446,6 +448,12 @@ public class QuestManager : MonoBehaviour
 
         Debug.Log(quest.GetQuestID() + "번 퀘스트 완료가능");
 
+        if(quest.GetQuestFinisher() == null)
+        {
+            Debug.Log("퀘스트 완료자가 다른 맵에 있음.");
+            return; 
+        }
+
         quest.GetQuestFinisher().SetOngoingQuestID(quest.GetQuestID());
         quest.GetQuestFinisher().SetQuestState(QuestState.QUEST_COMPLETABLE);
         quest.GetQuestFinisher().SetQuestMark();
@@ -597,6 +605,7 @@ public class QuestManager : MonoBehaviour
 
     //getter
     public bool GetIsHudOpen() { return _isHudOpen; }
+    public bool GetIsCompletableIconOn() { return _isCompletableIconOn; }
     public List<Quest> GetOngoingQuestList() { return _ongoingQuests; }
     public List<Quest> GetFinishedQuestList() { return _finishedQuests; }
     public Quest GetOngoingQuestByIdx(int idx) { return _ongoingQuests[idx]; }
@@ -605,5 +614,5 @@ public class QuestManager : MonoBehaviour
 
     //setter
     public void SetIsHudOpen(bool value) { _isHudOpen = value; }
-
+    public void SetIsCompletableIconOn(bool value) { _isCompletableIconOn = value; }
 }

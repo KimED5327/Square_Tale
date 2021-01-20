@@ -38,4 +38,5 @@ public class CameraController : MonoBehaviour
     }
 
     public void SetCanMove(bool flag) { _canMove = flag; }
+    public float GetCamAngleX() { return cameraAngleX; }
 }

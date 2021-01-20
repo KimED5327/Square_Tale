@@ -40,29 +40,19 @@ public enum QuestState
 public enum QuestType
 {
     /// <summary>
+    /// 게임 플레이 시 처음 실행되는 튜토리얼 퀘스트 
+    /// </summary>
+    TYPE_TUTORIAL = 1,
+
+    /// <summary>
     /// 특정한 아이템을 NPC에게 전달하여 완수하는 퀘스트 타입
     /// </summary>
-    TYPE_DELIVERITEM = 1,
-
-    /// <summary>
-    /// 몬스터를 처치하고 획득한 퀘스트 아이템을 전달하여 완수하는 퀘스트 타입 (퀘스트 아이템은 퀘스트 진행 시에만 드랍)
-    /// </summary>
-    TYPE_COLLECTLOOT,
-
-    /// <summary>
-    /// 몬스터에게 아이템을 사용하여 완수하는 퀘스트 타입 
-    /// </summary>
-    TYPE_USEITEM,
+    TYPE_DELIVERITEM,
 
     /// <summary>
     /// 아이템 소지여부를 확인하여 특정한 아이템을 소지중인 경우 완수되는 퀘스트 타입 
     /// </summary>
     TYPE_CARRYITEM,
-
-    /// <summary>
-    /// 특정 오브젝트를 조작하여 완수하는 퀘스트 타입 (레버를 폭파시켜 다리를 생성하는 퀘스트)
-    /// </summary>
-    TYPE_OPERATEOBJECT,
 
     /// <summary>
     /// 특정 몬스터를 지정된 수만큼 처치하여 완수하는 퀘스트 타입
@@ -160,6 +150,7 @@ public class Quest
 
         newCopy.SetExp(this.GetExp());
         newCopy.SetGold(this.GetGold());
+        newCopy.SetItemID(this.GetItemID());
 
         List<BlockUnit> blockListCopy = new List<BlockUnit>(this.GetBlockList());
         newCopy.SetBlockList(blockListCopy);
@@ -240,7 +231,7 @@ public class EnemyUnit
 }
 
 /// <summary>
-/// type1. 특정한 아이템을 NPC에게 전달하여 완수하는 퀘스트 타입 
+/// type2. 특정한 아이템을 NPC에게 전달하여 완수하는 퀘스트 타입 
 /// </summary>
 public class DeliverItem
 {
@@ -270,54 +261,7 @@ public class DeliverItem
 }
 
 /// <summary>
-/// type2. 몬스터를 처치하고 획득한 퀘스트 아이템을 전달하여 완수하는 퀘스트 타입 (퀘스트 아이템은 퀘스트 진행 시에만 드랍)
-/// </summary>
-public class CollectLoot
-{
-    int _questID;                                       // 퀘스트 ID
-    List<EnemyUnit> _lootList = new List<EnemyUnit>();  // 퀘스트 아이템 리스트  
-
-    //getter
-    public int GetQuestID() { return _questID; }
-    public List<EnemyUnit> GetLootList() { return _lootList; }
-
-    /// <summary>
-    /// EnemyUnit 리스트(lootList)에서 idx 순서의 데이터 반환. lootList[idx]
-    /// </summary>
-    /// <param name="idx"></param>
-    /// <returns></returns>
-    public EnemyUnit GetLoot(int idx) { return _lootList[idx]; }
-
-    //setter
-    public void SetQuestID(int questID) { _questID = questID; }
-    public void SetLootList(List<EnemyUnit> lootList) { _lootList = lootList; }
-
-    /// <summary>
-    /// EnemyUnit 리스트(lootList)에 loot을 새 원소로 추가  
-    /// </summary>
-    /// <param name="loot"></param>
-    public void AddLoot(EnemyUnit loot) { _lootList.Add(loot); }
-}
-
-/// <summary>
-/// type3. 몬스터에게 아이템을 사용하여 완수하는 퀘스트 타입 
-/// </summary>
-public class UseItem
-{
-    int _questID;                     // 퀘스트 ID
-    ItemUnit _item = new ItemUnit();  // 사용하는 아이템  
-
-    //getter
-    public int GetQuestID() { return _questID; }
-    public ItemUnit GetItem() { return _item; }
-
-    //setter
-    public void SetQuestID(int questID) { _questID = questID; }
-    public void SetItem(ItemUnit item) { _item = item; }
-}
-
-/// <summary>
-/// type4. 아이템 소지여부를 확인하여 특정한 아이템을 소지중일 경우 완수되는 퀘스트 타입 
+/// type3. 아이템 소지여부를 확인하여 특정한 아이템을 소지중일 경우 완수되는 퀘스트 타입 
 /// </summary>
 public class CarryItem
 {
@@ -336,24 +280,7 @@ public class CarryItem
 }
 
 /// <summary>
-/// type5. 특정 오브젝트를 조작하여 완수하는 퀘스트 타입 (레버를 폭파시켜 다리를 생성하는 퀘스트)
-/// </summary>
-public class OperateObject
-{
-    int _questID;       // 퀘스트 ID
-    int _objectID;      // 오브젝트 ID
-
-    //getter
-    public int GetQuestID() { return _questID; }
-    public int GetObjectID() { return _objectID; }
-
-    //setter
-    public void SetQuestID(int questID) { _questID = questID; }
-    public void SetObjectID(int objectID) { _objectID = objectID; }
-}
-
-/// <summary>
-/// type6. 특정 몬스터를 지정된 수만큼 처치하여 완수하는 퀘스트 타입 
+/// type4. 특정 몬스터를 지정된 수만큼 처치하여 완수하는 퀘스트 타입 
 /// </summary>
 public class KillEnemy
 {
@@ -408,7 +335,7 @@ public class KillEnemy
 }
 
 /// <summary>
-/// type7. 특정 NPC와 대화하여 완수하는 퀘스트 타입 
+/// type5. 특정 NPC와 대화하여 완수하는 퀘스트 타입 
 /// </summary>
 public class TalkWithNpc
 {

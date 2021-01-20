@@ -101,6 +101,9 @@ public class Enemy : MonoBehaviour
     {
         if (!status.IsDead() && !jump)
         {
+            // 플레이어가 비활성화 상태라면 리턴 
+            if (!player.gameObject.activeInHierarchy) return;
+
             switch (enemyState)
             {
                 case State.Idle:
@@ -277,7 +280,6 @@ public class Enemy : MonoBehaviour
     //공격 상태
     private void UpdateAttack()
     {
-        
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange, 2))
         {
             Vector3 dir = player.transform.position - transform.position;

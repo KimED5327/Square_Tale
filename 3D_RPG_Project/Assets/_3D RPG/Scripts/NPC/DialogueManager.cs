@@ -19,12 +19,12 @@ public class DialogueManager : MonoBehaviour
     QuestCompleteUI _questCompleteUI;   // 퀘스트 완료 팝업 UI 참조값 
     Tutorial _tutorial;                 // 튜토리얼 진행을 위한 튜토리얼 캐싱.
 
-    string _keywordEffectName = "키워드 획득";
+    string _keywordEffectName = "키워드 획득";   
 
     // UI 관련 변수 
-    Transform _npcTransform;
-    Transform _player;
-    public float _delayBeforeGettingKeyword = 2f;    // 퀘스트 완료 시 키워드 보상 획득 딜레이 
+    Transform _player;                               // 플레이어 트랜스폼 
+    float _delayBeforeGettingKeyword = 2f;    // 퀘스트 완료 시 키워드 보상 획득 딜레이 
+    float _delayBeforeAllQuestPopup = 4.5f;   // 모든 퀘스트 완료시 팝업 UI 활성화 딜레이 
 
     [Header("Panel UI")]
     GameObject _hudCanvas;
@@ -34,10 +34,18 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject _questDialoguePanel;
     [Tooltip("퀘스트 수락 Panel")]
     [SerializeField] GameObject _questAcceptedPanel;
+    [Tooltip("모든 퀘스트 완료 Panel")]
+    [SerializeField] GameObject _AllQuestCompletePanel;
 
     [Header("Quest Accept UI")]
     [Tooltip("퀘스트 수락 Panel 내 퀘스트 Title")]
     [SerializeField] Text _questAcceptedTitle;
+
+    [Header("All Quest Complete UI")]
+    [Tooltip("모든 퀘스트 완료 Panel 내 퀘스트 팝업 Panel")]
+    [SerializeField] GameObject _popupPanel;
+    [Tooltip("모든 퀘스트 완료 Panel 내 BG 이미지")]
+    [SerializeField] Image _imgBG;
 
     [Header("Quest Dialogue UI")]
     [Tooltip("퀘스트 다이얼로그 Panel 내 퀘스트 Title")]
@@ -119,6 +127,12 @@ public class DialogueManager : MonoBehaviour
         _lineIdx = 0;
     }
 
+    public void CloseAllQuestCompleteUI()
+    {
+        _popupPanel.SetActive(false);
+        _imgBG.GetComponent<Animator>().Play("FadeOut", 0, 0f);
+    }
+
     /// <summary>
     /// 퀘스트 대사를 퀘스트 다이얼로그 창에 한줄씩 출력 
     /// </summary>
@@ -183,19 +197,17 @@ public class DialogueManager : MonoBehaviour
         SoundManager.instance.PlayEffectSound("Quest_Accept", 1f);
     }
 
-    // 1초 대기 후 튜토리얼 등장하게 코루틴 추가
-    IEnumerator TutorialDelayCall()
-    {
-        yield return new WaitForSeconds(1f);
-
-        _tutorial.CallTutorial(TutorialType.HUD);
-    }
-
     /// <summary>
     /// 퀘스트 완료에 따라 팝업메뉴을 실행하고, 퀘스트 매니져에 완료된 퀘스트 추가 및 NPC 상태값 변경
     /// </summary>
     public void CompleteQuest()
     {
+        // 키워드 보상이 있는 경우 일정 딜레이 후 키워드 획득 
+        if (QuestDB.instance.GetQuest(_questID).GetKeywordList().Count > 0)
+        {
+            StartCoroutine("GetKeyword");
+        }
+
         // 완료된 퀘스트를 퀘스트 매니져의 완료된 퀘스트 리스트에 추가 
         Quest questCompleted = QuestManager.instance.GetOngoingQuestByID(_questID).DeepCopy();
         QuestManager.instance.AddFinishedQuest(questCompleted);
@@ -208,10 +220,10 @@ public class DialogueManager : MonoBehaviour
         CloseQuestDialoguePanel();
         SoundManager.instance.PlayEffectSound("Quest_Complete", 0.9f);
 
-        // 키워드 보상이 있는 경우 일정 딜레이 후 키워드 획득 
-        if (QuestDB.instance.GetQuest(_questID).GetKeywordList().Count > 0)
+        // 모든 퀘스트를 완료한 경우 모험담 관련 팝업 UI 활성화 
+        if (_questID == 2 || _questID == 10)
         {
-            StartCoroutine("GetKeyword");
+            StartCoroutine("ShowAllQuestCompleteUI");
         }
     }
 
@@ -221,6 +233,14 @@ public class DialogueManager : MonoBehaviour
     public void SetQuestAcceptPanel()
     {
         _questAcceptedTitle.text = "'" + _questTitle + "'";
+    }
+
+    // 1초 대기 후 튜토리얼 등장하게 코루틴 추가
+    IEnumerator TutorialDelayCall()
+    {
+        yield return new WaitForSeconds(1f);
+
+        _tutorial.CallTutorial(TutorialType.HUD);
     }
 
     /// <summary>
@@ -234,6 +254,18 @@ public class DialogueManager : MonoBehaviour
         ObjectPooling.instance.GetObjectFromPool(_keywordEffectName, _player.position);
         KeywordData.instance.AcquireKeyword(QuestDB.instance.GetQuest(_questID).GetKeywordList()[0]);
         _player.GetComponent<PlayerMove>().Victory();
+    }
+
+    /// <summary>
+    /// 일정시간의 딜레이 후 모험담 팝업 UI 활성화 
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ShowAllQuestCompleteUI()
+    {
+        yield return new WaitForSeconds(_delayBeforeAllQuestPopup);
+
+        _AllQuestCompletePanel.SetActive(true);
+        SoundManager.instance.PlayEffectSound("Quest_AllComplete");
     }
 
     /// <summary>

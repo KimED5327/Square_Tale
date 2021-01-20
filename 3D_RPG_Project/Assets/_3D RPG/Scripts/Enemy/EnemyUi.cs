@@ -43,9 +43,8 @@ public class EnemyUi : MonoBehaviour
             else
                 hpBar.gameObject.SetActive(false);
 
-
             hpBar.value = _enemyStatus.GetCurrentHp() / (float)_enemyStatus.GetMaxHp();
-            _Ui.text = "Lv " + _enemyStatus.GetLevel() + " " + _enemyStatus.GetName() + " " + hpPercent + "%";
+            _Ui.text = "Lv " + _enemyStatus.GetLevel() + " " + _enemyStatus.GetName() + " " + (int)hpPercent + "%";
         }
       
     }

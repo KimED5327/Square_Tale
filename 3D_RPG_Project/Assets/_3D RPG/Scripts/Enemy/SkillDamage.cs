@@ -17,28 +17,30 @@ public class SkillDamage : MonoBehaviour
         _sc = GetComponent<SphereCollider>();
     }
 
+    private void Update()
+    {
+        _timer += Time.deltaTime;
 
-    
+        if(_timer < _maxTimer)
+        {
+            _sc.radius += 0.01f;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
 
-        Debug.Log(other);
-
-        if (other.transform.name != "Face")
-            return;
-
-
-       
         if(other.transform.name == "Face")
         {
-            if(_sc.radius > 2f)
+            Debug.Log(other);
+
+            if (_sc.radius > 2f)
             {
                 _pbm.ApplyPlayerBuff(2);
-            
+
+                Destroy(this);
             }
         }
-
-        Destroy(this);
     }
 
 

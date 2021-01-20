@@ -1050,7 +1050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97f990e6285fedb4485bee5ea3e60778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objectToFadeOut: {fileID: 25530979}
+  _objectToFadeOut: {fileID: 0}
 --- !u!1 &29003816
 GameObject:
   m_ObjectHideFlags: 0
@@ -11514,13 +11514,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _questCompletedPanel: {fileID: 25530979}
-  _rewardPanel: {fileID: 273141624}
-  _rewardPrefab: {fileID: 5582337722337055936, guid: 11b185f54c04be749b0baa05471cb881,
-    type: 3}
-  _txtTitle: {fileID: 986515936}
-  _imgGold: {fileID: 21300000, guid: e06d304c8fb06400295af1ab780186e2, type: 3}
-  _imgExp: {fileID: 21300000, guid: ca6c20ff28c8bb748bf7f17f0bb61f01, type: 3}
-  _imgKeyword: {fileID: 21300000, guid: 97d46cda6c5982f4ca4cea93842987b5, type: 3}
+  _rewardPanel: {fileID: 0}
+  _rewardPrefab: {fileID: 0}
+  _txtTitle: {fileID: 0}
+  _imgGold: {fileID: 0}
+  _imgExp: {fileID: 0}
+  _imgKeyword: {fileID: 0}
 --- !u!222 &190664390
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15345,7 +15344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97f990e6285fedb4485bee5ea3e60778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objectToFadeOut: {fileID: 290919818}
+  _objectToFadeOut: {fileID: 0}
 --- !u!95 &290919821
 Animator:
   serializedVersion: 3
@@ -17210,30 +17209,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3468150c96c14794d811eed3700b1c00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _menuPanel: {fileID: 1628393715}
-  _infoPanel: {fileID: 657175198}
-  _rewardPanel: {fileID: 573857957}
-  _ongoingSlotPrefab: {fileID: 5380536337034525853, guid: 1eafd0eec1a985a499d6acbbaacf53f7,
-    type: 3}
-  _finishedSlotPrefab: {fileID: 5380536337034525853, guid: 7c6e163fcb10f994598a230b1f82e5da,
-    type: 3}
-  _scrollRect: {fileID: 1107948986}
-  _ongoingContent: {fileID: 226658809}
-  _finishedContent: {fileID: 1166302080}
-  _imgOngoing: {fileID: 1416246553}
-  _imgFinished: {fileID: 1870864989}
-  _imgHighlightBtn: {fileID: 21300000, guid: d1b03c9d07b57b2498e15551490f729d, type: 3}
-  _imgDefaultBtn: {fileID: 21300000, guid: 1b15a352d8ad64af49cacb2bde37cd85, type: 3}
-  _txtTitle: {fileID: 1603381044}
-  _txtNpcName: {fileID: 897770992}
-  _txtDes: {fileID: 1710072688}
-  _txtGoal: {fileID: 2024887789}
-  _txtNoSolotMsg: {fileID: 818384610}
-  _rewardPrefab: {fileID: 2328389562125729183, guid: 56f83014c7639724bb80746a14c4f939,
-    type: 3}
-  _imgGold: {fileID: 21300000, guid: e06d304c8fb06400295af1ab780186e2, type: 3}
-  _imgExp: {fileID: 21300000, guid: ca6c20ff28c8bb748bf7f17f0bb61f01, type: 3}
-  _imgKeyword: {fileID: 21300000, guid: 97d46cda6c5982f4ca4cea93842987b5, type: 3}
+  _menuPanel: {fileID: 0}
+  _infoPanel: {fileID: 0}
+  _rewardPanel: {fileID: 0}
+  _ongoingSlotPrefab: {fileID: 0}
+  _finishedSlotPrefab: {fileID: 0}
+  _scrollRect: {fileID: 0}
+  _ongoingContent: {fileID: 0}
+  _finishedContent: {fileID: 0}
+  _imgOngoing: {fileID: 0}
+  _imgFinished: {fileID: 0}
+  _imgHighlightBtn: {fileID: 0}
+  _imgDefaultBtn: {fileID: 0}
+  _txtTitle: {fileID: 0}
+  _txtNpcName: {fileID: 0}
+  _txtDes: {fileID: 0}
+  _txtGoal: {fileID: 0}
+  _txtNoSolotMsg: {fileID: 0}
+  _rewardPrefab: {fileID: 0}
+  _imgGold: {fileID: 0}
+  _imgExp: {fileID: 0}
+  _imgKeyword: {fileID: 0}
 --- !u!222 &340825139
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -43794,14 +43790,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _state: 0
-  _delayBeforeGettingKeyword: 2
+  _delayBeforeGettingKeyword: 1.7
   _dialoguePanel: {fileID: 967462372}
   _questDialoguePanel: {fileID: 1442288537}
   _questAcceptedPanel: {fileID: 290919818}
   _questAcceptedTitle: {fileID: 1469397097}
   _txtQuestTitle: {fileID: 1178110671}
-  _txtName: {fileID: 1795122343}
-  _txtLines: {fileID: 645355776}
+  _txtName: {fileID: 0}
+  _txtLines: {fileID: 0}
 --- !u!4 &857600082
 Transform:
   m_ObjectHideFlags: 0
@@ -99765,7 +99761,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _questListPanel: {fileID: 263773309}
-  _iconCompletable: {fileID: 874144969}
+  _iconCompletable: {fileID: 0}
   _btnQuest: {fileID: 1600904347}
   _imgBtnDefault: {fileID: 21300000, guid: 25052304823104c6b91d2a89a291c000, type: 3}
   _imgBtnSelected: {fileID: 21300000, guid: b26936e20b49f464084dcf2a6198b6ed, type: 3}

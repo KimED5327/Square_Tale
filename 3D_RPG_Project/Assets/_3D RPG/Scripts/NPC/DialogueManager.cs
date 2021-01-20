@@ -208,11 +208,6 @@ public class DialogueManager : MonoBehaviour
         SoundManager.instance.PlayEffectSound("Quest_Complete", 0.9f);
     }
 
-    void AcceptTutorialQuest()
-    {
-
-    }
-
     /// <summary>
     /// 퀘스트 수락 Panel의 UI 데이터 값 설정 
     /// </summary>

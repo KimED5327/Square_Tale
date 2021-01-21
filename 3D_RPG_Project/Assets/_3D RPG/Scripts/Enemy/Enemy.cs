@@ -35,6 +35,7 @@ public class Enemy : MonoBehaviour
     private bool _isChasing = false;
     private bool jump;
     private int jumpCount;
+    private int attackCount = 0;
     Animator enemyAnimator;                     //몬스터 애니메이터
     BoxCollider myColider;
     Rigidbody myRigid;
@@ -44,6 +45,8 @@ public class Enemy : MonoBehaviour
     Vector3 _offset;
     Vector3 _rayPos;
     Vector3 _rayPos2;
+    
+
 
     public State enemyState;
 
@@ -287,25 +290,25 @@ public class Enemy : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 5);
 
             timer += Time.deltaTime;
-            motionTime += Time.deltaTime;
 
-            if (motionTime > attTime - 0.1f)
+            if(timer > 2.7)
             {
-                enemyAnimator.SetTrigger("Attack 0");
-                motionTime = 0.0f;
-            }
-            if (_canApplyDamage && enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= dmgApplyTime)
-            {
-                ApplyDamage();
-            }
-
-            if (timer > attTime)
-            {
-                timer = 0.0f;
+                enemyAnimator.SetBool("Attack", true);
                 _canApplyDamage = true;
             }
+            if(timer > 2.8 && _canApplyDamage && attackCount == 0)
+            {
+                _canApplyDamage = false;
+                player.GetComponent<Status>().Damage(GetComponent<Status>().GetAtk(), transform.position);
+                attackCount = 1;
+            }
+            if(timer > 3.2)
+            {
+                enemyAnimator.SetBool("Attack", false);
+                timer = 0;
+                attackCount = 0;
+            }
         }
-
         else
         {
             enemyState = State.Idle;
@@ -313,12 +316,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void ApplyDamage()
-    {
-        _canApplyDamage = false;
-        player.GetComponent<Status>().Damage(GetComponent<Status>().GetAtk(), transform.position);
-        enemyState = State.Idle;
-    }
+
 
     //사망 상태
     private void UpdateDie()

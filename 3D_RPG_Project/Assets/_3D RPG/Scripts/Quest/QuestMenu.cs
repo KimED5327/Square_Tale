@@ -268,7 +268,6 @@ public class QuestMenu : MonoBehaviour
 
         // 아이템 보상이 존재하는 경우 보상 추가 
         if (quest.GetItemID() != 0) AddItemReward(quest);
-        else Debug.Log("퀘스트의 아이템 ID가 0이다.");
 
         // 블록 보상이 존재하는 경우 보상 추가 
         if (quest.GetBlockList().Count > 0) AddBlockReward(quest);

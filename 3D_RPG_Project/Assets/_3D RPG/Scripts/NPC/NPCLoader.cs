@@ -5,11 +5,13 @@ using System.IO;
 using LitJson;
 using UnityEngine.Networking;
 
+/// <summary>
+/// NPC 관련 제이슨 데이터를 파싱하는 클래스 
+/// </summary>
 public class NPCLoader : MonoBehaviour
 {
     public static NPCLoader instance; 
     static string streamingAssetsPath = Application.streamingAssetsPath;
-    bool _isParsingDone = false; 
 
     // NPC 정보 DB 경로 
     [SerializeField] string npcDBPath;
@@ -19,12 +21,15 @@ public class NPCLoader : MonoBehaviour
         if (instance == null) instance = this; 
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        _isParsingDone = false;
+        // 이미 데이터 파싱이 이루어졌다면 리턴 
+        if (NpcDB.instance.GetMaxCount() > 0) return; 
+
         ParsingNpcDB();
     }
 
+    // NPC 데이터 파싱 함수 
     private void ParsingNpcDB()
     {
         string path = streamingAssetsPath + npcDBPath;
@@ -68,10 +73,9 @@ public class NPCLoader : MonoBehaviour
 
             NpcDB.instance.AddNPC(npcID, npc);
         }
-
-        _isParsingDone = true;
     }
 
+    // 데이터 확인용 출력 함수 
     private void PrintNpcDB()
     {
         for (int i = 0; i < NpcDB.instance.GetMaxCount(); i++)
@@ -90,7 +94,4 @@ public class NPCLoader : MonoBehaviour
             }
         }
     }
-
-    public bool ParsingCompleted() { return _isParsingDone; }
-
 }

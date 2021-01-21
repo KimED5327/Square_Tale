@@ -454,6 +454,7 @@ public class Inventory : MonoBehaviour
         }
 
         SerializeItem();
+        SaveInventory();
     }
 
     // 같은 이름의 아이템에 푸시

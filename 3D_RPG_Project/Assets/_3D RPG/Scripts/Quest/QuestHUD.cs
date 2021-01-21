@@ -17,8 +17,7 @@ public class QuestHUD : MonoBehaviour
 
     [Header("QuestList Panel")]
     [SerializeField] Text _questTitle = null;               // 퀘스트 제목 
-    [SerializeField] Text _questGoal1 = null;               // 퀘스트 목표1
-    [SerializeField] Text _questGoal2 = null;               // 퀘스트 목표2 
+    [SerializeField] Text _questGoal = null;               // 퀘스트 목표
 
     bool _isHudOpen = false;
     bool _isCompletableIconOn = false; 
@@ -94,10 +93,9 @@ public class QuestHUD : MonoBehaviour
         Quest quest = QuestManager.instance.GetOngoingQuestByIdx(0);
 
         SetQuestTitle(quest.GetTitle());
-        SetQuestGoal2("");
 
         // 진행중인 퀘스트의 타입에 맞게 HUD 내 퀘스트 목표값 설정 
-        SetQuestGoal1(QuestManager.instance.GetQuestGoal(quest));
+        SetQuestGoal(QuestManager.instance.GetQuestGoal(quest));
     }
 
     /// <summary>
@@ -107,9 +105,7 @@ public class QuestHUD : MonoBehaviour
     public void UpdateHUD(Quest quest)
     {
         SetQuestTitle(quest.GetTitle());
-        SetQuestGoal2("");
-
-        SetQuestGoal1(QuestManager.instance.GetQuestGoal(quest));
+        SetQuestGoal(QuestManager.instance.GetQuestGoal(quest));
     }
 
     /// <summary>
@@ -127,16 +123,14 @@ public class QuestHUD : MonoBehaviour
     public GameObject GetQuestListPanel() { return _questListPanel; }
     public GameObject GetUpdateImg() { return _iconCompletable; }
     public Text GetQuestTitle() { return _questTitle; }
-    public Text GetQuestGoal1() { return _questGoal1; }
-    public Text GetQuestGoal2() { return _questGoal2; }
+    public Text GetQuestGoal() { return _questGoal; }
     public Button GetQuestBtn() { return _btnQuest; }
     public bool GetIsHudOpen() { return _isHudOpen; }
     public bool GetIsCompletableIconOn() { return _isCompletableIconOn; }
 
     //setter 
     public void SetQuestTitle(string text) { _questTitle.text = text; }
-    public void SetQuestGoal1(string text) { _questGoal1.text = text; }
-    public void SetQuestGoal2(string text) { _questGoal2.text = text; }
+    public void SetQuestGoal(string text) { _questGoal.text = text; }
     public void TurnOnCompletableIcon() { _iconCompletable.SetActive(true); }
     public void TurnOffCompletableIcon() { _iconCompletable.SetActive(false); }
     public void SetIsHudOpen(bool value) { _isHudOpen = value; }

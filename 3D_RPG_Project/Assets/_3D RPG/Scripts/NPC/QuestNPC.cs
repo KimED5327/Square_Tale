@@ -61,7 +61,7 @@ public class QuestNPC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _isParsingDone = false; 
+        _isParsingDone = false;
         _questState = QuestState.QUEST_VEILED;
 
         // 다이얼로그 UI 값 세팅 
@@ -70,11 +70,7 @@ public class QuestNPC : MonoBehaviour
         _questDialoguePanel = dialogueUI.GetQuestPanel();
         _txtNpcName = dialogueUI.GetNpcName();
         _txtNpcLines = dialogueUI.GetLines();
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
         ParsingData();
     }
 
@@ -91,20 +87,16 @@ public class QuestNPC : MonoBehaviour
     /// </summary>
     private void ParsingData()
     {
-        if (_isParsingDone) return; 
+        if (_isParsingDone) return;
 
-        if (NPCLoader.instance.ParsingCompleted() == true)
-        {
-            // NpcDB의 데이터를 'Deep Copy' 를 통해 할당 
-            _isParsingDone = true;
-            _npc = NpcDB.instance.GetNPC(_npcID).DeepCopy();
-            UpdateQuestState();
-            SetNameTag();
-            SetQuestMark();
+        // NpcDB의 데이터를 'Deep Copy' 를 통해 할당
+        _isParsingDone = true;
+        _npc = NpcDB.instance.GetNPC(_npcID).DeepCopy();
+        UpdateQuestState();
+        SetNameTag();
+        SetQuestMark();
 
-            Debug.Log("데이터 파싱함수 호출");
-            QuestManager.instance.SyncWithNpcOnStart();
-        }
+        QuestManager.instance.SyncWithNpcOnStart();
     }
 
     /// <summary>
@@ -168,16 +160,21 @@ public class QuestNPC : MonoBehaviour
     {
         bool isAvailable = false;
 
-        if (_npc.GetQuestsCount() <= 0)
-        {
-            _questState = QuestState.QUEST_COMPLETED;
-            return;
-        }
+        //if (_npc.GetQuestsCount() <= 0)
+        //{
+        //    _questState = QuestState.QUEST_COMPLETED;
+        //    return;
+        //}
 
         for (int i = 0; i < _npc.GetQuestsCount(); i++)
         {
+            // 퀘스트가 미해금상태일 경우 건너뛰기 
             if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetState() != QuestState.QUEST_OPENED) continue;
 
+            // 이미 완료된 퀘스트일 경우 건너뛰기 
+            if (QuestManager.instance.CheckIfQuestIsCompleted(_npc.GetQuestID(i))) continue;
+
+            // 진행 가능한 퀘스트는 있지만, 퀘스트 부여자가 아닌 경우 퀘스트의 완료자 참조값만 설정 
             if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetNpcID() != _npc.GetID())
             {
                 QuestDB.instance.GetQuest(_npc.GetQuestID(i)).SetQuestFinisher(this);
@@ -186,14 +183,13 @@ public class QuestNPC : MonoBehaviour
             }
             else 
             {
+                // 진행 가능한 퀘스트가 있고 퀘스트 부여자일 때, 퀘스트 완료자가 null값인 경우 해당 NPC로 참조값 설정
                 if(QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestFinisher() == null)
                 {
                     QuestDB.instance.GetQuest(_npc.GetQuestID(i)).SetQuestFinisher(this);
                     Debug.Log(QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetQuestID() + "번 퀘스트 완료자 NPC ID : " + _npc.GetID());
                 }
             }
-
-            if (QuestManager.instance.CheckIfQuestIsCompleted(_npc.GetQuestID(i))) continue; 
 
             isAvailable = true;
             _questState = QuestState.QUEST_OPENED;
@@ -230,6 +226,8 @@ public class QuestNPC : MonoBehaviour
     /// <param name="quest"></param>
     public void SyncWithOngoingQuest(Quest quest)
     {
+        Debug.Log(_npcID + "번 NPC 싱크함수 호출");
+
         // 진행 중인 퀘스트의 싱크를 맞출 NPC가 맵에 존재하지 않는다면 실행되지 않음. 
         bool isOngoing = false; 
 
@@ -241,7 +239,7 @@ public class QuestNPC : MonoBehaviour
 
         if (!isOngoing) return;
 
-        Debug.Log(quest.GetQuestID() + "번 퀘스트 " + quest.GetState() + " 싱크 진행");
+        Debug.Log(quest.GetQuestID() + "번 퀘스트 " + quest.GetState() + _npcID + "번 NPC" + " 싱크 진행");
 
         // 퀘스트의 진행 상태에 따라 싱크 실행 
         switch (quest.GetState())
@@ -250,15 +248,15 @@ public class QuestNPC : MonoBehaviour
                 // 퀘스트의 부여자/완료자를 나누어 참조, 상태값 설정 
                 if (quest.GetNpcID() == _npcID)
                 {
-                    if (quest.GetQuestFinisher().GetNpcID() == _npcID)
-                        QuestManager.instance.GetOngoingQuestByID().SetQuestFinisher(this);
+                    if (QuestDB.instance.GetQuest(quest.GetQuestID()).GetQuestFinisher().GetNpcID() == _npcID)
+                        quest.SetQuestFinisher(this);
 
                     SetNpcOngoingState(quest);
-                    QuestManager.instance.GetOngoingQuestByID().SetQuestGiver(this);
+                    quest.SetQuestGiver(this);
                     break;
                 }
 
-                QuestManager.instance.GetOngoingQuestByID().SetQuestFinisher(this);
+                quest.SetQuestFinisher(this);
                 break;
 
             case QuestState.QUEST_COMPLETABLE:
@@ -266,18 +264,18 @@ public class QuestNPC : MonoBehaviour
                 if (quest.GetNpcID() == _npcID)
                 {
                     SetNpcOngoingState(quest);
-                    QuestManager.instance.GetOngoingQuestByID().SetQuestGiver(this);
+                    quest.SetQuestGiver(this);
 
-                    if (quest.GetQuestFinisher().GetNpcID() == _npcID)
+                    if (QuestDB.instance.GetQuest(quest.GetQuestID()).GetQuestFinisher().GetNpcID() == _npcID)
                     {
                         SetNpcCompletableState(quest);
-                        QuestManager.instance.GetOngoingQuestByID().SetQuestFinisher(this);
+                        quest.SetQuestFinisher(this);
                     }
                     break;
                 }
 
                 SetNpcCompletableState(quest);
-                QuestManager.instance.GetOngoingQuestByID().SetQuestFinisher(this);
+                quest.SetQuestFinisher(this);
                 break;
         }
 

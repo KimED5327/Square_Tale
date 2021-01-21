@@ -44,10 +44,7 @@ public class Inventory : MonoBehaviour
     { 
         // 기본값 - 무기 우선 정렬 
         OnTouchTab(0);
-
-
         LoadInventory();
-
     }
     #endregion
 
@@ -274,7 +271,6 @@ public class Inventory : MonoBehaviour
     /// <returns></returns>
     public bool TryToPushInventory(Item item, int count = 1)
     {
-
         // id == 1 은 골드
         if (item.id == 1)
         {
@@ -290,11 +286,17 @@ public class Inventory : MonoBehaviour
             {
                 // 소유한 아이템 -> 해당 슬롯의 개수 증가 else 빈 슬롯에 푸시
                 if (TryToPushSameSlot(item, count))
+                {
+                    SaveInventory();
                     return true;
+                }
                 else
                 {
                     if (TryToPushEmptySlot(item, count))
+                    {
+                        SaveInventory();
                         return true;
+                    }
                 }
 
             }
@@ -304,7 +306,10 @@ public class Inventory : MonoBehaviour
                 count = 1;
                 // 빈 인벤토리 슬롯에 푸시.
                 if (TryToPushEmptySlot(item, count))
+                {
+                    SaveInventory();
                     return true;
+                }
             }
         }
 

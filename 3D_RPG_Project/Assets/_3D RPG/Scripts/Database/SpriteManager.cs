@@ -15,7 +15,12 @@ public class SpriteManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else Destroy(gameObject);
     }
 
     public Sprite GetItemSprite(int itemId)

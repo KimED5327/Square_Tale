@@ -12,9 +12,7 @@ public class JsonLoader : MonoBehaviour
     [SerializeField] string itemDBPath = "/ItemDB.json";
     //[SerializeField] string enemyDBPath = "/EnemyDB.json";
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
         ParsingItemDB();
     }

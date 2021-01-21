@@ -297,8 +297,7 @@ public class QuestManager : MonoBehaviour
 
         for (int i = 0; i < deliverItem.GetItemList().Count; i++)
         {
-            _inventory.DecreaseItemCount(ItemDatabase.instance.GetItem(deliverItem.GetItem(i).GetItemID()),
-                deliverItem.GetItem(i).GetCount());
+            _inventory.DecreaseItemCount(deliverItem.GetItem(i).GetItemID(), deliverItem.GetItem(i).GetCount());
 
             Debug.Log(deliverItem.GetItem(i).GetItemID() + "번 아이템 : " +
                 _inventory.GetItemCount(ItemDatabase.instance.GetItem(deliverItem.GetItem(i).GetItemID())) + "개 삭제");
@@ -334,6 +333,7 @@ public class QuestManager : MonoBehaviour
     {
         CarryItem carryItem = quest.GetQuestInfo()[_questInfoKey] as CarryItem;
 
+        // 특정 아이템을 필요 개수만큼 가지고 있을 경우 true 리턴 
         bool isAvailable = (_inventory.HaveItemCount(ItemDatabase.instance.GetItem(carryItem.GetItemID()),
             carryItem.GetItemCount())) ? true : false; 
 
@@ -353,6 +353,9 @@ public class QuestManager : MonoBehaviour
             if (CheckEnemiesToKill(_ongoingQuests[i], enemyID))
             {
                 SetQuestFinisherToCompletableState(_ongoingQuests[i]);
+
+                // 만약 릴리를 퇴치했을 경우 정화의 보석 아이템 삭제 
+                if (_ongoingQuests[i].GetQuestID() == 10) _inventory.DecreaseItemCount(8, 1);
             }
 
             // 퀘스트 HUD 업데이트 

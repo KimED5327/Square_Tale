@@ -266,6 +266,7 @@ public class PlayerMove : MonoBehaviour
             realMoveVec = (moveVec.z * Camera.main.transform.forward + Camera.main.transform.right * moveVec.x) * 1.2f;
         }
 
+        realMoveVec *= (1 + applySpeed);
         realMoveVec.y = 0;
 
         if (isDodge)
@@ -317,6 +318,9 @@ public class PlayerMove : MonoBehaviour
             {
                 realMoveVec = (moveVec.z * Camera.main.transform.forward + Camera.main.transform.right * moveVec.x) * 1.2f;
             }
+
+            realMoveVec *= (1 + applySpeed);
+
 
             realMoveVec.y = 0;
 

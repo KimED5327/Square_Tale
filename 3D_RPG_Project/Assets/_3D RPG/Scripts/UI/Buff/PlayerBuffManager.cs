@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerBuffManager : MonoBehaviour
 {
+    public static PlayerBuffManager instance;
+
     [SerializeField] BuffSlot[] _slots = null;
 
     PlayerStatus _playerStatus;
@@ -12,8 +14,8 @@ public class PlayerBuffManager : MonoBehaviour
     void Awake()
     {
         _playerStatus = FindObjectOfType<PlayerStatus>();
-
-        for(int i = 0; i < _slots.Length; i++)
+        instance = this;
+        for (int i = 0; i < _slots.Length; i++)
         {
             _slots[i].gameObject.SetActive(false);
         }

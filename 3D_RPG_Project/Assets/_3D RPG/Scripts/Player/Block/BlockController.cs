@@ -79,7 +79,13 @@ public class BlockController : MonoBehaviour
             }
             else
                 Debug.Log("너무 짧게 스와이프");
-            
+
+
+            if(_blockName == "")
+            {
+                Notification.instance.ShowFloatingMessage(StringManager.msgEmptyBlockSlot);
+                canSummonBlock = false;
+            }
 
             if (canSummonBlock)
             {

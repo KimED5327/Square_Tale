@@ -22,6 +22,7 @@ public class EnemyUi : MonoBehaviour
 
     void OnEnable()
     {
+        if (_Ui == null) _Ui = GetComponentInChildren<Text>();
         _Ui.gameObject.SetActive(true);
         cam = Camera.main.transform;
     }

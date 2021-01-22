@@ -15,6 +15,7 @@ public class SaveManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+
         _player = FindObjectOfType<PlayerStatus>();
         _playerTpye = FindObjectOfType<PlayerMove>();
         _swordSkill = FindObjectOfType<SkillManager>();

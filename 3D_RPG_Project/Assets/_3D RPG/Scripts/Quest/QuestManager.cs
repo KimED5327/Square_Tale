@@ -22,6 +22,7 @@ public class QuestManager : MonoBehaviour
     public PlayerStatus _playerStatus;         // PlayerStatus 참조자 
     public bool _isHudOpen = false;            // QuestHUD 창 오픈여부 확인 변수 
     public bool _isCompletableIconOn = false;  // QuestHUD 완료가능 아이콘 on/off 변수 
+    public bool _isLoadingDone = false;        // 퀘스트 데이터 로딩 여부 확인 변수 
     string _questInfoKey = "info";      // 퀘스트 타입 해시테이블 키 
 
     /// <summary>
@@ -46,20 +47,8 @@ public class QuestManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            //Debug.Log("3번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(3)));
-            //Debug.Log("4번 아이템 개수" + _inventory.GetItemCount(ItemDatabase.instance.GetItem(4)));
-
-            //_inventory.TryToPushInventory(ItemDatabase.instance.GetItem(3));
-            //Debug.Log("3번 아이템 획득");
-
-            _inventory.TryToPushInventory(ItemDatabase.instance.GetItem(7));
-            Debug.Log("7번 아이템 획득");
-
-            //_inventory.TryToPushInventory(ItemDatabase.instance.GetItem(9));
-            //Debug.Log("9번 아이템 소지개수 : " + _inventory.GetItemCount(ItemDatabase.instance.GetItem(9)));
-        }
+        // 저장된 데이터가 있다면 불러오기 
+        if (!_isLoadingDone) LoadQuestData();
     }
 
     /// <summary>
@@ -83,6 +72,9 @@ public class QuestManager : MonoBehaviour
 
         // 퀘스트 HUD 값 세팅 
         _questHUD.SetOngoingQuestHUD(ongoingQuest);
+
+        // PlayerPref 로 진행중인 퀘스트 세이브 
+        SaveOngoingQuest(ongoingQuest);
     }
 
     /// <summary>
@@ -117,6 +109,10 @@ public class QuestManager : MonoBehaviour
 
         // 퀘스트 HUD 비활성화 
         _questHUD.DisalbeHUD();
+
+        // 진행중인 퀘스트 데이터 삭제 및 완료 데이터 세이브 
+        DeleteOngoingQuestData();
+        SaveFinishedQuestID(finishedQuest.GetQuestID());
     }
 
     /// <summary>
@@ -255,7 +251,9 @@ public class QuestManager : MonoBehaviour
             // 현재 퀘스트가 완료가능 상태인데 요건 충족이 안된 경우 다시 진행중 상태로 변경 
             if(!CheckItemsToDeliver(_ongoingQuests[i])) 
             {
-                if(_ongoingQuests[i].GetState() == QuestState.QUEST_COMPLETABLE) SetQuestFinisherToOngoingState(_ongoingQuests[i]);
+                if (_ongoingQuests[i].GetState() == QuestState.QUEST_COMPLETABLE)
+                    SetQuestFinisherToOngoingState(_ongoingQuests[i]);
+                
                 continue; 
             }
 
@@ -297,8 +295,7 @@ public class QuestManager : MonoBehaviour
 
         for (int i = 0; i < deliverItem.GetItemList().Count; i++)
         {
-            _inventory.DecreaseItemCount(ItemDatabase.instance.GetItem(deliverItem.GetItem(i).GetItemID()),
-                deliverItem.GetItem(i).GetCount());
+            _inventory.DecreaseItemCount(deliverItem.GetItem(i).GetItemID(), deliverItem.GetItem(i).GetCount());
 
             Debug.Log(deliverItem.GetItem(i).GetItemID() + "번 아이템 : " +
                 _inventory.GetItemCount(ItemDatabase.instance.GetItem(deliverItem.GetItem(i).GetItemID())) + "개 삭제");
@@ -317,11 +314,16 @@ public class QuestManager : MonoBehaviour
             // 현재 퀘스트가 완료가능 상태인데 요건 충족이 안된 경우 다시 진행중 상태로 변경 
             if (!CheckItemsToCarry(_ongoingQuests[i]))
             {
-                if (_ongoingQuests[i].GetState() == QuestState.QUEST_COMPLETABLE) SetQuestFinisherToOngoingState(_ongoingQuests[i]);
+                if (_ongoingQuests[i].GetState() == QuestState.QUEST_COMPLETABLE)
+                {
+                    _ongoingQuests[i].SetState(QuestState.QUEST_ONGOING);
+                    SetQuestFinisherToOngoingState(_ongoingQuests[i]);
+                }
                 continue;
             }
 
             // 요건이 충족된 경우 퀘스트 완료자를 완료 가능 상태로 변경 
+            _ongoingQuests[i].SetState(QuestState.QUEST_COMPLETABLE);
             SetQuestFinisherToCompletableState(_ongoingQuests[i]);
         }
     }
@@ -334,6 +336,7 @@ public class QuestManager : MonoBehaviour
     {
         CarryItem carryItem = quest.GetQuestInfo()[_questInfoKey] as CarryItem;
 
+        // 특정 아이템을 필요 개수만큼 가지고 있을 경우 true 리턴 
         bool isAvailable = (_inventory.HaveItemCount(ItemDatabase.instance.GetItem(carryItem.GetItemID()),
             carryItem.GetItemCount())) ? true : false; 
 
@@ -353,7 +356,13 @@ public class QuestManager : MonoBehaviour
             if (CheckEnemiesToKill(_ongoingQuests[i], enemyID))
             {
                 SetQuestFinisherToCompletableState(_ongoingQuests[i]);
+
+                // 만약 릴리를 퇴치했을 경우 정화의 보석 아이템 삭제 
+                if (_ongoingQuests[i].GetQuestID() == 10) _inventory.DecreaseItemCount(8, 1);
             }
+
+            // 세이브 데이터 업데이트 
+            SaveEnemyCount(_ongoingQuests[i]);
 
             // 퀘스트 HUD 업데이트 
             _questHUD.UpdateHUD(_ongoingQuests[i]);
@@ -418,11 +427,16 @@ public class QuestManager : MonoBehaviour
     /// <param name="quest"></param>
     void SetQuestFinisherToOngoingState(Quest quest)
     {
+        // 퀘스트 HUD 완료가능 아이콘 비활성화 
         _questHUD.TurnOffCompletableIcon();
         _isCompletableIconOn = false;
         quest.SetState(QuestState.QUEST_ONGOING);
 
+        // 퀘스트 메뉴 완료가능 아이콘 비활성화 
         _questMenu.TurnOffCompletableIcon(quest.GetQuestID());
+
+        // 퀘스트 정보 세이브 
+        SaveOngoingQuestState(QuestState.QUEST_ONGOING);
 
         Debug.Log(quest.GetQuestID() + "번 퀘스트 진행중");
 
@@ -444,7 +458,11 @@ public class QuestManager : MonoBehaviour
         _isCompletableIconOn = true;
         quest.SetState(QuestState.QUEST_COMPLETABLE);
 
+        // 퀘스트메뉴 완료가능 아이콘 활성화 
         _questMenu.TurnOnCompletableIcon(quest.GetQuestID());
+
+        // 퀘스트 정보 세이브 
+        SaveOngoingQuestState(QuestState.QUEST_COMPLETABLE);
 
         Debug.Log(quest.GetQuestID() + "번 퀘스트 완료가능");
 
@@ -465,6 +483,8 @@ public class QuestManager : MonoBehaviour
     /// <param name="quest"></param>
     void SetQuestFinisherToCompleteState(Quest quest)
     {
+        if (quest.GetQuestFinisher() == null) return; 
+
         quest.GetQuestFinisher().SetOngoingQuestID(0);
         quest.GetQuestFinisher().DeleteCompletedQuest(quest.GetQuestID());
         quest.GetQuestFinisher().UpdateQuestState();
@@ -582,6 +602,181 @@ public class QuestManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 현재 진행중인 퀘스트의 데이터 저장 
+    /// </summary>
+    /// <param name="quest"></param>
+    public void SaveOngoingQuest(Quest quest)
+    {
+        SaveOngoingQuestID(quest.GetQuestID());
+        SaveOngoingQuestState(quest.GetState());
+
+        if (quest.GetQuestType() == QuestType.TYPE_KILLENEMY) SaveEnemyCount(quest);
+    }
+
+    /// <summary>
+    /// 현재 진행중인 퀘스트의 ID 값 저장 
+    /// </summary>
+    /// <param name="questID"></param>
+    public void SaveOngoingQuestID(int questID)
+    {
+        PlayerPrefs.SetInt("OngoingQuestID", questID);
+        Debug.Log("진행중인 퀘스트 데이터 세이브");
+    }
+
+    /// <summary>
+    /// 현재 진행중인 퀘스트의 진행상태 값 저장 
+    /// </summary>
+    /// <param name="state"></param>
+    public void SaveOngoingQuestState(QuestState state)
+    {
+        PlayerPrefs.SetInt("OngoingQuestState", (int)state);
+    }
+
+    /// <summary>
+    /// 현재 진행중인 퀘스트의 타입이 '몬스터 처치'일 경우 카운트 값 저장 
+    /// </summary>
+    /// <param name="quest"></param>
+    public void SaveEnemyCount(Quest quest)
+    {
+        KillEnemy killEnemy = quest.GetQuestInfo()[_questInfoKey] as KillEnemy;
+        PlayerPrefs.SetInt("QuestEnemyCount", killEnemy.GetEnemy(0).GetCount());
+    }
+
+    /// <summary>
+    /// 진행중인 퀘스트를 완료하여 세이브 데이터에서 삭제 
+    /// </summary>
+    public void DeleteOngoingQuestData()
+    {
+        if (PlayerPrefs.HasKey("OngoingQuestID")) PlayerPrefs.DeleteKey("OngoingQuestID");
+    }
+
+    /// <summary>
+    /// 완료된 퀘스트의 ID값 저장 
+    /// </summary>
+    /// <param name="questID"></param>
+    public void SaveFinishedQuestID(int questID)
+    {
+        // 이미 완료된 퀘스트 ID 리스트가 존재하는 경우 string 값 형태로 덧붙이기 
+        if(PlayerPrefs.HasKey("FinishedQuestID"))
+        {
+            string finishedList = PlayerPrefs.GetString("FinishedQuestID");
+            finishedList += questID.ToString();
+
+            PlayerPrefs.SetString("FinishedQuestID", finishedList);
+            Debug.Log("완료된 퀘스트 데이터 세이브");
+            return; 
+        }
+
+        // 퀘스트 ID를 string 값 형태로 변환하여 저장 
+        PlayerPrefs.SetString("FinishedQuestID", questID.ToString());
+        Debug.Log("완료된 퀘스트 데이터 세이브");
+    }
+
+    /// <summary>
+    /// 퀘스트 세이브 데이터를 로드 
+    /// </summary>
+    void LoadQuestData()
+    {
+        LoadFinishedData();
+        LoadOngoingData();
+
+        SyncWithNpcOnStart();
+
+        _isLoadingDone = true; 
+    }
+
+    /// <summary>
+    /// 현재 진행중인 퀘스트 데이터 로드 
+    /// </summary>
+    void LoadOngoingData()
+    {
+        // 진행중인 퀘스트 데이터가 있다면 진행중인 퀘스트 리스트에 추가 
+        if (PlayerPrefs.HasKey("OngoingQuestID"))
+        {
+            Debug.Log(PlayerPrefs.GetInt("OngoingQuestID") + "번 진행 데이터 로드중");
+
+            Quest ongingQuest = QuestDB.instance.GetQuest(PlayerPrefs.GetInt("OngoingQuestID")).DeepCopy();
+            ongingQuest.SetState((QuestState)PlayerPrefs.GetInt("OngoingQuestState"));
+
+            if(ongingQuest.GetQuestType() == QuestType.TYPE_KILLENEMY)
+            {
+                KillEnemy killEnemy = ongingQuest.GetQuestInfo()[_questInfoKey] as KillEnemy;
+                killEnemy.GetEnemy(0).SetCount(PlayerPrefs.GetInt("QuestEnemyCount"));
+            }
+
+            AddOngoingData(ongingQuest);
+
+            Debug.Log("진행중인 퀘스트 데이터 로드" + ongingQuest.GetState());
+        }
+    }
+
+    /// <summary>
+    /// 완료된 퀘스트 데이터 로드 
+    /// </summary>
+    void LoadFinishedData()
+    {
+        // 완료된 퀘스트 데이터가 있다면 완료된 퀘스트 리스트에 추가 
+        if (PlayerPrefs.HasKey("FinishedQuestID"))
+        {
+            string questList = PlayerPrefs.GetString("FinishedQuestID");
+
+            for (int i = 0; i < questList.Length; i++)
+            {
+                int questID = questList[i] - '0';
+
+                Debug.Log(questID + "번 완료 데이터 로드중");
+
+                Quest finishedQuest = QuestDB.instance.GetQuest(questID).DeepCopy();
+                AddFinishedData(finishedQuest);
+            }
+
+            Debug.Log("완료된 퀘스트 데이터 로드");
+        }
+    }
+
+    /// <summary>
+    /// 퀘스트 데이터 로드 시 진행중인 퀘스트 데이터를 리스트에 추가 
+    /// </summary>
+    /// <param name="quest"></param>
+    void AddOngoingData(Quest quest)
+    {
+        _ongoingQuests.Add(quest);
+
+        // 퀘스트 메뉴에 진행 퀘스트 슬롯 추가 (이후의 상호작용을 위해 다른 명령보다 먼저 실행.)
+        _questMenu.AddOngoingSlot(quest);
+
+        // 퀘스트 HUD 값 세팅 
+        _questHUD.SetOngoingQuestHUD(quest);
+
+        // 퀘스트 부여자의 상태값 변경 
+        if (quest.GetQuestGiver() != null) SetQuestGiverToOngoingState(quest);
+
+        // 퀘스트 완료자의 상태값 변경 
+        if (quest.GetState() == QuestState.QUEST_COMPLETABLE)
+        {
+            _isCompletableIconOn = true;
+            _questHUD.TurnOnCompletableIcon();
+            _questMenu.TurnOnCompletableIcon(quest.GetQuestID());
+            if (quest.GetQuestFinisher() != null) SetQuestFinisherToCompletableState(quest);
+        }
+    }
+
+    /// <summary>
+    /// 퀘스트 데이터 로드 시 완료된 퀘스트 데이터를 리스트에 추가 
+    /// </summary>
+    void AddFinishedData(Quest quest)
+    {
+        quest.SetState(QuestState.QUEST_COMPLETED);
+        _finishedQuests.Add(quest);
+
+        // 퀘스트 완료로 해금된 퀘스트가 있다면 오픈 
+        OpenQuest(quest.GetQuestID());
+
+        // 퀘스트 메뉴의 완료 슬롯에 추가 
+        _questMenu.AddFinishedSlot(quest);
+    }
+
+    /// <summary>
     /// 현재 진행중인 퀘스트 중 파라미터의 ID 값을 가진 퀘스트를 찾아서 리턴 (없을 경우 null 리턴)
     /// </summary>
     /// <param name="questID"></param>
@@ -606,11 +801,11 @@ public class QuestManager : MonoBehaviour
     //getter
     public bool GetIsHudOpen() { return _isHudOpen; }
     public bool GetIsCompletableIconOn() { return _isCompletableIconOn; }
+    public bool GetIsLoadingDone() { return _isLoadingDone; }
     public List<Quest> GetOngoingQuestList() { return _ongoingQuests; }
     public List<Quest> GetFinishedQuestList() { return _finishedQuests; }
     public Quest GetOngoingQuestByIdx(int idx) { return _ongoingQuests[idx]; }
     public Quest GetFinishedQuestByIdx(int idx) { return _finishedQuests[idx]; }
-    public Quest GetOngoingQuestByID() { return _ongoingQuests[0]; }
 
     //setter
     public void SetIsHudOpen(bool value) { _isHudOpen = value; }

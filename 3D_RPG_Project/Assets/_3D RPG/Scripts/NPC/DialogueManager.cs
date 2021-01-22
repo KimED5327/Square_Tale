@@ -13,7 +13,7 @@ public class DialogueManager : MonoBehaviour
     int _questID = 0;                   // 현재 퀘스트 다이얼로그가 진행되는 퀘스트 ID
     int _lineIdx = 0;                   // 대화 상자에 출력되는 대사의 index 값 
     bool _isTalking = false;            // 현재 대화중인지 확인하는 변수 
-    public QuestState _state;           // 현재 퀘스트 다이얼로그가 진행되는 퀘스트의 진행상태 
+    QuestState _state;           // 현재 퀘스트 다이얼로그가 진행되는 퀘스트의 진행상태 
     string _questTitle;                 // 퀘스트 제목 
     QuestNPC _questNPC;                 // 현재 대화상대인 NPC 참조값 
     QuestCompleteUI _questCompleteUI;   // 퀘스트 완료 팝업 UI 참조값 
@@ -24,7 +24,7 @@ public class DialogueManager : MonoBehaviour
     // UI 관련 변수 
     Transform _player;                               // 플레이어 트랜스폼 
     float _delayBeforeGettingKeyword = 2f;    // 퀘스트 완료 시 키워드 보상 획득 딜레이 
-    float _delayBeforeAllQuestPopup = 4.5f;   // 모든 퀘스트 완료시 팝업 UI 활성화 딜레이 
+    float _delayBeforeAllQuestPopup = 2.5f;   // 모든 퀘스트 완료시 팝업 UI 활성화 딜레이 
 
     [Header("Panel UI")]
     GameObject _hudCanvas;
@@ -221,7 +221,7 @@ public class DialogueManager : MonoBehaviour
         SoundManager.instance.PlayEffectSound("Quest_Complete", 0.9f);
 
         // 모든 퀘스트를 완료한 경우 모험담 관련 팝업 UI 활성화 
-        if (_questID == 2 || _questID == 10)
+        if (_questID == 10)
         {
             StartCoroutine("ShowAllQuestCompleteUI");
         }
@@ -238,7 +238,7 @@ public class DialogueManager : MonoBehaviour
     // 1초 대기 후 튜토리얼 등장하게 코루틴 추가
     IEnumerator TutorialDelayCall()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.7f);
 
         _tutorial.CallTutorial(TutorialType.HUD);
     }

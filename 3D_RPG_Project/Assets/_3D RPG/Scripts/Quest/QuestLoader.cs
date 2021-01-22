@@ -23,17 +23,12 @@ public class QuestLoader : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(this);
-        }
-        else Destroy(gameObject);
+        if (instance == null) { instance = this; }
     }
 
-    void Start()
+    private void OnEnable()
     {
-        if (QuestDB.instance.GetMaxCount() > 0) return; 
+        if (QuestDB.instance.GetMaxCount() > 0) return;
 
         // 퀘스트 기본정보 파싱 
         ParsingQuestDB();
@@ -41,7 +36,7 @@ public class QuestLoader : MonoBehaviour
 
         // 퀘스트 타입별 상세정보 파싱 
         ParsingQuestTypeDB();
-        PrintQuestTypeInfo();
+        //PrintQuestTypeInfo();
     }
 
     /// <summary>
@@ -50,6 +45,13 @@ public class QuestLoader : MonoBehaviour
     private void ParsingQuestDB()
     {
         string path = streamingAssetsPath + questDBPath;
+
+        if(JsonManager.instance == null)
+        {
+            Debug.Log("Jsonmanager == null");
+            return; 
+        }
+
         JsonData jData = JsonManager.instance.GetJsonData(path);
 
         // 모든 row 순회 

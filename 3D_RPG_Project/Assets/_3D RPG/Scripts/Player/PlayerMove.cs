@@ -62,6 +62,7 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField] float _footStepTime = 0.265f;
     float _curfootTime = 0f;
+    float _mCurfootTime = 0f;
 
     float hAxis;
     float vAxis;
@@ -74,17 +75,20 @@ public class PlayerMove : MonoBehaviour
     float curSkill3Cooltime;
     float curSkill4Cooltime;
     // 스킬 쿨타임 수정 필요 !!
-    float swordSkill1Cooltime = 1f; //15
-    float swordSkill2Cooltime = 2f; //20
-    float swordSkill3Cooltime = 1f; //15
-    float swordSkill4Cooltime = 3f; //30
+    float swordSkill1Cooltime = 15f; //15
+    float swordSkill2Cooltime = 20f; //20
+    float swordSkill3Cooltime = 15f; //15
+    float swordSkill4Cooltime = 30f; //30
 
-    float mageSkill1Cooltime = 2f; //20
-    float mageSkill2Cooltime = 3f; //30
-    float mageSkill3Cooltime = 3f; //30
-    float mageSkill4Cooltime = 4f; //45
+    float mageSkill1Cooltime = 20f; //20
+    float mageSkill2Cooltime = 30f; //30
+    float mageSkill3Cooltime = 30f; //30
+    float mageSkill4Cooltime = 45f; //45
 
-    float dodgeCooltime = 1.0f;
+    float curSwapCooltime;
+    float swapCooltime = 5f;
+
+    float dodgeCooltime = 2.0f;
 
     int comboCount = 0;
 
@@ -108,6 +112,7 @@ public class PlayerMove : MonoBehaviour
     bool isSword;
     bool isMage;
     bool isCasting;
+    bool isSwap;
     bool isBorder; // 벽 감지하는 변수
 
     public static bool s_canMove = true;
@@ -339,6 +344,19 @@ public class PlayerMove : MonoBehaviour
                 }
             }
 
+            // 초간단 발자국 사운드 재생
+            if (!isJump && realMoveVec != Vector3.zero && Mathf.Abs(myRigid.velocity.y) <= 0.06f)
+            {
+                _mCurfootTime += Time.deltaTime;
+                if (_mCurfootTime >= _footStepTime)
+                {
+                    _audio.Play();
+                    _mCurfootTime = 0f;
+                }
+            }
+            else
+                _mCurfootTime = _footStepTime;
+
             if (!isBorder) transform.position += realMoveVec * speed * Time.deltaTime;
 
             transform.LookAt(transform.position + realMoveVec);
@@ -387,7 +405,7 @@ public class PlayerMove : MonoBehaviour
                 isDodgeCooltime = true;
                 SoundManager.instance.PlayEffectSound("Shout2");
                 dodgeVec = realMoveVec;
-                speed *= 1.5f;
+                speed *= 2f;
                 anim.SetTrigger("doDodge");
                 isDodge = true;
                 Invoke("DodgeOut", 0.3f);
@@ -410,7 +428,7 @@ public class PlayerMove : MonoBehaviour
                 isDodgeCooltime = true;
                 SoundManager.instance.PlayEffectSound("Shout2");
                 dodgeVec = realMoveVec;
-                speed *= 1.5f;
+                speed *= 2f;
                 anim.SetTrigger("doDodge");
                 isDodge = true;
                 Invoke("DodgeOut", 0.3f);
@@ -426,7 +444,7 @@ public class PlayerMove : MonoBehaviour
 
     void DodgeOut()
     {
-        speed = 3;
+        speed *= 0.5f;
         isDodge = false;
     }
 
@@ -642,9 +660,9 @@ public class PlayerMove : MonoBehaviour
 
     IEnumerator Skill1Effect()
     {
-        yield return new WaitForSeconds(0.3f);
         if (isSword)
         {
+            yield return new WaitForSeconds(0.3f);
             GameObject instantEffect = Instantiate(effect1, transform.position, transform.rotation);
             Rigidbody rigid = instantEffect.GetComponent<Rigidbody>();
             Destroy(instantEffect, 0.5f);
@@ -664,7 +682,8 @@ public class PlayerMove : MonoBehaviour
                 count++;
                 enemyPos.Add(checkColliders[i].transform);
             }
-
+            if (enemyPos.Count > 0) SoundManager.instance.PlayEffectSound("Lightning");
+            yield return new WaitForSeconds(0.3f);
             for (int i = 0; i < enemyPos.Count; i++)
             {
                 SkillArea area = ObjectPooling.instance.GetObjectFromPool("라이트닝", enemyPos[i].position).GetComponent<SkillArea>();
@@ -710,7 +729,6 @@ public class PlayerMove : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
             for (int i = 0; i < 5; i++)
             {
-
                 SoundManager.instance.PlayEffectSound("Skill2");
                 GameObject instantEffect = Instantiate(effect2, transform.position, transform.rotation);
 
@@ -729,19 +747,16 @@ public class PlayerMove : MonoBehaviour
         }
         if (isMage)
         {
-            startRain.SetActive(true);
+            Vector3 castingPos = transform.position + Vector3.down * 0.5f;
+            ObjectPooling.instance.GetObjectFromPool("아이스 레인 캐스팅", castingPos);
+            SoundManager.instance.PlayEffectSound("IceRain");
             yield return new WaitForSeconds(2.0f);
             isJump = false;
             isCasting = false;
-            anim.SetTrigger("doAttack2");
-            startRain.SetActive(false);
-            rain.SetActive(true);
             isMove = false;
-            SkillArea area = FindObjectOfType<SkillArea>();
+            anim.SetTrigger("doAttack2");
+            SkillArea area = ObjectPooling.instance.GetObjectFromPool("아이스 레인", transform.position).GetComponent<SkillArea>();
             area.SetSkillNum(2);
-            SoundManager.instance.PlayEffectSound("IceRain");
-            yield return new WaitForSeconds(3.0f);
-            rain.SetActive(false);
         }
     }
 
@@ -768,6 +783,7 @@ public class PlayerMove : MonoBehaviour
         if (isSword)
         {
             yield return new WaitForSeconds(0.3f);
+            SoundManager.instance.PlayEffectSound("Skill3");
             GameObject instantEffect = Instantiate(effect3, transform.position, transform.rotation);
             Rigidbody rigid = instantEffect.GetComponent<Rigidbody>();
             rigid.velocity = transform.forward * 10;
@@ -832,6 +848,7 @@ public class PlayerMove : MonoBehaviour
         if (isSword)
         {
             yield return new WaitForSeconds(0.3f);
+            SoundManager.instance.PlayEffectSound("Skill4");
             for (int i = 0; i < 8; i++)
             {
                 GameObject instantEffect = Instantiate(effect4, transform.position, transform.rotation);
@@ -1058,6 +1075,14 @@ public class PlayerMove : MonoBehaviour
                 }
             }
         }
+        if (isSwap)
+        {
+            curSwapCooltime += Time.deltaTime;
+            if (curSwapCooltime > swapCooltime)
+            {
+                isSwap = false;
+            }
+        }
     }
 
     public void Die()
@@ -1138,44 +1163,32 @@ public class PlayerMove : MonoBehaviour
         isDieTrigger = false;
     }
 
-    public void Swap() // 버튼이 1개일떄 전환
-    {
-        if (!isDie && (!isSkill1 && !isSkill2  && !isSkill3  && !isSkill4))
-        {
-            if (isSword)
-            {
-                anim = anims[1];
-                sword.SetActive(false);
-                mage.SetActive(true);
-            }
-            if (isMage)
-            {
-                anim = anims[0];
-                sword.SetActive(true);
-                mage.SetActive(false);
-            }
-        }
-        else
-        {
-            Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSwap);
-        }
-    }
-
-    public void SkillSwap() // 버튼이 1개일떄 전환
+    public void Swap()
     {
         if (!isDie && (!isSkill1 && !isSkill2 && !isSkill3 && !isSkill4))
         {
-            if (isSword)
+            if (!isSwap)
             {
-                anim = anims[1];
-                sword.SetActive(false);
-                mage.SetActive(true);
+                isSwap = true;
+                skillCool = _skillCoolImg[6].GetComponent<SkillCooltime>();
+                skillCool.SetSkillCooltime(swapCooltime, true);
+                ObjectPooling.instance.GetObjectFromPool("스왑", transform.position);
+                if (isSword)
+                {
+                    anim = anims[1];
+                    sword.SetActive(false);
+                    mage.SetActive(true);
+                }
+                if (isMage)
+                {
+                    anim = anims[0];
+                    sword.SetActive(true);
+                    mage.SetActive(false);
+                }
             }
-            if (isMage)
+            else
             {
-                anim = anims[0];
-                sword.SetActive(true);
-                mage.SetActive(false);
+                Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSkill);
             }
         }
         else

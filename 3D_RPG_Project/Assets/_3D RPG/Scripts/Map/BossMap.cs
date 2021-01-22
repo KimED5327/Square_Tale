@@ -9,10 +9,6 @@ public class BossMap : MonoBehaviour
     public ParticleSystem particle2;
     public Boss _boss;
 
-    void Start()
-    {
-        _boss = GameObject.FindGameObjectWithTag("Enemy").GetComponent<Boss>();
-    }
 
 
     void Update()

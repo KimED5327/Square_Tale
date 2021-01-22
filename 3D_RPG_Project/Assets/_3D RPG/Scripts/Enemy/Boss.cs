@@ -187,6 +187,7 @@ public class Boss : MonoBehaviour
         //1차 토네이도 리프
         if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.9f && skillUseTornadoCount == 0)
         {
+            SoundManager.instance.PlayEffectSound("BossSkill");
             Debug.Log("1차 토네이도 리프");
             isSkillOne = true;
             bossState = state.skill;
@@ -196,6 +197,7 @@ public class Boss : MonoBehaviour
         //2차  토네이도 리프
         else if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.6f && skillUseTornadoCount == 1)
         {
+            SoundManager.instance.PlayEffectSound("BossSkill");
             Debug.Log("2차 토네이도 리프");
             isSkillOne = true;
             bossState = state.skill;
@@ -205,6 +207,7 @@ public class Boss : MonoBehaviour
         //3차  토네이도 리프
         else if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.3f && skillUseTornadoCount == 2)
         {
+            SoundManager.instance.PlayEffectSound("BossSkill");
             Debug.Log("3차 토네이도 리프");
             isSkillOne = true;
             bossState = state.skill;

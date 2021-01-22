@@ -27,7 +27,7 @@ RectTransform:
   m_GameObject: {fileID: 770589041934029296}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.1}
+  m_LocalScale: {x: 0.5, y: 0.4, z: 0.1}
   m_Children: []
   m_Father: {fileID: 3977368299572713051}
   m_RootOrder: 1
@@ -630,6 +630,8 @@ MonoBehaviour:
       max: 1
     itemDropRate: 0.5
   _isForceDead: 0
+  _removeTime: 5
+  _respawnTime: 20
 --- !u!54 &8918327452065700650
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -873,7 +875,7 @@ RectTransform:
   m_GameObject: {fileID: 6240590767589258005}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4614524256358167786}
   - {fileID: 2052023976514934014}

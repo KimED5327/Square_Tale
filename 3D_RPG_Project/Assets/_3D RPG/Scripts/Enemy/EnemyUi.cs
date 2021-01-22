@@ -22,13 +22,14 @@ public class EnemyUi : MonoBehaviour
 
     void OnEnable()
     {
+        if (_Ui == null) _Ui = GetComponentInChildren<Text>();
+        _Ui.gameObject.SetActive(true);
         cam = Camera.main.transform;
     }
 
     void Update()
     {
-        if(!_enemy.getIsDie())
-        {
+        
             transform.LookAt(transform.position + cam.forward);
 
             hpPercent = (_enemyStatus.GetCurrentHp() / (float)_enemyStatus.GetMaxHp()) * 100;
@@ -39,12 +40,18 @@ public class EnemyUi : MonoBehaviour
             }
 
             if (_enemy.enemyState == State.Attack)
-                hpBar.gameObject.SetActive(true);
+                 hpBar.gameObject.SetActive(true);
+                
             else
                 hpBar.gameObject.SetActive(false);
 
             hpBar.value = _enemyStatus.GetCurrentHp() / (float)_enemyStatus.GetMaxHp();
             _Ui.text = "Lv " + _enemyStatus.GetLevel() + " " + _enemyStatus.GetName() + " " + (int)hpPercent + "%";
+
+        if(_enemy.getIsDie())
+        {
+            hpBar.gameObject.SetActive(false);
+            _Ui.gameObject.SetActive(false);
         }
       
     }

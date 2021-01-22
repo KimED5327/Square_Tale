@@ -13223,7 +13223,16 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 415499daab3b2ae45819b40c6cfccc4d, type: 3}
   - {fileID: 21300000, guid: b84c3d11d56028c4289d67cb7bbb01b0, type: 3}
   - {fileID: 21300000, guid: b98f1d419a1fe7c4093d9ab655d12e5e, type: 3}
-  _spriteKeyword: []
+  _spriteKeyword:
+  - {fileID: 21300000, guid: 9909489838cbe9d42a6aeabbf78f670c, type: 3}
+  - {fileID: 21300000, guid: 35597a5852e929b4ab217c7207db4ab6, type: 3}
+  - {fileID: 21300000, guid: 4493f2e5bb72a6a41bcd0b8c00145f9b, type: 3}
+  - {fileID: 21300000, guid: 7f6790d35d3df3346a408937be17a2da, type: 3}
+  - {fileID: 21300000, guid: ee4a184247ad07a4ba1d39ed73f5e3c5, type: 3}
+  - {fileID: 21300000, guid: 3c43a312ec34ba845809e0d7f811a176, type: 3}
+  - {fileID: 21300000, guid: 4ab9bf0424289524aaac3330c3fdf241, type: 3}
+  - {fileID: 21300000, guid: f948673e2f106f645844311cfff9ecef, type: 3}
+  - {fileID: 21300000, guid: 128989794c7b7d146baab0c7df65332e, type: 3}
 --- !u!4 &195212382
 Transform:
   m_ObjectHideFlags: 0

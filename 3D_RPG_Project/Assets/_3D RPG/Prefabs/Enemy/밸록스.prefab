@@ -101,7 +101,7 @@ RectTransform:
   m_GameObject: {fileID: 1774777111809377991}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.1}
+  m_LocalScale: {x: 0.5, y: 0.4, z: 0.1}
   m_Children: []
   m_Father: {fileID: 2894900552629829112}
   m_RootOrder: 1
@@ -213,7 +213,7 @@ RectTransform:
   m_GameObject: {fileID: 2552971666847404112}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_Children:
   - {fileID: 628641995598550739}
   - {fileID: 500159557336651063}
@@ -314,7 +314,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 1.509}
+  m_AnchoredPosition: {x: 0, y: 1.682}
   m_SizeDelta: {x: 1528, y: 526.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1236412349899554205
@@ -714,6 +714,8 @@ MonoBehaviour:
   _canKnockBack: 1
   _dropItemInfo: []
   _isForceDead: 0
+  _removeTime: 5
+  _respawnTime: 20
 --- !u!195 &2126403254405007490
 NavMeshAgent:
   m_ObjectHideFlags: 0

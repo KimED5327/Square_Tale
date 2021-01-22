@@ -329,6 +329,8 @@ MonoBehaviour:
   _canKnockBack: 1
   _dropItemInfo: []
   _isForceDead: 0
+  _removeTime: 5
+  _respawnTime: 20
 --- !u!195 &995300954651126122
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -692,7 +694,7 @@ RectTransform:
   m_GameObject: {fileID: 1900877570397941276}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.1}
+  m_LocalScale: {x: 0.5, y: 0.4, z: 0.1}
   m_Children: []
   m_Father: {fileID: 8669380629996409303}
   m_RootOrder: 1
@@ -884,7 +886,7 @@ RectTransform:
   m_GameObject: {fileID: 6121916645636481659}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_Children:
   - {fileID: 2017613212638194559}
   - {fileID: 5949214511690412938}

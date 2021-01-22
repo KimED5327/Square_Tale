@@ -245,7 +245,7 @@ RectTransform:
   m_GameObject: {fileID: 4385075655714749337}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.5, z: 1}
   m_Children:
   - {fileID: 3547659007135654070}
   - {fileID: 2559514349530592019}
@@ -563,6 +563,8 @@ MonoBehaviour:
   _canKnockBack: 1
   _dropItemInfo: []
   _isForceDead: 0
+  _removeTime: 5
+  _respawnTime: 20
 --- !u!195 &8583673047510162867
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -954,7 +956,7 @@ RectTransform:
   m_GameObject: {fileID: 6903172963062412739}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.1}
+  m_LocalScale: {x: 0.5, y: 0.4, z: 0.1}
   m_Children: []
   m_Father: {fileID: 250725414631382061}
   m_RootOrder: 1

@@ -75,20 +75,20 @@ public class PlayerMove : MonoBehaviour
     float curSkill3Cooltime;
     float curSkill4Cooltime;
     // 스킬 쿨타임 수정 필요 !!
-    float swordSkill1Cooltime = 1f; //15
-    float swordSkill2Cooltime = 2f; //20
-    float swordSkill3Cooltime = 1f; //15
-    float swordSkill4Cooltime = 3f; //30
+    float swordSkill1Cooltime = 15f; //15
+    float swordSkill2Cooltime = 20f; //20
+    float swordSkill3Cooltime = 15f; //15
+    float swordSkill4Cooltime = 30f; //30
 
-    float mageSkill1Cooltime = 2f; //20
-    float mageSkill2Cooltime = 3f; //30
-    float mageSkill3Cooltime = 3f; //30
-    float mageSkill4Cooltime = 4f; //45
+    float mageSkill1Cooltime = 20f; //20
+    float mageSkill2Cooltime = 30f; //30
+    float mageSkill3Cooltime = 30f; //30
+    float mageSkill4Cooltime = 45f; //45
 
     float curSwapCooltime;
     float swapCooltime = 5f;
 
-    float dodgeCooltime = 1.0f;
+    float dodgeCooltime = 2.0f;
 
     int comboCount = 0;
 
@@ -1165,14 +1165,14 @@ public class PlayerMove : MonoBehaviour
 
     public void Swap()
     {
-        if (!isSwap)
+        if (!isDie && (!isSkill1 && !isSkill2 && !isSkill3 && !isSkill4))
         {
-            isSwap = true;
-            skillCool = _skillCoolImg[6].GetComponent<SkillCooltime>();
-            skillCool.SetSkillCooltime(swapCooltime, true);
-            ObjectPooling.instance.GetObjectFromPool("스왑", transform.position);
-            if (!isDie && (!isSkill1 && !isSkill2 && !isSkill3 && !isSkill4))
+            if (!isSwap)
             {
+                isSwap = true;
+                skillCool = _skillCoolImg[6].GetComponent<SkillCooltime>();
+                skillCool.SetSkillCooltime(swapCooltime, true);
+                ObjectPooling.instance.GetObjectFromPool("스왑", transform.position);
                 if (isSword)
                 {
                     anim = anims[1];
@@ -1188,12 +1188,12 @@ public class PlayerMove : MonoBehaviour
             }
             else
             {
-                Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSwap);
+                Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSkill);
             }
         }
         else
         {
-            Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSkill);
+            Notification.instance.ShowFloatingMessage(StringManager.msgCanNotSwap);
         }
     }
 

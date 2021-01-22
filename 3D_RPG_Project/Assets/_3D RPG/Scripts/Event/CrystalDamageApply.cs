@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class CrystalDamageApply : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.CompareTag(StringManager.playerTag))
+        {
+            PlayerStatus st =  other.GetComponent<PlayerStatus>();
+            st.Damage((int)(st.GetMaxHp() * 0.3f), Vector3.zero);
+
+        }
     }
 }

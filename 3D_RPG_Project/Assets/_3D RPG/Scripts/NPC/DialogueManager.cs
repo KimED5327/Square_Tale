@@ -129,8 +129,22 @@ public class DialogueManager : MonoBehaviour
 
     public void CloseAllQuestCompleteUI()
     {
+        // 팝업창 닫으면
         _popupPanel.SetActive(false);
         _imgBG.GetComponent<Animator>().Play("FadeOut", 0, 0f);
+        
+        // 맵 이동
+        StartCoroutine(WaitMapChangeCo());
+    }
+
+    // 0.5초 뒤 맵 이동
+    IEnumerator WaitMapChangeCo()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        // 맵 이동
+        MapManager.instance.SetSpawnPoint("Delphinium");
+        MapManager.instance.ChangeMap("Town");
     }
 
     /// <summary>

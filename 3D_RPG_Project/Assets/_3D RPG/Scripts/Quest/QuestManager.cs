@@ -49,7 +49,23 @@ public class QuestManager : MonoBehaviour
     {
         // 저장된 데이터가 있다면 불러오기 
         if (!_isLoadingDone) LoadQuestData();
+
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    OpenLilyQuest();
+        //}
     }
+
+    // 테스트용 마지막 퀘스트 받기
+    //void OpenLilyQuest()
+    //{
+    //    if (QuestDB.instance.GetQuest(10).GetState() == QuestState.QUEST_VEILED)
+    //    {
+    //        QuestDB.instance.GetQuest(10).SetState(QuestState.QUEST_OPENED);
+    //        CheckAvailableQuest();
+    //    }
+    //}
+
 
     /// <summary>
     /// 진행중인 퀘스트 리스트에 ongoingQuest를 원소로 추가하기 

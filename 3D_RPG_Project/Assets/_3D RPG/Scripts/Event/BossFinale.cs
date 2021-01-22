@@ -13,6 +13,10 @@ public class BossFinale : MonoBehaviour
     PlayerMove _player;
     CameraController _camController;
 
+    [Header("Effect")]
+    [SerializeField] ParticleSystem particle1 = null;
+    [SerializeField] ParticleSystem particle2 = null;
+
     [Header("UI")]
     [SerializeField] GameObject _canvas = null;
     [SerializeField] Text _txtLine = null;
@@ -51,6 +55,9 @@ public class BossFinale : MonoBehaviour
 
     IEnumerator StartEvent()
     {
+        particle1.gameObject.SetActive(true);
+        particle2.gameObject.SetActive(true);
+
         yield return new WaitForSeconds(0.25f);
 
         // 모든 동작 스톱
@@ -80,17 +87,17 @@ public class BossFinale : MonoBehaviour
         // 캠 전환 1
         _cam.transform.position = _tfCamPos2.position;
         _cam.transform.rotation = _tfCamPos2.rotation;
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(3.5f);
 
         // 캠 전환 2
         _cam.transform.position = _tfCamPos3.position;
         _cam.transform.rotation = _tfCamPos3.rotation;
-        yield return new WaitForSeconds(2.5f); 
+        yield return new WaitForSeconds(3.5f); 
         
         // 캠 전환 3
         _cam.transform.position = _tfCamPos4.position;
         _cam.transform.rotation = _tfCamPos4.rotation;
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(3.5f);
 
 
         // 페이드 아웃

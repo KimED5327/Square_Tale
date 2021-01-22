@@ -950,7 +950,8 @@ MonoBehaviour:
   _def: 0
   _level: 1
   _giveExp: 0
-  _destroyEffectName: 
+  _giveGold: 10
+  _destroyEffectName: "\uC624\uBE0C\uC81D\uD2B8 \uD0C0\uACA9 \uC774\uD399\uD2B8"
   _destroySoundName: Explosion
   _hitEffectName: 
   _destroyTime: 10

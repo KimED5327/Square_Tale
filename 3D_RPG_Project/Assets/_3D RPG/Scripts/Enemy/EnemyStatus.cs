@@ -65,10 +65,21 @@ public class EnemyStatus : Status
         base.Dead();
 
         // 현재 '몬스터 처치' 퀘스트를 진행 중이라면, 퀘스트 달성 조건 검사 
-        if(!_isForceDead)
-            QuestManager.instance.CheckKillEnemyQuest(GetComponent<Enemy>().Id);
+        if (!_isForceDead)
+        {
 
-        DecideDropItem();
+            // 일반 몬스터는 id값 넘겨줌
+            if (_name != "릴리")
+                QuestManager.instance.CheckKillEnemyQuest(GetComponent<Enemy>().Id);
+            
+            // 보스는 릴리 id 6 넘겨줌
+            else 
+                QuestManager.instance.CheckKillEnemyQuest(6);
+
+        }
+
+        if (_name != "릴리")
+            DecideDropItem();
     }
 
 

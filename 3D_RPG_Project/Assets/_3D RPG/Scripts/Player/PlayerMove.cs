@@ -175,6 +175,10 @@ public class PlayerMove : MonoBehaviour
                     Dodge();
                     StopWall();
                 }
+                else
+                {
+                    anim.SetBool("isRun", false);
+                }
             }
 
             Cooldown();

@@ -107876,8 +107876,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 209.32513, y: 0}
-  m_SizeDelta: {x: 779.8503, y: 0}
+  m_AnchoredPosition: {x: -4.300049, y: 107.15997}
+  m_SizeDelta: {x: -184.79991, y: -614.4801}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1800275091
 MonoBehaviour:
@@ -107893,6 +107893,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   touchDis: {x: 0, y: 0}
   pointerOld: {x: 0, y: 0}
+  _layer:
+    serializedVersion: 2
+    m_Bits: 32
 --- !u!114 &1800275092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107906,7 +107909,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.68235296}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:

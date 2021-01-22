@@ -41,7 +41,7 @@ public class InteractionManager : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, 1000, _layerMask))
             {
                 // UI에 부딪친 경우 취소
-                if (EventSystem.current.IsPointerOverGameObject() == true) return;
+                if (IsPointerOverUIObject()) return;
 
                 Transform target = hit.transform;
 
@@ -184,5 +184,15 @@ public class InteractionManager : MonoBehaviour
 
             chest.RemoveChest();
         }
+    }
+
+
+    private bool IsPointerOverUIObject()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
     }
 }

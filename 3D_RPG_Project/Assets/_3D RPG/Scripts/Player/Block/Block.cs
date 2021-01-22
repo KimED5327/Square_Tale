@@ -14,7 +14,14 @@ public abstract class Block : Status
     Transform _tfPlayer = null;
     protected Animator _anim = null;
 
+    protected bool _canApply = true;
+
     static readonly string _aniPlayShake = "Shake";
+
+    public void SetApplyCancel()
+    {
+        _canApply = false;
+    }
 
     public override void Initialized()
     {
@@ -23,7 +30,7 @@ public abstract class Block : Status
             _tfPlayer = GameObject.FindGameObjectWithTag("Player").transform;
             _anim = GetComponent<Animator>();
         }
-
+        _canApply = true;
         _curHp = _maxHp;
         _isDead = false;
 

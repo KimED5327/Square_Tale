@@ -22,11 +22,15 @@ public class BlockExplosion : Block
                 continue;
 
             int damage = (int)(targetStatus.GetMaxHp() * _damageRatio);
-            
-            if (cols[i].transform.name == "Player" && _damageRatio >= 0.2f)
-                PlayerBuffManager.instance.ApplyPlayerBuff(4);
 
-            targetStatus.Damage(damage, transform.position);
+            if (_canApply)
+            {
+                if (cols[i].transform.name == "Player" && _damageRatio >= 0.2f)
+                    PlayerBuffManager.instance.ApplyPlayerBuff(4);
+
+                targetStatus.Damage(damage, transform.position);
+            }
+
         }
     }
 }

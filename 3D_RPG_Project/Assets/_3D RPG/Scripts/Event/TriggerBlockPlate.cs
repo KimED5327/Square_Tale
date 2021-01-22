@@ -12,9 +12,11 @@ public class TriggerBlockPlate : Trigger
         {
             if (!_isActivated)
             {
-                string blockName = other.GetComponent<Block>().GetName();
+                Block block = other.GetComponent<Block>();
+                string blockName = block.GetName();
                 if (_blockName == blockName)
                 {
+                    block.SetApplyCancel();
                     ActiveTrigger();
                 }
             }

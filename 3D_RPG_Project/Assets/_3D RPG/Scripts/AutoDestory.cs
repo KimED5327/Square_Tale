@@ -12,7 +12,7 @@ public class AutoDestory : MonoBehaviour
 
     private void OnEnable()
     {
-        if(_isAwake)
+        if (_isAwake)
             Invoke("AutoDestroy", _destoryTime);
 
         _isAwake = true;

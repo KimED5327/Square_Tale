@@ -12,6 +12,7 @@ public abstract class Status : MonoBehaviour
     [SerializeField] protected int _def = 0;
     [SerializeField] protected int _level = 1;
     [SerializeField] protected int _giveExp = 50;
+    [SerializeField] protected int _giveGold = 10;
 
     //임시 기초 스탯 (수정 필)
     //[SerializeField] protected int _swordMaxHp = 150;

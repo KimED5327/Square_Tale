@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Id: 3
-  attTime: 3
+  attTime: 2
   dmgApplyTime: 0.5
   timer: 0
   reconTime: 3
@@ -95,11 +95,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uD2B8\uB9AC\uC838"
-  _maxHp: 130
-  _atk: 21
-  _def: 2
-  _level: 1
-  _giveExp: 13
+  _maxHp: 180
+  _atk: 23
+  _def: 7
+  _level: 7
+  _giveExp: 25
+  _giveGold: 23
   _knockBackForce: 0.1
   _canKnockBack: 1
   _dropItemInfo: []
@@ -412,12 +413,17 @@ PrefabInstance:
     - target: {fileID: 2813310212506711456, guid: a0d64f5e57740d143a3c654698d90d74,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 2813310212506711456, guid: a0d64f5e57740d143a3c654698d90d74,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2813310212506711456, guid: a0d64f5e57740d143a3c654698d90d74,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 22.6
       objectReference: {fileID: 0}
     - target: {fileID: 2813310212506711457, guid: a0d64f5e57740d143a3c654698d90d74,
         type: 3}
@@ -452,8 +458,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2813310213168386411, guid: a0d64f5e57740d143a3c654698d90d74,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.86
+      objectReference: {fileID: 0}
+    - target: {fileID: 2813310213168386411, guid: a0d64f5e57740d143a3c654698d90d74,
+        type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2813310213168386420, guid: a0d64f5e57740d143a3c654698d90d74,
         type: 3}

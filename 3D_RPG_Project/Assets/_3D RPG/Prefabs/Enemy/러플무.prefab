@@ -136,7 +136,7 @@ RectTransform:
   m_GameObject: {fileID: 4802670873360090201}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8943933601051890161}
   - {fileID: 9000038450795931624}
@@ -226,14 +226,14 @@ RectTransform:
   m_GameObject: {fileID: 5242682606798746082}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.4, z: 0.1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.1}
   m_Children: []
   m_Father: {fileID: 562503379602090116}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.1, y: 17.53}
+  m_AnchoredPosition: {x: 0.1, y: 25.9}
   m_SizeDelta: {x: 113.8, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7164707914961608397
@@ -315,7 +315,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 2.29}
+  m_AnchoredPosition: {x: 0, y: 2.37}
   m_SizeDelta: {x: 1528, y: 526.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6973474674677765748
@@ -545,7 +545,7 @@ Transform:
   m_GameObject: {fileID: 6314357768394154890}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children:
   - {fileID: 6314357768394063788}
   - {fileID: 6314357768394063780}
@@ -614,7 +614,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Id: 9
-  attTime: 3
+  attTime: 2
   dmgApplyTime: 0.5
   timer: 0
   reconTime: 3
@@ -638,17 +638,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uB7EC\uD50C\uBB34"
-  _maxHp: 100
-  _atk: 15
-  _def: 3
+  _maxHp: 125
+  _atk: 20
+  _def: 1
   _level: 1
-  _giveExp: 6
+  _giveExp: 3
+  _giveGold: 2
   _knockBackForce: 0.1
   _canKnockBack: 1
   _dropItemInfo: []
   _isForceDead: 0
   _removeTime: 5
-  _respawnTime: 20
+  _respawnTime: 30
 --- !u!195 &7857534164197313885
 NavMeshAgent:
   m_ObjectHideFlags: 0

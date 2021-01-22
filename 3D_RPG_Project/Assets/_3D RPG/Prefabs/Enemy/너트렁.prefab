@@ -432,14 +432,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Id: 12
-  attTime: 3
+  attTime: 2
   dmgApplyTime: 0.4
   timer: 0
   reconTime: 3
   reconTimer: 0
   motionTime: 0
   maxFindRange: 2
-  maxMoveRange: 5
+  maxMoveRange: 15
   maxAttackRange: 1
   reconRange: 0
   enemyState: 0
@@ -456,17 +456,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uB108\uD2B8\uB801"
-  _maxHp: 100
-  _atk: 15
-  _def: 2
-  _level: 1
-  _giveExp: 50
+  _maxHp: 150
+  _atk: 32
+  _def: 5
+  _level: 5
+  _giveExp: 15
+  _giveGold: 14
   _knockBackForce: 0.1
   _canKnockBack: 1
   _dropItemInfo: []
   _isForceDead: 0
   _removeTime: 5
-  _respawnTime: 20
+  _respawnTime: 30
 --- !u!195 &6153130715939551450
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -883,14 +884,14 @@ RectTransform:
   m_GameObject: {fileID: 7174482537451234373}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.4, z: 0.1}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 0.1}
   m_Children: []
   m_Father: {fileID: 6619704156936560805}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.1, y: 17.53}
+  m_AnchoredPosition: {x: 0.1, y: 23.6}
   m_SizeDelta: {x: 113.8, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4529401965991068805
@@ -960,7 +961,7 @@ RectTransform:
   m_GameObject: {fileID: 7699951737974146916}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.75, y: 0.9, z: 0.5}
   m_Children:
   - {fileID: 3827927025441143821}
   - {fileID: 1525401151729100263}

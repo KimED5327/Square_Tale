@@ -463,7 +463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Id: 4
-  attTime: 3
+  attTime: 2
   dmgApplyTime: 0.5
   timer: 0
   reconTime: 3
@@ -509,17 +509,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uCEEC\uC2A4\uB514\uC5B8"
-  _maxHp: 120
-  _atk: 23
-  _def: 2
-  _level: 2
-  _giveExp: 12
+  _maxHp: 220
+  _atk: 25
+  _def: 9
+  _level: 9
+  _giveExp: 40
+  _giveGold: 36
   _knockBackForce: 0.1
   _canKnockBack: 1
   _dropItemInfo: []
   _isForceDead: 0
   _removeTime: 5
-  _respawnTime: 99999
+  _respawnTime: 30
 --- !u!65 &5901760668393026094
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -576,14 +577,14 @@ RectTransform:
   m_GameObject: {fileID: 4312082683188266443}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.4, z: 0.1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.1}
   m_Children: []
   m_Father: {fileID: 3145462449377319888}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.1, y: 17.53}
+  m_AnchoredPosition: {x: 0.1, y: 19.9}
   m_SizeDelta: {x: 113.8, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &274487062648193960
@@ -653,7 +654,7 @@ RectTransform:
   m_GameObject: {fileID: 4682086747571039587}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.9, z: 1}
   m_Children:
   - {fileID: 5676986647162065636}
   - {fileID: 8991276759220241269}

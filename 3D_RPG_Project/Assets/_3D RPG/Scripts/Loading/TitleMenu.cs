@@ -14,22 +14,48 @@ public class TitleMenu : MonoBehaviour
 
     Animator _anim;
 
+    bool _canTouch = false;
+
     private void Awake()
     {
         Screen.SetResolution(1920, 1080, true);
         SoundManager.instance.PlayBGM("BGM_Lobby");
-        
-        if(PlayerPrefs.HasKey(StringManager.nickname))
-            LoadingScene.LoadScene("LobbyScene");
+       
 
-        _anim = GetComponent<Animator>(); 
+        _anim = GetComponent<Animator>();
+
+        StartCoroutine(WaitCo());
+    }
+
+    IEnumerator WaitCo()
+    {
+        yield return new WaitForSeconds(4.5f);
+        _goTouch.SetActive(true);
+        _canTouch = true;
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            BtnTouchScreen();
+        }
     }
 
     public void BtnTouchScreen()
     {
+        if (!_canTouch) return;
+
+        _canTouch = false;
         SoundManager.instance.PlayEffectSound("Click");
-        _goTouch.SetActive(false);
-        _goNickname.SetActive(true);
+
+        if (PlayerPrefs.HasKey(StringManager.nickname))
+            LoadingScene.LoadScene("LobbyScene");
+        else
+        {
+            _goTouch.SetActive(false);
+            _goNickname.SetActive(true);
+        }
     }
 
     public void BtnTouchWorld()

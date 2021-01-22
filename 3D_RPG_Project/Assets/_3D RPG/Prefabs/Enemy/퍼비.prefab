@@ -245,7 +245,7 @@ RectTransform:
   m_GameObject: {fileID: 4385075655714749337}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.45, y: 0.5, z: 1}
   m_Children:
   - {fileID: 3547659007135654070}
   - {fileID: 2559514349530592019}
@@ -530,7 +530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Id: 14
-  attTime: 3
+  attTime: 2
   dmgApplyTime: 0.5
   timer: 0
   reconTime: 3
@@ -554,17 +554,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uD37C\uBE44"
-  _maxHp: 100
-  _atk: 16
-  _def: 3
+  _maxHp: 110
+  _atk: 19
+  _def: 1
   _level: 1
-  _giveExp: 6
+  _giveExp: 2
+  _giveGold: 2
   _knockBackForce: 0.1
   _canKnockBack: 1
   _dropItemInfo: []
   _isForceDead: 0
   _removeTime: 5
-  _respawnTime: 20
+  _respawnTime: 30
 --- !u!195 &8583673047510162867
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -956,14 +957,14 @@ RectTransform:
   m_GameObject: {fileID: 6903172963062412739}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.4, z: 0.1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.1}
   m_Children: []
   m_Father: {fileID: 250725414631382061}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.1, y: 17.53}
+  m_AnchoredPosition: {x: 0.1, y: 13.8}
   m_SizeDelta: {x: 113.8, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3580254447085171176
@@ -1045,7 +1046,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.01, y: 0.878}
+  m_AnchoredPosition: {x: 0, y: 0.669}
   m_SizeDelta: {x: 1528, y: 526.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &956018770893523986

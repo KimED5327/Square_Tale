@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Id: 8
-  attTime: 3
+  attTime: 2
   dmgApplyTime: 0.5
   timer: 0
   reconTime: 3
@@ -177,17 +177,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uB9B0\uB098\uBB34"
-  _maxHp: 100
-  _atk: 15
-  _def: 2
-  _level: 1
-  _giveExp: 6
+  _maxHp: 130
+  _atk: 23
+  _def: 3
+  _level: 3
+  _giveExp: 8
+  _giveGold: 7
   _knockBackForce: 0.1
   _canKnockBack: 1
-  _dropItemInfo: []
+  _dropItemInfo:
+  - itemID: 2
+    itemCounts:
+      min: 1
+      max: 1
+    itemDropRate: 50
   _isForceDead: 0
   _removeTime: 5
-  _respawnTime: 20
+  _respawnTime: 30
 --- !u!1 &3108541573075520980
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,7 +539,7 @@ RectTransform:
   m_GameObject: {fileID: 6108726689714142347}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4187206358848381234}
   - {fileID: 4193259853002140544}
@@ -658,14 +664,14 @@ RectTransform:
   m_GameObject: {fileID: 6850052734089429037}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.4, z: 0.1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.1}
   m_Children: []
   m_Father: {fileID: 6383687604658566309}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.1, y: 17.53}
+  m_AnchoredPosition: {x: 0.1, y: 25.899998}
   m_SizeDelta: {x: 113.8, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6055511740487308316
@@ -747,7 +753,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 2.29}
+  m_AnchoredPosition: {x: 0, y: 2.37}
   m_SizeDelta: {x: 1528, y: 526.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3130115027068196545

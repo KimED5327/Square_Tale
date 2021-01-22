@@ -27,14 +27,14 @@ RectTransform:
   m_GameObject: {fileID: 770589041934029296}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.4, z: 0.1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.1}
   m_Children: []
   m_Father: {fileID: 3977368299572713051}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.1, y: 17.53}
+  m_AnchoredPosition: {x: 0.1, y: 13.800002}
   m_SizeDelta: {x: 113.8, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4719121544424566532
@@ -592,7 +592,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Id: 13
-  attTime: 3
+  attTime: 2
   dmgApplyTime: 0.5
   timer: 0
   reconTime: 3
@@ -616,11 +616,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uD06C\uB178\uBE44"
-  _maxHp: 100
-  _atk: 16
-  _def: 3
-  _level: 1
-  _giveExp: 50
+  _maxHp: 110
+  _atk: 27
+  _def: 2
+  _level: 2
+  _giveExp: 4
+  _giveGold: 4
   _knockBackForce: 0.1
   _canKnockBack: 1
   _dropItemInfo:
@@ -631,7 +632,7 @@ MonoBehaviour:
     itemDropRate: 0.5
   _isForceDead: 0
   _removeTime: 5
-  _respawnTime: 20
+  _respawnTime: 30
 --- !u!54 &8918327452065700650
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -875,7 +876,7 @@ RectTransform:
   m_GameObject: {fileID: 6240590767589258005}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.45, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4614524256358167786}
   - {fileID: 2052023976514934014}
@@ -976,7 +977,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.04, y: 0.92}
+  m_AnchoredPosition: {x: 0, y: 0.669}
   m_SizeDelta: {x: 1528, y: 526.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1376866958189812784

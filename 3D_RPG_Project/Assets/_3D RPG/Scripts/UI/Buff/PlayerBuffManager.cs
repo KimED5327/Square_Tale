@@ -100,22 +100,6 @@ public class PlayerBuffManager : MonoBehaviour
                 }
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            TryPushBuff(6);
-
-        }
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            TryPushBuff(7);
-
-        }
-        if (Input.GetKeyDown(KeyCode.Comma))
-        {
-            TryPushBuff(8);
-        }
-
     }
 
 
@@ -155,8 +139,6 @@ public class PlayerBuffManager : MonoBehaviour
 
             }
         }
-
-
     }
 
 }

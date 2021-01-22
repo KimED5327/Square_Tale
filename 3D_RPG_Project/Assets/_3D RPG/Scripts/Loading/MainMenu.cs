@@ -37,25 +37,14 @@ public class MainMenu : MonoBehaviour
 
     void Update()
     {
-        // 테스트용
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            _slots[1].UnLockSlot();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            _slots[2].UnLockSlot();
-        }
-
         // 캐릭터를 터치하면 말풍선 On
         if (Input.GetMouseButtonDown(0))
         {
-            SoundManager.instance.PlayEffectSound("Click");
-
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if(Physics.Raycast(ray, out RaycastHit hit, 1000))
             {
+
                 _goBalloon.SetActive(true);
                 _currentBalloon = GetRandomNumber();
                 _txtBalloon.text = _balloonStr[_currentBalloon];
@@ -65,6 +54,7 @@ public class MainMenu : MonoBehaviour
 
     int GetRandomNumber()
     {
+
         int random = 0;
         while (true)
         {

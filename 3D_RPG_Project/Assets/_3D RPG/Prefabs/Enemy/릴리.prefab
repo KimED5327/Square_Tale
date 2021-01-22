@@ -1665,11 +1665,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uB9B4\uB9AC"
-  _maxHp: 10
-  _atk: 40
-  _def: 10
-  _level: 5
-  _giveExp: 42
+  _maxHp: 1400
+  _atk: 42
+  _def: 24
+  _level: 12
+  _giveExp: 336
+  _giveGold: 302
   _knockBackForce: 0.1
   _canKnockBack: 0
   _dropItemInfo:

@@ -1665,7 +1665,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uB9B4\uB9AC"
-  _maxHp: 14
+  _maxHp: 1400
   _atk: 42
   _def: 24
   _level: 12

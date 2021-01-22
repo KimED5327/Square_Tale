@@ -19132,6 +19132,10 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 4009a0b495bcc5745b7771aed5390d71, type: 3}
   - name: Quest_AllComplete
     clip: {fileID: 8300000, guid: bf9a6327f5a2b0048bcad9d1fbe22c22, type: 3}
+  - name: BossAttack
+    clip: {fileID: 8300000, guid: e0e59797d06cbac4c993f033bd677259, type: 3}
+  - name: BossSkill
+    clip: {fileID: 8300000, guid: 98b56acde1d490c4c8950b421ba997a8, type: 3}
   effectPlayer:
   - {fileID: 1331582483}
   - {fileID: 895823384}

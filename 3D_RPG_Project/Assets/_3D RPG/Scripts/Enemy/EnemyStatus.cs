@@ -79,7 +79,7 @@ public class EnemyStatus : Status
 
         if (!_isForceDead)
         {
-            DropItem item = new DropItem { itemID = 1, itemCount = Random.Range(2, 10) };
+            DropItem item = new DropItem { itemID = 1, itemCount = _giveGold };
             dropItemList.Add(item);
         }
 

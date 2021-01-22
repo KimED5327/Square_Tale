@@ -2,16 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 public class TitleMenu : MonoBehaviour
 {
     [SerializeField] InputField _inNickname = null;
     [SerializeField] GameObject _goNickname = null;
     [SerializeField] GameObject _goTouch = null;
+
+    [SerializeField] Text _txtWarning = null;
+
+    Animator _anim;
+
     private void Awake()
     {
         Screen.SetResolution(1920, 1080, true);
         SoundManager.instance.PlayBGM("BGM_Lobby");
+        
+        if(PlayerPrefs.HasKey(StringManager.nickname))
+            LoadingScene.LoadScene("LobbyScene");
+
+        _anim = GetComponent<Animator>(); 
     }
 
     public void BtnTouchScreen()
@@ -25,23 +36,43 @@ public class TitleMenu : MonoBehaviour
     {
         SoundManager.instance.PlayEffectSound("Click");
 
-        if (_inNickname.text == "")
-        {
-            Debug.Log("닉네임을 입력해주세요");
-            return;
-        }
-        else if(_inNickname.text.Length > 16)
-        {
-            Debug.Log("적절한 길이의 닉네임으로 설정해주세요");
-            return;
-        }
+        string id = _inNickname.text;
 
+        if (id == "")
+        {
+            _anim.SetTrigger("Show");
+            _txtWarning.text = "닉네임을 입력해주세요.";
+            return;
+        }
+        else if(id.Length > 6)
+        {
+            _anim.SetTrigger("Show");
+            _txtWarning.text = "닉네임은 6글자 이내로 해주세요.";
+            return;
+        }
+        else if (id.Length < 2)
+        {
+            _anim.SetTrigger("Show");
+            _txtWarning.text = "닉네임은 2글자 이상으로 해주세요.";
+            return;
+        }
+        if (!IsValidStr(id)) // 닉네임에 특수문자, 초성, 띄어쓰기가 포함된 경우.
+        {
+            _anim.SetTrigger("Show");
+            _txtWarning.text = "초성과 띄어쓰기, 특수문자는 불가능합니다.";
+            return;
+        }
 
         PlayerPrefs.SetString(StringManager.nickname, _inNickname.text);
 
         LoadingScene.LoadScene("LobbyScene");
     }
 
+    bool IsValidStr(string text)
+    {
+        string pattern = @"^[a-zA-Z0-9가-힣]*$";
+        return Regex.IsMatch(text, pattern);
+    }
 
     public void BtnTouchExit()
     {

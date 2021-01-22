@@ -46,6 +46,15 @@ public class GameHudMenu : MonoBehaviour
             //_txtMP.text = $"{_playerStatus.GetCurMp()} / {_playerStatus.GetMaxMp()}";
         }
 
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            HideMenu();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            ShowMenu();
+        }
     }
 
     public void HideMenu()

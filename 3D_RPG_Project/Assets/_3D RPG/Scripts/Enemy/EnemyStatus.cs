@@ -23,9 +23,13 @@ public class EnemyStatus : Status
         base.Initialized();
         _curTime = 0f;
 
-        if(_render == null)
-            _render = GetComponentInChildren<SkinnedMeshRenderer>();
-        _render.enabled = true;
+        if (!_isForceDead)
+        {
+            if (_render == null)
+                _render = GetComponentInChildren<SkinnedMeshRenderer>();
+            
+            _render.enabled = true;
+        }
 
         // 스폰과 동시에 루팅 가능하도록 세팅된 Enemy (혹은 오브젝트)
         // 정화의 크리스탈을 부수면, 크리스탈 이펙트가 스폰됨. 
@@ -99,6 +103,7 @@ public class EnemyStatus : Status
         // 드롭 리스트에 하나라도 있으면 드롭 OK
         if (dropItemList.Count > 0)
         {
+            Debug.Log(ObjectPooling.instance);
             GameObject go = ObjectPooling.instance.GetObjectFromPool("필드 아이템", transform.position);
             FieldItem fieldItem = go.GetComponent<FieldItem>();
 

@@ -1441,13 +1441,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 523297897091804616, guid: 167d8554b70e3bd4ea48e1ffe19aa442,
         type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 523297897091804616, guid: 167d8554b70e3bd4ea48e1ffe19aa442,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 523297897091804616, guid: 167d8554b70e3bd4ea48e1ffe19aa442,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 4534520362290568978, guid: 167d8554b70e3bd4ea48e1ffe19aa442,
         type: 3}
       propertyPath: _dropItemInfo.Array.data[0].itemDropRate
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427102339029829694, guid: 167d8554b70e3bd4ea48e1ffe19aa442,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7176138942685419602, guid: 167d8554b70e3bd4ea48e1ffe19aa442,
         type: 3}

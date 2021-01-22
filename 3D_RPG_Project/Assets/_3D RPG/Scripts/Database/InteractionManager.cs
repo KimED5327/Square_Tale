@@ -122,6 +122,7 @@ public class InteractionManager : MonoBehaviour
         IEnumerator CheckTreausreChest(Chest chest)
         {
             Reward reward = chest.GetReward();
+            if (reward == null) yield break;
 
             yield return new WaitForSeconds(1.25f);
 

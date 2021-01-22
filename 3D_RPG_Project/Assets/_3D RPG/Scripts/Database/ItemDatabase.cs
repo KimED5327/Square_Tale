@@ -19,7 +19,6 @@ public class ItemDatabase : MonoBehaviour
 
     public void AddItem(Item item, int itemId)
     {
-        //Debug.Log("아이템 ID = " + itemId + " 등록");
         itemDB.Add(itemId, item);
     }
 

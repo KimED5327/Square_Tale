@@ -11,6 +11,8 @@ public class LoadingScene : MonoBehaviour
     [SerializeField] Image _imgScreen = null;
     [SerializeField] float _fadeSpeed = 1f;
 
+    [SerializeField] Text _txtTip = null;
+    [SerializeField] string[] _strTip = null;
 
     static string nextScene;
 
@@ -25,6 +27,7 @@ public class LoadingScene : MonoBehaviour
     void Start()
     {
         _isFinished = false;
+        _txtTip.text = $"hint. {_strTip[Random.Range(0, _strTip.Length)]}";
         StartCoroutine(FadeInCo());
 
         StartCoroutine(LoadSceneProcess());

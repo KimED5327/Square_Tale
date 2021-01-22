@@ -1964,7 +1964,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d59da91269c01e459fb3af4900ffaf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _questCompleteID: 9
+  _questCompleteID: 7
   _goActive: {fileID: 4429297688958469140}
 --- !u!1 &5460435927287323405
 GameObject:

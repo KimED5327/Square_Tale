@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class SignPost : MonoBehaviour
 {
-    [SerializeField] int _id = 1;
-    [SerializeField] Text _txtBalloon = null;
     Animator anim;
 
     private void Start()
@@ -18,7 +16,6 @@ public class SignPost : MonoBehaviour
     {
         if (other.CompareTag(StringManager.playerTag))
         {
-            _txtBalloon.text = "필요한 내용은 이곳에 넣어주면 된다.";
             anim.SetTrigger("Show");
         }
     }

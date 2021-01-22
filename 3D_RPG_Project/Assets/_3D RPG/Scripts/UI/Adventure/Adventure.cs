@@ -11,6 +11,8 @@ public class Adventure : MonoBehaviour
     [SerializeField] Text _txtPage = null;
     [SerializeField] Text _txtProgress = null;
     [SerializeField] Image _imgProgress = null;
+    [SerializeField] Image _imgKeyword = null;
+    [SerializeField] GameObject _goKeywordScreen = null;
 
     [Header("Slots")]
     [SerializeField] KeywordSlot[] _slots = null;
@@ -30,13 +32,20 @@ public class Adventure : MonoBehaviour
     private void Awake()
     {
         _tutorial = FindObjectOfType<Tutorial>();
+        if(PlayerPrefs.HasKey("AdventureProgress"))
+            _adventureProgress = PlayerPrefs.GetFloat("AdventureProgress");
+        else
+            PlayerPrefs.SetFloat("AdventureProgress", 0f);
     }
 
     public static void IncreaseAdventureProgress(float num)
     {
         _adventureProgress += num;
+        PlayerPrefs.SetFloat("AdventureProgress", _adventureProgress);
     }
     public static float GetAdventureProgress() { return _adventureProgress; }
+
+
 
     // 모험담 메뉴출력
     public void ShowUI()
@@ -70,6 +79,7 @@ public class Adventure : MonoBehaviour
         _startKeywordID = KeywordData.instance.GetStartKeywordID(_curChapter, _curPage);
         _pageKeywordMaxCount = KeywordData.instance.GetKeywordMaxCount(_curChapter, _curPage);
 
+        bool isAcquireKeyword = false;
         // 현재 챕터의 현재 페이지 키워드 세팅
         for (int i = 0; i < _slots.Length; i++)
         {
@@ -81,11 +91,21 @@ public class Adventure : MonoBehaviour
             {
                 _slots[i].gameObject.SetActive(true);
                 _slots[i].SetSlot(keyword, _printText);
+
+                if (!isAcquireKeyword && keyword.isGet)
+                {
+                    isAcquireKeyword = true;
+                    BtnKeyword(i);
+                }
             }
             else
+            {
                 _slots[i].gameObject.SetActive(false);
-
+            }
         }
+
+        if (!isAcquireKeyword)
+            BtnKeyword(0);
 
         // 시놉시스 세팅
         _txtSynopsis.text = KeywordData.instance.GetSynopsis(_curChapter, _curPage);
@@ -117,18 +137,37 @@ public class Adventure : MonoBehaviour
         {
             Notification.instance.ShowFloatingMessage(StringManager.msgNotAccessChapter);
         }
- 
+
     }
 
-    // 페이지 이동
-    public void BtnMovePage(int count)
+
+    public void BtnNextPage()
     {
+        _curPage = (_curPage >= _maxPage) ? _curPage = 0
+                                          : _curPage += 1;
+
         SoundManager.instance.PlayEffectSound("Click");
+        KeywordSetting();
+    }
+    public void BtnPriorPage()
+    {
+        _curPage = (_curPage <= 0) ? _curPage = _maxPage
+                                   : _curPage -= 1;
 
-        _curPage = (_curPage < 0) ? _curPage = _maxPage
-                                  : (_curPage + count) % (_maxPage + 1);
-
+        SoundManager.instance.PlayEffectSound("Click");
         KeywordSetting();
     }
 
+    public void BtnKeyword(int index)
+    {
+        int keywordID = _startKeywordID + index;
+
+        _imgKeyword.sprite = SpriteManager.instance.GetKeywordSprite(keywordID);
+
+        Keyword keyword = KeywordData.instance.GetKeyword(keywordID);
+
+        _goKeywordScreen.SetActive(true);
+        if (keyword.isGet)
+            _goKeywordScreen.SetActive(false);
+    }
 }

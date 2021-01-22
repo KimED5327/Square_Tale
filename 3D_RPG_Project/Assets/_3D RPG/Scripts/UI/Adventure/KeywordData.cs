@@ -165,6 +165,7 @@ public class KeywordData : MonoBehaviour
         {
             for(int i = 0; i < _cp1KeywordList.Count; i++)
             {
+                name = StringManager.GetKeywordKey(_cp1KeywordList[i].id);
                 _cp1KeywordList[i].isGet = bool.Parse(PlayerPrefs.GetString(name));
             }
         }

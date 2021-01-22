@@ -11,11 +11,22 @@ public class SpriteManager : MonoBehaviour
     public Sprite[] _spriteBlock;
     public Sprite[] _spriteSwordSkill;
     public Sprite[] _spriteMageSkill;
+    public Sprite[] _spriteKeyword;
 
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else Destroy(gameObject);
+    }
+
+    public Sprite GetKeywordSprite(int keywordID)
+    {
+        return _spriteKeyword[keywordID - 1];
     }
 
     public Sprite GetItemSprite(int itemId)

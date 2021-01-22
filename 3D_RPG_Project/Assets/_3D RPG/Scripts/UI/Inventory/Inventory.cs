@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    int gold = 50;
+    int gold = 0;
     int ruby = 0;
 
     [Header("OpenWindown")]
@@ -45,9 +45,7 @@ public class Inventory : MonoBehaviour
         // 기본값 - 무기 우선 정렬 
         OnTouchTab(0);
 
-
         LoadInventory();
-
     }
     #endregion
 

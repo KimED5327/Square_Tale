@@ -32,6 +32,8 @@ public class Chest : MonoBehaviour
 
     GameObject _goChild;
 
+    bool _isOpen = false;
+
     void Awake()
     {
         _goChild = transform.GetChild(0).gameObject;
@@ -47,9 +49,19 @@ public class Chest : MonoBehaviour
     }
 
     public Reward GetReward() {
-        _goChild.SetActive(false);
-        SoundManager.instance.PlayEffectSound("ChestOpen");
-        return _reward;
+
+        if (!_isOpen)
+        {
+            _isOpen = true;
+            _goChild.SetActive(false);
+            SoundManager.instance.PlayEffectSound("ChestOpen");
+            return _reward;
+        }
+        else
+        {
+            return null;
+        }
+
     }
 
     public void RemoveChest()

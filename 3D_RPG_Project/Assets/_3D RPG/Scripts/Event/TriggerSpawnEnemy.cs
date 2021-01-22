@@ -22,6 +22,10 @@ public class TriggerSpawnEnemy : MonoBehaviour
         {
             _enemy.GetComponent<Enemy>().LinkPlayer(tfPlayer);
         }
+        else
+        {
+            GetComponent<BossFinale>().SetTargetLink(_enemy.GetComponent<EnemyStatus>());
+        }
             
 
         if (_isEvent)

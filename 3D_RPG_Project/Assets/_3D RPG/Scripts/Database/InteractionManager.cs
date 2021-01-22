@@ -94,12 +94,9 @@ public class InteractionManager : MonoBehaviour
                     // 거리가 너무 멀 때
                     else
                     {
-                        if (target.CompareTag(StringManager.enemyTag))
+                        if (target.CompareTag(StringManager.fieldItemTag))
                         {
-                            if (target.GetComponent<EnemyStatus>().IsDead())
-                            {
-                                Notification.instance.ShowFloatingMessage(StringManager.msgLongDistance);
-                            }
+                            Notification.instance.ShowFloatingMessage(StringManager.msgLongDistance);
                         }
                         else if (target.CompareTag(StringManager.shopNpcTag))
                         {

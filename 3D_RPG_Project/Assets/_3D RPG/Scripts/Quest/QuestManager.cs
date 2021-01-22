@@ -74,8 +74,7 @@ public class QuestManager : MonoBehaviour
         _questHUD.SetOngoingQuestHUD(ongoingQuest);
 
         // PlayerPref 로 진행중인 퀘스트 세이브 
-        SaveOngoingQuestID(ongoingQuest.GetQuestID());
-        SaveOngoingQuestState(ongoingQuest.GetState());
+        SaveOngoingQuest(ongoingQuest);
     }
 
     /// <summary>
@@ -362,6 +361,9 @@ public class QuestManager : MonoBehaviour
                 if (_ongoingQuests[i].GetQuestID() == 10) _inventory.DecreaseItemCount(8, 1);
             }
 
+            // 세이브 데이터 업데이트 
+            SaveEnemyCount(_ongoingQuests[i]);
+
             // 퀘스트 HUD 업데이트 
             _questHUD.UpdateHUD(_ongoingQuests[i]);
         }
@@ -607,6 +609,8 @@ public class QuestManager : MonoBehaviour
     {
         SaveOngoingQuestID(quest.GetQuestID());
         SaveOngoingQuestState(quest.GetState());
+
+        if (quest.GetQuestType() == QuestType.TYPE_KILLENEMY) SaveEnemyCount(quest);
     }
 
     /// <summary>
@@ -626,6 +630,16 @@ public class QuestManager : MonoBehaviour
     public void SaveOngoingQuestState(QuestState state)
     {
         PlayerPrefs.SetInt("OngoingQuestState", (int)state);
+    }
+
+    /// <summary>
+    /// 현재 진행중인 퀘스트의 타입이 '몬스터 처치'일 경우 카운트 값 저장 
+    /// </summary>
+    /// <param name="quest"></param>
+    public void SaveEnemyCount(Quest quest)
+    {
+        KillEnemy killEnemy = quest.GetQuestInfo()[_questInfoKey] as KillEnemy;
+        PlayerPrefs.SetInt("QuestEnemyCount", killEnemy.GetEnemy(0).GetCount());
     }
 
     /// <summary>
@@ -671,6 +685,9 @@ public class QuestManager : MonoBehaviour
         _isLoadingDone = true; 
     }
 
+    /// <summary>
+    /// 현재 진행중인 퀘스트 데이터 로드 
+    /// </summary>
     void LoadOngoingData()
     {
         // 진행중인 퀘스트 데이터가 있다면 진행중인 퀘스트 리스트에 추가 
@@ -681,12 +698,21 @@ public class QuestManager : MonoBehaviour
             Quest ongingQuest = QuestDB.instance.GetQuest(PlayerPrefs.GetInt("OngoingQuestID")).DeepCopy();
             ongingQuest.SetState((QuestState)PlayerPrefs.GetInt("OngoingQuestState"));
 
+            if(ongingQuest.GetQuestType() == QuestType.TYPE_KILLENEMY)
+            {
+                KillEnemy killEnemy = ongingQuest.GetQuestInfo()[_questInfoKey] as KillEnemy;
+                killEnemy.GetEnemy(0).SetCount(PlayerPrefs.GetInt("QuestEnemyCount"));
+            }
+
             AddOngoingData(ongingQuest);
 
             Debug.Log("진행중인 퀘스트 데이터 로드" + ongingQuest.GetState());
         }
     }
 
+    /// <summary>
+    /// 완료된 퀘스트 데이터 로드 
+    /// </summary>
     void LoadFinishedData()
     {
         // 완료된 퀘스트 데이터가 있다면 완료된 퀘스트 리스트에 추가 
@@ -730,6 +756,7 @@ public class QuestManager : MonoBehaviour
         {
             _isCompletableIconOn = true;
             _questHUD.TurnOnCompletableIcon();
+            _questMenu.TurnOnCompletableIcon(quest.GetQuestID());
             if (quest.GetQuestFinisher() != null) SetQuestFinisherToCompletableState(quest);
         }
     }

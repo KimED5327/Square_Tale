@@ -51,22 +51,21 @@ public class QuestManager : MonoBehaviour
         // 저장된 데이터가 있다면 불러오기 
         if (!_isLoadingDone) LoadQuestData();
 
-        //if (Input.GetKeyDown(KeyCode.Q))
-        //{
-        //    OpenLilyQuest();
-        //}
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            OpenLilyQuest();
+        }
     }
 
     // 테스트용 마지막 퀘스트 받기
-    //void OpenLilyQuest()
-    //{
-    //    if (QuestDB.instance.GetQuest(10).GetState() == QuestState.QUEST_VEILED)
-    //    {
-    //        QuestDB.instance.GetQuest(10).SetState(QuestState.QUEST_OPENED);
-    //        CheckAvailableQuest();
-    //    }
-    //}
-
+    void OpenLilyQuest()
+    {
+        if (QuestDB.instance.GetQuest(10).GetState() == QuestState.QUEST_VEILED)
+        {
+            QuestDB.instance.GetQuest(10).SetState(QuestState.QUEST_OPENED);
+            CheckAvailableQuest();
+        }
+    }
 
     /// <summary>
     /// 진행중인 퀘스트 리스트에 ongoingQuest를 원소로 추가하기 
@@ -676,8 +675,9 @@ public class QuestManager : MonoBehaviour
         // 이미 완료된 퀘스트 ID 리스트가 존재하는 경우 string 값 형태로 덧붙이기 
         if(PlayerPrefs.HasKey("FinishedQuestID"))
         {
+            // 퀘스트 ID + / 형태로 저장하여 /를 기준으로 id 값을 구분 
             string finishedList = PlayerPrefs.GetString("FinishedQuestID");
-            finishedList += questID.ToString();
+            finishedList += (questID + "/"); 
 
             PlayerPrefs.SetString("FinishedQuestID", finishedList);
             Debug.Log("완료된 퀘스트 데이터 세이브");
@@ -685,7 +685,7 @@ public class QuestManager : MonoBehaviour
         }
 
         // 퀘스트 ID를 string 값 형태로 변환하여 저장 
-        PlayerPrefs.SetString("FinishedQuestID", questID.ToString());
+        PlayerPrefs.SetString("FinishedQuestID", questID + "/");
         Debug.Log("완료된 퀘스트 데이터 세이브");
     }
 
@@ -737,9 +737,17 @@ public class QuestManager : MonoBehaviour
         {
             string questList = PlayerPrefs.GetString("FinishedQuestID");
 
-            for (int i = 0; i < questList.Length; i++)
+            // /를 기준으로 id를 구분하여 로드 
+            for (int i = 0; i < questList.Length;)
             {
-                int questID = questList[i] - '0';
+                int slashPos = questList.IndexOf("/", i);
+                int length = slashPos - i;
+
+                // i : 시작 위치 
+                // length : 자를 길이 
+                int questID = int.Parse(questList.Substring(i, length));
+
+                i += (length + 1);
 
                 Debug.Log(questID + "번 완료 데이터 로드중");
 

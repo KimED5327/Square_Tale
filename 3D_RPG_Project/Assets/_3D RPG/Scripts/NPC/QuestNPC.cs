@@ -266,6 +266,12 @@ public class QuestNPC : MonoBehaviour
                     SetNpcOngoingState(quest);
                     quest.SetQuestGiver(this);
 
+                    if (QuestDB.instance.GetQuest(quest.GetQuestID()) == null)
+                        Debug.Log(quest.GetQuestID() + "번 퀘스트가 DB에 없음.");
+
+                    if (QuestDB.instance.GetQuest(quest.GetQuestID()).GetQuestFinisher() == null)
+                        Debug.Log(quest.GetQuestID() + "번 퀘스트의 완료자에 대한 참조값이 없음.");
+
                     if (QuestDB.instance.GetQuest(quest.GetQuestID()).GetQuestFinisher().GetNpcID() == _npcID)
                     {
                         SetNpcCompletableState(quest);

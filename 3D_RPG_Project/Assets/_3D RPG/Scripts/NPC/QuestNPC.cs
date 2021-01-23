@@ -427,7 +427,7 @@ public class QuestNPC : MonoBehaviour
     /// <returns></returns>
     public IEnumerator SetQuestNpcTag()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
 
         transform.tag = "QuestNPC";
     }

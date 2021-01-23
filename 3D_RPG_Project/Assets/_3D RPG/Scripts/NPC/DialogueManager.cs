@@ -106,7 +106,8 @@ public class DialogueManager : MonoBehaviour
     {
         _dialoguePanel.SetActive(false);
         _questNPC.GetComponent<ZoomNPC>().ZoomOutNPC();
-        _questNPC.GetComponent<Transform>().tag = "QuestNPC";
+        //_questNPC.GetComponent<Transform>().tag = "QuestNPC";
+        _questNPC.PlaySetQuestNpcTagCoroutine();
         _questNPC.TurnOnNameTag();
     }
 
@@ -127,6 +128,9 @@ public class DialogueManager : MonoBehaviour
         _lineIdx = 0;
     }
 
+    /// <summary>
+    /// 모든 퀘스트 완료 Panel 닫기
+    /// </summary>
     public void CloseAllQuestCompleteUI()
     {
         // 팝업창 닫으면

@@ -202,25 +202,6 @@ public class QuestNPC : MonoBehaviour
     }
 
     /// <summary>
-    /// 완료된 퀘스트는 NPC의 퀘스트 목록에서 지우기 
-    /// </summary>
-    /// <param name="questID"></param>
-    public void DeleteCompletedQuest(int questID)
-    {
-        for (int i = 0; i < _npc.GetQuestsCount(); i++)
-        {
-            if (questID == _npc.GetQuestID(i))
-            {
-                _npc.GetQuestList().RemoveAt(i);
-                Debug.Log(_npcID + "번 NPC의 " + questID + "번 퀘스트 삭제됨");
-
-                //Debug.Log("복사한 객체의 퀘스트 개수 : " + _npc.GetQuestsCount());
-                //Debug.Log("오리지널 객체의 퀘스트 개수 : " + NpcDB.instance.GetNPC(_npcID).GetQuestsCount());
-            }
-        }
-    }
-
-    /// <summary>
     /// 씬이 시작될 때마다 진행 중인 퀘스트에 맞게 NPC 상태값 싱크 맞추기 
     /// </summary>
     /// <param name="quest"></param>
@@ -265,12 +246,6 @@ public class QuestNPC : MonoBehaviour
                 {
                     SetNpcOngoingState(quest);
                     quest.SetQuestGiver(this);
-
-                    if (QuestDB.instance.GetQuest(quest.GetQuestID()) == null)
-                        Debug.Log(quest.GetQuestID() + "번 퀘스트가 DB에 없음.");
-
-                    if (QuestDB.instance.GetQuest(quest.GetQuestID()).GetQuestFinisher() == null)
-                        Debug.Log(quest.GetQuestID() + "번 퀘스트의 완료자에 대한 참조값이 없음.");
 
                     if (QuestDB.instance.GetQuest(quest.GetQuestID()).GetQuestFinisher().GetNpcID() == _npcID)
                     {
@@ -354,15 +329,6 @@ public class QuestNPC : MonoBehaviour
     }
 
     /// <summary>
-    /// 진행중인 퀘스트가 있을 경우, 해당 퀘스트ID가 진행중일 때의 대사를 기본 다이얼로그 박스 내 세팅   
-    /// </summary>
-    public void SetQuestOngoingLines()
-    {
-        _txtNpcName.text = _npc.GetName();
-        _txtNpcLines.text = QuestDialogueDB.instance.GetDialogue(_ongoingQuestID).GetLine(_questState, 0);
-    }
-
-    /// <summary>
     /// NPC 클릭(터치) 시 퀘스트 진행상태에 따라 다이얼로그 진행(퀘스트 진행가능, 진행중, 완료가능 상태를 제외하면 디폴트 대사 출력)
     /// </summary>
     public void ClickNPC()
@@ -378,15 +344,14 @@ public class QuestNPC : MonoBehaviour
                 DialogueManager.instance.DoQuestDialouge();
                 break;
             
-            //현재 특정한 퀘스트를 진행중인 경우 (디폴트 패널로 대사 출력)
+            //현재 특정한 퀘스트를 진행중인 경우 
             case QuestState.QUEST_ONGOING:
 
                 // 해당 상태에 출력 가능한 대사가 없을 경우 return; 
                 if (!QuestDialogueDB.instance.GetDialogue(_ongoingQuestID).CheckDialogue(_questState)) return;
 
-                SetQuestOngoingLines();
-                _dialoguePanel.SetActive(true);
-                DialogueManager.instance.SetQuestNPC(this);
+                DialogueManager.instance.SetQuestInfo(_ongoingQuestID, this);
+                DialogueManager.instance.DoQuestDialouge();
                 break;
             
             //완료 가능한 퀘스트가 있는 경우 

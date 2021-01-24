@@ -436,7 +436,6 @@ public class QuestManager : MonoBehaviour
     void SetQuestGiverToCompleteState(Quest quest)
     {
         quest.GetQuestGiver().SetOngoingQuestID(0);
-        quest.GetQuestGiver().DeleteCompletedQuest(quest.GetQuestID());
         quest.GetQuestGiver().UpdateQuestState();
         quest.GetQuestGiver().SetQuestMark();
     }
@@ -506,7 +505,6 @@ public class QuestManager : MonoBehaviour
         if (quest.GetQuestFinisher() == null) return; 
 
         quest.GetQuestFinisher().SetOngoingQuestID(0);
-        quest.GetQuestFinisher().DeleteCompletedQuest(quest.GetQuestID());
         quest.GetQuestFinisher().UpdateQuestState();
         quest.GetQuestFinisher().SetQuestMark();
     }

@@ -73,6 +73,21 @@ public class DialogueManager : MonoBehaviour
         _typeEffecter = GetComponent<TypeEffecter>();
     }
 
+    public void DoDefaultDialogue(string line)
+    {
+        // 타이핑 애니메이션 중에 클릭 시 전체 대사 출력 
+        if (!_typeEffecter.GetIsAnim())
+        {
+            // 타이핑 애니메이션 중이 아니라면 대사를 받아와 타이핑 애니메이션 시작 
+            GetLine(_questID);
+        }
+        else
+        {
+            // 타이핑 애니메이션 중에 클릭 시 전체 대사 출력
+            _typeEffecter.ShowFullLine();
+        }
+    }
+
     /// <summary>
     /// 퀘스트 수락, 완료 시의 대화 실행 
     /// </summary>
@@ -107,6 +122,10 @@ public class DialogueManager : MonoBehaviour
                 // 퀘스트 완료에 따른 액션 수행 
                 case QuestState.QUEST_COMPLETABLE:
                     CompleteQuest();
+                    break;
+
+                default:
+                    CloseQuestDialoguePanel();
                     break;
             }
         }
@@ -191,17 +210,15 @@ public class DialogueManager : MonoBehaviour
         _isTalking = true;
         _lineIdx++;
     }
-
-    void TypeEffecting()
-    {
-
-    }
-
+    
     /// <summary>
     /// 퀘스트 수락에 따라 팝업메뉴을 실행하고, 퀘스트 매니져에 진행중인 퀘스트 추가 및 NPC 상태값 변경 
     /// </summary>
     void AcceptQuest()
     {
+        // NPC의 상태값을 퀘스트 진행중으로 변경 
+        _questNPC.SetQuestState(QuestState.QUEST_ONGOING);
+
         // 수락한 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에 추가 
         Quest questAccepted = QuestDB.instance.GetQuest(_questID).DeepCopy();
         QuestManager.instance.AddOngoingQuest(questAccepted);

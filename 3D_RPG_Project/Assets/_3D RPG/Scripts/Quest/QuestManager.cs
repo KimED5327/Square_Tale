@@ -16,14 +16,14 @@ public class QuestManager : MonoBehaviour
     public delegate void SyncHandler(Quest quest);
     public static event SyncHandler SyncWithQuestOnStart;
 
-    public Inventory _inventory;               // 인벤토리 참조자 
-    public QuestHUD _questHUD;                 // QuestHUD 참조자 
-    public QuestMenu _questMenu;               // QuestMenu 참조자 
-    public PlayerStatus _playerStatus;         // PlayerStatus 참조자 
+    Inventory _inventory;                      // 인벤토리 참조자 
+    QuestHUD _questHUD;                        // QuestHUD 참조자 
+    QuestMenu _questMenu;                      // QuestMenu 참조자 
+    PlayerStatus _playerStatus;                // PlayerStatus 참조자 
     public bool _isHudOpen = false;            // QuestHUD 창 오픈여부 확인 변수 
     public bool _isCompletableIconOn = false;  // QuestHUD 완료가능 아이콘 on/off 변수 
     public bool _isLoadingDone = false;        // 퀘스트 데이터 로딩 여부 확인 변수 
-    string _questInfoKey = "info";      // 퀘스트 타입 해시테이블 키 
+    string _questInfoKey = "info";             // 퀘스트 타입 해시테이블 키 
 
 
     /// <summary>
@@ -51,9 +51,13 @@ public class QuestManager : MonoBehaviour
         // 저장된 데이터가 있다면 불러오기 
         if (!_isLoadingDone) LoadQuestData();
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            OpenLilyQuest();
+            //OpenLilyQuest();
+
+            _inventory.TryToPushInventory(7, 1);
+            _inventory.TryToPushInventory(2, 1);
+            _inventory.TryToPushInventory(3, 1);
         }
     }
 

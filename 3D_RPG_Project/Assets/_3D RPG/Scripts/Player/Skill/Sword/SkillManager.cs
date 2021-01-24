@@ -70,17 +70,17 @@ public class SkillManager : MonoBehaviour
         }
 
         // 임시 등록
-        //int index = 0;
-        //string name = _slots[index].GetSkillName();
-        //Sprite sprite = _slots[index].GetSkillSprite();
-        //_equipSlots[index].PushEquipSlot(index, name, sprite);
-        //_buttonSlots[index].PushButtonSlot(index, name, sprite);
+        //int _index = 0;
+        //string name = _slots[_index].GetSkillName();
+        //Sprite sprite = _slots[_index].GetSkillSprite();
+        //_equipSlots[_index].PushEquipSlot(_index, name, sprite);
+        //_buttonSlots[_index].PushButtonSlot(_index, name, sprite);
 
-        //index = 1;
-        //name = _slots[index].GetSkillName();
-        //sprite = _slots[index].GetSkillSprite();
-        //_equipSlots[index].PushEquipSlot(index, name, sprite);
-        //_buttonSlots[index].PushButtonSlot(index, name, sprite);
+        //_index = 1;
+        //name = _slots[_index].GetSkillName();
+        //sprite = _slots[_index].GetSkillSprite();
+        //_equipSlots[_index].PushEquipSlot(_index, name, sprite);
+        //_buttonSlots[_index].PushButtonSlot(_index, name, sprite);
     }
 
     public void Setting()

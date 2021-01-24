@@ -18986,6 +18986,7 @@ GameObject:
   m_Component:
   - component: {fileID: 340279726}
   - component: {fileID: 340279725}
+  - component: {fileID: 340279727}
   m_Layer: 0
   m_Name: DialogueManager
   m_TagString: Untagged
@@ -19029,6 +19030,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &340279727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340279724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b883b0a6dca2aaf47a3554313a5ba046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endCursor: {fileID: 0}
+  txtQuestLine: {fileID: 1677048012}
+  txtDefaultLine: {fileID: 0}
+  charPerSeconds: 20
 --- !u!1 &341079309
 GameObject:
   m_ObjectHideFlags: 0
@@ -22079,7 +22096,6 @@ RectTransform:
   m_Children:
   - {fileID: 206614423}
   - {fileID: 1677048011}
-  - {fileID: 1063498064}
   m_Father: {fileID: 408556271}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -61227,84 +61243,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1062610323}
-  m_CullTransparentMesh: 0
---- !u!1 &1063498063
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1063498064}
-  - component: {fileID: 1063498066}
-  - component: {fileID: 1063498065}
-  m_Layer: 5
-  m_Name: txt_PlayerLines
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &1063498064
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063498063}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 426647175}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 90, y: -90}
-  m_SizeDelta: {x: 1730, y: 400}
-  m_Pivot: {x: 0, y: 1}
---- !u!114 &1063498065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063498063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.9433962, g: 0.88821644, b: 0.80544674, a: 0.7058824}
-  m_RaycastTarget: 0
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: b12256d0f3c5c054b80c0807f7a1a36f, type: 3}
-    m_FontSize: 55
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 3
-    m_MaxSize: 300
-    m_Alignment: 0
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 1
-    m_LineSpacing: 1.2
-  m_Text: 
---- !u!222 &1063498066
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063498063}
   m_CullTransparentMesh: 0
 --- !u!1 &1065944353
 GameObject:
@@ -103381,12 +103319,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.2
-  m_Text: "\uB9B4\uB9AC\uAC00 \uC65C \uADF8\uB807\uAC8C \uBCC0\uD574\uBC84\uB838\uB294\uC9C0\uB294
-    \uBAA8\uB974\uC9C0\uB9CC, \uADF8\uB140\uC758 \uD0D0\uC695\uC73C\uB85C \uC778\uD574
-    \uBAA8\uB4E0 \uD5A5\uAE30\uB97C \uAC00\uC9C0\uB824\uACE0 \uD574\uC694. \uADF8\uB140\uB85C
-    \uBD80\uD130 \uAC00\uAE4C\uC6B4 \uACF3\uC740 \uD5A5\uAE30\uB97C \uBE7C\uC557\uACA8
-    \uC774\uBBF8 \uC2DC\uB4E4\uC5B4\uBC84\uB838\uC8E0. \uC774\uC81C \uC774 \uACF3\uB3C4
-    \uC5BC\uB9C8 \uB0A8\uC9C0 \uC54A\uC740 \uAC83 \uAC19\uC544\uC694. \n"
+  m_Text: "\uB3D9\uD654 \uC18D\uC774\uB77C\uACE0\uC694? \n\uC6B0\uC640 \uC2E0\uAE30\uD558\uB2E4!!"
 --- !u!222 &1677048013
 CanvasRenderer:
   m_ObjectHideFlags: 0

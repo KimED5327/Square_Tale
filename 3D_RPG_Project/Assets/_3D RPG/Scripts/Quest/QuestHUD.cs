@@ -89,7 +89,7 @@ public class QuestHUD : MonoBehaviour
         if (_isHudOpen) OpenQuestList();
         if (_isCompletableIconOn) TurnOnCompletableIcon();
 
-        // 진행중인 퀘스트 리스트의 0번 index 값을 가져와서 데이터 값 세팅  
+        // 진행중인 퀘스트 리스트의 0번 _index 값을 가져와서 데이터 값 세팅  
         Quest quest = QuestManager.instance.GetOngoingQuestByIdx(0);
 
         SetQuestTitle(quest.GetTitle());

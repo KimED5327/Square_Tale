@@ -446,10 +446,11 @@ public class QuestManager : MonoBehaviour
     /// <param name="quest"></param>
     void SetQuestFinisherToOngoingState(Quest quest)
     {
-        // 퀘스트 HUD 완료가능 아이콘 비활성화 
-        _questHUD.TurnOffCompletableIcon();
-        _isCompletableIconOn = false;
         quest.SetState(QuestState.QUEST_ONGOING);
+
+        // 퀘스트 HUD 완료가능 아이콘 비활성화 
+        _isCompletableIconOn = false;
+        _questHUD.TurnOffCompletableIcon();
 
         // 퀘스트 메뉴 완료가능 아이콘 비활성화 
         _questMenu.TurnOffCompletableIcon(quest.GetQuestID());
@@ -472,10 +473,11 @@ public class QuestManager : MonoBehaviour
     /// <param name="state"></param>
     void SetQuestFinisherToCompletableState(Quest quest)
     {
-        // 퀘스트 HUD의 완료가능 아이콘 활성화 
-        _questHUD.TurnOnCompletableIcon();
-        _isCompletableIconOn = true;
         quest.SetState(QuestState.QUEST_COMPLETABLE);
+
+        // 퀘스트 HUD의 완료가능 아이콘 활성화 
+        _isCompletableIconOn = true;
+        _questHUD.TurnOnCompletableIcon();
 
         // 퀘스트메뉴 완료가능 아이콘 활성화 
         _questMenu.TurnOnCompletableIcon(quest.GetQuestID());
@@ -620,8 +622,8 @@ public class QuestManager : MonoBehaviour
         _questMenu = FindObjectOfType<QuestMenu>();
         _playerStatus = FindObjectOfType<PlayerStatus>();
 
-        if (_isHudOpen) _questHUD.SetIsHudOpen(true);
-        if (_isCompletableIconOn) _questHUD.SetIsCompletableIconOn(true);
+        if (_isHudOpen) _questHUD.OpenQuestList();
+        if (_isCompletableIconOn) _questHUD.TurnOnCompletableIcon();
     }
 
     /// <summary>

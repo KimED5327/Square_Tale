@@ -38,16 +38,6 @@ public class QuestNPC : MonoBehaviour
     [Tooltip("NPC 머리 상단에 띄우는 네임태그 Text")]
     [SerializeField] Text _txtNameTag;
 
-    // 캔버스 UI 클래스에서 파싱하는 방식으로 변경
-    [Tooltip("기본 다이얼로그 Panel")]
-    GameObject _dialoguePanel;
-    [Tooltip("퀘스트 다이얼로그 Panel")]
-    GameObject _questDialoguePanel;
-    [Tooltip("기본 다이얼로그 박스 내 NPC 이름 Text")]
-    Text _txtNpcName;
-    [Tooltip("기본 다이얼로그 박스 내 NPC 대사 Text")]
-    Text _txtNpcLines;
-
     private void OnEnable()
     {
         // 선행 퀘스트를 완료 한 퀘스트를 오픈할 수 있도록 함. 
@@ -63,13 +53,6 @@ public class QuestNPC : MonoBehaviour
     {
         _isParsingDone = false;
         _questState = QuestState.QUEST_VEILED;
-
-        // 다이얼로그 UI 값 세팅 
-        DialogueUI dialogueUI = FindObjectOfType<DialogueUI>();
-        _dialoguePanel = dialogueUI.GetDialoguePanel();
-        _questDialoguePanel = dialogueUI.GetQuestPanel();
-        _txtNpcName = dialogueUI.GetNpcName();
-        _txtNpcLines = dialogueUI.GetLines();
 
         ParsingData();
     }
@@ -97,40 +80,6 @@ public class QuestNPC : MonoBehaviour
         SetQuestMark();
 
         QuestManager.instance.SyncWithNpcOnStart();
-    }
-
-    /// <summary>
-    /// 현재 진행 가능한 퀘스트가 있는지 탐색하여 bool값 형태로 리턴하며, NPC의 퀘스트 진행상태값 업데이트 
-    /// </summary>
-    public bool CheckAvailableQuest()
-    {
-        bool isAvailable = false;
-
-        if(_npc.GetQuestsCount() <= 0)
-        {
-            _questState = QuestState.QUEST_COMPLETED;
-            return false; 
-        }
-
-        for (int i = 0; i < _npc.GetQuestsCount(); i++)
-        { 
-            if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetState() != QuestState.QUEST_OPENED) continue;
-
-            if (QuestDB.instance.GetQuest(_npc.GetQuestID(i)).GetNpcID() != _npc.GetID())
-            {
-                QuestDB.instance.GetQuest(_npc.GetQuestID(i)).SetQuestFinisher(this);
-                continue; 
-            }
-
-            isAvailable = true;
-            _questState = QuestState.QUEST_OPENED;
-            QuestDB.instance.GetQuest(_npc.GetQuestID(i)).SetQuestGiver(this);
-            break; 
-        }
-
-        if (!isAvailable) _questState = QuestState.QUEST_VEILED;
-
-        return isAvailable;
     }
 
     /// <summary>
@@ -317,15 +266,6 @@ public class QuestNPC : MonoBehaviour
                 _imgQuestMark.enabled = false; 
                 break;
         }
-    }
-
-    /// <summary>
-    /// NPC의 기본 대사들 중 랜덤한 대사 하나를 기본 다이얼로그 박스 내 세팅  
-    /// </summary>
-    public void SetDefaultLines()
-    {
-        _txtNpcName.text = _npc.GetName();
-        _txtNpcLines.text = _npc.GetLine(Random.Range(0, _npc.GetLinesCount()));
     }
 
     /// <summary>

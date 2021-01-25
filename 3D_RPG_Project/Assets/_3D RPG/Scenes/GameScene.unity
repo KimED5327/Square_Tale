@@ -19045,7 +19045,7 @@ MonoBehaviour:
   endCursor: {fileID: 0}
   _txtQuestLine: {fileID: 1677048012}
   _txtDefaultLine: {fileID: 268309606}
-  _charPerSeconds: 22
+  _charPerSeconds: 26
 --- !u!1 &341079309
 GameObject:
   m_ObjectHideFlags: 0
@@ -117360,7 +117360,6 @@ GameObject:
   - component: {fileID: 1931753779}
   - component: {fileID: 1931753782}
   - component: {fileID: 1931753781}
-  - component: {fileID: 1931753780}
   m_Layer: 5
   m_Name: Dialogue Canvas
   m_TagString: Untagged
@@ -117389,22 +117388,6 @@ RectTransform:
   m_AnchoredPosition: {x: 960, y: 540}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1931753780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931753778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 430a90c2b1df0b94494a3163def561fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _dialoguePanel: {fileID: 185298222}
-  _questDialoguePanel: {fileID: 408556270}
-  _txtNpcName: {fileID: 1277181251}
-  _txtLines: {fileID: 268309606}
 --- !u!114 &1931753781
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -614,8 +614,8 @@ public class QuestManager : MonoBehaviour
         _questMenu = FindObjectOfType<QuestMenu>();
         _playerStatus = FindObjectOfType<PlayerStatus>();
 
-        if (_isHudOpen) _questHUD.SetIsHudOpen(true);
-        if (_isCompletableIconOn) _questHUD.SetIsCompletableIconOn(true);
+        if (_isHudOpen) _questHUD.OpenQuestList();
+        if (_isCompletableIconOn) _questHUD.TurnOnCompletableIcon();
     }
 
     /// <summary>

@@ -5217,6 +5217,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 340279728}
+        m_MethodName: PlayBubblePopSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &140932544
 GameObject:
   m_ObjectHideFlags: 0
@@ -18991,6 +19002,7 @@ GameObject:
   - component: {fileID: 340279726}
   - component: {fileID: 340279725}
   - component: {fileID: 340279727}
+  - component: {fileID: 340279728}
   m_Layer: 0
   m_Name: DialogueManager
   m_TagString: Untagged
@@ -19050,6 +19062,18 @@ MonoBehaviour:
   _txtQuestLine: {fileID: 1677048012}
   _txtDefaultLine: {fileID: 268309606}
   _charPerSeconds: 28
+--- !u!114 &340279728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340279724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44cb25e4fffe5474baeefc9c368519cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &341079309
 GameObject:
   m_ObjectHideFlags: 0
@@ -19485,6 +19509,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: afc2287e17d4dca48a82dc686c57ab03, type: 3}
   - name: Skill4
     clip: {fileID: 8300000, guid: 012d1f3e23e06e14c8064a0e30bdb31f, type: 3}
+  - name: NPC_Click
+    clip: {fileID: 8300000, guid: 6829aa3c4d39ef24e8df9d2524a141d1, type: 3}
   effectPlayer:
   - {fileID: 1331582483}
   - {fileID: 895823384}
@@ -22166,6 +22192,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 340279725}
         m_MethodName: DoQuestDialouge
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 340279728}
+        m_MethodName: PlayBubblePopSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

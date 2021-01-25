@@ -128,7 +128,6 @@ public class DialogueManager : MonoBehaviour
         }
 
         _questDialoguePanel.SetActive(_isTalking);
-        SoundManager.instance.PlayEffectSound("Click", 1f);
 
         // 대화가 완료된 시점에서 퀘스트 진행상태에 맞게 동작 수행 
         if (!_isTalking)

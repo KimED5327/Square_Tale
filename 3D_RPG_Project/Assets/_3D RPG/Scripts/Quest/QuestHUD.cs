@@ -55,6 +55,8 @@ public class QuestHUD : MonoBehaviour
     {
         if (_questListPanel.activeInHierarchy) CloseQuestList();
         else OpenQuestList();
+
+        SoundManager.instance.PlayEffectSound("Click");
     }
 
     /// <summary>

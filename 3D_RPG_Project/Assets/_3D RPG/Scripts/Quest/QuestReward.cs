@@ -17,6 +17,9 @@ public class QuestReward : MonoBehaviour
     {
         // 현재 네임태그가 비활성화 상태라면 활성화 시키기 
         if(!_imgName.gameObject.activeInHierarchy) _imgName.gameObject.SetActive(true);
+
+        SoundManager.instance.PlayEffectSound("Reward_Slot", 0.2f);
+        SoundManager.instance.PlayEffectSound("Coin", 0.1f);
     }
 
     //getter

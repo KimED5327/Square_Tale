@@ -346,7 +346,6 @@ public class QuestNPC : MonoBehaviour
             
             //현재 특정한 퀘스트를 진행중인 경우 
             case QuestState.QUEST_ONGOING:
-
                 // 해당 상태에 출력 가능한 대사가 없을 경우 return; 
                 if (!QuestDialogueDB.instance.GetDialogue(_ongoingQuestID).CheckDialogue(_questState)) return;
 
@@ -362,9 +361,10 @@ public class QuestNPC : MonoBehaviour
 
             // 그 외 상태에서는 다이얼로그 패널로 디폴트 대사 출력  
             default:
-                SetDefaultLines();
-                _dialoguePanel.SetActive(true);
+                string line = _npc.GetLine(Random.Range(0, _npc.GetLinesCount()));
+
                 DialogueManager.instance.SetQuestNPC(this);
+                DialogueManager.instance.DoDefaultDialogue();
                 break;
         }
     }
@@ -407,14 +407,14 @@ public class QuestNPC : MonoBehaviour
     /// </summary>
     public void TurnOffNameTag() { _txtNameTag.enabled = false; }
 
+    //getter 
     public int GetNpcID() { return _npcID; }
-    public void SetNpcID(int npcID) { _npcID = npcID; }
-
     public int GetOngoingQuestID() { return _ongoingQuestID; }
-    public void SetOngoingQuestID(int questID) { _ongoingQuestID = questID; }
-
     public QuestState GetQuestState() { return _questState; }
+    public NpcWithLines GetNpc() { return _npc; }
+    
+    //setter 
+    public void SetNpcID(int npcID) { _npcID = npcID; }
+    public void SetOngoingQuestID(int questID) { _ongoingQuestID = questID; }
     public void SetQuestState(QuestState state) { _questState = state; }
-
-
 }

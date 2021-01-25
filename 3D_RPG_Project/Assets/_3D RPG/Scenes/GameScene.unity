@@ -5207,7 +5207,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 340279725}
-        m_MethodName: CloseDialoguePanel
+        m_MethodName: DoDefaultDialogue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19013,9 +19013,9 @@ MonoBehaviour:
   _questAcceptedTitle: {fileID: 1109907245}
   _popupPanel: {fileID: 458618563}
   _imgBG: {fileID: 642154942}
+  _txtDefaultName: {fileID: 1277181251}
   _txtQuestTitle: {fileID: 1651829898}
   _txtName: {fileID: 206614424}
-  _txtLines: {fileID: 1677048012}
 --- !u!4 &340279726
 Transform:
   m_ObjectHideFlags: 0
@@ -19043,9 +19043,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endCursor: {fileID: 0}
-  txtQuestLine: {fileID: 1677048012}
-  txtDefaultLine: {fileID: 0}
-  charPerSeconds: 20
+  _txtQuestLine: {fileID: 1677048012}
+  _txtDefaultLine: {fileID: 268309606}
+  _charPerSeconds: 22
 --- !u!1 &341079309
 GameObject:
   m_ObjectHideFlags: 0
@@ -27433,7 +27433,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.5
-  m_Text: "\uD558\uC580 \uAF43\uC78E (0/3)\n\uD50C\uB85D\uC2A4\uC758 \uD53C (0/5)"
+  m_Text: "\uC624\uB3C4 (0/1)"
 --- !u!222 &571649543
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -49186,10 +49186,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c07dbe223bedcd4ab84d9ba2d29f178, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inventory: {fileID: 0}
-  _questHUD: {fileID: 0}
-  _questMenu: {fileID: 0}
-  _playerStatus: {fileID: 0}
   _isHudOpen: 0
   _isCompletableIconOn: 0
   _isLoadingDone: 0
@@ -103319,7 +103315,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1.2
-  m_Text: "\uC815\uB9D0\u2026 \n\uC815\uB9D0... \uACE0\uB9D9\uB2E4."
+  m_Text: "\uB9C8\uC744 \uBC16\uC744 \uB098\uAC00\uB824\uBA74 \uC624\uB978\uCABD\uC5D0
+    \uC788\uB294 \uB098\uBB34 \uAE30\uB465\uC744 \uD130\uCE58\uD574 \uB2E4\uB9AC\uB97C
+    \uB9CC\uB4E4\uC5B4\uBD10!"
 --- !u!222 &1677048013
 CanvasRenderer:
   m_ObjectHideFlags: 0

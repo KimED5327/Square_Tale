@@ -572,7 +572,12 @@ public class QuestManager : MonoBehaviour
             int carryCount = (_inventory.GetItemCount(item) > deliverItem.GetItem(i).GetCount()) ?
                 deliverItem.GetItem(i).GetCount() : _inventory.GetItemCount(item);
 
-            goal += (item.name + " (" + carryCount + "/" + deliverItem.GetItem(i).GetCount() + ")\n");            
+            if (quest.GetQuestID() == 4) goal += "상점에서 오도 구입";
+            else goal += item.name;
+
+            goal += (" (" + carryCount + "/" + deliverItem.GetItem(i).GetCount() + ")\n");
+
+            //goal += (item.name + " (" + carryCount + "/" + deliverItem.GetItem(i).GetCount() + ")\n");            
         }
 
         return goal;

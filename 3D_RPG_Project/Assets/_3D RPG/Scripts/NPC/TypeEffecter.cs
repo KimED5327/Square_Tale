@@ -3,60 +3,72 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 기본/퀘스트 다이얼로그 구분용 타입 
+public enum DialogueType
+{
+    DEFAULT,
+    QUEST,
+};
+
 public class TypeEffecter : MonoBehaviour
 {
-    [SerializeField] GameObject endCursor;
-    [SerializeField] Text txtQuestLine;
-    [SerializeField] Text txtDefaultLine;
-    [SerializeField] int charPerSeconds;
-    string targetMsg;
-    string msgText;
-    int _index;
-    bool _isAnim = false;
+    [SerializeField] GameObject endCursor;      // 
+    [SerializeField] Text _txtQuestLine;        // 퀘스트 다이얼로그 패널 내 대사 텍스트 
+    [SerializeField] Text _txtDefaultLine;      // 기본 다이얼로그 패널 내 대사 텍스트 
+    [SerializeField] int _charPerSeconds;       // 1초에 출력되는 문자 개수 
+    DialogueType _dialogueType;                 // 기본/퀘스트 다이얼로그 타입 
+    string _targetMsg;                          // 타이핑 이펙트 타겟 메시지 
+    string _msgText;                            // 타이핑 이펙트로 출력된 메시지 
+    int _index;                                 // 타이핑 이펙트가 진행되고 있는 메시지의 인덱스 값 
+    bool _isAnim = false;                       // 현재 타이핑 이펙트가 진행되고 있는지 여부 
 
-    public void SetMsg(string msg)
+
+    public void SetMsg(DialogueType type, string msg)
     {
-        msgText = "";
-        targetMsg = msg;
+        _msgText = "";
+        _targetMsg = msg;
+        _dialogueType = type;
         EffectStart();
     }
 
     // 타이핑 애니메이션 시작 함수 
     void EffectStart()
     {
-        if(endCursor != null) endCursor.SetActive(false);
-        txtQuestLine.text = "";
+        if (endCursor != null) endCursor.SetActive(false);
+        _txtQuestLine.text = "";
+        _txtDefaultLine.text = "";
         _index = 0;
 
         // 애니메이션 실행 
-        Invoke("Effecting", 1f / charPerSeconds);
-        _isAnim = true; 
+        Invoke("Effecting", 1f / _charPerSeconds);
+        _isAnim = true;
     }
 
     // 타이핑 애니메이션 진행 함수 
     void Effecting()
     {
         // 모든 대사 출력 시 애니메이션 종료 
-        if (_index == targetMsg.Length)
+        if (_index == _targetMsg.Length)
         {
             EffectEnd();
             return;
         }
 
         // 슬래시 발견 시 개간 
-        if(targetMsg[_index] == '/')
+        if (_targetMsg[_index] == '/')
         {
-            msgText += "\n";
+            _msgText += "\n";
         }
         else
         {
-            msgText += targetMsg[_index];
+            _msgText += _targetMsg[_index];
         }
 
-        txtQuestLine.text = msgText;
+        if (_dialogueType == DialogueType.DEFAULT) _txtDefaultLine.text = _msgText;
+        else _txtQuestLine.text = _msgText;
 
         // 타자 사운드 플레이 
-        if(targetMsg[_index] != ' ')
+        if (_targetMsg[_index] != ' ')
         {
             // 사운드 플레이 함수 호출 
         }
@@ -64,22 +76,27 @@ public class TypeEffecter : MonoBehaviour
         _index++;
 
         // 재귀함수 
-        Invoke("Effecting", 1f / charPerSeconds);
+        Invoke("Effecting", 1f / _charPerSeconds);
     }
 
     // 타이핑 애니메이션 종료 함수 
     void EffectEnd()
     {
         if (endCursor != null) endCursor.SetActive(true);
+
         _isAnim = false;
     }
 
+    // 모든 대사 출력 
     public void ShowFullLine()
     {
         if (_isAnim)
         {
-            msgText = GetFullLine(targetMsg);
-            txtQuestLine.text = msgText;
+            _msgText = GetFullLine(_targetMsg);
+
+            if (_dialogueType == DialogueType.DEFAULT) _txtDefaultLine.text = _msgText;
+            else _txtQuestLine.text = _msgText;
+
             CancelInvoke();
             EffectEnd();
         }
@@ -92,7 +109,7 @@ public class TypeEffecter : MonoBehaviour
 
         for (int i = 0; i < line.Length; i++)
         {
-            if(line[i] == '/')
+            if (line[i] == '/')
             {
                 fullLine += "\n";
             }
@@ -107,7 +124,9 @@ public class TypeEffecter : MonoBehaviour
 
     // getter
     public bool GetIsAnim() { return _isAnim; }
+    public int GetIdx() { return _index; }
 
     // setter 
     public void SetIsAnim(bool value) { _isAnim = value; }
+    public void SetIdx(int index) { _index = index; } 
 }

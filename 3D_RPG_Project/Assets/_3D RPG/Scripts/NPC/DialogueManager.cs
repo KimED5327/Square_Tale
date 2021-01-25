@@ -48,13 +48,15 @@ public class DialogueManager : MonoBehaviour
     [Tooltip("모든 퀘스트 완료 Panel 내 BG 이미지")]
     [SerializeField] Image _imgBG;
 
+    [Header("Default Dialogue UI")]
+    [Tooltip("다이얼로그 Panel 내 NPC 이름")]
+    [SerializeField] Text _txtDefaultName;
+
     [Header("Quest Dialogue UI")]
     [Tooltip("퀘스트 다이얼로그 Panel 내 퀘스트 Title")]
     [SerializeField] Text _txtQuestTitle;
     [Tooltip("퀘스트 다이얼로그 Panel 내 화자 이름")]
     [SerializeField] Text _txtName;
-    [Tooltip("퀘스트 다이얼로그 Panel 내 대사")]
-    [SerializeField] Text _txtLines;
 
     private void Awake()
     {
@@ -73,25 +75,44 @@ public class DialogueManager : MonoBehaviour
         _typeEffecter = GetComponent<TypeEffecter>();
     }
 
-    public void DoDefaultDialogue(string line)
+    /// <summary>
+    /// 기본 대화 실행 
+    /// </summary>
+    public void DoDefaultDialogue()
     {
-        // 타이핑 애니메이션 중에 클릭 시 전체 대사 출력 
+        _txtDefaultName.text = NpcDB.instance.GetNPC(_questNPC.GetNpcID()).GetName();
+
+        // 타이핑 애니메이션 중이 아니라면 
         if (!_typeEffecter.GetIsAnim())
         {
-            // 타이핑 애니메이션 중이 아니라면 대사를 받아와 타이핑 애니메이션 시작 
-            GetLine(_questID);
+            _isTalking = true;
+
+            if (_typeEffecter.GetIdx() == 0)
+            {
+                // 타이핑 애니메이션 시작 전이라면 대사를 받아와 타이핑 애니메이션 시작 
+                string line = _questNPC.GetNpc().GetLine(Random.Range(0, _questNPC.GetNpc().GetLinesCount()));
+                _typeEffecter.SetMsg(DialogueType.DEFAULT, line);
+            }
+            else
+            {
+                // 전체 대사가 출력되었다면 대화 종료 
+                _isTalking = false;
+                _typeEffecter.SetIdx(0);
+                CloseDialoguePanel();
+            }
         }
         else
         {
             // 타이핑 애니메이션 중에 클릭 시 전체 대사 출력
             _typeEffecter.ShowFullLine();
         }
+
+        _dialoguePanel.SetActive(_isTalking);
     }
 
     /// <summary>
     /// 퀘스트 수락, 완료 시의 대화 실행 
     /// </summary>
-    /// <param name="questID"></param>
     public void DoQuestDialouge()
     {
         // 타이핑 애니메이션 중에 클릭 시 전체 대사 출력 
@@ -112,6 +133,8 @@ public class DialogueManager : MonoBehaviour
         // 대화가 완료된 시점에서 퀘스트 진행상태에 맞게 동작 수행 
         if (!_isTalking)
         {
+            _typeEffecter.SetIdx(0);
+
             switch (_state)
             {
                 // 퀘스트 수락에 따른 액션 수행  
@@ -205,7 +228,7 @@ public class DialogueManager : MonoBehaviour
 
         string line = lineUnit.GetLine();
 
-        _typeEffecter.SetMsg(line);
+        _typeEffecter.SetMsg(DialogueType.QUEST, line);
 
         _isTalking = true;
         _lineIdx++;

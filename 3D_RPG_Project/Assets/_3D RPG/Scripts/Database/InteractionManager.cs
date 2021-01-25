@@ -79,8 +79,10 @@ public class InteractionManager : MonoBehaviour
                         {
                             if (!hit.transform.GetComponent<QuestNPC>().CheckOngoingQuestDialogue()) return;
                         }
+
                         npc.TurnOffNameTag();
                         zoom.ZoomInNPC();
+                        SoundManager.instance.PlayEffectSound("NPC_Click", 0.5f);
                     }
 
                     // 트리거 상호작용 액티브.

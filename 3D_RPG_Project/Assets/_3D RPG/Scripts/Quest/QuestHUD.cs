@@ -19,10 +19,6 @@ public class QuestHUD : MonoBehaviour
     [SerializeField] Text _questTitle = null;               // 퀘스트 제목 
     [SerializeField] Text _questGoal = null;               // 퀘스트 목표
 
-    bool _isHudOpen = false;
-    bool _isCompletableIconOn = false; 
-
-
     private void Start()
     {        
         // 객체가 활성화될 때마다 퀘스트 매니져와 링크 
@@ -70,7 +66,7 @@ public class QuestHUD : MonoBehaviour
         GetQuestBtn().enabled = false;
         TurnOffCompletableIcon();
         QuestManager.instance.SetIsCompletableIconOn(false);
-        _isCompletableIconOn = false;
+        //_isCompletableIconOn = false;
     }
 
     /// <summary>
@@ -86,10 +82,10 @@ public class QuestHUD : MonoBehaviour
         }
 
         // 퀘스트 매니져에 퀘스트 HUD 메뉴, 완료가능 아이콘 on/off 여부 저장해놓고 UI에 적용
-        if (_isHudOpen) OpenQuestList();
-        if (_isCompletableIconOn) TurnOnCompletableIcon();
+        if (QuestManager.instance.GetIsHudOpen()) OpenQuestList();
+        if (QuestManager.instance.GetIsCompletableIconOn()) TurnOnCompletableIcon();
 
-        // 진행중인 퀘스트 리스트의 0번 index 값을 가져와서 데이터 값 세팅  
+        // 진행중인 퀘스트 리스트의 0번 _index 값을 가져와서 데이터 값 세팅  
         Quest quest = QuestManager.instance.GetOngoingQuestByIdx(0);
 
         SetQuestTitle(quest.GetTitle());
@@ -125,14 +121,10 @@ public class QuestHUD : MonoBehaviour
     public Text GetQuestTitle() { return _questTitle; }
     public Text GetQuestGoal() { return _questGoal; }
     public Button GetQuestBtn() { return _btnQuest; }
-    public bool GetIsHudOpen() { return _isHudOpen; }
-    public bool GetIsCompletableIconOn() { return _isCompletableIconOn; }
 
     //setter 
     public void SetQuestTitle(string text) { _questTitle.text = text; }
     public void SetQuestGoal(string text) { _questGoal.text = text; }
     public void TurnOnCompletableIcon() { _iconCompletable.SetActive(true); }
     public void TurnOffCompletableIcon() { _iconCompletable.SetActive(false); }
-    public void SetIsHudOpen(bool value) { _isHudOpen = value; }
-    public void SetIsCompletableIconOn(bool value) { _isCompletableIconOn = value; }
 }

@@ -11,20 +11,21 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager instance;
 
     int _questID = 0;                   // 현재 퀘스트 다이얼로그가 진행되는 퀘스트 ID
-    int _lineIdx = 0;                   // 대화 상자에 출력되는 대사의 index 값 
+    int _lineIdx = 0;                   // 대화 상자에 출력되는 대사의 _index 값 
+    int _typeIdx = 0;                   // 대화 상자에 출력되는 대사 당 글자 _index 값 
     bool _isTalking = false;            // 현재 대화중인지 확인하는 변수 
-    QuestState _state;           // 현재 퀘스트 다이얼로그가 진행되는 퀘스트의 진행상태 
-    string _questTitle;                 // 퀘스트 제목 
+    QuestState _state;                  // 현재 퀘스트 다이얼로그가 진행되는 퀘스트의 진행상태 
     QuestNPC _questNPC;                 // 현재 대화상대인 NPC 참조값 
-    QuestCompleteUI _questCompleteUI;   // 퀘스트 완료 팝업 UI 참조값 
-    Tutorial _tutorial;                 // 튜토리얼 진행을 위한 튜토리얼 캐싱.
-
-    string _keywordEffectName = "키워드 획득";   
 
     // UI 관련 변수 
-    Transform _player;                               // 플레이어 트랜스폼 
-    float _delayBeforeGettingKeyword = 2f;    // 퀘스트 완료 시 키워드 보상 획득 딜레이 
-    float _delayBeforeAllQuestPopup = 2.5f;   // 모든 퀘스트 완료시 팝업 UI 활성화 딜레이 
+    Transform _player;                          // 플레이어 트랜스폼 
+    QuestCompleteUI _questCompleteUI;           // 퀘스트 완료 팝업 UI 참조값 
+    Tutorial _tutorial;                         // 튜토리얼 진행을 위한 튜토리얼 캐싱
+    TypeEffecter _typeEffecter;                 // 타이핑 이펙터 클래스 참조값
+    float _delayBeforeGettingKeyword = 2f;      // 퀘스트 완료 시 키워드 보상 획득 딜레이 
+    float _delayBeforeAllQuestPopup = 2.5f;     // 모든 퀘스트 완료시 팝업 UI 활성화 딜레이 
+    string _keywordEffectName = "키워드 획득";   // 키워드 획득 오브젝트 이름 
+
 
     [Header("Panel UI")]
     GameObject _hudCanvas;
@@ -47,13 +48,15 @@ public class DialogueManager : MonoBehaviour
     [Tooltip("모든 퀘스트 완료 Panel 내 BG 이미지")]
     [SerializeField] Image _imgBG;
 
+    [Header("Default Dialogue UI")]
+    [Tooltip("다이얼로그 Panel 내 NPC 이름")]
+    [SerializeField] Text _txtDefaultName;
+
     [Header("Quest Dialogue UI")]
     [Tooltip("퀘스트 다이얼로그 Panel 내 퀘스트 Title")]
     [SerializeField] Text _txtQuestTitle;
     [Tooltip("퀘스트 다이얼로그 Panel 내 화자 이름")]
     [SerializeField] Text _txtName;
-    [Tooltip("퀘스트 다이얼로그 Panel 내 대사")]
-    [SerializeField] Text _txtLines;
 
     private void Awake()
     {
@@ -69,21 +72,69 @@ public class DialogueManager : MonoBehaviour
         _hudCanvas = FindObjectOfType<GameHudMenu>().gameObject;
         _tutorial = FindObjectOfType<Tutorial>();
         _questCompleteUI = FindObjectOfType<QuestCompleteUI>();
+        _typeEffecter = GetComponent<TypeEffecter>();
+    }
+
+    /// <summary>
+    /// 기본 대화 실행 
+    /// </summary>
+    public void DoDefaultDialogue()
+    {
+        _txtDefaultName.text = NpcDB.instance.GetNPC(_questNPC.GetNpcID()).GetName();
+
+        // 타이핑 애니메이션 중이 아니라면 
+        if (!_typeEffecter.GetIsAnim())
+        {
+            _isTalking = true;
+
+            if (_typeEffecter.GetIdx() == 0)
+            {
+                // 타이핑 애니메이션 시작 전이라면 대사를 받아와 타이핑 애니메이션 시작 
+                string line = _questNPC.GetNpc().GetLine(Random.Range(0, _questNPC.GetNpc().GetLinesCount()));
+                _typeEffecter.SetMsg(DialogueType.DEFAULT, line);
+            }
+            else
+            {
+                // 전체 대사가 출력되었다면 대화 종료 
+                _isTalking = false;
+                _typeEffecter.SetIdx(0);
+                CloseDialoguePanel();
+            }
+        }
+        else
+        {
+            // 타이핑 애니메이션 중에 클릭 시 전체 대사 출력
+            _typeEffecter.ShowFullLine();
+        }
+
+        _dialoguePanel.SetActive(_isTalking);
     }
 
     /// <summary>
     /// 퀘스트 수락, 완료 시의 대화 실행 
     /// </summary>
-    /// <param name="questID"></param>
     public void DoQuestDialouge()
     {
-        GetLine(_questID);
+        // 타이핑 애니메이션 중에 클릭 시 전체 대사 출력 
+        if(!_typeEffecter.GetIsAnim())
+        {
+            // 타이핑 애니메이션 중이 아니라면 대사를 받아와 타이핑 애니메이션 시작 
+            GetLine(_questID);
+        }
+        else
+        {
+            // 타이핑 애니메이션 중에 클릭 시 전체 대사 출력
+            _typeEffecter.ShowFullLine();
+        }
+
         _questDialoguePanel.SetActive(_isTalking);
         SoundManager.instance.PlayEffectSound("Click", 1f);
 
         // 대화가 완료된 시점에서 퀘스트 진행상태에 맞게 동작 수행 
         if (!_isTalking)
         {
+            _typeEffecter.SetIdx(0);
+
             switch (_state)
             {
                 // 퀘스트 수락에 따른 액션 수행  
@@ -94,6 +145,10 @@ public class DialogueManager : MonoBehaviour
                 // 퀘스트 완료에 따른 액션 수행 
                 case QuestState.QUEST_COMPLETABLE:
                     CompleteQuest();
+                    break;
+
+                default:
+                    CloseQuestDialoguePanel();
                     break;
             }
         }
@@ -106,7 +161,7 @@ public class DialogueManager : MonoBehaviour
     {
         _dialoguePanel.SetActive(false);
         _questNPC.GetComponent<ZoomNPC>().ZoomOutNPC();
-        _questNPC.GetComponent<Transform>().tag = "QuestNPC";
+        _questNPC.PlaySetQuestNpcTagCoroutine();
         _questNPC.TurnOnNameTag();
     }
 
@@ -127,6 +182,9 @@ public class DialogueManager : MonoBehaviour
         _lineIdx = 0;
     }
 
+    /// <summary>
+    /// 모든 퀘스트 완료 Panel 닫기
+    /// </summary>
     public void CloseAllQuestCompleteUI()
     {
         // 팝업창 닫으면
@@ -137,24 +195,13 @@ public class DialogueManager : MonoBehaviour
         StartCoroutine(WaitMapChangeCo());
     }
 
-    // 0.5초 뒤 맵 이동
-    IEnumerator WaitMapChangeCo()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        // 맵 이동
-        MapManager.instance.SetSpawnPoint("Delphinium");
-        MapManager.instance.ChangeMap("Town");
-    }
-
     /// <summary>
     /// 퀘스트 대사를 퀘스트 다이얼로그 창에 한줄씩 출력 
     /// </summary>
     /// <param name="questID"></param>
     void GetLine(int questID)
     {
-        //line.Substring(0,MinMaxCount++)
-
+        // 퀘스트 진행상태에 따른 대사를 lineIdx에 맞게 가져오기 
         LineUnit lineUnit = QuestDialogueDB.instance.GetDialogue(questID).GetLineUnit(_state, _lineIdx);
 
         // 다음 대사가 없을 경우 대사인덱스 초기화 및 대화 종료 
@@ -162,10 +209,9 @@ public class DialogueManager : MonoBehaviour
         {
             _isTalking = false;
             _lineIdx = 0;
+            _typeIdx = 0;
             return;
         }
-
-        string line = lineUnit.GetLine();
 
         // 대사의 화자(유저/NPC)에 맞게 이름 설정 
         if (lineUnit.GetNpcID() == 0)
@@ -180,16 +226,22 @@ public class DialogueManager : MonoBehaviour
             _txtName.text = NpcDB.instance.GetNPC(lineUnit.GetNpcID()).GetName();
         }
 
-        _txtLines.text = line;
+        string line = lineUnit.GetLine();
+
+        _typeEffecter.SetMsg(DialogueType.QUEST, line);
+
         _isTalking = true;
         _lineIdx++;
     }
-
+    
     /// <summary>
     /// 퀘스트 수락에 따라 팝업메뉴을 실행하고, 퀘스트 매니져에 진행중인 퀘스트 추가 및 NPC 상태값 변경 
     /// </summary>
     void AcceptQuest()
     {
+        // NPC의 상태값을 퀘스트 진행중으로 변경 
+        _questNPC.SetQuestState(QuestState.QUEST_ONGOING);
+
         // 수락한 퀘스트를 퀘스트 매니져의 진행중인 퀘스트 리스트에 추가 
         Quest questAccepted = QuestDB.instance.GetQuest(_questID).DeepCopy();
         QuestManager.instance.AddOngoingQuest(questAccepted);
@@ -246,7 +298,7 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     public void SetQuestAcceptPanel()
     {
-        _questAcceptedTitle.text = "'" + _questTitle + "'";
+        _questAcceptedTitle.text = "'" + QuestDB.instance.GetQuest(_questID).GetTitle() + "'";
     }
 
     // 1초 대기 후 튜토리얼 등장하게 코루틴 추가
@@ -282,12 +334,22 @@ public class DialogueManager : MonoBehaviour
         SoundManager.instance.PlayEffectSound("Quest_AllComplete");
     }
 
+    // 0.5초 뒤 맵 이동
+    IEnumerator WaitMapChangeCo()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        // 맵 이동
+        MapManager.instance.SetSpawnPoint("Delphinium");
+        MapManager.instance.ChangeMap("Town");
+    }
+
     /// <summary>
     /// 퀘스트 다이얼로그 건너뛰기 기능 수행 
     /// </summary>
     public void SkipDialogue()
     {
-        // 대사의 index count 보다 큰 값을 입력하여 대사 종료 
+        // 대사의 _index count 보다 큰 값을 입력하여 대사 종료 
         int lineCount = QuestDialogueDB.instance.GetDialogue(_questID).GetLinesCount(_state);
         _lineIdx = lineCount;
 
@@ -305,7 +367,6 @@ public class DialogueManager : MonoBehaviour
         _questNPC = questNPC;
         _state = _questNPC.GetQuestState();
         _txtQuestTitle.text = QuestDB.instance.GetQuest(questID).GetTitle();
-        _questTitle = QuestDB.instance.GetQuest(questID).GetTitle();
     }
 
     /// <summary>

@@ -16,14 +16,14 @@ public class QuestManager : MonoBehaviour
     public delegate void SyncHandler(Quest quest);
     public static event SyncHandler SyncWithQuestOnStart;
 
-    public Inventory _inventory;               // 인벤토리 참조자 
-    public QuestHUD _questHUD;                 // QuestHUD 참조자 
-    public QuestMenu _questMenu;               // QuestMenu 참조자 
-    public PlayerStatus _playerStatus;         // PlayerStatus 참조자 
+    Inventory _inventory;                      // 인벤토리 참조자 
+    QuestHUD _questHUD;                        // QuestHUD 참조자 
+    QuestMenu _questMenu;                      // QuestMenu 참조자 
+    PlayerStatus _playerStatus;                // PlayerStatus 참조자 
     public bool _isHudOpen = false;            // QuestHUD 창 오픈여부 확인 변수 
     public bool _isCompletableIconOn = false;  // QuestHUD 완료가능 아이콘 on/off 변수 
     public bool _isLoadingDone = false;        // 퀘스트 데이터 로딩 여부 확인 변수 
-    string _questInfoKey = "info";      // 퀘스트 타입 해시테이블 키 
+    string _questInfoKey = "info";             // 퀘스트 타입 해시테이블 키 
 
 
     /// <summary>
@@ -51,22 +51,25 @@ public class QuestManager : MonoBehaviour
         // 저장된 데이터가 있다면 불러오기 
         if (!_isLoadingDone) LoadQuestData();
 
-        //if (Input.GetKeyDown(KeyCode.Q))
-        //{
-        //    OpenLilyQuest();
-        //}
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            //OpenLilyQuest();
+
+            _inventory.TryToPushInventory(7, 1);
+            _inventory.TryToPushInventory(2, 1);
+            _inventory.TryToPushInventory(3, 1);
+        }
     }
 
     // 테스트용 마지막 퀘스트 받기
-    //void OpenLilyQuest()
-    //{
-    //    if (QuestDB.instance.GetQuest(10).GetState() == QuestState.QUEST_VEILED)
-    //    {
-    //        QuestDB.instance.GetQuest(10).SetState(QuestState.QUEST_OPENED);
-    //        CheckAvailableQuest();
-    //    }
-    //}
-
+    void OpenLilyQuest()
+    {
+        if (QuestDB.instance.GetQuest(10).GetState() == QuestState.QUEST_VEILED)
+        {
+            QuestDB.instance.GetQuest(10).SetState(QuestState.QUEST_OPENED);
+            CheckAvailableQuest();
+        }
+    }
 
     /// <summary>
     /// 진행중인 퀘스트 리스트에 ongoingQuest를 원소로 추가하기 
@@ -433,7 +436,6 @@ public class QuestManager : MonoBehaviour
     void SetQuestGiverToCompleteState(Quest quest)
     {
         quest.GetQuestGiver().SetOngoingQuestID(0);
-        quest.GetQuestGiver().DeleteCompletedQuest(quest.GetQuestID());
         quest.GetQuestGiver().UpdateQuestState();
         quest.GetQuestGiver().SetQuestMark();
     }
@@ -444,10 +446,11 @@ public class QuestManager : MonoBehaviour
     /// <param name="quest"></param>
     void SetQuestFinisherToOngoingState(Quest quest)
     {
-        // 퀘스트 HUD 완료가능 아이콘 비활성화 
-        _questHUD.TurnOffCompletableIcon();
-        _isCompletableIconOn = false;
         quest.SetState(QuestState.QUEST_ONGOING);
+
+        // 퀘스트 HUD 완료가능 아이콘 비활성화 
+        _isCompletableIconOn = false;
+        _questHUD.TurnOffCompletableIcon();
 
         // 퀘스트 메뉴 완료가능 아이콘 비활성화 
         _questMenu.TurnOffCompletableIcon(quest.GetQuestID());
@@ -470,10 +473,11 @@ public class QuestManager : MonoBehaviour
     /// <param name="state"></param>
     void SetQuestFinisherToCompletableState(Quest quest)
     {
-        // 퀘스트 HUD의 완료가능 아이콘 활성화 
-        _questHUD.TurnOnCompletableIcon();
-        _isCompletableIconOn = true;
         quest.SetState(QuestState.QUEST_COMPLETABLE);
+
+        // 퀘스트 HUD의 완료가능 아이콘 활성화 
+        _isCompletableIconOn = true;
+        _questHUD.TurnOnCompletableIcon();
 
         // 퀘스트메뉴 완료가능 아이콘 활성화 
         _questMenu.TurnOnCompletableIcon(quest.GetQuestID());
@@ -503,7 +507,6 @@ public class QuestManager : MonoBehaviour
         if (quest.GetQuestFinisher() == null) return; 
 
         quest.GetQuestFinisher().SetOngoingQuestID(0);
-        quest.GetQuestFinisher().DeleteCompletedQuest(quest.GetQuestID());
         quest.GetQuestFinisher().UpdateQuestState();
         quest.GetQuestFinisher().SetQuestMark();
     }
@@ -571,7 +574,12 @@ public class QuestManager : MonoBehaviour
             int carryCount = (_inventory.GetItemCount(item) > deliverItem.GetItem(i).GetCount()) ?
                 deliverItem.GetItem(i).GetCount() : _inventory.GetItemCount(item);
 
-            goal += (item.name + " (" + carryCount + "/" + deliverItem.GetItem(i).GetCount() + ")\n");            
+            if (quest.GetQuestID() == 4) goal += "상점에서 오도 구입";
+            else goal += item.name;
+
+            goal += (" (" + carryCount + "/" + deliverItem.GetItem(i).GetCount() + ")\n");
+
+            //goal += (item.name + " (" + carryCount + "/" + deliverItem.GetItem(i).GetCount() + ")\n");            
         }
 
         return goal;
@@ -614,8 +622,8 @@ public class QuestManager : MonoBehaviour
         _questMenu = FindObjectOfType<QuestMenu>();
         _playerStatus = FindObjectOfType<PlayerStatus>();
 
-        if (_isHudOpen) _questHUD.SetIsHudOpen(true);
-        if (_isCompletableIconOn) _questHUD.SetIsCompletableIconOn(true);
+        if (_isHudOpen) _questHUD.OpenQuestList();
+        if (_isCompletableIconOn) _questHUD.TurnOnCompletableIcon();
     }
 
     /// <summary>
@@ -676,8 +684,9 @@ public class QuestManager : MonoBehaviour
         // 이미 완료된 퀘스트 ID 리스트가 존재하는 경우 string 값 형태로 덧붙이기 
         if(PlayerPrefs.HasKey("FinishedQuestID"))
         {
+            // 퀘스트 ID + / 형태로 저장하여 /를 기준으로 id 값을 구분 
             string finishedList = PlayerPrefs.GetString("FinishedQuestID");
-            finishedList += questID.ToString();
+            finishedList += (questID + "/"); 
 
             PlayerPrefs.SetString("FinishedQuestID", finishedList);
             Debug.Log("완료된 퀘스트 데이터 세이브");
@@ -685,7 +694,7 @@ public class QuestManager : MonoBehaviour
         }
 
         // 퀘스트 ID를 string 값 형태로 변환하여 저장 
-        PlayerPrefs.SetString("FinishedQuestID", questID.ToString());
+        PlayerPrefs.SetString("FinishedQuestID", questID + "/");
         Debug.Log("완료된 퀘스트 데이터 세이브");
     }
 
@@ -737,9 +746,17 @@ public class QuestManager : MonoBehaviour
         {
             string questList = PlayerPrefs.GetString("FinishedQuestID");
 
-            for (int i = 0; i < questList.Length; i++)
+            // /를 기준으로 id를 구분하여 로드 
+            for (int i = 0; i < questList.Length;)
             {
-                int questID = questList[i] - '0';
+                int slashPos = questList.IndexOf("/", i);
+                int length = slashPos - i;
+
+                // i : 시작 위치 
+                // length : 자를 길이 
+                int questID = int.Parse(questList.Substring(i, length));
+
+                i += (length + 1);
 
                 Debug.Log(questID + "번 완료 데이터 로드중");
 

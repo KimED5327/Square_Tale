@@ -66,7 +66,6 @@ public class QuestHUD : MonoBehaviour
         GetQuestBtn().enabled = false;
         TurnOffCompletableIcon();
         QuestManager.instance.SetIsCompletableIconOn(false);
-        //_isCompletableIconOn = false;
     }
 
     /// <summary>

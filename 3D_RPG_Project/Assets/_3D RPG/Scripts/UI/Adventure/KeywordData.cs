@@ -69,7 +69,7 @@ public class KeywordData : MonoBehaviour
         keyword = new Keyword(8, "향기", "__", 12.5f);
        _cp1KeywordList.Add(keyword);
 
-        keyword = new Keyword(9, "독한 호흡", "__ __", 12.5f);
+        keyword = new Keyword(9, "독한", "__", 12.5f);
         _cp1KeywordList.Add(keyword);
 
         LoadKeyword();

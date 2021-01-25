@@ -376,7 +376,7 @@ public class PlayerMove : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetKeyDown("space") && !isJump && !isDodge)
+        if (Input.GetKeyDown("space") && !isJump && !isDodge && s_canMove)
         {
             SoundManager.instance.PlayEffectSound("Jump");
             SaveManager.instance.Save();
@@ -389,7 +389,7 @@ public class PlayerMove : MonoBehaviour
 
     public void MJump()
     {
-        if (!isJump && !isDodge)
+        if (!isJump && !isDodge && s_canMove)
         {
             SaveManager.instance.Save();
             SoundManager.instance.PlayEffectSound("Jump");
@@ -402,7 +402,7 @@ public class PlayerMove : MonoBehaviour
 
     void Dodge()
     {
-        if (Input.GetKeyDown("left shift") && !isJump && moveVec != Vector3.zero && !isDodge)
+        if (Input.GetKeyDown("left shift") && !isJump && moveVec != Vector3.zero && !isDodge && s_canMove)
         {
             if (!isDodgeCooltime)
             {

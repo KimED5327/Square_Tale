@@ -12,6 +12,7 @@ public enum TutorialType
     QUEST,
     ADVENTURE,
     SHOP,
+    BASIC,
 }
 
 [System.Serializable]
@@ -79,6 +80,8 @@ public class Tutorial : MonoBehaviour
         _buttonOriginColor = _imgLeftBtn.color;
 
         LoadTutorial();
+
+        CallTutorial(TutorialType.BASIC);
     }
 
     /// <summary>
@@ -247,7 +250,10 @@ public class Tutorial : MonoBehaviour
 
     public static void SaveTutorial()
     {
-        for(int i = 0; i < _isLookTutorial.Length; i++)
+        if (!PlayerPrefs.HasKey("Tutorial7"))
+            PlayerPrefs.SetString("Tutorial7", false.ToString());
+
+        for (int i = 0; i < _isLookTutorial.Length; i++)
         {
             PlayerPrefs.SetString("Tutorial" + i, _isLookTutorial[i].ToString());
         }
@@ -256,6 +262,10 @@ public class Tutorial : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("Tutorial0"))
         {
+
+            if(!PlayerPrefs.HasKey("Tutorial7"))
+                PlayerPrefs.SetString("Tutorial7", false.ToString());
+
             for (int i = 0; i < _isLookTutorial.Length; i++)
             {
                 _isLookTutorial[i] = bool.Parse(PlayerPrefs.GetString("Tutorial" + i));

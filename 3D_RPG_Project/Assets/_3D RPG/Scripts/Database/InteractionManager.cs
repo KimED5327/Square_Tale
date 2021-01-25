@@ -169,9 +169,9 @@ public class InteractionManager : MonoBehaviour
 
                 // 뒤늦게 추가된 부분이라 귀찮아서 하드코딩
                 case RewardType.All:
-                    _inven.TryToPushInventory(1, 600); // 600 골드
+                    _inven.TryToPushInventory(1, 50); // 600 골드
                     PlayerStatus ps = _playerPos.GetComponent<PlayerStatus>();
-                    ps.IncreaseExp(50); // 50 경험치
+                    ps.IncreaseExp(600); // 50 경험치
                     BlockManager.AllIncreaseBlockCount(10); // 10 All 블록 추가
                     Notification.instance.ShowAllItemNotice(0);
                     break;

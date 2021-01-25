@@ -168,7 +168,7 @@ MonoBehaviour:
     itemDropRate: 50
   _isForceDead: 0
   _removeTime: 5
-  _respawnTime: 30
+  _respawnTime: 10
 --- !u!65 &-3976740457373783910
 BoxCollider:
   m_ObjectHideFlags: 0

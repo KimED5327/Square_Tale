@@ -29,6 +29,7 @@ public class SandTrap : MonoBehaviour
         BoxCollider colFace = player.GetFaceCol();
         BoxCollider colMyBody = player.GetComponent<BoxCollider>();
         Rigidbody rigidPlayer = player.GetComponent<Rigidbody>();
+        PlayerMove.s_canMove = false;
 
         player.enabled = false;
         colFace.enabled = false;
@@ -47,7 +48,7 @@ public class SandTrap : MonoBehaviour
 
         rigidPlayer.useGravity = true;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2.5f);
 
 
         player.enabled = true;

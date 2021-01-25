@@ -1894,7 +1894,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mapName: LilyCastleFront
   _spawnPoints:
-  - priorMapName: LliyCastle
+  - priorMapName: LilyCastle
     tfSpawnPoint: {fileID: 5813162765856718494}
   - priorMapName: Vegonia
     tfSpawnPoint: {fileID: 925838831506549365}
@@ -1965,6 +1965,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _questCompleteID: 7
+  _deActiveQuestID: 10
   _goActive: {fileID: 4429297688958469140}
 --- !u!1 &5460435927287323405
 GameObject:

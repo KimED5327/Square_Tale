@@ -77,7 +77,7 @@ public class StringManager : MonoBehaviour
 
     public static string mapNameVegonia = "Vegonia";
     public static string mapNameTown = "Town";
-    public static string mapNameCroa = "Vegonia";
+    public static string mapNameCroa = "Croa";
     public static string mapNameDelphinium = "Delphinium";
     public static string mapNameHyacinth = "Hyacinth";
     public static string mapNameLilyCastleFront = "LilyCastleFront";

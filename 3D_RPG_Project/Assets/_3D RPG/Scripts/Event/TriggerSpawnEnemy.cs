@@ -8,11 +8,20 @@ public class TriggerSpawnEnemy : MonoBehaviour
     GameObject _enemy;
     TriggerMonster _trigger;
 
+    [SerializeField] int[] _itemConditionID = null;
     [SerializeField] bool _isEvent = true;
     [SerializeField] bool _isBoss = false;
     // Start is called before the first frame update
     void Start()
     {
+
+        Inventory inven = FindObjectOfType<Inventory>();
+        
+        for(int i = 0; i < _itemConditionID.Length; i++)
+        {
+            if (inven.GetItemCount(_itemConditionID[i]) > 0) return;
+        }
+
         Transform tfPlayer = FindObjectOfType<PlayerMove>().transform;
 
         _enemy = ObjectPooling.instance.GetObjectFromPool(_monsterName, transform.position);

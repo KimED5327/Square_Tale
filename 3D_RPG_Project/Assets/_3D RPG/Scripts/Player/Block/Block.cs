@@ -61,6 +61,11 @@ public abstract class Block : Status
     }
 
 
+    public void ForceDestroy()
+    {
+        Dead();
+    }
+
     protected override void Dead()
     {
         SoundManager.instance.PlayEffectSound(_destroySoundName);

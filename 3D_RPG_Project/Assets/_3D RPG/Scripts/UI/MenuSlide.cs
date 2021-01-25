@@ -10,7 +10,7 @@ public class MenuSlide : MonoBehaviour
 
     Animator myAnim;
 
-    bool isShow = false;
+    bool isShow = true;
     bool canTouch = true;
 
     void Awake() => myAnim = GetComponent<Animator>();

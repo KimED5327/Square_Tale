@@ -38,9 +38,9 @@ public class PlayerBuffManager : MonoBehaviour
     // 버프 적용 시도
     bool TryPushBuff(int id)
     {
+        // 같은 ID의 버프가 있다면 중첩 적용시킴
         for (int i = 0; i < _slots.Length; i++)
         {
-            // 같은 ID의 버프가 있다면 중첩 적용시킴
             if (_slots[i].gameObject.activeSelf)
             {
                 if (_slots[i].GetBuffID() == id)
@@ -49,8 +49,12 @@ public class PlayerBuffManager : MonoBehaviour
                     return true;
                 }
             }
-            // 빈슬롯을 만나면 버프 등록
-            else
+        }
+
+        // 빈 슬롯에 버프 적용
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            if (!_slots[i].gameObject.activeSelf)
             {
                 PushSlot(i, id, false);
                 return true;

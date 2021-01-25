@@ -61,10 +61,12 @@ public class MapManager : MonoBehaviour
 
     IEnumerator MapLoading()
     {
+        PlayerMove.s_canMove = false;
         ScreenEffect.instance._isFinished = false;
         ScreenEffect.instance.ExecuteFadeOut();
 
         yield return new WaitUntil(() => ScreenEffect.instance._isFinished);
+        PlayerMove.s_canMove = true;
 
         // 로딩 후 ActiveMap 실행
         LoadingScene.LoadScene("GameScene");

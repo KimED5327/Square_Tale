@@ -6,6 +6,8 @@ public class TriggerBlockPlate : Trigger
 {
     [SerializeField] string _blockName = "폭발 블록";
 
+    [SerializeField] float _blockDestroyTime = 1f;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(StringManager.blockTag))
@@ -18,8 +20,16 @@ public class TriggerBlockPlate : Trigger
                 {
                     block.SetApplyCancel();
                     ActiveTrigger();
+                    StartCoroutine(DestoryBlock(block));
                 }
             }
         }
+    }
+
+    IEnumerator DestoryBlock(Block block)
+    {
+        yield return new WaitForSeconds(_blockDestroyTime);
+
+        block.ForceDestroy();
     }
 }

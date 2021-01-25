@@ -61,6 +61,8 @@ public class TouchBoard : MonoBehaviour
                     {
                         case TouchPhase.Began:
 
+                            if (EventSystem.current.IsPointerOverGameObject() == true) return;
+
                             if (t.position.x > this._halfScreenWidth && _fingerID == -1)
                             {
                                 isPress = true;
@@ -70,7 +72,7 @@ public class TouchBoard : MonoBehaviour
                             break;
 
                         case TouchPhase.Moved:
-                            if (!EventSystem.current.IsPointerOverGameObject(i))
+                            if (!EventSystem.current.IsPointerOverGameObject(i) && isPress)
                             {
                                 if (t.fingerId == _fingerID)
                                 {

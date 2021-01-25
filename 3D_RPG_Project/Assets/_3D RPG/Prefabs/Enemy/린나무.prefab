@@ -193,7 +193,7 @@ MonoBehaviour:
     itemDropRate: 50
   _isForceDead: 0
   _removeTime: 5
-  _respawnTime: 30
+  _respawnTime: 10
 --- !u!1 &3108541573075520980
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ public class ActionCam : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
+
     }
 
     public void DeActive()

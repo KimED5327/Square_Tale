@@ -210,7 +210,10 @@ public class Enemy : MonoBehaviour
         {
             enemyState = State.Move;
         }
-
+        if (status.GetCurrentHp() < status.GetMaxHp() && Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxMoveRange, 2))
+        {
+            enemyState = State.Move;
+        }
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxAttackRange, 2))
         {
             timer = 0.0f;
@@ -242,7 +245,7 @@ public class Enemy : MonoBehaviour
 
         }
 
-        else if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
+        else if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxMoveRange, 2))
         {
 
 

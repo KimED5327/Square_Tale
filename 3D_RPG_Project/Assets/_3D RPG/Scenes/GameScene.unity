@@ -19045,7 +19045,7 @@ MonoBehaviour:
   endCursor: {fileID: 0}
   _txtQuestLine: {fileID: 1677048012}
   _txtDefaultLine: {fileID: 268309606}
-  _charPerSeconds: 26
+  _charPerSeconds: 28
 --- !u!1 &341079309
 GameObject:
   m_ObjectHideFlags: 0

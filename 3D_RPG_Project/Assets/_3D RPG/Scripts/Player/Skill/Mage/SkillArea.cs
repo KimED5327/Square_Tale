@@ -46,7 +46,7 @@ public class SkillArea : MonoBehaviour
                 switch (skillNum)
                 {
                     case 2:
-                        targetStatus.Damage((int)(_status.GetInt() * 0.2f), transform.position, "overlap2");
+                        targetStatus.Damage((int)(_status.GetInt() * 0.3f), transform.position, "overlap2");
                         break;
                     case 3:
                         targetStatus.Damage((int)(_status.GetInt() * 0.4f), transform.position, "overlap");

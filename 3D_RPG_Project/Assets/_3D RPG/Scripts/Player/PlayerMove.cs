@@ -1084,6 +1084,7 @@ public class PlayerMove : MonoBehaviour
             curSwapCooltime += Time.deltaTime;
             if (curSwapCooltime > swapCooltime)
             {
+                curSwapCooltime = 0;
                 isSwap = false;
             }
         }
@@ -1096,7 +1097,6 @@ public class PlayerMove : MonoBehaviour
             SaveManager.instance.Save();
             GameManager._isDie = true;
             isDie = true;
-            resurrectionUI.SetActive(true);
             blockCon.enabled = false;
             if (!isDieTrigger)
             {
@@ -1105,6 +1105,7 @@ public class PlayerMove : MonoBehaviour
                 anim.SetTrigger("doDie");
             }
             PlayerPrefs.SetInt("curHp", myStatus.GetMaxHp());
+            StartCoroutine("SetResuUI");
         }
     }
 
@@ -1113,19 +1114,14 @@ public class PlayerMove : MonoBehaviour
 
         if (transform.position.y < -50)
         {
-            SaveManager.instance.Save();
-            GameManager._isDie = true;
-            isDie = true;
-            resurrectionUI.SetActive(true);
-            blockCon.enabled = false;
-            if (!isDieTrigger)
-            {
-                GameHudMenu.instance.HideMenu();
-                isDieTrigger = true;
-                anim.SetTrigger("doDie");
-            }
-            PlayerPrefs.SetInt("curHp", myStatus.GetMaxHp());
+            myStatus.SetCurrentHp(0);
         }
+    }
+
+    IEnumerator SetResuUI()
+    {
+        yield return new WaitForSeconds(2.0f);
+        resurrectionUI.SetActive(true);
     }
 
     public void ResurrectionToRespawn()
@@ -1169,7 +1165,7 @@ public class PlayerMove : MonoBehaviour
 
     public void Swap()
     {
-        if (!isDie && (!isSkill1 && !isSkill2 && !isSkill3 && !isSkill4))
+        if (!isDie && (!isSkill1 && !isSkill2 && !isSkill3 && !isSkill4 && !isDodgeCooltime))
         {
             if (!isSwap)
             {
@@ -1238,7 +1234,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (myStatus.GetIsLevelUp())
         {
-            ObjectPooling.instance.GetObjectFromPool("키워드 획득", transform.position);
+            ObjectPooling.instance.GetObjectFromPool("레벨업", transform.position);
             myStatus.SetIsLevelUp(false);
         }
     }

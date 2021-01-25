@@ -46,7 +46,14 @@ public abstract class Status : MonoBehaviour
         if (_skillType.Equals("overlap") || _skillType.Equals("overlap2")) return;
         _skillType = skillType;
 
-        _damage = num - _def;
+        if (_skillType.Equals("overlap2"))
+        {
+            _damage = num;
+        }
+        else
+        {
+            _damage = num - _def;
+        }
 
         if (_damage < 1)
         {

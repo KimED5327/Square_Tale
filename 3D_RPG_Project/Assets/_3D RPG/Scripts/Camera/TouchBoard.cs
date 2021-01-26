@@ -19,6 +19,7 @@ public class TouchBoard : MonoBehaviour
     {
         if (Application.platform != RuntimePlatform.Android)
         {
+
             if (!GameHudMenu.s_isMenuOpen)
             {
                 if (Input.GetMouseButtonDown(0))
@@ -52,7 +53,6 @@ public class TouchBoard : MonoBehaviour
         {
             if (!GameHudMenu.s_isMenuOpen)
             {
-
                 for (int i = 0; i < Input.touchCount; i++)
                 {
                     Touch t = Input.GetTouch(i);
@@ -61,24 +61,28 @@ public class TouchBoard : MonoBehaviour
                     {
                         case TouchPhase.Began:
 
-                            if (EventSystem.current.IsPointerOverGameObject() == true) return;
-
                             if (t.position.x > this._halfScreenWidth && _fingerID == -1)
                             {
-                                isPress = true;
                                 _fingerID = t.fingerId;
-                                pointerOld = Input.mousePosition;
+                                pointerOld = t.position;
                             }
                             break;
 
                         case TouchPhase.Moved:
-                            if (!EventSystem.current.IsPointerOverGameObject(i) && isPress)
+                            if (!EventSystem.current.IsPointerOverGameObject(i))
                             {
                                 if (t.fingerId == _fingerID)
                                 {
-                                    touchDis = (Vector2)Input.mousePosition - pointerOld;
-                                    pointerOld = Input.mousePosition;
+                                    touchDis = t.position - pointerOld;
+                                    pointerOld = t.position;
                                 }
+                            }
+                            break;
+                        case TouchPhase.Stationary:
+
+                            if (t.fingerId == _fingerID)
+                            {
+                                touchDis = Vector2.zero;
                             }
                             break;
 
@@ -87,7 +91,6 @@ public class TouchBoard : MonoBehaviour
                             if (t.fingerId == _fingerID)
                             {
                                 _fingerID = -1;
-                                isPress = false;
                                 touchDis = Vector2.zero;
                             }
                             break;
@@ -96,12 +99,12 @@ public class TouchBoard : MonoBehaviour
                             if (t.fingerId == this._fingerID)
                             {
                                 _fingerID = -1;
-                                isPress = false;
                                 touchDis = Vector2.zero;
                             }
                             break;
                     }
                 }
+
             }
         }
 

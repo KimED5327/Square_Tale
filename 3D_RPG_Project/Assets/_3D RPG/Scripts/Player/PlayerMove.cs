@@ -379,7 +379,6 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetKeyDown("space") && !isJump && !isDodge && s_canMove)
         {
             SoundManager.instance.PlayEffectSound("Jump");
-            SaveManager.instance.Save();
             isJump = true;
             myRigid.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             anim.SetBool("isJump", true);
@@ -391,7 +390,6 @@ public class PlayerMove : MonoBehaviour
     {
         if (!isJump && !isDodge && s_canMove)
         {
-            SaveManager.instance.Save();
             SoundManager.instance.PlayEffectSound("Jump");
             isJump = true;
             myRigid.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -1094,18 +1092,18 @@ public class PlayerMove : MonoBehaviour
     {
         if (myStatus.GetCurrentHp() <= 0)
         {
-            SaveManager.instance.Save();
             GameManager._isDie = true;
             isDie = true;
             blockCon.enabled = false;
             if (!isDieTrigger)
             {
+                SaveManager.instance.Save();
+                PlayerPrefs.SetInt("curHp", myStatus.GetMaxHp());
+                StartCoroutine("SetResuUI");
                 GameHudMenu.instance.HideMenu();
                 isDieTrigger = true;
                 anim.SetTrigger("doDie");
             }
-            PlayerPrefs.SetInt("curHp", myStatus.GetMaxHp());
-            StartCoroutine("SetResuUI");
         }
     }
 

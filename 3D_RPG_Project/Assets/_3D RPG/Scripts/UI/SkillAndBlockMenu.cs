@@ -43,6 +43,7 @@ public class SkillAndBlockMenu : MonoBehaviour
     public void BtnMenuClose()
     {
         SoundManager.instance.PlayEffectSound("PopDown");
+        SaveManager.instance.Save();
         _goUI.SetActive(false);
     }
 

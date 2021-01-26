@@ -72,6 +72,7 @@ public class PlayerStatus : Status
                     //_mageDef += _levelUpDef;
                     _level++;
                     _isLevelUp = true;
+                    SaveManager.instance.Save();
                 }
                 if (_level == 15)
                 {
@@ -107,6 +108,7 @@ public class PlayerStatus : Status
                     //_mageDef += _levelUpDef;
                     _level++;
                     _isLevelUp = true;
+                    SaveManager.instance.Save();
                 }
                 if (_level == 15)
                 {

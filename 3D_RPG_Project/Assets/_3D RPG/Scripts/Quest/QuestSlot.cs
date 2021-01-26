@@ -34,7 +34,7 @@ public class QuestSlot : MonoBehaviour
         // 버튼의 개수가 2개 이상일 때만 눌렀을 때 색상 변경 
         if (_questMenu.CheckSlotsCount() > 1) TurnOffColor();
 
-        SoundManager.instance.PlayEffectSound("Menu_Click", 0.5f);
+        SoundManager.instance.PlayEffectSound("Menu_Click");
     }
 
     //getter 

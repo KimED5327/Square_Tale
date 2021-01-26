@@ -258,7 +258,7 @@ public class DialogueManager : MonoBehaviour
         SetQuestAcceptPanel();
         _questAcceptedPanel.SetActive(true);
         CloseQuestDialoguePanel();
-        SoundManager.instance.PlayEffectSound("Quest_Accept", 1f);
+        SoundManager.instance.PlayEffectSound("Quest_Accept");
     }
 
     /// <summary>
@@ -282,7 +282,7 @@ public class DialogueManager : MonoBehaviour
         // 퀘스트 완료 팝업메뉴 실행 
         _questCompleteUI.OpenQuestCompletePanel(questCompleted);
         CloseQuestDialoguePanel();
-        SoundManager.instance.PlayEffectSound("Quest_Complete", 0.9f);
+        SoundManager.instance.PlayEffectSound("Quest_Complete");
 
         // 모든 퀘스트를 완료한 경우 모험담 관련 팝업 UI 활성화 
         if (_questID == 10)

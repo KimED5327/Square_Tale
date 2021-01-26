@@ -21,12 +21,12 @@ public class UISoundPlay : MonoBehaviour
 
     public void PlayNpcClickSound()
     {
-        SoundManager.instance.PlayEffectSound("NPC_Click", 0.5f);
+        SoundManager.instance.PlayEffectSound("NPC_Click");
     }
 
     public void PlayMenuClickSound()
     {
-        SoundManager.instance.PlayEffectSound("Menu_Click", 0.5f);
+        SoundManager.instance.PlayEffectSound("Menu_Click");
     }
 
 }

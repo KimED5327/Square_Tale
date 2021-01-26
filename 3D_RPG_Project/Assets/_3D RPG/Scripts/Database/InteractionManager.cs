@@ -82,7 +82,7 @@ public class InteractionManager : MonoBehaviour
 
                         npc.TurnOffNameTag();
                         zoom.ZoomInNPC();
-                        SoundManager.instance.PlayEffectSound("NPC_Click", 0.5f);
+                        SoundManager.instance.PlayEffectSound("NPC_Click");
                     }
 
                     // 트리거 상호작용 액티브.

@@ -11,11 +11,10 @@ public class MapManager : MonoBehaviour
 
     string _moveMap;
     string _priorMap;
-    string _spawnPointTwo;
 
     public void SetSpawnPoint(string spawnPoint)
     {
-        _spawnPointTwo = spawnPoint;
+        _priorMap = spawnPoint;
     }
 
     private void Awake()
@@ -78,13 +77,7 @@ public class MapManager : MonoBehaviour
 
         // 맵 생성 후, 플레이어 스폰 위치 조정.
         Instantiate(_currentMap.gameObject);
-
-        if(_spawnPointTwo == "")
-            _currentMap.SearchSpawnPoint(tfPlayer, _priorMap);
-        else
-            _currentMap.SearchSpawnPoint(tfPlayer, _spawnPointTwo);
-
-        _spawnPointTwo = "";
+        _currentMap.SearchSpawnPoint(tfPlayer, _priorMap);
     }
 
     public string GetCurrentMapName() { return _currentMap.GetMapName(); }

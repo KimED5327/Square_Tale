@@ -93,7 +93,7 @@ public class StringManager : MonoBehaviour
         if (name == mapNameVegonia)
             return "베고니아";
         if (name == mapNameDelphinium)
-            return "델피니움";
+            return "델피늄";
         if (name == mapNameHyacinth)
             return "히아신스";
         if (name == mapNameLilyCastleFront)

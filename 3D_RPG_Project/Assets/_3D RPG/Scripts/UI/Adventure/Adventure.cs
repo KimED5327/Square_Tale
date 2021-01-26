@@ -55,7 +55,7 @@ public class Adventure : MonoBehaviour
         SoundManager.instance.PlayEffectSound("PopUp");
         GameHudMenu.instance.HideMenu();
 
-        _txtProgress.text = _adventureProgress + " %";
+        _txtProgress.text = _adventureProgress + "%";
         _imgProgress.fillAmount = _adventureProgress / 100;
 
         _curChapter = 0;

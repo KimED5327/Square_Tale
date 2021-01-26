@@ -5218,7 +5218,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 340279728}
-        m_MethodName: PlayBubblePopSound
+        m_MethodName: PlayNpcClickSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19061,7 +19061,7 @@ MonoBehaviour:
   endCursor: {fileID: 0}
   _txtQuestLine: {fileID: 1677048012}
   _txtDefaultLine: {fileID: 268309606}
-  _charPerSeconds: 28
+  _charPerSeconds: 24
 --- !u!114 &340279728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19511,6 +19511,10 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 012d1f3e23e06e14c8064a0e30bdb31f, type: 3}
   - name: NPC_Click
     clip: {fileID: 8300000, guid: 6829aa3c4d39ef24e8df9d2524a141d1, type: 3}
+  - name: Menu_Click
+    clip: {fileID: 8300000, guid: ee9c68b0eb7103f4786fd3e8a3f0b3be, type: 3}
+  - name: Reward_Slot
+    clip: {fileID: 8300000, guid: 9ce289742e8ec1d4bafb3151276f0e08, type: 3}
   effectPlayer:
   - {fileID: 1331582483}
   - {fileID: 895823384}
@@ -22202,7 +22206,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 340279728}
-        m_MethodName: PlayBubblePopSound
+        m_MethodName: PlayNpcClickSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23232,6 +23236,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 374274264}
         m_MethodName: ShowFinishedQuest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 340279728}
+        m_MethodName: PlayMenuClickSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -35273,6 +35288,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 340279728}
+        m_MethodName: PlayMenuClickSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &643708451
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -38357,6 +38383,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 340279725}
         m_MethodName: SkipDialogue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 340279728}
+        m_MethodName: PlayMenuClickSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -57811,6 +57848,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 374274264}
         m_MethodName: OpenMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 340279728}
+        m_MethodName: PlayPopUpSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -110091,6 +110139,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 374274264}
         m_MethodName: CloseMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 340279728}
+        m_MethodName: PlayPopDownSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

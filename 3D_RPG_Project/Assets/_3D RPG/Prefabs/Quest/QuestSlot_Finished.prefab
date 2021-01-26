@@ -146,6 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _txtTitle: {fileID: 5380536338643404478}
   _imgQuestMark: {fileID: 0}
+  _iconCompletable: {fileID: 0}
   _imgGray: {fileID: 9121087822031463094}
 --- !u!1 &5380536338643404476
 GameObject:

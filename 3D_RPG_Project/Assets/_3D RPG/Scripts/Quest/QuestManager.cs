@@ -51,14 +51,14 @@ public class QuestManager : MonoBehaviour
         // 저장된 데이터가 있다면 불러오기 
         if (!_isLoadingDone) LoadQuestData();
 
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            //OpenLilyQuest();
+        //if (Input.GetKeyDown(KeyCode.O))
+        //{
+        //    OpenLilyQuest();
 
-            _inventory.TryToPushInventory(7, 1);
-            _inventory.TryToPushInventory(2, 1);
-            _inventory.TryToPushInventory(3, 1);
-        }
+        //    _inventory.TryToPushInventory(7, 1);
+        //    _inventory.TryToPushInventory(2, 1);
+        //    _inventory.TryToPushInventory(3, 1);
+        //}
     }
 
     // 테스트용 마지막 퀘스트 받기

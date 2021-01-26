@@ -4365,7 +4365,7 @@ MonoBehaviour:
   _interactionRange: 1.5
   _layerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 65331
 --- !u!1 &115561609
 GameObject:
   m_ObjectHideFlags: 0

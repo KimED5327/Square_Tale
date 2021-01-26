@@ -70,12 +70,14 @@ public class Tutorial : MonoBehaviour
 
     // 필요한 컴포넌트
     QuestManager _quest;
+    MenuSlide _menuSlide;
 
     // 시작과 동시에 튜토리얼 체크
     void Start()
     {
         _isLookTutorial = new bool[_tutorialInfo.Length];
         _quest = QuestManager.instance;
+        _menuSlide = FindObjectOfType<MenuSlide>();
         _centerPos = _tfCenter.localPosition;
         _buttonOriginColor = _imgLeftBtn.color;
 
@@ -99,6 +101,11 @@ public class Tutorial : MonoBehaviour
 
         // 이미 본 튜토리얼이면 실행 안 함 (강제로 실행시킬 경우는 제외 : ex 도움말)
         if (_isLookTutorial[_curTutorialCount] && !_isForce) return;
+
+        if(type == TutorialType.BASIC)
+        {
+            _menuSlide.FirstExecuteShow();
+        }
 
         // 튜토리얼 정보 세팅
         SettingTutorialInfo();

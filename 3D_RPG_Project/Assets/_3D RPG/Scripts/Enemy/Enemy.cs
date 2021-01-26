@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
     public float timer;                         //공격속도 조절값
     public float reconTime;                     //정찰 시작 시간
     public float reconTimer;                    //정찰 체크 시간
+    public float errorTimer;                    //먹통 방지 체크
     private float dieTime;                      //죽고 난 뒤 시간
     public float motionTime;                   //공격 모션 시간
     private bool searchCount = true;                    
@@ -142,10 +143,10 @@ public class Enemy : MonoBehaviour
                 myColider.isTrigger = false;
             }
         }
-        else
-        {
+
+        if(status.IsDead())
             UpdateDie();
-        }
+        
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -163,21 +164,23 @@ public class Enemy : MonoBehaviour
     private void UpdateSearch()
     {
         if(searchCount)
-        {            Vector3 dir = player.transform.position - transform.position;
+        {            
+            Vector3 dir = player.transform.position - transform.position;
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 5);
-            _offset = new Vector3(0f, transform.position.y + 1, 0f);
+            _offset = new Vector3(0f, transform.position.y + 1f, 0f);
             Vector3 move = Vector3.forward;
 
-            float x = Random.Range((float)startPoint.x - maxFindRange, (float)startPoint.x + maxFindRange);
-            float z = Random.Range((float)startPoint.z - maxFindRange, (float)startPoint.z + maxFindRange);
+            //float x = Random.Range((float)startPoint.x - maxFindRange, (float)startPoint.x + maxFindRange);
+            //float z = Random.Range((float)startPoint.z - maxFindRange, (float)startPoint.z + maxFindRange);
+            float x = Random.Range((float)startPoint.x - 2, (float)startPoint.x + 2);
+            float z = Random.Range((float)startPoint.z - 2, (float)startPoint.z + 2);
+
             move = new Vector3(x, 0f, z);
 
-            Debug.DrawRay(move + _offset, Vector3.down, Color.yellow, 100);
-             if (Physics.Raycast(move + _offset, Vector3.down, out RaycastHit hit, 2f))
+             if (Physics.Raycast(move + _offset, Vector3.down * 2.5f, out RaycastHit hit, 2f))
              {
                  if (hit.transform.CompareTag("Floor"))
                 {
-                   
                     enemyAnimator.SetBool("Move", true);
                      _rayPos = hit.point;
                      agent.SetDestination(_rayPos);
@@ -196,8 +199,22 @@ public class Enemy : MonoBehaviour
                 enemyAnimator.SetBool("Move", false);
 
                 reconTimer = 0;
+                errorTimer = 0;
                 enemyState = State.Idle;
                 searchCount = true;
+            }
+            // 먹통 방지
+            else
+            {
+                errorTimer += Time.deltaTime;
+
+                if (errorTimer >= 5)
+                {
+                    errorTimer = 0f;
+                    reconTimer = 0;
+                    enemyState = State.Idle;
+                    searchCount = true;
+                }
             }
         }
 
@@ -206,6 +223,7 @@ public class Enemy : MonoBehaviour
     //기본 상태
     private void UpdateIdle()
     {
+
         if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
         {
             enemyState = State.Move;
@@ -227,6 +245,20 @@ public class Enemy : MonoBehaviour
 
             if (reconTimer > reconTime)
             {
+                reconTimer = 0f;
+                errorTimer = 0;
+                enemyState = State.Search;
+            }
+        }
+        // 먹통 방지
+        else
+        {
+            errorTimer += Time.deltaTime;
+
+            if (errorTimer >= 5)
+            {
+                reconTimer = 0f;
+                errorTimer = 0f;
                 enemyState = State.Search;
             }
         }
@@ -282,6 +314,19 @@ public class Enemy : MonoBehaviour
                 enemyState = State.Idle;
             }
         }
+        // 먹통 방지
+        else
+        {
+            errorTimer += Time.deltaTime;
+
+            if (errorTimer >= 5)
+            {
+                errorTimer = 0f;
+                enemyAnimator.SetBool("Move", false);
+                enemyState = State.Idle;
+            }
+        }
+
 
     }
     //공격 상태
@@ -348,9 +393,25 @@ public class Enemy : MonoBehaviour
         if (Vector3.SqrMagnitude(transform.position - startPoint) > 0.1f)
         {
             agent.SetDestination(startPoint);
+
+            errorTimer += Time.deltaTime;
+
+            if (errorTimer >= 5)
+            {
+                errorTimer = 0f;
+                errorTimer = 0f;
+                status.SetCurrentHp(status.GetMaxHp());
+                //enemyAnimator.SetInteger("animation", 1);
+                enemyAnimator.SetBool("Move", false);
+                agent.ResetPath();
+                _isChasing = false;
+                transform.position = startPoint;
+                enemyState = State.Idle;
+            }
         }
         else
         {
+            errorTimer = 0f;
             status.SetCurrentHp(status.GetMaxHp());
             //enemyAnimator.SetInteger("animation", 1);
             enemyAnimator.SetBool("Move", false);

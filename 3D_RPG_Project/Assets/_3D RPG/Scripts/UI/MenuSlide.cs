@@ -10,7 +10,7 @@ public class MenuSlide : MonoBehaviour
 
     Animator myAnim;
 
-    bool isShow = true;
+    bool isShow = false;
     bool canTouch = true;
 
     void Awake() => myAnim = GetComponent<Animator>();
@@ -25,6 +25,12 @@ public class MenuSlide : MonoBehaviour
         }
     }
 
+
+    public void FirstExecuteShow()
+    {
+        isShow = true;
+        StartCoroutine(SlideCo());
+    }
 
     IEnumerator SlideCo()
     {

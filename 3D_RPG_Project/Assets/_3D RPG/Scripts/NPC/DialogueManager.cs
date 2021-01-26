@@ -26,7 +26,6 @@ public class DialogueManager : MonoBehaviour
     float _delayBeforeAllQuestPopup = 2.5f;     // 모든 퀘스트 완료시 팝업 UI 활성화 딜레이 
     string _keywordEffectName = "키워드 획득";   // 키워드 획득 오브젝트 이름 
 
-
     [Header("Panel UI")]
     GameObject _hudCanvas;
     [Tooltip("기본 다이얼로그 Panel")]
@@ -348,6 +347,9 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     public void SkipDialogue()
     {
+        // 타이핑 애니메이션 중이라면 전체 대사 출력 
+        if(_typeEffecter.GetIsAnim()) _typeEffecter.ShowFullLine();
+
         // 대사의 _index count 보다 큰 값을 입력하여 대사 종료 
         int lineCount = QuestDialogueDB.instance.GetDialogue(_questID).GetLinesCount(_state);
         _lineIdx = lineCount;

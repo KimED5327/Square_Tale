@@ -19462,7 +19462,7 @@ MonoBehaviour:
   - name: Skill2
     clip: {fileID: 8300000, guid: b572179c20cbc3440a7eef44f69bcb30, type: 3}
   - name: Explosion
-    clip: {fileID: 8300000, guid: db4b898068e3b3b4c8c4235052b6e976, type: 3}
+    clip: {fileID: 8300000, guid: c461b8fec2cd9d44ca8bc2296181d4e7, type: 3}
   - name: Shout1
     clip: {fileID: 8300000, guid: 56c512c3232d7a14fa75e39dce5043f0, type: 3}
   - name: Shout2

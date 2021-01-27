@@ -1586,6 +1586,7 @@ GameObject:
   - component: {fileID: 4860459568502794618}
   - component: {fileID: -7410316327382903213}
   - component: {fileID: 6244726827305711708}
+  - component: {fileID: 3456030894790494287}
   m_Layer: 9
   m_Name: "\uB9B4\uB9AC"
   m_TagString: Enemy
@@ -1738,6 +1739,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &3456030894790494287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4860459568502794617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab7b3cab72d34d0498f6b9388a56954b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpBar: {fileID: 2489015369106942577}
+  _Ui: {fileID: 2300925045016822001}
 --- !u!1 &4860459568584511433
 GameObject:
   m_ObjectHideFlags: 0
@@ -2986,7 +3001,6 @@ GameObject:
   - component: {fileID: 3211192885859803394}
   - component: {fileID: 5246218714285186006}
   - component: {fileID: 5859642443310251416}
-  - component: {fileID: 1313870381600133276}
   m_Layer: 5
   m_Name: Canvas-Boss
   m_TagString: Untagged
@@ -3075,20 +3089,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1313870381600133276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7359536454997651389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab7b3cab72d34d0498f6b9388a56954b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpBar: {fileID: 2489015369106942577}
-  _Ui: {fileID: 2300925045016822001}
 --- !u!1 &8983892845259612929
 GameObject:
   m_ObjectHideFlags: 0

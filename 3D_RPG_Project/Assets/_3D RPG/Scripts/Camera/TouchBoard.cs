@@ -60,7 +60,8 @@ public class TouchBoard : MonoBehaviour
                     switch (t.phase)
                     {
                         case TouchPhase.Began:
-
+                            if (EventSystem.current.IsPointerOverGameObject(i))
+                                return;
                             if (t.position.x > this._halfScreenWidth && _fingerID == -1)
                             {
                                 _fingerID = t.fingerId;
@@ -69,14 +70,15 @@ public class TouchBoard : MonoBehaviour
                             break;
 
                         case TouchPhase.Moved:
-                            if (!EventSystem.current.IsPointerOverGameObject(i))
+                            //if (EventSystem.current.IsPointerOverGameObject(i))
+                            //    return;
+                            
+                            if (t.fingerId == _fingerID)
                             {
-                                if (t.fingerId == _fingerID)
-                                {
-                                    touchDis = t.position - pointerOld;
-                                    pointerOld = t.position;
-                                }
+                                touchDis = t.position - pointerOld;
+                                pointerOld = t.position;
                             }
+                            
                             break;
                         case TouchPhase.Stationary:
 

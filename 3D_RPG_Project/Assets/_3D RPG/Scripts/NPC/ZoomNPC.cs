@@ -82,8 +82,6 @@ public class ZoomNPC : MonoBehaviour
             // 카메라 Light 끄기 
             _cam.GetComponent<Light>().enabled = false;
 
-            // 플레이어 활성화 
-            _player.gameObject.SetActive(true);
 
             // HUD 캔버스 활성화 
             _hudCanvas.SetActive(true);
@@ -116,11 +114,11 @@ public class ZoomNPC : MonoBehaviour
         {
             _zoomingOut = false;
 
-            //카메라 컨트롤러 켜기 
-            _player.GetComponent<CameraController>().enabled = true;
-
             // 플레이어 활성화 
             _player.gameObject.SetActive(true);
+
+            //카메라 컨트롤러 켜기 
+            _player.GetComponent<CameraController>().enabled = true;
         }
 
         // 줌인 이전의 카메라 위치로 이동 

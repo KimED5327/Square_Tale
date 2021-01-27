@@ -13,7 +13,7 @@ public class DialogueManager : MonoBehaviour
     int _questID = 0;                   // 현재 퀘스트 다이얼로그가 진행되는 퀘스트 ID
     int _lineIdx = 0;                   // 대화 상자에 출력되는 대사의 _index 값 
     int _typeIdx = 0;                   // 대화 상자에 출력되는 대사 당 글자 _index 값 
-    bool _isTalking = false;            // 현재 대화중인지 확인하는 변수 
+    public bool _isTalking = false;            // 현재 대화중인지 확인하는 변수 
     QuestState _state;                  // 현재 퀘스트 다이얼로그가 진행되는 퀘스트의 진행상태 
     QuestNPC _questNPC;                 // 현재 대화상대인 NPC 참조값 
 
@@ -131,7 +131,8 @@ public class DialogueManager : MonoBehaviour
         // 대화가 완료된 시점에서 퀘스트 진행상태에 맞게 동작 수행 
         if (!_isTalking)
         {
-            _typeEffecter.SetIdx(0);
+            // 플레이어 활성화
+            _player.gameObject.SetActive(true);
 
             switch (_state)
             {
@@ -157,6 +158,10 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     public void CloseDialoguePanel()
     {
+        _isTalking = false;
+        _typeEffecter.Initialize();
+
+        _player.gameObject.SetActive(true);
         _dialoguePanel.SetActive(false);
         _questNPC.GetComponent<ZoomNPC>().ZoomOutNPC();
         _questNPC.PlaySetQuestNpcTagCoroutine();
@@ -168,6 +173,10 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     public void CloseQuestDialoguePanel()
     {
+        _isTalking = false;
+        _typeEffecter.Initialize();
+
+        _player.gameObject.SetActive(true);
         _questDialoguePanel.SetActive(false);
         _questNPC.GetComponent<ZoomNPC>().ZoomOutNPC();
         _questNPC.TurnOnNameTag();

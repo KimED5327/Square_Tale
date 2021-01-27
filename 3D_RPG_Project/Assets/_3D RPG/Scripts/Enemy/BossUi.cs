@@ -15,8 +15,8 @@ public class BossUi : MonoBehaviour
 
     void Start()
     {
-        _boss = GetComponentInParent<Boss>();
-        _BossStatus = GetComponentInParent<EnemyStatus>();
+        _boss = GetComponent<Boss>();
+        _BossStatus = GetComponent<EnemyStatus>();
 
         _Ui.gameObject.SetActive(true);
         hpBar.gameObject.SetActive(true);
@@ -30,7 +30,7 @@ public class BossUi : MonoBehaviour
         _Ui.text = (int)hpPercent + "%" + " " + _BossStatus.GetName();
 
 
-        if(_boss.getIsDie())
+        if(_BossStatus.IsDead())
         {
             hpBar.gameObject.SetActive(false);
             _Ui.gameObject.SetActive(false);

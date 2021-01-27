@@ -437,9 +437,10 @@ MonoBehaviour:
   timer: 0
   reconTime: 3
   reconTimer: 0
+  errorTimer: 0
   motionTime: 0
   maxFindRange: 2
-  maxMoveRange: 15
+  maxMoveRange: 5
   maxAttackRange: 1
   reconRange: 0
   enemyState: 0

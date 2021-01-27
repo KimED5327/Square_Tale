@@ -29,6 +29,7 @@ public class SandTrap : MonoBehaviour
         BoxCollider colFace = player.GetFaceCol();
         BoxCollider colMyBody = player.GetComponent<BoxCollider>();
         Rigidbody rigidPlayer = player.GetComponent<Rigidbody>();
+
         PlayerMove.s_canMove = false;
 
         player.enabled = false;
@@ -41,6 +42,7 @@ public class SandTrap : MonoBehaviour
             if (Vector3.SqrMagnitude(_tfTarget.position - _destPos) <= 1f)
                 break;
 
+            rigidPlayer.velocity = Vector3.zero;    
             _tfTarget.position = Vector3.MoveTowards(_tfTarget.position, _destPos, _downSpeed * Time.deltaTime);
             yield return null;
         }

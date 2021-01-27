@@ -108,6 +108,7 @@ public class PlayerStatus : Status
                     //_mageDef += _levelUpDef;
                     _level++;
                     _isLevelUp = true;
+                    SoundManager.instance.PlayEffectSound("LevelUp");
                     SaveManager.instance.Save();
                 }
                 if (_level == 15)

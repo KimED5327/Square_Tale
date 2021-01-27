@@ -5509,7 +5509,7 @@ MonoBehaviour:
   - name: "\uB9B0\uB098\uBB34"
     goPrefab: {fileID: 3108541573075520978, guid: 242843b161509fe49b3db97d05d80d4d,
       type: 3}
-    count: 5
+    count: 6
   - name: "\uBC0D"
     goPrefab: {fileID: 1016231072872131684, guid: c2de2b735519dbc4f9b6140f799a04b7,
       type: 3}
@@ -129315,7 +129315,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 1000
+  far clip plane: 30
   field of view: 60
   orthographic: 0
   orthographic size: 5

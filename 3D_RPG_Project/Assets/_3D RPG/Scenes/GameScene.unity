@@ -19515,6 +19515,12 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: ee9c68b0eb7103f4786fd3e8a3f0b3be, type: 3}
   - name: Reward_Slot
     clip: {fileID: 8300000, guid: 9ce289742e8ec1d4bafb3151276f0e08, type: 3}
+  - name: BossAttack
+    clip: {fileID: 8300000, guid: e0e59797d06cbac4c993f033bd677259, type: 3}
+  - name: BossSkill
+    clip: {fileID: 8300000, guid: 98b56acde1d490c4c8950b421ba997a8, type: 3}
+  - name: LevelUp
+    clip: {fileID: 8300000, guid: fe452cf62ac26204f81206e30fc99002, type: 3}
   effectPlayer:
   - {fileID: 1331582483}
   - {fileID: 895823384}
@@ -22625,7 +22631,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1.2
-  m_Text: "\uCFE8\uD0C0\uC784 20\uCD08"
+  m_Text: "\uCFE8\uD0C0\uC784 10\uCD08"
 --- !u!222 &437260578
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -22833,7 +22839,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1.2
-  m_Text: "\uCFE8\uD0C0\uC784 15\uCD08"
+  m_Text: "\uCFE8\uD0C0\uC784 10\uCD08"
 --- !u!222 &438619606
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -39457,7 +39463,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1.2
-  m_Text: "\uCFE8\uD0C0\uC784 15\uCD08"
+  m_Text: "\uCFE8\uD0C0\uC784 12\uCD08"
 --- !u!222 &768428570
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -55475,7 +55481,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1.2
-  m_Text: "\uCFE8\uD0C0\uC784 30\uCD08"
+  m_Text: "\uCFE8\uD0C0\uC784 12\uCD08"
 --- !u!222 &897263333
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -60411,7 +60417,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1.2
-  m_Text: "\uCFE8\uD0C0\uC784 15\uCD08"
+  m_Text: "\uCFE8\uD0C0\uC784 13\uCD08"
 --- !u!222 &1035827787
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -68800,7 +68806,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1.2
-  m_Text: "\uCFE8\uD0C0\uC784 30\uCD08"
+  m_Text: "\uCFE8\uD0C0\uC784 15\uCD08"
 --- !u!222 &1280445715
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -83326,7 +83332,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1.2
-  m_Text: "\uCFE8\uD0C0\uC784 45\uCD08"
+  m_Text: "\uCFE8\uD0C0\uC784 15\uCD08"
 --- !u!222 &1412704196
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -129575,7 +129581,7 @@ MonoBehaviour:
   _giveGold: 10
   _str: 20
   _int: 11
-  _levelUpExps: 64000000ca000000320100009c0100000802000076020000e602000058030000cc03000042040000ba04000034050000b00500002e060000
+  _levelUpExps: 540100007c010000a4010000cc010000f40100001c020000440200006c02000094020000bc020000e40200000c030000340300005c030000
   _levelUpStr: 2
   _levelUpInt: 3
   _levelUpHp: 10

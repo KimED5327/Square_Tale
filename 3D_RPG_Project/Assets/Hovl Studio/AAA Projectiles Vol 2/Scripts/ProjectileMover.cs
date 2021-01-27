@@ -18,7 +18,7 @@ public class ProjectileMover : MonoBehaviour
     bool isSkiil = false;
 
     float _curTime = 0f;
-    float _termTime = 0.15f;
+    float _termTime = 0.75f;
 
     public void Pushinfo(Transform transform, EnemyStatus enemystatus, Boss bo)
     {
@@ -80,7 +80,7 @@ public class ProjectileMover : MonoBehaviour
             _curTime -= Time.deltaTime;
             if(_curTime <= 0)
             {
-                other.transform.GetComponent<Status>().Damage(10, transform.position);
+                other.transform.GetComponent<Status>().Damage(42, transform.position);
                 _curTime = _termTime;
             }
             

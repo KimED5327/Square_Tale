@@ -109,7 +109,8 @@ public class PlayerBuffManager : MonoBehaviour
 
     void BuffApply(Buff buff, bool isApply)
     {
-        for(int i = 0; i < buff.buffOption.Count; i++)
+
+        for (int i = 0; i < buff.buffOption.Count; i++)
         {
             // 버프 적용 = 증가 , 버프 해제 = 감소
             float applyBuffRate = (isApply) ? buff.buffOption[i].applyBuffRate

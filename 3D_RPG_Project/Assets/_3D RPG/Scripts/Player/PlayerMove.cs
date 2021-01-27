@@ -75,15 +75,15 @@ public class PlayerMove : MonoBehaviour
     float curSkill3Cooltime;
     float curSkill4Cooltime;
     // 스킬 쿨타임 수정 필요 !!
-    float swordSkill1Cooltime = 15f; //15
-    float swordSkill2Cooltime = 20f; //20
-    float swordSkill3Cooltime = 15f; //15
-    float swordSkill4Cooltime = 30f; //30
+    float swordSkill1Cooltime = 10f; //15
+    float swordSkill2Cooltime = 12f; //20
+    float swordSkill3Cooltime = 13f; //15
+    float swordSkill4Cooltime = 15f; //30
 
-    float mageSkill1Cooltime = 20f; //20
-    float mageSkill2Cooltime = 30f; //30
-    float mageSkill3Cooltime = 30f; //30
-    float mageSkill4Cooltime = 45f; //45
+    float mageSkill1Cooltime = 10f; //20
+    float mageSkill2Cooltime = 12f; //30
+    float mageSkill3Cooltime = 15f; //30
+    float mageSkill4Cooltime = 15f; //45
 
     float curSwapCooltime;
     float swapCooltime = 5f;

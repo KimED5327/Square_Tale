@@ -1700,8 +1700,8 @@ MonoBehaviour:
   dmgApplyTime: 0
   timer: 0.5
   speed: 10
-  maxFindRange: 8
-  maxAttackRange: 15
+  maxFindRange: 7
+  maxAttackRange: 8
   AttackLocation: {fileID: 4860459568113314787}
   AttackEffect: {fileID: 6770275343420508162, guid: 406ba3ead5cd3bc4f89b03e99222cf7b,
     type: 3}

@@ -41,7 +41,6 @@ public class Boss : MonoBehaviour
     private bool isSkillOne = false;                    //토네이도 리프 스킬!
     private bool isSkillTwo = false;                    //벚꽃 마안 스킬!
     GameObject skill;
-    GameObject skill2;
     private bool sktornado;                             //스킬 토네이도 실행 불값
     private bool skCheerySome = false;                  //스킬 벚꽃 마안 실행 불값
     private bool isDamage = false;                      //대미지 받는 변수
@@ -51,7 +50,7 @@ public class Boss : MonoBehaviour
     private int skillUseTornadoCount = 0;               //토네이도 리프 사용 횟수
     private int skillUseCherryCount = 0;                //벚꽃 마안 사용 횟수
     private bool isDie = false;
-
+    private bool targetSave = false;
 
     public bool getIsAttackStart() { return skillAttack; }
     public void setIsAttackStart(bool attack) { skillAttack = attack; }
@@ -70,14 +69,15 @@ public class Boss : MonoBehaviour
 
     private void OnEnable()
     {
+        Debug.Log("릴리 초기화");
         Initialized();
-        
     }
 
     private void Initialized()
     {
         bossState = state.idle;
         isDie = false;
+        targetSave = false;
 
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -125,7 +125,7 @@ public class Boss : MonoBehaviour
             skillAttackTime += Time.deltaTime;
             if (skillAttackTime > 0.5)
             {
-                skill.transform.localScale += new Vector3(0.2f, 0, 0.2f);
+                skill.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
                 skillUpcount++;
                 skillAttackTime = 0;
                 isDamage = true;
@@ -143,9 +143,14 @@ public class Boss : MonoBehaviour
     }
     private void IdleUpdate()
     {
-        if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
+        if (!targetSave)
         {
-            if(maxFindRange != maxAttackRange)maxFindRange = maxAttackRange;
+            if (Vector3.SqrMagnitude(transform.position - player.position) < Mathf.Pow(maxFindRange, 2))
+                targetSave = true;
+        }
+        else
+        {
+
             timer += Time.deltaTime;
 
             Vector3 dir = player.transform.position - transform.position;
@@ -159,6 +164,7 @@ public class Boss : MonoBehaviour
                 timer = 0;
             }
         }
+
     }
 
     private void AttackUpdate()
@@ -185,7 +191,7 @@ public class Boss : MonoBehaviour
         }
 
         //1차 토네이도 리프
-        if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.9f && skillUseTornadoCount == 0)
+        if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.8f && skillUseTornadoCount == 0)
         {
             SoundManager.instance.PlayEffectSound("BossSkill");
             Debug.Log("1차 토네이도 리프");
@@ -205,7 +211,7 @@ public class Boss : MonoBehaviour
             skillUseTornadoCount = 2;
         }
         //3차  토네이도 리프
-        else if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.3f && skillUseTornadoCount == 2)
+        else if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.4f && skillUseTornadoCount == 2)
         {
             SoundManager.instance.PlayEffectSound("BossSkill");
             Debug.Log("3차 토네이도 리프");
@@ -214,8 +220,7 @@ public class Boss : MonoBehaviour
             enemyAnimator.SetTrigger("Skill 0");
             skillUseTornadoCount = 3;
         }
-
-        if(((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.5f && skillUseCherryCount == 0)
+        if (((float)status.GetCurrentHp() / (float)status.GetMaxHp()) < 0.5f && skillUseCherryCount == 0)
         {
             Debug.Log("1차 벚꽃 마안");
             isSkillTwo = true;
@@ -262,7 +267,8 @@ public class Boss : MonoBehaviour
         }
         if(isSkillTwo)
         {
-            skill2 = Instantiate(SkillEffect2, new Vector3(transform.position.x, transform.position.y + 2.5f, transform.position.z), transform.rotation);
+            GameObject skill2 = Instantiate(SkillEffect2, new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z), transform.rotation);
+            skill2.GetComponent<SkillDamage>().TargetLink(player);
             isSkillTwo = false;
             bossState = state.idle;
         }

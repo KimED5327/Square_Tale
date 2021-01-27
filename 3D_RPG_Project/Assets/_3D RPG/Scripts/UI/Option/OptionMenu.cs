@@ -10,6 +10,12 @@ public class OptionMenu : MonoBehaviour
     [SerializeField] Slider _sliderBGM = null;
     [SerializeField] Slider _sliderSFX = null;
 
+    private void Start()
+    {
+        _sliderBGM.value = SoundManager.instance.GetBGMVolumeRatio();
+        _sliderSFX.value = SoundManager.instance.GetSFXVolumeRatio();
+    }
+
     public void BtnOptionOpen()
     {
         SoundManager.instance.PlayEffectSound("PopUp");

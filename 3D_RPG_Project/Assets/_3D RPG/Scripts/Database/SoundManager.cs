@@ -150,4 +150,8 @@ public class SoundManager : MonoBehaviour
         if (p_Type == 0) PlayBGM(p_name);
         else if (p_Type == 1) PlayEffectSound(p_name);
     }
+
+    public float GetBGMVolumeRatio() { return bgmPlayer.volume; }
+    public float GetSFXVolumeRatio() { return effectPlayer[0].volume; }
+
 }

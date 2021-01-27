@@ -4,47 +4,44 @@ using UnityEngine;
 
 public class SkillDamage : MonoBehaviour
 {
-    public PlayerBuffManager _pbm;
     SphereCollider _sc;
-    float _timer = 0f;
-    float _maxTimer = 1.5f;
-    Animator _ani;
-
+    [SerializeField] float _maxTimer = 1.5f;
+    Transform _target;
     private void Start()
     {
-        _ani = GameObject.FindGameObjectWithTag("Enemy").GetComponent<Animator>();
-        _pbm = FindObjectOfType<PlayerBuffManager>();
         _sc = GetComponent<SphereCollider>();
+        Invoke(nameof(ActiveDebuff), _maxTimer);
     }
 
-    private void Update()
+    public void TargetLink(Transform target)
     {
-        _timer += Time.deltaTime;
-
-        if(_timer < _maxTimer)
-        {
-            _sc.radius += 0.01f;
-        }
+        _target = target;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void ActiveDebuff()
     {
 
-        if(other.transform.name == "Face")
+        if (_target.CompareTag(StringManager.playerTag))
         {
-            Debug.Log(other);
+            Vector3 front = _target.forward;
+            Vector3 dir = (transform.position - _target.position).normalized;
+            float viewAngle = Vector3.Dot(front, dir);
+            Debug.Log(viewAngle * Mathf.Rad2Deg);
 
-            if (_sc.radius > 2f)
+            if (viewAngle >= Mathf.Cos(90f * Mathf.Deg2Rad))
             {
-                _pbm.ApplyPlayerBuff(2);
-
-                Destroy(this);
+                PlayerBuffManager.instance.ApplyPlayerBuff(6);
+                PlayerBuffManager.instance.ApplyPlayerBuff(7);
+                PlayerBuffManager.instance.ApplyPlayerBuff(8);
             }
+
         }
+        Invoke(nameof(DestroyTime), 2f);
     }
 
-
-
-
+    void DestroyTime()
+    {
+        Destroy(this);
+    }
 
 }

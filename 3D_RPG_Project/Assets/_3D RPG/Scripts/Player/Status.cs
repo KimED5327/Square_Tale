@@ -40,13 +40,13 @@ public abstract class Status : MonoBehaviour
         _isDead = false;
     }
 
-    public virtual void Damage(int num, Vector3 targetPos, string skillType = "normal")
+    public virtual void Damage(int num, Vector3 targetPos, string skillType = "normal", bool defenseIgnore = false)
     {
         //if (skillType.Equals("overlap")) return;
         if (_skillType.Equals("overlap") || _skillType.Equals("overlap2")) return;
         _skillType = skillType;
 
-        if (_skillType.Equals("overlap2"))
+        if (_skillType.Equals("overlap2") || defenseIgnore)
         {
             _damage = num;
         }
@@ -55,15 +55,19 @@ public abstract class Status : MonoBehaviour
             _damage = num - _def;
         }
 
-        if (_damage < 1)
+        if (!defenseIgnore)
         {
-            _curHp--;
-            _damage = 1;
+            if (_damage < 1)
+            {
+                _curHp--;
+                _damage = 1;
+            }
+            else
+            {
+                _curHp -= _damage;
+            }
         }
-        else
-        {
-            _curHp -= _damage;
-        }
+
 
         SoundManager.instance.PlayEffectSound("Damage");
         ObjectPooling.instance.GetObjectFromPool("피격 이펙트", transform.position + Vector3.up * 0.5f);

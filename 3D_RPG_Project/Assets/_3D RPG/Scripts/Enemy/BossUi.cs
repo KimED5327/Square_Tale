@@ -13,6 +13,17 @@ public class BossUi : MonoBehaviour
     public Text _Ui;
     float hpPercent;
 
+    public void DeactiveUI()
+    {
+        hpBar.gameObject.SetActive(false);
+        _Ui.gameObject.SetActive(false);
+    }
+    public void ActiveUI()
+    {
+        hpBar.gameObject.SetActive(true);
+        _Ui.gameObject.SetActive(true);
+    }
+
     void Start()
     {
         _boss = GetComponent<Boss>();
@@ -32,8 +43,7 @@ public class BossUi : MonoBehaviour
 
         if(_BossStatus.IsDead())
         {
-            hpBar.gameObject.SetActive(false);
-            _Ui.gameObject.SetActive(false);
+            DeactiveUI();
         }
     }
 }

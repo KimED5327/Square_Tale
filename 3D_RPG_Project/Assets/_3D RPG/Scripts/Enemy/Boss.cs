@@ -75,9 +75,11 @@ public class Boss : MonoBehaviour
 
     private void Initialized()
     {
+        skillUseTornadoCount = 0;
         bossState = state.idle;
         isDie = false;
         targetSave = false;
+        GetComponent<BossUi>().ActiveUI();
 
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -125,14 +127,17 @@ public class Boss : MonoBehaviour
             skillAttackTime += Time.deltaTime;
             if (skillAttackTime > 0.5)
             {
-                skill.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
+                if(skill != null)
+                    skill.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
                 skillUpcount++;
                 skillAttackTime = 0;
                 isDamage = true;
             }
             if (skillUpcount > 15)
             {
-                Destroy(skill);
+
+                if (skill != null)
+                    Destroy(skill);
                 skillAttack = false;
                 skillAttackTime = 0;
                 skillUpcount = 0;
@@ -246,7 +251,9 @@ public class Boss : MonoBehaviour
 
                 Vector3 dir = player.transform.position - transform.position;
                 skill = Instantiate(SkillEffect, new Vector3(player.transform.position.x, player.transform.position.y + 1.2f, player.transform.position.z), player.transform.rotation);
-                skill.transform.rotation = Quaternion.LookRotation(dir);
+
+                if (skill != null)
+                    skill.transform.rotation = Quaternion.LookRotation(dir);
                 sktornado = true;
             }
             else if (sktornado)
@@ -257,7 +264,9 @@ public class Boss : MonoBehaviour
                     skillAttack = true;
                     timer = 0;
                     bossState = state.idle;
-                    skill.GetComponent<ProjectileMover>().Pushinfo(player, status, this);
+
+                    if (skill != null)
+                        skill.GetComponent<ProjectileMover>().Pushinfo(player, status, this);
                     isSkillOne = false;
                     sktornado = false;
                 }
@@ -279,6 +288,7 @@ public class Boss : MonoBehaviour
         if (!isDie)
         {
             enemyAnimator.SetTrigger("Die 0");
+            GetComponent<BossUi>().DeactiveUI();
             isDie = true;
         }
     }

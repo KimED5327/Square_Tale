@@ -46,7 +46,7 @@ public abstract class Block : Status
         }
     }
 
-    public override void Damage(int num, Vector3 targetPos, string skillType = "normal")
+    public override void Damage(int num, Vector3 targetPos, string skillType = "normal", bool defenseIgnore = false)
     {
         _curHp -= 1;
 

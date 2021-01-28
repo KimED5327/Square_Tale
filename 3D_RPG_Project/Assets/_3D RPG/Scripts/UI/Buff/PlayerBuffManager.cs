@@ -127,7 +127,7 @@ public class PlayerBuffManager : MonoBehaviour
                 case BuffType.HP:
                     // 디버프는 틱데미지 적용
                     if(!buff.isBuff)
-                        _playerStatus.Damage((int)(_playerStatus.GetMaxHp() * Mathf.Abs(applyBuffRate)), Vector3.zero);
+                        _playerStatus.Damage((int)(_playerStatus.GetMaxHp() * Mathf.Abs(applyBuffRate)), Vector3.zero, "normal" ,true);
                     break;
                 case BuffType.INT:
                     _playerStatus.AdjustInt((int)(_playerStatus.GetInt() * applyBuffRate));

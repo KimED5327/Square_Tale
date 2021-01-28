@@ -131,7 +131,8 @@ public class DialogueManager : MonoBehaviour
         // 대화가 완료된 시점에서 퀘스트 진행상태에 맞게 동작 수행 
         if (!_isTalking)
         {
-            _typeEffecter.SetIdx(0);
+            // 플레이어 활성화
+            _player.gameObject.SetActive(true);
 
             switch (_state)
             {
@@ -157,6 +158,10 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     public void CloseDialoguePanel()
     {
+        _isTalking = false;
+        _typeEffecter.Initialize();
+
+        _player.gameObject.SetActive(true);
         _dialoguePanel.SetActive(false);
         _questNPC.GetComponent<ZoomNPC>().ZoomOutNPC();
         _questNPC.PlaySetQuestNpcTagCoroutine();
@@ -168,6 +173,10 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     public void CloseQuestDialoguePanel()
     {
+        _isTalking = false;
+        _typeEffecter.Initialize();
+
+        _player.gameObject.SetActive(true);
         _questDialoguePanel.SetActive(false);
         _questNPC.GetComponent<ZoomNPC>().ZoomOutNPC();
         _questNPC.TurnOnNameTag();

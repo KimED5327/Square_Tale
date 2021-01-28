@@ -17,7 +17,7 @@ public class QuestHUD : MonoBehaviour
 
     [Header("QuestList Panel")]
     [SerializeField] Text _questTitle = null;               // 퀘스트 제목 
-    [SerializeField] Text _questGoal = null;               // 퀘스트 목표
+    [SerializeField] Text _questGoal = null;                // 퀘스트 목표
 
     private void Start()
     {        

@@ -80,7 +80,7 @@ public class TypeEffecter : MonoBehaviour
     }
 
     // 타이핑 애니메이션 종료 함수 
-    void EffectEnd()
+    public void EffectEnd()
     {
         if (endCursor != null) endCursor.SetActive(true);
 
@@ -120,6 +120,16 @@ public class TypeEffecter : MonoBehaviour
         }
 
         return fullLine;
+    }
+
+    // 값 초기화 
+    public void Initialize()
+    {
+        CancelInvoke();
+
+        _index = 0;
+        _isAnim = false;
+        if (endCursor != null) endCursor.SetActive(false);
     }
 
     // getter

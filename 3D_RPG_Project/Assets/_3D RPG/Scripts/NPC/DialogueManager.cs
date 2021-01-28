@@ -13,7 +13,7 @@ public class DialogueManager : MonoBehaviour
     int _questID = 0;                   // 현재 퀘스트 다이얼로그가 진행되는 퀘스트 ID
     int _lineIdx = 0;                   // 대화 상자에 출력되는 대사의 _index 값 
     int _typeIdx = 0;                   // 대화 상자에 출력되는 대사 당 글자 _index 값 
-    public bool _isTalking = false;            // 현재 대화중인지 확인하는 변수 
+    bool _isTalking = false;            // 현재 대화중인지 확인하는 변수 
     QuestState _state;                  // 현재 퀘스트 다이얼로그가 진행되는 퀘스트의 진행상태 
     QuestNPC _questNPC;                 // 현재 대화상대인 NPC 참조값 
 

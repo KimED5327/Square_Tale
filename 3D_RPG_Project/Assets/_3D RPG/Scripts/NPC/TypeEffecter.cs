@@ -19,8 +19,8 @@ public class TypeEffecter : MonoBehaviour
     DialogueType _dialogueType;                 // 기본/퀘스트 다이얼로그 타입 
     string _targetMsg;                          // 타이핑 이펙트 타겟 메시지 
     string _msgText;                            // 타이핑 이펙트로 출력된 메시지 
-    public int _index;                                 // 타이핑 이펙트가 진행되고 있는 메시지의 인덱스 값 
-    public bool _isAnim = false;                       // 현재 타이핑 이펙트가 진행되고 있는지 여부 
+    int _index;                                 // 타이핑 이펙트가 진행되고 있는 메시지의 인덱스 값 
+    bool _isAnim = false;                       // 현재 타이핑 이펙트가 진행되고 있는지 여부 
 
     // 타이핑 애니메이션 값 세팅 및 시작 
     public void SetMsg(DialogueType type, string msg)

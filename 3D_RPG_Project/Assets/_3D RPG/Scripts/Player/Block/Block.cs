@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Block : Status
 {
     [SerializeField] protected string _destroyEffectName = "";    // 블록 파괴 연출 이펙트
-    [SerializeField] protected string _destroySoundName = "Explosion";    // 블록 파괴 연출 이펙트
+    [SerializeField] protected string _destroySoundName = "Explosion";    // 블록 파괴 사운드
 
     [SerializeField] string _hitEffectName = "";        // 블록 피격 연출 이펙트 (플레이어)
     [SerializeField] float _destroyTime = 10f;

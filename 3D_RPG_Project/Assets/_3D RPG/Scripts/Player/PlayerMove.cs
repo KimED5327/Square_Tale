@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour
 { 
+    // 시간이 나면 커맨드 패턴으로 변경할 예정.
+    // 인스펙터 정리 필요 (거미줄 형식 지양할 것) 
+    // 버튼, 쿨타임 이미지 등등은 모듈화해서 관리할 것
+    // 객체 지향을 위해 무분별한 public 지양할 것
+
     public float speed;
     public float applySpeed;
     public float jumpForce;

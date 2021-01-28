@@ -31,7 +31,7 @@ public class PlayerBuffManager : MonoBehaviour
         bool isSuccess = TryPushBuff(id);
 
         if (!isSuccess)
-            Debug.Log("버프가 가득찬 경우, 어떻게 처리할지 여부 필요");
+            Debug.Log("버프가 가득찬 경우, 어떻게 처리할지 기획 필요");
     }
 
 

@@ -47,33 +47,20 @@ public abstract class Status : MonoBehaviour
         _skillType = skillType;
 
         if (_skillType.Equals("overlap2") || defenseIgnore)
-        {
             _damage = num;
-        }
         else
-        {
             _damage = num - _def;
-        }
 
-        if (!defenseIgnore)
-        {
-            if (_damage < 1)
-            {
-                _curHp--;
-                _damage = 1;
-            }
-            else
-            {
-                _curHp -= _damage;
-            }
-        }
+        if (_damage < 1)
+            _damage = 1;
+        
 
-
+        _curHp -= _damage;
+        
         SoundManager.instance.PlayEffectSound("Damage");
         ObjectPooling.instance.GetObjectFromPool("피격 이펙트", transform.position + Vector3.up * 0.5f);
         GameObject goFloating = ObjectPooling.instance.GetObjectFromPool("플로팅 텍스트", transform.position + Vector3.up * 0.75f);
         goFloating.GetComponent<FloatingText>().SetText(_damage, transform.CompareTag(StringManager.playerTag));
-        Debug.Log("맞은 유닛 : " + transform.name);
 
         if (_skillType.Equals("overlap"))
         {

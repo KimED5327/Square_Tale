@@ -71,6 +71,8 @@ public class InteractionManager : MonoBehaviour
                     // Quest NPC - 다이얼로그 실행 
                     else if (target.CompareTag(StringManager.questNPCTag))
                     {
+                        if (_playerPos.GetComponent<PlayerMove>().GetIsVictory()) return;
+
                         QuestNPC npc = target.GetComponent<QuestNPC>();
                         ZoomNPC zoom = target.GetComponent<ZoomNPC>();
 

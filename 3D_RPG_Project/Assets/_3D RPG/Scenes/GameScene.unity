@@ -19022,7 +19022,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6013dcfaa0729da4a8ab06b723fb065e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isTalking: 0
   _dialoguePanel: {fileID: 185298222}
   _questDialoguePanel: {fileID: 408556270}
   _questAcceptedPanel: {fileID: 1299633390}
@@ -19063,8 +19062,6 @@ MonoBehaviour:
   _txtQuestLine: {fileID: 1677048012}
   _txtDefaultLine: {fileID: 268309606}
   _charPerSeconds: 24
-  _index: 0
-  _isAnim: 0
 --- !u!114 &340279728
 MonoBehaviour:
   m_ObjectHideFlags: 0

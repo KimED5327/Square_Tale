@@ -1246,6 +1246,7 @@ public class PlayerMove : MonoBehaviour
     {
         return isDodge;
     }
+
     public bool GetIsSword() { return isSword; }
     public bool GetIsMage() { return isMage; }
     public void SetIsSword(bool _isSword) { isSword = _isSword; }
@@ -1254,6 +1255,7 @@ public class PlayerMove : MonoBehaviour
     public bool GetIsSkill2() { return isSkill2; }
     public bool GetIsSkill3() { return isSkill3; }
     public bool GetIsSkill4() { return isSkill4; }
+    public bool GetIsVictory() { return isVictory; }
 
     public BoxCollider GetFaceCol() { return _colFace; } 
     public bool GetIsDie() { return isDie; }

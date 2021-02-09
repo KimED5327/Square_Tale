@@ -5,19 +5,28 @@ Square Tale [스퀘어 테일]
 ![image](https://user-images.githubusercontent.com/67626785/107297785-64f0e380-6ab7-11eb-8ea8-9862077b4af4.png)
 
 
-- Programing Team 
+- Programing Team
+
 정희재 : 퀘스트, NPC
+
 최동건 : 몬스터, 보스
+
 정광희 : 플레이어, 스킬
+
 김현정 : 씬 관리, 오브젝트 풀링
 
+
+
 - Technical Director
+
 김으뜸
 
 - Producer Team
+
 곽민서, 안영준, 김진모
 
 - PM
+
 강경묵
 
 

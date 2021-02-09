@@ -1,9 +1,9 @@
 # Square Tale
 Square Tale [스퀘어 테일]
+3D RPG Adventure
 
 ![image](https://user-images.githubusercontent.com/67626785/107297785-64f0e380-6ab7-11eb-8ea8-9862077b4af4.png)
 
-3D RPG Adventure
 
 - Programing Team 
 정희재 : 퀘스트, NPC

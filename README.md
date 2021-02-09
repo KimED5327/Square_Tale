@@ -3,7 +3,7 @@ Square Tale [스퀘어 테일]
 
 3D RPG Adventure
 
-![image](https://user-images.githubusercontent.com/67626785/107297785-64f0e380-6ab7-11eb-8ea8-9862077b4af4.png)
+![image](https://user-images.githubusercontent.com/67626785/107299249-43ddc200-6aba-11eb-9f71-f41d0f811ac9.png)
 
 - Programing Team
 

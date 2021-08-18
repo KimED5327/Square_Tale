@@ -1,37 +1,37 @@
 # Square Tale
-Square Tale [스퀘어 테일]
 
-3D RPG Adventure
+> 3D RPG Adventure 기획 합작 프로젝트 
 
-![image](https://user-images.githubusercontent.com/67626785/107299249-43ddc200-6aba-11eb-9f71-f41d0f811ac9.png)
+<img width="85%" src="https://user-images.githubusercontent.com/67626785/107299249-43ddc200-6aba-11eb-9f71-f41d0f811ac9.png"/>
 
-- Programing Team
+#### 🕹 플레이 스토어 - https://play.google.com/store/apps/details?id=com.one.squaretales&hl=ko&gl=KR
 
-정희재 : 퀘스트, NPC
+---
 
-최동건 : 몬스터, 보스
-
-정광희 : 플레이어, 스킬
-
-김현정 : 씬 관리, 오브젝트 풀링
-
-
+## 팀 구성 
 - Technical Director
 
 김으뜸
 
+- Programing Team
 
+[정희재](https://github.com/heejae102) : 퀘스트, NPC
 
-- Producer Team
+[최동건](https://github.com/heejae102) : 몬스터, 보스
 
-곽민서, 안영준, 김진모
+[정광희](https://github.com/heejae102) : 플레이어, 스킬
 
-
+[김현정](https://github.com/heejae102) : 씬 관리, 오브젝트 풀링
 
 - PM
 
 강경묵
 
+- Producer Team
+
+곽민서, 안영준, 김진모
+
+---
 
 
 ![image](https://user-images.githubusercontent.com/67626785/107298130-1e4fb900-6ab8-11eb-830d-9920fc1d8bdf.png)

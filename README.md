@@ -2,9 +2,9 @@
 
 > 3D RPG Adventure 기획 합작 프로젝트 
 
-<img width="70%" src="https://user-images.githubusercontent.com/67626785/107299249-43ddc200-6aba-11eb-9f71-f41d0f811ac9.png"/>
+<img width="75%" src="https://user-images.githubusercontent.com/67626785/107299249-43ddc200-6aba-11eb-9f71-f41d0f811ac9.png"/>
 
-#### 🕹 플레이 스토어 - https://play.google.com/store/apps/details?id=com.one.squaretales&hl=ko&gl=KR 
+#### 🕹 플레이 스토어 다운로드 - https://play.google.com/store/apps/details?id=com.one.squaretales&hl=ko&gl=KR 
 #### 🎥 시연 영상 - https://youtu.be/oVVu-dDgtpE <br/><br/>
 
 ---
@@ -32,18 +32,18 @@
 
 ## 프로젝트 개요
 
-![image](https://user-images.githubusercontent.com/67626785/107298130-1e4fb900-6ab8-11eb-830d-9920fc1d8bdf.png)
+<img width="90%" src="https://user-images.githubusercontent.com/67626785/107298130-1e4fb900-6ab8-11eb-830d-9920fc1d8bdf.png"/>
 
-![image](https://user-images.githubusercontent.com/67626785/107298190-36bfd380-6ab8-11eb-8108-475cb4e40e14.png)
+<img width="90%" src="https://user-images.githubusercontent.com/67626785/107298190-36bfd380-6ab8-11eb-8108-475cb4e40e14.png"/>
 
-![image](https://user-images.githubusercontent.com/67626785/107298215-44755900-6ab8-11eb-9e93-4741773a7926.png)
+<img width="90%" src="https://user-images.githubusercontent.com/67626785/107298215-44755900-6ab8-11eb-9e93-4741773a7926.png"/>
 
-![image](https://user-images.githubusercontent.com/67626785/107298245-53f4a200-6ab8-11eb-8189-439fb2e77761.png)
+<img width="90%" src="https://user-images.githubusercontent.com/67626785/107298245-53f4a200-6ab8-11eb-8189-439fb2e77761.png"/>
 
-![image](https://user-images.githubusercontent.com/67626785/107298276-6373eb00-6ab8-11eb-84fa-f23c6edba0e6.png)
+<img width="90%" src="https://user-images.githubusercontent.com/67626785/107298276-6373eb00-6ab8-11eb-84fa-f23c6edba0e6.png"/>
 
-![image](https://user-images.githubusercontent.com/67626785/107298299-71297080-6ab8-11eb-8ca0-490639d1e3c2.png)
+<img width="90%" src="https://user-images.githubusercontent.com/67626785/107298299-71297080-6ab8-11eb-8ca0-490639d1e3c2.png"/>
 
-![image](https://user-images.githubusercontent.com/67626785/107298337-84d4d700-6ab8-11eb-9014-cc691da2ea35.png)
+<img width="90%" src="https://user-images.githubusercontent.com/67626785/107298337-84d4d700-6ab8-11eb-9014-cc691da2ea35.png"/>
 
-![image](https://user-images.githubusercontent.com/67626785/107298494-e006c980-6ab8-11eb-94c0-8dad145d1dde.png)
+<img width="90%" src="https://user-images.githubusercontent.com/67626785/107298494-e006c980-6ab8-11eb-94c0-8dad145d1dde.png"/>

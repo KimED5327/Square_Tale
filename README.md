@@ -8,6 +8,16 @@
 #### 🎥 시연 영상 - https://youtu.be/oVVu-dDgtpE <br/><br/>
 
 ---
+  
+## 개발 환경 
+
+* Unity
+
+* Android Build
+
+* C# <br/>
+
+---
 
 ## 팀 구성 
 

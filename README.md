@@ -13,15 +13,15 @@
 
 > Programming Team
 
-[김으뜸](https://github.com/heejae102) - Technical Director
+[김으뜸](https://github.com/KimED5327) - Technical Director
 
 [정희재](https://github.com/heejae102) - 퀘스트, NPC
 
-[최동건](https://github.com/heejae102) - 몬스터, 보스
+[최동건](https://github.com/ehdrjs4773) - 몬스터, 보스
 
-[정광희](https://github.com/heejae102) - 플레이어, 스킬
+[정광희](https://github.com/audenddl) - 플레이어, 스킬
 
-[김현정](https://github.com/heejae102) - 씬 관리, 오브젝트 풀링 <br/><br/>
+[김현정](https://github.com/NiaKim0120) - 씬 관리, 오브젝트 풀링 <br/><br/>
 
 
 > Producer Team

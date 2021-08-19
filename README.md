@@ -2,37 +2,35 @@
 
 > 3D RPG Adventure 기획 합작 프로젝트 
 
-<img width="85%" src="https://user-images.githubusercontent.com/67626785/107299249-43ddc200-6aba-11eb-9f71-f41d0f811ac9.png"/>
+<img width="70%" src="https://user-images.githubusercontent.com/67626785/107299249-43ddc200-6aba-11eb-9f71-f41d0f811ac9.png"/>
 
-#### 🕹 플레이 스토어 - https://play.google.com/store/apps/details?id=com.one.squaretales&hl=ko&gl=KR
+#### 🕹 플레이 스토어 - https://play.google.com/store/apps/details?id=com.one.squaretales&hl=ko&gl=KR 
+#### 🎥 시연 영상 - https://youtu.be/oVVu-dDgtpE <br/><br/>
 
 ---
 
 ## 팀 구성 
-- Technical Director
 
-김으뜸
+> Programming Team
 
-- Programing Team
+[김으뜸](https://github.com/heejae102) - Technical Director
 
-[정희재](https://github.com/heejae102) : 퀘스트, NPC
+[정희재](https://github.com/heejae102) - 퀘스트, NPC
 
-[최동건](https://github.com/heejae102) : 몬스터, 보스
+[최동건](https://github.com/heejae102) - 몬스터, 보스
 
-[정광희](https://github.com/heejae102) : 플레이어, 스킬
+[정광희](https://github.com/heejae102) - 플레이어, 스킬
 
-[김현정](https://github.com/heejae102) : 씬 관리, 오브젝트 풀링
+[김현정](https://github.com/heejae102) - 씬 관리, 오브젝트 풀링 <br/><br/>
 
-- PM
 
-강경묵
+> Producer Team
 
-- Producer Team
-
-곽민서, 안영준, 김진모
+강경묵, 곽민서, 김진모, 안영준 <br/><br/>
 
 ---
 
+## 프로젝트 개요
 
 ![image](https://user-images.githubusercontent.com/67626785/107298130-1e4fb900-6ab8-11eb-830d-9920fc1d8bdf.png)
 

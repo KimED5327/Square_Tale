@@ -2,7 +2,7 @@
 
 > 3D RPG Adventure 기획 합작 프로젝트 
 
-<img width="75%" src="https://user-images.githubusercontent.com/67626785/107299249-43ddc200-6aba-11eb-9f71-f41d0f811ac9.png"/>
+<img width="80%" src="https://user-images.githubusercontent.com/67626785/107299249-43ddc200-6aba-11eb-9f71-f41d0f811ac9.png"/>
 
 #### 🕹 플레이 스토어 다운로드 - https://play.google.com/store/apps/details?id=com.one.squaretales&hl=ko&gl=KR 
 #### 🎥 시연 영상 - https://youtu.be/oVVu-dDgtpE <br/><br/>
